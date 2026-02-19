@@ -6,7 +6,7 @@
 
 Live Preview
 
- [Check the Live Version](https://bhaskar0111.github.io/RiseNow-Helping-Strugglers-Stand-Again/)
+ [Check the Live Version](https://github.com/BHASKAR0111/Rise-Now)
 
 Project Structure
 

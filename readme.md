@@ -6,7 +6,7 @@
 
 Live Preview
 
- [Check the Live Version](https://github.com/BHASKAR0111/Rise-Now)
+ [Check the Live Version](https://bhaskar0111.github.io/Rise-Now/)
 
 Project Structure
 

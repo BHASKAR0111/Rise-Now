@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>RiseNow Official | Helping Strugglers Stand Again</title>
+<meta name="description" content="RiseNow is a modern motivational and career support platform helping individuals rise again through guidance, growth and community support.">
+
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+<style>
+:root{
+  --bg:#0b0f19;
+  --card:#111827;
+  --accent:#22c55e;
+  --accent-dark:#16a34a;
+  --text:#f3f4f6;
+  --muted:#9ca3af;
+  --gradient:linear-gradient(135deg, #22c55e 0%, #06b6d4 100%);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.7;
+  overflow-x:hidden;
+}
+
+section{padding:100px 20px;}
+.container{max-width:1100px;margin:auto;}
+.section-label{
+  display:inline-block;
+  color:var(--accent);
+  font-size:13px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:3px;
+  margin-bottom:12px;
+}
+h1,h2,h3{margin-bottom:20px;line-height:1.3;}
+h2{font-size:36px;}
+p{color:var(--muted);}
+
+/* Header */
+header{
+  position:fixed;
+  width:100%;
+  background:rgba(11,15,25,0.85);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:18px 40px;
+  z-index:1000;
+  border-bottom:1px solid rgba(255,255,255,0.05);
+}
+.logo{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  text-decoration:none;
+  color:var(--text);
+}
+.logo svg{width:32px;height:32px;}
+.logo strong{font-size:20px;letter-spacing:-0.5px;}
+header nav a{
+  color:var(--muted);
+  text-decoration:none;
+  margin-left:30px;
+  font-size:15px;
+  font-weight:500;
+  transition:.3s;
+}
+header nav a:hover{color:var(--text);}
+
+/* Hero */
+.hero{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.hero::before{
+  content:'';
+  position:absolute;
+  top:-50%;
+  left:-50%;
+  width:200%;
+  height:200%;
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(34,197,94,0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(6,182,212,0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 80%, rgba(139,92,246,0.04) 0%, transparent 50%);
+  animation:heroBg 20s ease-in-out infinite alternate;
+  z-index:0;
+}
+@keyframes heroBg{
+  0%{transform:translate(0,0) scale(1);}
+  100%{transform:translate(-3%,2%) scale(1.05);}
+}
+.hero .container{position:relative;z-index:1;}
+.hero h1{
+  font-size:56px;
+  font-weight:800;
+  letter-spacing:-1px;
+  margin-bottom:24px;
+}
+.hero h1 .highlight{
+  background:var(--gradient);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.hero .subtitle{
+  font-size:19px;
+  color:var(--muted);
+  max-width:550px;
+  margin:0 auto 40px;
+}
+.hero-stats{
+  display:flex;
+  justify-content:center;
+  gap:50px;
+  margin-top:50px;
+}
+.hero-stat{text-align:center;}
+.hero-stat .number{
+  font-size:32px;
+  font-weight:800;
+  background:var(--gradient);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.hero-stat .label{font-size:13px;color:var(--muted);margin-top:4px;}
+
+/* Buttons */
+.btn{
+  display:inline-block;
+  margin:10px;
+  padding:14px 28px;
+  border-radius:8px;
+  text-decoration:none;
+  font-weight:600;
+  font-size:15px;
+  transition:.3s;
+}
+.btn-primary{
+  background:var(--gradient);
+  color:#000;
+  box-shadow:0 4px 20px rgba(34,197,94,0.3);
+}
+.btn-primary:hover{
+  transform:translateY(-2px);
+  box-shadow:0 6px 30px rgba(34,197,94,0.4);
+}
+.btn-outline{
+  border:1px solid rgba(34,197,94,0.4);
+  color:var(--accent);
+  background:transparent;
+}
+.btn-outline:hover{
+  background:rgba(34,197,94,0.1);
+  border-color:var(--accent);
+  transform:translateY(-2px);
+}
+
+/* About Cards */
+.about-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:25px;
+  margin-top:50px;
+}
+.about-card{
+  background:var(--card);
+  padding:35px 30px;
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,0.05);
+  transition:.4s;
+  position:relative;
+  overflow:hidden;
+}
+.about-card::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;
+  height:3px;
+  background:var(--gradient);
+  opacity:0;
+  transition:.4s;
+}
+.about-card:hover{
+  transform:translateY(-8px);
+  border-color:rgba(34,197,94,0.15);
+  box-shadow:0 20px 40px rgba(0,0,0,0.3);
+}
+.about-card:hover::before{opacity:1;}
+.card-icon{
+  width:56px;
+  height:56px;
+  border-radius:14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-bottom:22px;
+}
+.card-icon svg{width:28px;height:28px;}
+.icon-green{background:rgba(34,197,94,0.12);}
+.icon-blue{background:rgba(6,182,212,0.12);}
+.icon-purple{background:rgba(139,92,246,0.12);}
+.about-card h3{font-size:20px;margin-bottom:12px;}
+.about-card p{font-size:15px;}
+
+/* Career Cards */
+.career-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:20px;
+  margin-top:50px;
+}
+.career-card{
+  background:var(--card);
+  padding:30px 24px;
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,0.05);
+  transition:.4s;
+  text-align:center;
+}
+.career-card:hover{
+  transform:translateY(-6px);
+  border-color:rgba(34,197,94,0.15);
+  box-shadow:0 16px 30px rgba(0,0,0,0.25);
+}
+.career-icon{
+  width:64px;
+  height:64px;
+  border-radius:16px;
+  background:rgba(34,197,94,0.08);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin:0 auto 20px;
+}
+.career-icon svg{width:30px;height:30px;}
+.career-card h3{font-size:17px;margin-bottom:8px;}
+.career-card p{font-size:14px;}
+.career-tag{
+  display:inline-block;
+  margin-top:15px;
+  padding:5px 14px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:600;
+  color:var(--accent);
+  background:rgba(34,197,94,0.1);
+}
+
+/* Inspirational Figures */
+#inspiration{
+  background:linear-gradient(180deg, var(--bg) 0%, #0f1524 50%, var(--bg) 100%);
+}
+.inspiration-grid{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:24px;
+  margin-top:50px;
+}
+.inspiration-card{
+  text-align:center;
+  transition:.4s;
+}
+.inspiration-card:hover{
+  transform:translateY(-6px);
+}
+.inspiration-img{
+  width:120px;
+  height:120px;
+  border-radius:50%;
+  object-fit:cover;
+  border:3px solid rgba(34,197,94,0.3);
+  margin-bottom:16px;
+  transition:.4s;
+  filter:grayscale(20%);
+}
+.inspiration-card:hover .inspiration-img{
+  border-color:var(--accent);
+  filter:grayscale(0);
+  box-shadow:0 0 25px rgba(34,197,94,0.2);
+}
+.inspiration-card h4{font-size:15px;margin-bottom:4px;}
+.inspiration-card p{font-size:13px;color:var(--muted);}
+.inspiration-quote{
+  max-width:700px;
+  margin:50px auto 0;
+  text-align:center;
+  font-size:20px;
+  font-style:italic;
+  color:var(--muted);
+  line-height:1.8;
+  position:relative;
+  padding:0 30px;
+}
+.inspiration-quote::before{
+  content:'\201C';
+  position:absolute;
+  top:-20px;left:0;
+  font-size:80px;
+  background:var(--gradient);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  line-height:1;
+}
+
+/* Stories */
+.stories-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:25px;
+  margin-top:50px;
+}
+.story-card{
+  background:var(--card);
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,0.05);
+  overflow:hidden;
+  transition:.4s;
+}
+.story-card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 16px 30px rgba(0,0,0,0.25);
+}
+.story-img{
+  width:100%;
+  height:200px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.story-img-1{background:linear-gradient(135deg, #1a2332 0%, #0f3429 100%);}
+.story-img-2{background:linear-gradient(135deg, #1a2332 0%, #1f1535 100%);}
+.story-img svg{width:64px;height:64px;opacity:0.5;}
+.story-content{padding:30px;}
+.story-tag{
+  display:inline-block;
+  padding:4px 12px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:600;
+  background:rgba(34,197,94,0.1);
+  color:var(--accent);
+  margin-bottom:14px;
+}
+.story-content h3{font-size:20px;margin-bottom:10px;}
+.story-content p{font-size:15px;margin-bottom:18px;}
+.story-link{
+  color:var(--accent);
+  text-decoration:none;
+  font-weight:600;
+  font-size:15px;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  transition:.3s;
+}
+.story-link:hover{gap:10px;}
+
+/* Contact */
+#contact{
+  background:linear-gradient(180deg, var(--bg) 0%, #0f1524 100%);
+}
+.contact-wrapper{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:60px;
+  margin-top:50px;
+}
+.contact-info h3{font-size:24px;margin-bottom:16px;}
+.contact-info p{font-size:16px;margin-bottom:30px;}
+.contact-feature{
+  display:flex;
+  align-items:flex-start;
+  gap:16px;
+  margin-bottom:24px;
+}
+.contact-feature-icon{
+  width:44px;
+  height:44px;
+  border-radius:12px;
+  background:rgba(34,197,94,0.1);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+}
+.contact-feature-icon svg{width:20px;height:20px;}
+.contact-feature h4{font-size:15px;margin-bottom:4px;}
+.contact-feature p{font-size:14px;}
+
+form{
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+input,textarea{
+  padding:14px 18px;
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:10px;
+  background:var(--card);
+  color:white;
+  font-size:15px;
+  font-family:inherit;
+  transition:.3s;
+}
+input:focus,textarea:focus{
+  outline:none;
+  border-color:rgba(34,197,94,0.4);
+  box-shadow:0 0 0 3px rgba(34,197,94,0.1);
+}
+input::placeholder,textarea::placeholder{color:var(--muted);}
+button[type="submit"]{
+  padding:14px;
+  border:none;
+  background:var(--gradient);
+  color:#000;
+  font-weight:700;
+  font-size:15px;
+  border-radius:10px;
+  cursor:pointer;
+  transition:.3s;
+}
+button[type="submit"]:hover{
+  transform:translateY(-2px);
+  box-shadow:0 4px 20px rgba(34,197,94,0.3);
+}
+
+/* Footer */
+footer{
+  background:#070b13;
+  text-align:center;
+  padding:50px 20px;
+  border-top:1px solid rgba(255,255,255,0.05);
+}
+.footer-logo{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  margin-bottom:16px;
+}
+.footer-logo svg{width:28px;height:28px;}
+.footer-logo strong{font-size:18px;}
+footer p{font-size:14px;}
+.footer-links{
+  margin:20px 0;
+  display:flex;
+  justify-content:center;
+  gap:30px;
+}
+.footer-links a{
+  color:var(--muted);
+  text-decoration:none;
+  font-size:14px;
+  transition:.3s;
+}
+.footer-links a:hover{color:var(--text);}
+
+/* Scroll Animations */
+.fade{
+  opacity:0;
+  transform:translateY(30px);
+  transition:0.8s cubic-bezier(0.25,0.46,0.45,0.94);
+}
+.fade.show{
+  opacity:1;
+  transform:translateY(0);
+}
+
+/* Divider */
+.section-divider{
+  width:60px;
+  height:3px;
+  background:var(--gradient);
+  border-radius:2px;
+  margin-bottom:20px;
+}
+
+/* Responsive */
+@media(max-width:1024px){
+  .career-grid{grid-template-columns:repeat(2,1fr);}
+  .inspiration-grid{grid-template-columns:repeat(3,1fr);}
+}
+@media(max-width:768px){
+  .hero h1{font-size:36px;}
+  h2{font-size:28px;}
+  header{padding:15px 20px;}
+  header nav a{margin-left:18px;font-size:14px;}
+  .about-grid{grid-template-columns:1fr;}
+  .career-grid{grid-template-columns:1fr;}
+  .stories-grid{grid-template-columns:1fr;}
+  .contact-wrapper{grid-template-columns:1fr;gap:40px;}
+  .hero-stats{gap:30px;}
+  .hero-stat .number{font-size:24px;}
+  .inspiration-grid{grid-template-columns:repeat(2,1fr);}
+  .inspiration-img{width:90px;height:90px;}
+}
+@media(max-width:480px){
+  .hero h1{font-size:28px;}
+  .hero-stats{flex-direction:column;gap:20px;}
+  .inspiration-grid{grid-template-columns:repeat(2,1fr);}
+  header nav{display:none;}
+}
+</style>
+</head>
+
+<body>
+
+<!-- Header -->
+<header>
+  <a href="index.html" class="logo">
+    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="100" height="100" rx="20" fill="#111827"/>
+      <text x="50%" y="55%" text-anchor="middle" font-family="Arial" font-size="55" font-weight="bold" fill="white" dy=".3em">R</text>
+      <circle cx="75" cy="75" r="8" fill="#22c55e"/>
+    </svg>
+    <strong>RiseNow</strong>
+  </a>
+  <nav>
+    <a href="#about">About</a>
+    <a href="#careers">Careers</a>
+    <a href="#inspiration">Inspiration</a>
+    <a href="#stories">Stories</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="container fade">
+    <span class="section-label">Welcome to RiseNow</span>
+    <h1>Helping Strugglers<br><span class="highlight">Stand Again</span></h1>
+    <p class="subtitle">Your comeback starts here. Join our community for motivation, career guidance and mental support to rebuild your life.</p>
+    <a href="#about" class="btn btn-primary">Get Started</a>
+    <a href="#contact" class="btn btn-outline">Get Support</a>
+
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="number">5,000+</div>
+        <div class="label">People Helped</div>
+      </div>
+      <div class="hero-stat">
+        <div class="number">50+</div>
+        <div class="label">Career Paths</div>
+      </div>
+      <div class="hero-stat">
+        <div class="number">200+</div>
+        <div class="label">Success Stories</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- About -->
+<section id="about">
+  <div class="container fade">
+    <span class="section-label">What We Do</span>
+    <h2>Empowering Your Comeback</h2>
+    <p>RiseNow is built to empower individuals facing setbacks in life and career. We provide clarity, structure and motivation to help you rise stronger.</p>
+
+    <div class="about-grid">
+      <div class="about-card">
+        <div class="card-icon icon-green">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+          </svg>
+        </div>
+        <h3>Daily Motivation</h3>
+        <p>Inspiring content and real stories to rebuild your confidence and push you forward every single day.</p>
+      </div>
+
+      <div class="about-card">
+        <div class="card-icon icon-blue">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+          </svg>
+        </div>
+        <h3>Career Guidance</h3>
+        <p>Structured learning paths, practical advice, and clear roadmaps to help you land your next career opportunity.</p>
+      </div>
+
+      <div class="about-card">
+        <div class="card-icon icon-purple">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+          </svg>
+        </div>
+        <h3>Mental Support</h3>
+        <p>Community-driven support system focused on real growth, resilience and building mental strength together.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Career Paths -->
+<section id="careers">
+  <div class="container fade">
+    <span class="section-label">Explore Paths</span>
+    <h2>Career Paths to Explore</h2>
+    <p>Discover structured career paths with resources and guidance to get you industry-ready.</p>
+
+    <div class="career-grid">
+      <div class="career-card">
+        <div class="career-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="20" x2="18" y2="10"/>
+            <line x1="12" y1="20" x2="12" y2="4"/>
+            <line x1="6" y1="20" x2="6" y2="14"/>
+          </svg>
+        </div>
+        <h3>Data Analytics</h3>
+        <p>Learn data tools, visualization and analysis to become industry ready.</p>
+        <span class="career-tag">In Demand</span>
+      </div>
+
+      <div class="career-card">
+        <div class="career-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="2" y1="12" x2="22" y2="12"/>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+          </svg>
+        </div>
+        <h3>Digital Marketing</h3>
+        <p>Build online growth skills, SEO mastery and social media strategy.</p>
+        <span class="career-tag">Growing Fast</span>
+      </div>
+
+      <div class="career-card">
+        <div class="career-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+            <polyline points="2 17 12 22 22 17"/>
+            <polyline points="2 12 12 17 22 12"/>
+          </svg>
+        </div>
+        <h3>Graphic Design</h3>
+        <p>Create modern visuals, brand identity and compelling design work.</p>
+        <span class="career-tag">Creative</span>
+      </div>
+
+      <div class="career-card">
+        <div class="career-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="16 18 22 12 16 6"/>
+            <polyline points="8 6 2 12 8 18"/>
+          </svg>
+        </div>
+        <h3>Web Development</h3>
+        <p>Build websites, web apps and digital products from scratch.</p>
+        <span class="career-tag">High Paying</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Inspirational Figures -->
+<section id="inspiration">
+  <div class="container fade">
+    <div style="text-align:center;">
+      <span class="section-label">Learn From The Best</span>
+      <h2>They Struggled Too</h2>
+      <p>Every success story starts with a setback. These icons prove that failure is just the beginning.</p>
+    </div>
+
+    <div class="inspiration-grid">
+      <div class="inspiration-card">
+        <img src="steve.jpg" alt="Steve Jobs" class="inspiration-img">
+        <h4>Steve Jobs</h4>
+        <p>Fired from his own company. Built an empire.</p>
+      </div>
+      <div class="inspiration-card">
+        <img src="oprah.jpg" alt="Oprah Winfrey" class="inspiration-img">
+        <h4>Oprah Winfrey</h4>
+        <p>Told she was unfit for TV. Became a legend.</p>
+      </div>
+      <div class="inspiration-card">
+        <img src="jk.jpg" alt="J.K. Rowling" class="inspiration-img">
+        <h4>J.K. Rowling</h4>
+        <p>Rejected 12 times. Created a global phenomenon.</p>
+      </div>
+      <div class="inspiration-card">
+        <img src="elon.jpg" alt="Elon Musk" class="inspiration-img">
+        <h4>Elon Musk</h4>
+        <p>Multiple failures. Revolutionized industries.</p>
+      </div>
+      <div class="inspiration-card">
+        <img src="nick.jpeg" alt="Nick Vujicic" class="inspiration-img">
+        <h4>Nick Vujicic</h4>
+        <p>Born without limbs. Inspires millions worldwide.</p>
+      </div>
+    </div>
+
+    <div class="inspiration-quote">
+      Your setback is setting you up for your greatest comeback. Every person who ever achieved something great first faced moments of doubt, failure and pain.
+    </div>
+  </div>
+</section>
+
+<!-- Success Stories -->
+<section id="stories">
+  <div class="container fade">
+    <span class="section-label">Real Stories</span>
+    <h2>Success Stories</h2>
+    <p>Real people, real comebacks. Read how others turned their setbacks into stepping stones.</p>
+
+    <div class="stories-grid">
+      <div class="story-card">
+        <div class="story-img story-img-1">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+          </svg>
+        </div>
+        <div class="story-content">
+          <span class="story-tag">Motivation</span>
+          <h3>Turning Failure into Fuel</h3>
+          <p>How setbacks became the stepping stone to growth and how one person's lowest point became their greatest strength.</p>
+          <a href="blog/first-post.html" class="story-link">Read Full Story <span>&rarr;</span></a>
+        </div>
+      </div>
+
+      <div class="story-card">
+        <div class="story-img story-img-2">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+            <line x1="8" y1="21" x2="16" y2="21"/>
+            <line x1="12" y1="17" x2="12" y2="21"/>
+          </svg>
+        </div>
+        <div class="story-content">
+          <span class="story-tag">Career</span>
+          <h3>Career Switch Success</h3>
+          <p>From confusion to clarity through structured learning. How one career changer found their path and thrived.</p>
+          <a href="#" class="story-link">Read Full Story <span>&rarr;</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section id="contact">
+  <div class="container fade">
+    <div class="contact-wrapper">
+      <div class="contact-info">
+        <span class="section-label">Get in Touch</span>
+        <h2>We Are Here to Help</h2>
+        <p>Need guidance? Reach out and start your comeback today. Our team is ready to support you every step of the way.</p>
+
+        <div class="contact-feature">
+          <div class="contact-feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+          </div>
+          <div>
+            <h4>Personal Guidance</h4>
+            <p>One-on-one support tailored to your situation</p>
+          </div>
+        </div>
+
+        <div class="contact-feature">
+          <div class="contact-feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+          </div>
+          <div>
+            <h4>Quick Response</h4>
+            <p>We respond within 24 hours to every message</p>
+          </div>
+        </div>
+
+        <div class="contact-feature">
+          <div class="contact-feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+          </div>
+          <div>
+            <h4>Community Access</h4>
+            <p>Join a supportive community of like-minded people</p>
+          </div>
+        </div>
+      </div>
+
+      <form>
+        <input type="text" placeholder="Your Name" required>
+        <input type="email" placeholder="Your Email" required>
+        <textarea rows="5" placeholder="Tell us how we can help you..." required></textarea>
+        <button type="submit">Send Message</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-logo">
+    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="100" height="100" rx="20" fill="#111827"/>
+      <text x="50%" y="55%" text-anchor="middle" font-family="Arial" font-size="55" font-weight="bold" fill="white" dy=".3em">R</text>
+      <circle cx="75" cy="75" r="8" fill="#22c55e"/>
+    </svg>
+    <strong>RiseNow</strong>
+  </div>
+  <p>Helping Strugglers Stand Again</p>
+  <div class="footer-links">
+    <a href="about.html">About</a>
+    <a href="blog.html">Blog</a>
+    <a href="contact.html">Contact</a>
+  </div>
+  <p style="margin-top:20px;">&copy; 2026 RiseNow. All rights reserved.</p>
+</footer>
+
+<script>
+const faders = document.querySelectorAll('.fade');
+const observerOpts = { threshold: 0.15, rootMargin: '0px 0px -50px 0px' };
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('show');
+      observer.unobserve(entry.target);
+    }
+  });
+}, observerOpts);
+faders.forEach(el => observer.observe(el));
+
+// Trigger hero immediately
+window.addEventListener('load', () => {
+  document.querySelector('.hero .fade').classList.add('show');
+});
+</script>
+
+</body>
+</html>

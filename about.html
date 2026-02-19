@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>About RiseNow | Our Mission & Vision</title>
+<meta name="description" content="Learn about RiseNow, a platform dedicated to helping struggling individuals stand again through motivation, career guidance and mental support.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+<style>
+:root{
+  --bg:#0b0f19;
+  --card:#111827;
+  --accent:#22c55e;
+  --text:#f3f4f6;
+  --muted:#9ca3af;
+  --gradient:linear-gradient(135deg, #22c55e 0%, #06b6d4 100%);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Segoe UI', system-ui, -apple-system, sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.7;
+}
+
+/* Header */
+header{
+  position:fixed;
+  width:100%;
+  background:rgba(11,15,25,0.85);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:18px 40px;
+  z-index:1000;
+  border-bottom:1px solid rgba(255,255,255,0.05);
+}
+.logo{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  text-decoration:none;
+  color:var(--text);
+}
+.logo svg{width:32px;height:32px;}
+.logo strong{font-size:20px;letter-spacing:-0.5px;}
+header nav a{
+  color:var(--muted);
+  text-decoration:none;
+  margin-left:30px;
+  font-size:15px;
+  font-weight:500;
+  transition:.3s;
+}
+header nav a:hover{color:var(--text);}
+
+/* Page Hero */
+.page-hero{
+  padding:160px 20px 80px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.page-hero::before{
+  content:'';
+  position:absolute;
+  top:-50%;left:-50%;
+  width:200%;height:200%;
+  background:
+    radial-gradient(ellipse at 30% 50%, rgba(34,197,94,0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 30%, rgba(6,182,212,0.05) 0%, transparent 50%);
+  z-index:0;
+}
+.page-hero .container{position:relative;z-index:1;}
+.section-label{
+  display:inline-block;
+  color:var(--accent);
+  font-size:13px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:3px;
+  margin-bottom:12px;
+}
+.page-hero h1{font-size:48px;font-weight:800;margin-bottom:16px;}
+.page-hero h1 .highlight{
+  background:var(--gradient);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.page-hero p{color:var(--muted);font-size:18px;max-width:600px;margin:0 auto;}
+
+.container{max-width:900px;margin:auto;padding:0 20px;}
+h2{font-size:30px;margin-bottom:16px;}
+p{color:var(--muted);}
+
+/* Content Section */
+.content-section{padding:80px 20px;}
+.content-block{margin-bottom:60px;}
+.content-block h2{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+.content-icon{
+  width:44px;
+  height:44px;
+  border-radius:12px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+}
+.content-icon svg{width:22px;height:22px;}
+.icon-green{background:rgba(34,197,94,0.12);}
+.icon-blue{background:rgba(6,182,212,0.12);}
+.icon-purple{background:rgba(139,92,246,0.12);}
+.icon-amber{background:rgba(245,158,11,0.12);}
+.content-block p{font-size:16px;line-height:1.8;margin-top:12px;}
+
+/* Values Grid */
+.values-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px;
+  margin-top:50px;
+}
+.value-card{
+  background:var(--card);
+  padding:30px;
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,0.05);
+  text-align:center;
+  transition:.4s;
+}
+.value-card:hover{
+  transform:translateY(-6px);
+  border-color:rgba(34,197,94,0.15);
+}
+.value-icon{
+  width:60px;
+  height:60px;
+  border-radius:16px;
+  background:rgba(34,197,94,0.08);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin:0 auto 18px;
+}
+.value-icon svg{width:28px;height:28px;}
+.value-card h3{font-size:18px;margin-bottom:8px;}
+.value-card p{font-size:14px;}
+
+/* CTA */
+.btn{
+  display:inline-block;
+  margin:10px 10px 10px 0;
+  padding:14px 28px;
+  border-radius:8px;
+  text-decoration:none;
+  font-weight:600;
+  font-size:15px;
+  transition:.3s;
+}
+.btn-primary{
+  background:var(--gradient);
+  color:#000;
+  box-shadow:0 4px 20px rgba(34,197,94,0.3);
+}
+.btn-primary:hover{
+  transform:translateY(-2px);
+  box-shadow:0 6px 30px rgba(34,197,94,0.4);
+}
+.btn-outline{
+  border:1px solid rgba(34,197,94,0.4);
+  color:var(--accent);
+  background:transparent;
+}
+.btn-outline:hover{
+  background:rgba(34,197,94,0.1);
+  transform:translateY(-2px);
+}
+
+/* Footer */
+footer{
+  background:#070b13;
+  text-align:center;
+  padding:50px 20px;
+  border-top:1px solid rgba(255,255,255,0.05);
+}
+.footer-logo{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  margin-bottom:16px;
+}
+.footer-logo svg{width:28px;height:28px;}
+.footer-logo strong{font-size:18px;}
+footer p{font-size:14px;}
+.footer-links{
+  margin:20px 0;
+  display:flex;
+  justify-content:center;
+  gap:30px;
+}
+.footer-links a{
+  color:var(--muted);
+  text-decoration:none;
+  font-size:14px;
+  transition:.3s;
+}
+.footer-links a:hover{color:var(--text);}
+
+/* Fade animation */
+.fade{
+  opacity:0;
+  transform:translateY(30px);
+  transition:0.8s cubic-bezier(0.25,0.46,0.45,0.94);
+}
+.fade.show{
+  opacity:1;
+  transform:translateY(0);
+}
+
+@media(max-width:768px){
+  .page-hero h1{font-size:32px;}
+  header{padding:15px 20px;}
+  header nav a{margin-left:18px;font-size:14px;}
+  .values-grid{grid-template-columns:1fr;}
+  .content-block h2{font-size:24px;}
+}
+@media(max-width:480px){
+  header nav{display:none;}
+}
+</style>
+</head>
+
+<body>
+
+<!-- Header -->
+<header>
+  <a href="index.html" class="logo">
+    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="100" height="100" rx="20" fill="#111827"/>
+      <text x="50%" y="55%" text-anchor="middle" font-family="Arial" font-size="55" font-weight="bold" fill="white" dy=".3em">R</text>
+      <circle cx="75" cy="75" r="8" fill="#22c55e"/>
+    </svg>
+    <strong>RiseNow</strong>
+  </a>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="blog.html">Blog</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+</header>
+
+<!-- Page Hero -->
+<section class="page-hero">
+  <div class="container fade">
+    <span class="section-label">Our Story</span>
+    <h1>About <span class="highlight">RiseNow</span></h1>
+    <p>A community-driven platform dedicated to helping individuals who are struggling in life, career, or personal growth find their way back.</p>
+  </div>
+</section>
+
+<!-- Content -->
+<section class="content-section">
+  <div class="container">
+
+    <div class="content-block fade">
+      <h2>
+        <span class="content-icon icon-green">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>
+          </svg>
+        </span>
+        Our Mission
+      </h2>
+      <p>Our mission is to provide motivation, practical career guidance, and mental support so that anyone facing setbacks can find a clear path forward. We believe no one should have to navigate hard times alone, and that the right community and resources can transform a person's trajectory.</p>
+    </div>
+
+    <div class="content-block fade">
+      <h2>
+        <span class="content-icon icon-blue">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+          </svg>
+        </span>
+        Our Vision
+      </h2>
+      <p>We believe every setback is a setup for a comeback. RiseNow aims to become a trusted platform where people can find real stories, real guidance, and real growth. A place where struggle is not an ending, but the beginning of something extraordinary.</p>
+    </div>
+
+    <div class="content-block fade">
+      <h2>
+        <span class="content-icon icon-purple">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+          </svg>
+        </span>
+        Our Founder
+      </h2>
+      <p>RiseNow was created with the belief that no one should struggle alone. Through shared experiences and structured guidance, we aim to build a positive and growth-focused community that lifts people up when they need it most.</p>
+    </div>
+
+    <!-- Values -->
+    <div class="fade">
+      <h2 style="text-align:center;margin-top:40px;">Our Core Values</h2>
+      <div class="values-grid">
+        <div class="value-card">
+          <div class="value-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+          </div>
+          <h3>Community</h3>
+          <p>Growing together through shared experiences and mutual support.</p>
+        </div>
+
+        <div class="value-card">
+          <div class="value-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+            </svg>
+          </div>
+          <h3>Resilience</h3>
+          <p>Building mental toughness to overcome any obstacle life throws your way.</p>
+        </div>
+
+        <div class="value-card">
+          <div class="value-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+            </svg>
+          </div>
+          <h3>Growth</h3>
+          <p>Continuous improvement through structured learning and practical guidance.</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:60px;" class="fade">
+      <a href="index.html" class="btn btn-primary">Back to Home</a>
+      <a href="contact.html" class="btn btn-outline">Get in Touch</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-logo">
+    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="100" height="100" rx="20" fill="#111827"/>
+      <text x="50%" y="55%" text-anchor="middle" font-family="Arial" font-size="55" font-weight="bold" fill="white" dy=".3em">R</text>
+      <circle cx="75" cy="75" r="8" fill="#22c55e"/>
+    </svg>
+    <strong>RiseNow</strong>
+  </div>
+  <p>Helping Strugglers Stand Again</p>
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="blog.html">Blog</a>
+    <a href="contact.html">Contact</a>
+  </div>
+  <p style="margin-top:20px;">&copy; 2026 RiseNow. All rights reserved.</p>
+</footer>
+
+<script>
+const faders = document.querySelectorAll('.fade');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('show');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15 });
+faders.forEach(el => observer.observe(el));
+window.addEventListener('load', () => {
+  document.querySelector('.page-hero .fade').classList.add('show');
+});
+</script>
+
+</body>
+</html>

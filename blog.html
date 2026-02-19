@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>RiseNow Blog | Motivation & Growth</title>
+<meta name="description" content="Read motivational and career growth blogs from RiseNow.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+<style>
+:root{
+  --bg:#0b0f19;
+  --card:#111827;
+  --accent:#22c55e;
+  --text:#f3f4f6;
+  --muted:#9ca3af;
+  --gradient:linear-gradient(135deg, #22c55e 0%, #06b6d4 100%);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Segoe UI', system-ui, -apple-system, sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.7;
+}
+
+/* Header */
+header{
+  position:fixed;
+  width:100%;
+  background:rgba(11,15,25,0.85);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:18px 40px;
+  z-index:1000;
+  border-bottom:1px solid rgba(255,255,255,0.05);
+}
+.logo{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  text-decoration:none;
+  color:var(--text);
+}
+.logo svg{width:32px;height:32px;}
+.logo strong{font-size:20px;letter-spacing:-0.5px;}
+header nav a{
+  color:var(--muted);
+  text-decoration:none;
+  margin-left:30px;
+  font-size:15px;
+  font-weight:500;
+  transition:.3s;
+}
+header nav a:hover{color:var(--text);}
+
+/* Page Hero */
+.page-hero{
+  padding:160px 20px 80px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.page-hero::before{
+  content:'';
+  position:absolute;
+  top:-50%;left:-50%;
+  width:200%;height:200%;
+  background:
+    radial-gradient(ellipse at 30% 50%, rgba(34,197,94,0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 30%, rgba(6,182,212,0.05) 0%, transparent 50%);
+  z-index:0;
+}
+.page-hero .container{position:relative;z-index:1;}
+.section-label{
+  display:inline-block;
+  color:var(--accent);
+  font-size:13px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:3px;
+  margin-bottom:12px;
+}
+.page-hero h1{font-size:48px;font-weight:800;margin-bottom:16px;}
+.page-hero h1 .highlight{
+  background:var(--gradient);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.page-hero p{color:var(--muted);font-size:18px;max-width:600px;margin:0 auto;}
+.container{max-width:900px;margin:auto;padding:0 20px;}
+p{color:var(--muted);}
+
+/* Blog Cards */
+.blog-section{padding:0 20px 100px;}
+.blog-card{
+  background:var(--card);
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,0.05);
+  overflow:hidden;
+  margin-bottom:30px;
+  transition:.4s;
+  display:grid;
+  grid-template-columns:280px 1fr;
+}
+.blog-card:hover{
+  transform:translateY(-4px);
+  border-color:rgba(34,197,94,0.15);
+  box-shadow:0 16px 30px rgba(0,0,0,0.25);
+}
+.blog-img{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:200px;
+}
+.blog-img-1{background:linear-gradient(135deg, #1a2332 0%, #0f3429 100%);}
+.blog-img-2{background:linear-gradient(135deg, #1a2332 0%, #1f1535 100%);}
+.blog-img svg{width:56px;height:56px;opacity:0.4;}
+.blog-content{padding:35px;}
+.blog-tag{
+  display:inline-block;
+  padding:4px 12px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:600;
+  background:rgba(34,197,94,0.1);
+  color:var(--accent);
+  margin-bottom:14px;
+}
+.blog-content h2{font-size:22px;margin-bottom:12px;}
+.blog-content p{font-size:15px;margin-bottom:18px;line-height:1.7;}
+.blog-link{
+  color:var(--accent);
+  text-decoration:none;
+  font-weight:600;
+  font-size:15px;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  transition:.3s;
+}
+.blog-link:hover{gap:10px;}
+
+/* Footer */
+footer{
+  background:#070b13;
+  text-align:center;
+  padding:50px 20px;
+  border-top:1px solid rgba(255,255,255,0.05);
+}
+.footer-logo{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  margin-bottom:16px;
+}
+.footer-logo svg{width:28px;height:28px;}
+.footer-logo strong{font-size:18px;}
+footer p{font-size:14px;}
+.footer-links{
+  margin:20px 0;
+  display:flex;
+  justify-content:center;
+  gap:30px;
+}
+.footer-links a{
+  color:var(--muted);
+  text-decoration:none;
+  font-size:14px;
+  transition:.3s;
+}
+.footer-links a:hover{color:var(--text);}
+
+/* Fade */
+.fade{
+  opacity:0;
+  transform:translateY(30px);
+  transition:0.8s cubic-bezier(0.25,0.46,0.45,0.94);
+}
+.fade.show{
+  opacity:1;
+  transform:translateY(0);
+}
+
+@media(max-width:768px){
+  .page-hero h1{font-size:32px;}
+  header{padding:15px 20px;}
+  header nav a{margin-left:18px;font-size:14px;}
+  .blog-card{grid-template-columns:1fr;}
+  .blog-img{min-height:160px;}
+}
+@media(max-width:480px){
+  header nav{display:none;}
+}
+</style>
+</head>
+
+<body>
+
+<!-- Header -->
+<header>
+  <a href="index.html" class="logo">
+    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="100" height="100" rx="20" fill="#111827"/>
+      <text x="50%" y="55%" text-anchor="middle" font-family="Arial" font-size="55" font-weight="bold" fill="white" dy=".3em">R</text>
+      <circle cx="75" cy="75" r="8" fill="#22c55e"/>
+    </svg>
+    <strong>RiseNow</strong>
+  </a>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+</header>
+
+<!-- Page Hero -->
+<section class="page-hero">
+  <div class="container fade">
+    <span class="section-label">Read & Grow</span>
+    <h1>RiseNow <span class="highlight">Blog</span></h1>
+    <p>Motivational stories, career insights, and growth tips to fuel your comeback journey.</p>
+  </div>
+</section>
+
+<!-- Blog Posts -->
+<section class="blog-section">
+  <div class="container">
+
+    <div class="blog-card fade">
+      <div class="blog-img blog-img-1">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+        </svg>
+      </div>
+      <div class="blog-content">
+        <span class="blog-tag">Motivation</span>
+        <h2>Turning Failure into Fuel</h2>
+        <p>Learn how setbacks can become your biggest strength and how resilience shapes success. Discover the mindset shifts that turn obstacles into opportunities.</p>
+        <a href="blog/first-post.html" class="blog-link">Read Full Story <span>&rarr;</span></a>
+      </div>
+    </div>
+
+    <div class="blog-card fade">
+      <div class="blog-img blog-img-2">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+          <line x1="8" y1="21" x2="16" y2="21"/>
+          <line x1="12" y1="17" x2="12" y2="21"/>
+        </svg>
+      </div>
+      <div class="blog-content">
+        <span class="blog-tag">Career</span>
+        <h2>Career Switch Success</h2>
+        <p>How to confidently transition into a new career path without fear. A real story of someone who made the leap and found clarity through structured learning.</p>
+        <a href="blog/second-post.html" class="blog-link">Read Full Story <span>&rarr;</span></a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-logo">
+    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="100" height="100" rx="20" fill="#111827"/>
+      <text x="50%" y="55%" text-anchor="middle" font-family="Arial" font-size="55" font-weight="bold" fill="white" dy=".3em">R</text>
+      <circle cx="75" cy="75" r="8" fill="#22c55e"/>
+    </svg>
+    <strong>RiseNow</strong>
+  </div>
+  <p>Helping Strugglers Stand Again</p>
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+  </div>
+  <p style="margin-top:20px;">&copy; 2026 RiseNow. All rights reserved.</p>
+</footer>
+
+<script>
+const faders = document.querySelectorAll('.fade');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('show');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15 });
+faders.forEach(el => observer.observe(el));
+window.addEventListener('load', () => {
+  document.querySelector('.page-hero .fade').classList.add('show');
+});
+</script>
+
+</body>
+</html>

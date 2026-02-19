@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Contact RiseNow | Get Support</title>
+<meta name="description" content="Contact RiseNow for support, career guidance, and motivation. We are here to help you rise again.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+<style>
+:root{
+  --bg:#0b0f19;
+  --card:#111827;
+  --accent:#22c55e;
+  --text:#f3f4f6;
+  --muted:#9ca3af;
+  --gradient:linear-gradient(135deg, #22c55e 0%, #06b6d4 100%);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Segoe UI', system-ui, -apple-system, sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.7;
+}
+
+/* Header */
+header{
+  position:fixed;
+  width:100%;
+  background:rgba(11,15,25,0.85);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:18px 40px;
+  z-index:1000;
+  border-bottom:1px solid rgba(255,255,255,0.05);
+}
+.logo{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  text-decoration:none;
+  color:var(--text);
+}
+.logo svg{width:32px;height:32px;}
+.logo strong{font-size:20px;letter-spacing:-0.5px;}
+header nav a{
+  color:var(--muted);
+  text-decoration:none;
+  margin-left:30px;
+  font-size:15px;
+  font-weight:500;
+  transition:.3s;
+}
+header nav a:hover{color:var(--text);}
+
+/* Page Hero */
+.page-hero{
+  padding:160px 20px 80px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.page-hero::before{
+  content:'';
+  position:absolute;
+  top:-50%;left:-50%;
+  width:200%;height:200%;
+  background:
+    radial-gradient(ellipse at 30% 50%, rgba(34,197,94,0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 30%, rgba(6,182,212,0.05) 0%, transparent 50%);
+  z-index:0;
+}
+.page-hero .container{position:relative;z-index:1;}
+.section-label{
+  display:inline-block;
+  color:var(--accent);
+  font-size:13px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:3px;
+  margin-bottom:12px;
+}
+.page-hero h1{font-size:48px;font-weight:800;margin-bottom:16px;}
+.page-hero h1 .highlight{
+  background:var(--gradient);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.page-hero p{color:var(--muted);font-size:18px;max-width:600px;margin:0 auto;}
+.container{max-width:1000px;margin:auto;padding:0 20px;}
+p{color:var(--muted);}
+
+/* Contact Section */
+.contact-section{padding:0 20px 100px;}
+.contact-wrapper{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:60px;
+}
+
+/* Contact Info */
+.contact-info p{font-size:16px;margin-bottom:30px;}
+.contact-feature{
+  display:flex;
+  align-items:flex-start;
+  gap:16px;
+  margin-bottom:24px;
+}
+.contact-feature-icon{
+  width:48px;
+  height:48px;
+  border-radius:14px;
+  background:rgba(34,197,94,0.1);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+}
+.contact-feature-icon svg{width:22px;height:22px;}
+.contact-feature h4{font-size:16px;margin-bottom:4px;color:var(--text);}
+.contact-feature p{font-size:14px;margin:0;}
+
+/* Form */
+.form-card{
+  background:var(--card);
+  padding:40px;
+  border-radius:20px;
+  border:1px solid rgba(255,255,255,0.05);
+}
+.form-card h3{font-size:22px;margin-bottom:6px;}
+.form-card>p{font-size:14px;margin-bottom:24px;}
+form{display:flex;flex-direction:column;gap:16px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+input,textarea{
+  padding:14px 18px;
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:10px;
+  background:var(--bg);
+  color:white;
+  font-size:15px;
+  font-family:inherit;
+  transition:.3s;
+  width:100%;
+}
+input:focus,textarea:focus{
+  outline:none;
+  border-color:rgba(34,197,94,0.4);
+  box-shadow:0 0 0 3px rgba(34,197,94,0.1);
+}
+input::placeholder,textarea::placeholder{color:var(--muted);}
+button[type="submit"]{
+  padding:14px;
+  border:none;
+  background:var(--gradient);
+  color:#000;
+  font-weight:700;
+  font-size:15px;
+  border-radius:10px;
+  cursor:pointer;
+  transition:.3s;
+  width:100%;
+}
+button[type="submit"]:hover{
+  transform:translateY(-2px);
+  box-shadow:0 4px 20px rgba(34,197,94,0.3);
+}
+
+/* Footer */
+footer{
+  background:#070b13;
+  text-align:center;
+  padding:50px 20px;
+  border-top:1px solid rgba(255,255,255,0.05);
+}
+.footer-logo{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  margin-bottom:16px;
+}
+.footer-logo svg{width:28px;height:28px;}
+.footer-logo strong{font-size:18px;}
+footer p{font-size:14px;}
+.footer-links{
+  margin:20px 0;
+  display:flex;
+  justify-content:center;
+  gap:30px;
+}
+.footer-links a{
+  color:var(--muted);
+  text-decoration:none;
+  font-size:14px;
+  transition:.3s;
+}
+.footer-links a:hover{color:var(--text);}
+
+/* Fade */
+.fade{
+  opacity:0;
+  transform:translateY(30px);
+  transition:0.8s cubic-bezier(0.25,0.46,0.45,0.94);
+}
+.fade.show{
+  opacity:1;
+  transform:translateY(0);
+}
+
+@media(max-width:768px){
+  .page-hero h1{font-size:32px;}
+  header{padding:15px 20px;}
+  header nav a{margin-left:18px;font-size:14px;}
+  .contact-wrapper{grid-template-columns:1fr;gap:40px;}
+  .form-row{grid-template-columns:1fr;}
+}
+@media(max-width:480px){
+  header nav{display:none;}
+}
+</style>
+</head>
+
+<body>
+
+<!-- Header -->
+<header>
+  <a href="index.html" class="logo">
+    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="100" height="100" rx="20" fill="#111827"/>
+      <text x="50%" y="55%" text-anchor="middle" font-family="Arial" font-size="55" font-weight="bold" fill="white" dy=".3em">R</text>
+      <circle cx="75" cy="75" r="8" fill="#22c55e"/>
+    </svg>
+    <strong>RiseNow</strong>
+  </a>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="blog.html">Blog</a>
+  </nav>
+</header>
+
+<!-- Page Hero -->
+<section class="page-hero">
+  <div class="container fade">
+    <span class="section-label">Get in Touch</span>
+    <h1>Contact <span class="highlight">Us</span></h1>
+    <p>We are here to support you. Reach out to us anytime and start your comeback journey today.</p>
+  </div>
+</section>
+
+<!-- Contact -->
+<section class="contact-section">
+  <div class="container fade">
+    <div class="contact-wrapper">
+      <div class="contact-info">
+        <div class="contact-feature">
+          <div class="contact-feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+          </div>
+          <div>
+            <h4>Personal Guidance</h4>
+            <p>One-on-one support tailored to your unique situation and goals.</p>
+          </div>
+        </div>
+
+        <div class="contact-feature">
+          <div class="contact-feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+          </div>
+          <div>
+            <h4>Quick Response</h4>
+            <p>We respond within 24 hours to every message we receive.</p>
+          </div>
+        </div>
+
+        <div class="contact-feature">
+          <div class="contact-feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+          </div>
+          <div>
+            <h4>Community Access</h4>
+            <p>Join our supportive community of like-minded individuals.</p>
+          </div>
+        </div>
+
+        <div class="contact-feature">
+          <div class="contact-feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+              <polyline points="22,6 12,13 2,6"/>
+            </svg>
+          </div>
+          <div>
+            <h4>Email Us</h4>
+            <p>Drop us a message through the form and we will get back to you.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <h3>Send a Message</h3>
+        <p>Fill out the form below and we will reach out to you.</p>
+        <form>
+          <div class="form-row">
+            <input type="text" placeholder="Your Name" required>
+            <input type="email" placeholder="Your Email" required>
+          </div>
+          <input type="text" placeholder="Subject">
+          <textarea rows="5" placeholder="Tell us how we can help you..." required></textarea>
+          <button type="submit">Send Message</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-logo">
+    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="100" height="100" rx="20" fill="#111827"/>
+      <text x="50%" y="55%" text-anchor="middle" font-family="Arial" font-size="55" font-weight="bold" fill="white" dy=".3em">R</text>
+      <circle cx="75" cy="75" r="8" fill="#22c55e"/>
+    </svg>
+    <strong>RiseNow</strong>
+  </div>
+  <p>Helping Strugglers Stand Again</p>
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="blog.html">Blog</a>
+  </div>
+  <p style="margin-top:20px;">&copy; 2026 RiseNow. All rights reserved.</p>
+</footer>
+
+<script>
+const faders = document.querySelectorAll('.fade');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('show');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15 });
+faders.forEach(el => observer.observe(el));
+window.addEventListener('load', () => {
+  document.querySelector('.page-hero .fade').classList.add('show');
+});
+</script>
+
+</body>
+</html>

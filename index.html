@@ -47,16 +47,99 @@ body.light .about-card,body.light .career-card,body.light .story-card,body.light
 body.light .internship-card{background:#ffffff;}
 body.light footer{background:#e4ede4;}
 
-/* Theme toggle */
-.theme-toggle{
-  width:36px;height:36px;border-radius:8px;
-  background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);
-  color:var(--muted);font-size:16px;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;transition:.2s;
-  margin-left:16px;
+/* ── Mobile hamburger ─────────────────────── */
+.hamburger{
+  display:none;flex-direction:column;gap:5px;
+  background:none;border:none;cursor:pointer;padding:4px;
 }
-.theme-toggle:hover{background:rgba(255,255,255,0.12);color:var(--text);}
-body.light .theme-toggle{background:rgba(0,0,0,0.06);border-color:rgba(0,0,0,0.1);}
+.hamburger span{
+  display:block;width:24px;height:2px;
+  background:var(--text);border-radius:2px;transition:.3s;
+}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.hamburger.open span:nth-child(2){opacity:0;}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+.mobile-nav{
+  display:none;position:fixed;top:64px;left:0;right:0;z-index:999;
+  background:rgba(11,15,25,0.97);backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(34,197,94,0.15);
+  flex-direction:column;padding:16px 24px 24px;gap:4px;
+}
+.mobile-nav.open{display:flex;}
+.mobile-nav a{
+  color:var(--text);text-decoration:none;font-size:16px;font-weight:500;
+  padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.04);
+  transition:.2s;
+}
+.mobile-nav a:last-child{border-bottom:none;}
+.mobile-nav a:hover{color:var(--accent);padding-left:6px;}
+body.light .mobile-nav{background:rgba(240,244,240,0.97);}
+
+/* ── Back to Top ──────────────────────────── */
+.back-to-top{
+  position:fixed;bottom:88px;right:28px;z-index:998;
+  width:48px;height:48px;border-radius:50%;
+  background:var(--card);border:1px solid rgba(34,197,94,0.25);
+  color:var(--accent);font-size:20px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 20px rgba(0,0,0,0.4);transition:all .3s;
+  opacity:0;pointer-events:none;transform:translateY(12px);
+}
+.back-to-top.visible{opacity:1;pointer-events:all;transform:translateY(0);}
+.back-to-top:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:0 6px 24px rgba(34,197,94,0.25);}
+
+/* ── WhatsApp button ──────────────────────── */
+.whatsapp-btn{
+  position:fixed;bottom:148px;right:28px;z-index:998;
+  width:48px;height:48px;border-radius:50%;
+  background:#25d366;border:none;
+  color:#fff;font-size:22px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 20px rgba(37,211,102,0.4);transition:all .25s;
+  text-decoration:none;
+}
+.whatsapp-btn:hover{transform:scale(1.12);box-shadow:0 6px 28px rgba(37,211,102,0.5);}
+.whatsapp-tooltip{
+  position:fixed;bottom:160px;right:84px;z-index:997;
+  background:var(--card);border:1px solid rgba(37,211,102,0.2);
+  color:var(--text);font-size:12px;font-weight:600;
+  padding:6px 12px;border-radius:8px;white-space:nowrap;
+  opacity:0;pointer-events:none;transition:.2s;
+}
+.whatsapp-btn:hover ~ .whatsapp-tooltip{opacity:1;}
+
+/* ── Hindi toggle button ──────────────────── */
+.lang-toggle{
+  position:fixed;bottom:208px;right:22px;z-index:998;
+  background:var(--card);border:1px solid rgba(255,153,0,0.3);
+  color:var(--text);font-size:11px;font-weight:800;letter-spacing:.05em;
+  padding:0 10px;height:48px;border-radius:24px;cursor:pointer;
+  display:flex;align-items:center;gap:6px;
+  box-shadow:0 4px 20px rgba(0,0,0,0.4);transition:all .25s;
+  white-space:nowrap;
+}
+.lang-toggle:hover{border-color:rgba(255,153,0,0.6);transform:scale(1.05);}
+.lang-toggle .flag{font-size:16px;}
+
+/* Hindi text — hidden by default */
+[data-hi]{display:none;}
+body.hindi [data-en]{display:none;}
+body.hindi [data-hi]{display:revert;}
+.theme-toggle{
+  position:fixed;bottom:28px;right:28px;z-index:999;
+  width:48px;height:48px;border-radius:50%;
+  background:var(--card);border:1px solid rgba(34,197,94,0.25);
+  color:var(--text);font-size:20px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 20px rgba(0,0,0,0.4);
+  transition:all .25s;
+}
+.theme-toggle:hover{
+  transform:scale(1.12) rotate(20deg);
+  border-color:var(--accent);
+  box-shadow:0 6px 28px rgba(34,197,94,0.25);
+}
+body.light .theme-toggle{background:#fff;border-color:rgba(34,197,94,0.3);}
 
 /* Progress tracker in modals */
 .progress-tracker{
@@ -562,21 +645,43 @@ footer p{font-size:14px;}
 @media(max-width:1024px){.career-grid{grid-template-columns:repeat(2,1fr);}.inspiration-grid{grid-template-columns:repeat(3,1fr);}}
 @media(max-width:768px){
   .hero h1{font-size:36px;}h2{font-size:28px;}header{padding:15px 20px;}
-  header nav a{margin-left:18px;font-size:14px;}
+  header nav{display:none;}
+  .hamburger{display:flex;}
   .about-grid{grid-template-columns:1fr;}.career-grid{grid-template-columns:1fr;}
   .stories-grid{grid-template-columns:1fr;}.contact-wrapper{grid-template-columns:1fr;gap:40px;}
   .hero-stats{gap:30px;}.hero-stat .number{font-size:24px;}
   .inspiration-grid{grid-template-columns:repeat(2,1fr);}
   .modal{border-radius:12px;}.modal-header,.modal-body{padding:20px 20px;}
   .roadmap-steps{flex-wrap:wrap;gap:12px;}.roadmap-steps::before{display:none;}
+  .lang-toggle{bottom:208px;right:16px;}
+  .back-to-top{bottom:88px;right:16px;}
+  .whatsapp-btn{bottom:148px;right:16px;}
+  .theme-toggle{bottom:28px;right:16px;}
 }
 @media(max-width:480px){
   .hero h1{font-size:28px;}.hero-stats{flex-direction:column;gap:20px;}
-  .inspiration-grid{grid-template-columns:repeat(2,1fr);}header nav{display:none;}
+  .inspiration-grid{grid-template-columns:repeat(2,1fr);}
 }
 </style>
 </head>
 <body>
+
+<!-- Floating theme toggle -->
+<button class="theme-toggle" onclick="toggleTheme()" id="themeBtn" title="Toggle light/dark mode">🌙</button>
+
+<!-- Back to Top -->
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top">↑</button>
+
+<!-- WhatsApp -->
+<a class="whatsapp-btn" href="https://wa.me/918958641846?text=Hi%20RiseNow!%20I%20need%20career%20guidance." target="_blank" title="Chat on WhatsApp">
+  <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+</a>
+<div class="whatsapp-tooltip">Chat with us!</div>
+
+<!-- Language Toggle -->
+<button class="lang-toggle" id="langBtn" onclick="toggleLang()">
+  <span class="flag">🇮🇳</span><span id="langBtnTxt">हिंदी</span>
+</button>
 
 <!-- Header -->
 <header>
@@ -594,22 +699,55 @@ footer p{font-size:14px;}
     <a href="#inspiration">Inspiration</a>
     <a href="#stories">Stories</a>
     <a href="#contact">Contact</a>
-    <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn" title="Toggle light/dark mode">🌙</button>
   </nav>
+  <button class="hamburger" id="hamburger" onclick="toggleMobileNav()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </header>
+
+<!-- Mobile nav -->
+<nav class="mobile-nav" id="mobileNav">
+  <a href="#about" onclick="closeMobileNav()">About</a>
+  <a href="#careers" onclick="closeMobileNav()">Careers</a>
+  <a href="#inspiration" onclick="closeMobileNav()">Inspiration</a>
+  <a href="#stories" onclick="closeMobileNav()">Stories</a>
+  <a href="#contact" onclick="closeMobileNav()">Contact</a>
+  <a href="#bookcall" onclick="closeMobileNav()">📞 Book a Call</a>
+</nav>
 
 <!-- Hero -->
 <section class="hero">
   <div class="container fade">
-    <span class="section-label">Welcome to RiseNow</span>
-    <h1>Helping Strugglers<br><span class="highlight">Stand Again</span></h1>
-    <p class="subtitle">Your comeback starts here. Explore career paths, get motivated, and rebuild your life with free resources and community support.</p>
-    <a href="#careers" class="btn btn-primary">Start Learning Free</a>
-    <a href="#contact" class="btn btn-outline">Get Support</a>
+    <span class="section-label" data-en>Welcome to RiseNow</span>
+    <span class="section-label" data-hi>RiseNow में आपका स्वागत है</span>
+    <h1>
+      <span data-en>Helping Strugglers<br><span class="highlight">Stand Again</span></span>
+      <span data-hi>संघर्ष करने वालों को<br><span class="highlight">फिर खड़ा करना</span></span>
+    </h1>
+    <p class="subtitle" data-en>Your comeback starts here. Explore career paths, get motivated, and rebuild your life with free resources and community support.</p>
+    <p class="subtitle" data-hi>आपकी वापसी यहीं से शुरू होती है। Career paths explore करें, प्रेरणा लें, और free resources से अपनी life rebuild करें।</p>
+    <a href="#careers" class="btn btn-primary">
+      <span data-en>Start Learning Free</span><span data-hi>Free में सीखें</span>
+    </a>
+    <a href="#contact" class="btn btn-outline">
+      <span data-en>Get Support</span><span data-hi>Support लें</span>
+    </a>
     <div class="hero-stats">
-      <div class="hero-stat"><div class="number">5,000+</div><div class="label">People Helped</div></div>
-      <div class="hero-stat"><div class="number">50+</div><div class="label">Career Paths</div></div>
-      <div class="hero-stat"><div class="number">200+</div><div class="label">Success Stories</div></div>
+      <div class="hero-stat">
+        <div class="number">5,000+</div>
+        <div class="label" data-en>People Helped</div>
+        <div class="label" data-hi>लोगों की मदद</div>
+      </div>
+      <div class="hero-stat">
+        <div class="number">50+</div>
+        <div class="label" data-en>Career Paths</div>
+        <div class="label" data-hi>Career Paths</div>
+      </div>
+      <div class="hero-stat">
+        <div class="number">200+</div>
+        <div class="label" data-en>Success Stories</div>
+        <div class="label" data-hi>सफलता की कहानियां</div>
+      </div>
     </div>
   </div>
 </section>
@@ -617,9 +755,11 @@ footer p{font-size:14px;}
 <!-- About -->
 <section id="about">
   <div class="container fade">
-    <span class="section-label">What We Do</span>
-    <h2>Empowering Your Comeback</h2>
-    <p>RiseNow is built to empower individuals facing setbacks in life and career. We provide clarity, structure and motivation to help you rise stronger.</p>
+    <span class="section-label" data-en>What We Do</span>
+    <span class="section-label" data-hi>हम क्या करते हैं</span>
+    <h2><span data-en>Empowering Your Comeback</span><span data-hi>आपकी वापसी को सशक्त बनाना</span></h2>
+    <p data-en>RiseNow is built to empower individuals facing setbacks in life and career. We provide clarity, structure and motivation to help you rise stronger.</p>
+    <p data-hi>RiseNow उन लोगों के लिए बना है जो जीवन और career में setbacks face कर रहे हैं। हम आपको clarity, structure और motivation देते हैं ताकि आप और मजबूत होकर उठें।</p>
     <div class="about-grid">
       <div class="about-card" onclick="openModal('motivation')">
         <div class="card-icon icon-green">
@@ -1334,6 +1474,16 @@ footer p{font-size:14px;}
 
 <!-- Footer -->
 <footer>
+  <button onclick="window.scrollTo({top:0,behavior:'smooth'})" style="
+    background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);
+    color:var(--accent);font-size:13px;font-weight:700;letter-spacing:.1em;
+    padding:10px 24px;border-radius:20px;cursor:pointer;
+    display:inline-flex;align-items:center;gap:8px;
+    margin-bottom:28px;transition:all .25s;
+  " onmouseover="this.style.background='rgba(34,197,94,0.2)'" 
+     onmouseout="this.style.background='rgba(34,197,94,0.1)'">
+    ↑ BACK TO TOP
+  </button>
   <div class="footer-logo">
     <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
       <rect width="100" height="100" rx="20" fill="#111827"/>
@@ -1885,6 +2035,111 @@ document.getElementById('newsletterForm').addEventListener('submit', function(e)
 
 <!-- Share Toast -->
 <div class="share-toast" id="shareToast">✅ Link copied to clipboard!</div>
+
+<script>
+// ── Scroll animation ──────────────────────────
+const faders = document.querySelectorAll('.fade');
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if(e.isIntersecting){e.target.classList.add('show');obs.unobserve(e.target);} });
+}, { threshold:0.15, rootMargin:'0px 0px -50px 0px' });
+faders.forEach(el => obs.observe(el));
+window.addEventListener('load', () => { document.querySelector('.hero .fade')?.classList.add('show'); });
+
+// ── Back to Top ───────────────────────────────
+const bttBtn = document.getElementById('backToTop');
+window.addEventListener('scroll', () => {
+  bttBtn.classList.toggle('visible', window.scrollY > 400);
+});
+
+// ── Mobile hamburger ──────────────────────────
+function toggleMobileNav(){
+  document.getElementById('mobileNav').classList.toggle('open');
+  document.getElementById('hamburger').classList.toggle('open');
+}
+function closeMobileNav(){
+  document.getElementById('mobileNav').classList.remove('open');
+  document.getElementById('hamburger').classList.remove('open');
+}
+document.addEventListener('click', (e) => {
+  const nav = document.getElementById('mobileNav');
+  const ham = document.getElementById('hamburger');
+  if(nav.classList.contains('open') && !nav.contains(e.target) && !ham.contains(e.target)) closeMobileNav();
+});
+
+// ── Theme toggle ──────────────────────────────
+const themeBtn = document.getElementById('themeBtn');
+if(localStorage.getItem('rn-theme') === 'light'){ document.body.classList.add('light'); themeBtn.textContent = '☀️'; }
+function toggleTheme(){
+  document.body.classList.toggle('light');
+  const isLight = document.body.classList.contains('light');
+  themeBtn.textContent = isLight ? '☀️' : '🌙';
+  localStorage.setItem('rn-theme', isLight ? 'light' : 'dark');
+}
+
+// ── Hindi / English toggle ────────────────────
+if(localStorage.getItem('rn-lang') === 'hi'){
+  document.body.classList.add('hindi');
+  document.getElementById('langBtnTxt').textContent = 'English';
+}
+function toggleLang(){
+  document.body.classList.toggle('hindi');
+  const isHindi = document.body.classList.contains('hindi');
+  document.getElementById('langBtnTxt').textContent = isHindi ? 'English' : 'हिंदी';
+  localStorage.setItem('rn-lang', isHindi ? 'hi' : 'en');
+}
+
+// ── Modal open/close ──────────────────────────
+function openModal(id) {
+  document.getElementById('modal-'+id).classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal(id) {
+  document.getElementById('modal-'+id).classList.remove('active');
+  document.body.style.overflow = '';
+}
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', function(e) {
+    if(e.target === this){ this.classList.remove('active'); document.body.style.overflow = ''; }
+  });
+});
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape') document.querySelectorAll('.modal-overlay.active').forEach(m => { m.classList.remove('active'); document.body.style.overflow = ''; });
+});
+
+// ── Progress tracker ──────────────────────────
+function updateProgress(track, total) {
+  const boxes = Array.from({length:total}, (_,i) => document.getElementById(track[0]+i)).filter(Boolean);
+  const pct = Math.round((boxes.filter(c=>c.checked).length / total) * 100);
+  const pctEl = document.getElementById('progress-'+track+'-pct');
+  const barEl = document.getElementById('progress-'+track+'-bar');
+  if(pctEl) pctEl.textContent = pct+'%';
+  if(barEl) barEl.style.width = pct+'%';
+  boxes.forEach((cb,i) => { document.getElementById('step-'+track+'-'+i)?.classList.toggle('checked', cb.checked); });
+  localStorage.setItem('rn-progress-'+track, JSON.stringify(boxes.map(c=>c.checked)));
+}
+function loadProgress(track, total) {
+  const saved = localStorage.getItem('rn-progress-'+track);
+  if(!saved) return;
+  JSON.parse(saved).forEach((v,i) => { const cb = document.getElementById(track[0]+i); if(cb) cb.checked = v; });
+  updateProgress(track, total);
+}
+window.addEventListener('load', () => loadProgress('data', 6));
+
+// ── Share ─────────────────────────────────────
+function shareStory(title, url) {
+  if(navigator.share){ navigator.share({title, url}).catch(()=>{}); }
+  else { navigator.clipboard.writeText(url).then(() => { const t=document.getElementById('shareToast'); t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2500); }); }
+}
+function shareToWhatsApp(text){ window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank'); }
+
+// ── Forms ─────────────────────────────────────
+document.getElementById('contactForm').addEventListener('submit', function(e) {
+  e.preventDefault(); this.style.display='none'; document.getElementById('formSuccess').style.display='block';
+});
+document.getElementById('newsletterForm').addEventListener('submit', function(e) {
+  e.preventDefault(); this.style.display='none'; document.getElementById('newsletterSuccess').style.display='block';
+});
+</script>
 
 </body>
 </html>

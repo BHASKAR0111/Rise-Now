@@ -3,8 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RiseNow Official | Helping Strugglers Stand Again</title>
-<meta name="description" content="RiseNow is a modern motivational and career support platform helping individuals rise again through guidance, growth and community support.">
+<title>RiseNow | Career Guidance, Motivation & Free Learning Resources India</title>
+<meta name="description" content="RiseNow helps struggling professionals rebuild their careers with free data analytics, web development, digital marketing resources, real success stories and daily motivation. Start your comeback today.">
+<meta name="keywords" content="career guidance India, free online courses, data analytics career, motivation, career switch, comeback, job seeker help, freelance India, RiseNow">
+<meta name="author" content="RiseNow">
+<meta property="og:title" content="RiseNow | Helping Strugglers Stand Again">
+<meta property="og:description" content="Free career paths, real success stories, and daily motivation for people who are starting over. Your comeback starts here.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://bhaskar0111.github.io/Rise-Now/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="RiseNow | Career Guidance & Motivation India">
+<meta name="twitter:description" content="Free career paths, real comeback stories, and daily motivation. Your comeback starts here.">
+<link rel="canonical" href="https://bhaskar0111.github.io/Rise-Now/">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <style>
 :root{
@@ -15,6 +25,149 @@
   --text:#f3f4f6;
   --muted:#9ca3af;
   --gradient:linear-gradient(135deg, #22c55e 0%, #06b6d4 100%);
+  --border-clr:rgba(255,255,255,0.05);
+  --input-bg:#111827;
+}
+body.light{
+  --bg:#f0f4f0;
+  --card:#ffffff;
+  --text:#111827;
+  --muted:#6b7280;
+  --border-clr:rgba(0,0,0,0.08);
+  --input-bg:#f9fafb;
+}
+body.light header{background:rgba(240,244,240,0.92);}
+body.light .skills-strip{background:#e8f0e8;}
+body.light .skill-pill{color:#4a7a4a;}
+body.light input,body.light textarea{background:var(--input-bg);color:var(--text);border-color:rgba(0,0,0,0.12);}
+body.light .modal{background:#ffffff;}
+body.light .modal-header{background:#ffffff;}
+body.light .resource-item{background:rgba(0,0,0,0.03);border-color:rgba(0,0,0,0.08);}
+body.light .about-card,body.light .career-card,body.light .story-card,body.light .cert-card,body.light .skills-group{background:#ffffff;border-color:rgba(0,0,0,0.08);}
+body.light .internship-card{background:#ffffff;}
+body.light footer{background:#e4ede4;}
+
+/* Theme toggle */
+.theme-toggle{
+  width:36px;height:36px;border-radius:8px;
+  background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);
+  color:var(--muted);font-size:16px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;transition:.2s;
+  margin-left:16px;
+}
+.theme-toggle:hover{background:rgba(255,255,255,0.12);color:var(--text);}
+body.light .theme-toggle{background:rgba(0,0,0,0.06);border-color:rgba(0,0,0,0.1);}
+
+/* Progress tracker in modals */
+.progress-tracker{
+  background:rgba(34,197,94,0.05);border:1px solid rgba(34,197,94,0.15);
+  border-radius:12px;padding:20px;margin-bottom:24px;
+}
+.progress-tracker-title{
+  font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;
+}
+.progress-bar-wrap{height:6px;background:rgba(255,255,255,0.08);border-radius:3px;margin-bottom:16px;overflow:hidden;}
+.progress-bar-fill{height:100%;background:var(--gradient);border-radius:3px;transition:.4s;}
+.progress-steps{display:flex;flex-direction:column;gap:10px;}
+.progress-step{display:flex;align-items:center;gap:12px;cursor:pointer;}
+.progress-step input[type=checkbox]{
+  width:18px;height:18px;accent-color:var(--accent);cursor:pointer;flex-shrink:0;
+}
+.progress-step label{font-size:13px;color:var(--text);cursor:pointer;transition:.2s;}
+.progress-step.checked label{text-decoration:line-through;color:var(--muted);}
+
+/* Share button */
+.share-btn{
+  display:flex;align-items:center;gap:6px;
+  font-family:inherit;font-size:12px;font-weight:600;
+  color:var(--muted);background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.1);border-radius:8px;
+  padding:6px 14px;cursor:pointer;transition:.2s;
+}
+.share-btn:hover{color:var(--accent);border-color:rgba(34,197,94,0.3);}
+.share-toast{
+  position:fixed;bottom:30px;right:30px;
+  background:var(--accent);color:#000;font-weight:700;font-size:13px;
+  padding:12px 20px;border-radius:10px;
+  transform:translateY(80px);opacity:0;transition:.3s;z-index:9999;
+}
+.share-toast.show{transform:translateY(0);opacity:1;}
+
+/* Resume & Interview modals — tip list */
+.tip-list{display:flex;flex-direction:column;gap:10px;margin-bottom:20px;}
+.tip-item{
+  display:flex;gap:14px;padding:14px 16px;
+  background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);
+  border-radius:10px;
+}
+.tip-num{
+  width:28px;height:28px;border-radius:50%;background:rgba(34,197,94,0.1);
+  border:1px solid rgba(34,197,94,0.3);display:flex;align-items:center;
+  justify-content:center;font-size:12px;font-weight:700;color:var(--accent);flex-shrink:0;
+}
+.tip-text h4{font-size:14px;font-weight:700;color:var(--text);margin-bottom:3px;}
+.tip-text p{font-size:13px;color:var(--muted);}
+.tip-text code{
+  background:rgba(34,197,94,0.08);color:var(--accent);
+  padding:1px 6px;border-radius:4px;font-size:12px;
+}
+
+/* Newsletter section */
+.newsletter-section{
+  background:linear-gradient(135deg,rgba(34,197,94,0.06),rgba(6,182,212,0.04));
+  border-top:1px solid rgba(34,197,94,0.1);border-bottom:1px solid rgba(34,197,94,0.1);
+  padding:70px 20px;text-align:center;position:relative;z-index:1;
+}
+.newsletter-section h2{font-size:30px;margin-bottom:10px;}
+.newsletter-section p{font-size:16px;margin-bottom:32px;max-width:500px;margin-left:auto;margin-right:auto;}
+.newsletter-form{
+  display:flex;gap:12px;max-width:460px;margin:0 auto;flex-wrap:wrap;justify-content:center;
+}
+.newsletter-form input{
+  flex:1;min-width:220px;padding:13px 18px;border:1px solid rgba(34,197,94,0.25);
+  border-radius:8px;background:var(--input-bg);color:var(--text);font-size:14px;
+  font-family:inherit;outline:none;transition:.3s;
+}
+.newsletter-form input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(34,197,94,0.1);}
+.newsletter-form button{
+  padding:13px 24px;background:var(--gradient);color:#000;font-weight:700;
+  font-size:14px;border:none;border-radius:8px;cursor:pointer;transition:.3s;white-space:nowrap;
+}
+.newsletter-form button:hover{transform:translateY(-2px);box-shadow:0 4px 20px rgba(34,197,94,0.3);}
+.newsletter-success{display:none;color:var(--accent);font-weight:700;font-size:15px;margin-top:16px;}
+
+/* Book a Call section */
+.call-section{
+  padding:80px 20px;text-align:center;position:relative;z-index:1;
+}
+.call-card{
+  max-width:680px;margin:0 auto;
+  background:var(--card);border:1px solid rgba(34,197,94,0.2);border-radius:20px;
+  padding:48px 40px;position:relative;overflow:hidden;
+}
+.call-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(34,197,94,0.04),rgba(6,182,212,0.04));
+  pointer-events:none;
+}
+.call-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);
+  color:var(--accent);font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  padding:6px 16px;border-radius:20px;margin-bottom:20px;
+}
+.call-card h2{font-size:28px;margin-bottom:12px;}
+.call-card p{font-size:16px;margin-bottom:28px;max-width:460px;margin-left:auto;margin-right:auto;}
+.call-features{
+  display:flex;justify-content:center;gap:24px;flex-wrap:wrap;margin-bottom:32px;
+}
+.call-feature{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--muted);}
+.call-feature span{color:var(--accent);font-size:16px;}
+.call-price{
+  display:inline-block;font-size:13px;color:var(--muted);
+  background:rgba(255,255,255,0.04);border:1px solid var(--border-clr);
+  padding:6px 16px;border-radius:20px;margin-top:16px;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
@@ -441,6 +594,7 @@ footer p{font-size:14px;}
     <a href="#inspiration">Inspiration</a>
     <a href="#stories">Stories</a>
     <a href="#contact">Contact</a>
+    <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn" title="Toggle light/dark mode">🌙</button>
   </nav>
 </header>
 
@@ -551,6 +705,21 @@ footer p{font-size:14px;}
       <button class="modal-close" onclick="closeModal('data')">✕</button>
     </div>
     <div class="modal-body">
+      <div class="progress-tracker">
+        <div class="progress-tracker-title">
+          <span>📈 Your Progress</span>
+          <span id="progress-data-pct" style="font-size:14px;font-weight:800;color:var(--accent)">0%</span>
+        </div>
+        <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progress-data-bar" style="width:0%"></div></div>
+        <div class="progress-steps">
+          <div class="progress-step" id="step-data-0"><input type="checkbox" id="d0" onchange="updateProgress('data',6)"><label for="d0">Excel & Google Sheets basics</label></div>
+          <div class="progress-step" id="step-data-1"><input type="checkbox" id="d1" onchange="updateProgress('data',6)"><label for="d1">SQL — queries, joins, aggregations</label></div>
+          <div class="progress-step" id="step-data-2"><input type="checkbox" id="d2" onchange="updateProgress('data',6)"><label for="d2">Python & Pandas for data analysis</label></div>
+          <div class="progress-step" id="step-data-3"><input type="checkbox" id="d3" onchange="updateProgress('data',6)"><label for="d3">Power BI / Tableau dashboard</label></div>
+          <div class="progress-step" id="step-data-4"><input type="checkbox" id="d4" onchange="updateProgress('data',6)"><label for="d4">Statistics & basic ML concepts</label></div>
+          <div class="progress-step" id="step-data-5"><input type="checkbox" id="d5" onchange="updateProgress('data',6)"><label for="d5">Built 2+ portfolio projects</label></div>
+        </div>
+      </div>
       <div class="roadmap">
         <div class="roadmap-title">Your Learning Roadmap</div>
         <div class="roadmap-steps">
@@ -1178,12 +1347,15 @@ footer p{font-size:14px;}
     <a href="about.html">About</a>
     <a href="blog.html">Blog</a>
     <a href="#contact">Contact</a>
+    <a href="javascript:void(0)" onclick="openModal('resume')">Resume Tips</a>
+    <a href="javascript:void(0)" onclick="openModal('interview')">Interview Prep</a>
+    <a href="#bookcall">Book a Call</a>
   </div>
   <p style="margin-top:20px;">&copy; 2026 RiseNow. All rights reserved.</p>
 </footer>
 
 <script>
-// Scroll animation
+// ── Scroll animation ──────────────────────────
 const faders = document.querySelectorAll('.fade');
 const obs = new IntersectionObserver((entries) => {
   entries.forEach(e => { if(e.isIntersecting){e.target.classList.add('show');obs.unobserve(e.target);} });
@@ -1191,7 +1363,18 @@ const obs = new IntersectionObserver((entries) => {
 faders.forEach(el => obs.observe(el));
 window.addEventListener('load', () => { document.querySelector('.hero .fade')?.classList.add('show'); });
 
-// Modal open/close
+// ── Theme toggle ──────────────────────────────
+const themeBtn = document.getElementById('themeBtn');
+const savedTheme = localStorage.getItem('rn-theme');
+if(savedTheme === 'light'){ document.body.classList.add('light'); themeBtn.textContent = '☀️'; }
+function toggleTheme(){
+  document.body.classList.toggle('light');
+  const isLight = document.body.classList.contains('light');
+  themeBtn.textContent = isLight ? '☀️' : '🌙';
+  localStorage.setItem('rn-theme', isLight ? 'light' : 'dark');
+}
+
+// ── Modal open/close ──────────────────────────
 function openModal(id) {
   document.getElementById('modal-'+id).classList.add('active');
   document.body.style.overflow = 'hidden';
@@ -1200,30 +1383,84 @@ function closeModal(id) {
   document.getElementById('modal-'+id).classList.remove('active');
   document.body.style.overflow = '';
 }
-// Close on overlay click
 document.querySelectorAll('.modal-overlay').forEach(overlay => {
   overlay.addEventListener('click', function(e) {
-    if(e.target === this) {
-      this.classList.remove('active');
-      document.body.style.overflow = '';
-    }
+    if(e.target === this){ this.classList.remove('active'); document.body.style.overflow = ''; }
   });
 });
-// Close on Escape
 document.addEventListener('keydown', e => {
-  if(e.key === 'Escape') {
+  if(e.key === 'Escape'){
     document.querySelectorAll('.modal-overlay.active').forEach(m => {
-      m.classList.remove('active');
-      document.body.style.overflow = '';
+      m.classList.remove('active'); document.body.style.overflow = '';
     });
   }
 });
 
-// Contact form
+// ── Progress tracker (localStorage) ──────────
+function updateProgress(track, total) {
+  const checkboxes = [];
+  for(let i=0;i<total;i++){
+    const cb = document.getElementById(track[0]+i);
+    if(cb) checkboxes.push(cb);
+  }
+  const done = checkboxes.filter(c=>c.checked).length;
+  const pct = Math.round((done/total)*100);
+  const pctEl = document.getElementById('progress-'+track+'-pct');
+  const barEl = document.getElementById('progress-'+track+'-bar');
+  if(pctEl) pctEl.textContent = pct+'%';
+  if(barEl) barEl.style.width = pct+'%';
+  // Update step styling
+  checkboxes.forEach((cb,i)=>{
+    const stepEl = document.getElementById('step-'+track+'-'+i);
+    if(stepEl){ stepEl.classList.toggle('checked', cb.checked); }
+  });
+  // Save
+  const state = checkboxes.map(c=>c.checked);
+  localStorage.setItem('rn-progress-'+track, JSON.stringify(state));
+}
+
+function loadProgress(track, total) {
+  const saved = localStorage.getItem('rn-progress-'+track);
+  if(!saved) return;
+  const state = JSON.parse(saved);
+  state.forEach((checked, i) => {
+    const cb = document.getElementById(track[0]+i);
+    if(cb){ cb.checked = checked; }
+  });
+  updateProgress(track, total);
+}
+
+// Load saved progress on modal open — data analytics
+window.addEventListener('load', ()=>{ loadProgress('data', 6); });
+
+// ── Share functions ───────────────────────────
+function shareStory(title, url) {
+  if(navigator.share){
+    navigator.share({ title, url }).catch(()=>{});
+  } else {
+    navigator.clipboard.writeText(url).then(()=>{
+      const toast = document.getElementById('shareToast');
+      toast.classList.add('show');
+      setTimeout(()=>toast.classList.remove('show'), 2500);
+    });
+  }
+}
+function shareToWhatsApp(text){
+  window.open('https://wa.me/?text='+encodeURIComponent(text), '_blank');
+}
+
+// ── Contact form ──────────────────────────────
 document.getElementById('contactForm').addEventListener('submit', function(e) {
   e.preventDefault();
   this.style.display = 'none';
   document.getElementById('formSuccess').style.display = 'block';
+});
+
+// ── Newsletter form ───────────────────────────
+document.getElementById('newsletterForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  this.style.display = 'none';
+  document.getElementById('newsletterSuccess').style.display = 'block';
 });
 </script>
 <!-- DAILY MOTIVATION MODAL -->
@@ -1392,7 +1629,10 @@ document.getElementById('contactForm').addEventListener('submit', function(e) {
       </div>
       <button class="modal-close" onclick="closeModal('story1')">✕</button>
     </div>
-    <div class="modal-body">
+    <div style="padding:0 36px 16px;display:flex;gap:10px;">
+      <button class="share-btn" onclick="shareStory('Turning Failure into Fuel — RiseNow Story','https://bhaskar0111.github.io/Rise-Now/')">🔗 Share Story</button>
+      <button class="share-btn" onclick="shareToWhatsApp('Turning Failure into Fuel — A real comeback story from RiseNow: https://bhaskar0111.github.io/Rise-Now/')">💬 WhatsApp</button>
+    </div>
       <div class="story-modal-img story-img-1">
         <svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style="width:56px;height:56px;opacity:0.4"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
       </div>
@@ -1424,8 +1664,10 @@ document.getElementById('contactForm').addEventListener('submit', function(e) {
       </div>
       <button class="modal-close" onclick="closeModal('story2')">✕</button>
     </div>
-    <div class="modal-body">
-      <div class="story-modal-img story-img-2">
+    <div style="padding:0 36px 16px;display:flex;gap:10px;">
+      <button class="share-btn" onclick="shareStory('Zero to Data Analyst in 8 Months — RiseNow','https://bhaskar0111.github.io/Rise-Now/')">🔗 Share Story</button>
+      <button class="share-btn" onclick="shareToWhatsApp('Zero to Data Analyst in 8 months using only free resources — RiseNow: https://bhaskar0111.github.io/Rise-Now/')">💬 WhatsApp</button>
+    </div>
         <svg viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style="width:56px;height:56px;opacity:0.4"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
       </div>
       <div class="story-body-text">
@@ -1457,8 +1699,10 @@ document.getElementById('contactForm').addEventListener('submit', function(e) {
       </div>
       <button class="modal-close" onclick="closeModal('story3')">✕</button>
     </div>
-    <div class="modal-body">
-      <div class="story-modal-img story-img-3">
+    <div style="padding:0 36px 16px;display:flex;gap:10px;">
+      <button class="share-btn" onclick="shareStory('I Lost Everything — Then Found Myself | RiseNow','https://bhaskar0111.github.io/Rise-Now/')">🔗 Share Story</button>
+      <button class="share-btn" onclick="shareToWhatsApp('A powerful story about mental health and recovery — RiseNow: https://bhaskar0111.github.io/Rise-Now/')">💬 WhatsApp</button>
+    </div>
         <svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style="width:56px;height:56px;opacity:0.4"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
       </div>
       <div class="story-body-text">
@@ -1490,8 +1734,10 @@ document.getElementById('contactForm').addEventListener('submit', function(e) {
       </div>
       <button class="modal-close" onclick="closeModal('story4')">✕</button>
     </div>
-    <div class="modal-body">
-      <div class="story-modal-img story-img-4">
+    <div style="padding:0 36px 16px;display:flex;gap:10px;">
+      <button class="share-btn" onclick="shareStory('How I Earned My First ₹50,000 Online — RiseNow','https://bhaskar0111.github.io/Rise-Now/')">🔗 Share Story</button>
+      <button class="share-btn" onclick="shareToWhatsApp('How one person earned ₹50,000 online with zero experience — RiseNow: https://bhaskar0111.github.io/Rise-Now/')">💬 WhatsApp</button>
+    </div>
         <svg viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style="width:56px;height:56px;opacity:0.4"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
       </div>
       <div class="story-body-text">
@@ -1511,6 +1757,134 @@ document.getElementById('contactForm').addEventListener('submit', function(e) {
     </div>
   </div>
 </div>
+
+<!-- Newsletter Section -->
+<div class="newsletter-section">
+  <div class="container">
+    <span class="section-label">Stay in the Loop</span>
+    <h2>Weekly Motivation & Resources</h2>
+    <p>Get one actionable career tip, a curated free resource, and a real comeback story every week. No spam. Unsubscribe anytime.</p>
+    <form class="newsletter-form" id="newsletterForm">
+      <input type="email" placeholder="Enter your email address" required>
+      <button type="submit">Subscribe Free →</button>
+    </form>
+    <div class="newsletter-success" id="newsletterSuccess">🎉 You're in! First email comes next Monday.</div>
+    <p style="font-size:12px;margin-top:16px;color:var(--muted);">Joined by 200+ career builders. Free forever.</p>
+  </div>
+</div>
+
+<!-- Book a 1:1 Call Section -->
+<div class="call-section" id="bookcall">
+  <div class="container">
+    <div class="call-card">
+      <div class="call-badge">🗓️ Limited Slots Available</div>
+      <h2>Book a Free 1:1 Career Call</h2>
+      <p>Not sure which path to take? Struggling with your resume, portfolio, or job search? Get 30 minutes of honest, practical guidance.</p>
+      <div class="call-features">
+        <div class="call-feature"><span>✅</span> Career path clarity</div>
+        <div class="call-feature"><span>✅</span> Resume & portfolio review</div>
+        <div class="call-feature"><span>✅</span> Job search strategy</div>
+        <div class="call-feature"><span>✅</span> No fluff, just action steps</div>
+      </div>
+      <a href="https://calendly.com" target="_blank" class="btn btn-primary" style="display:inline-block;margin:0 0 16px;">Book Your 30-Min Call →</a>
+      <div class="call-price">First call FREE · Follow-up calls ₹299 / 30 min</div>
+    </div>
+  </div>
+</div>
+
+<!-- RESUME TIPS MODAL -->
+<div class="modal-overlay" id="modal-resume">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title-wrap">
+        <div class="modal-icon green">📄</div>
+        <div><div class="modal-title">Resume Builder Tips</div><div class="modal-subtitle">A resume that actually gets responses</div></div>
+      </div>
+      <button class="modal-close" onclick="closeModal('resume')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="daily-quote">
+        <p>"Your resume is not your life story. It's a marketing document. Treat it like one."</p>
+        <span>— RiseNow Career Team</span>
+      </div>
+      <div class="resource-section-title" style="font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;">⚡ The 10 Rules That Actually Matter</div>
+      <div class="tip-list">
+        <div class="tip-item"><div class="tip-num">1</div><div class="tip-text"><h4>One page only (if under 5 years experience)</h4><p>Recruiters spend 6 seconds on a resume. Make every line count. No fluff, no filler, no "References available on request."</p></div></div>
+        <div class="tip-item"><div class="tip-num">2</div><div class="tip-text"><h4>Lead with impact numbers</h4><p>Don't write "analyzed data." Write "Analyzed 50,000+ records using Python to identify ₹12L revenue gap." Numbers create credibility.</p></div></div>
+        <div class="tip-item"><div class="tip-num">3</div><div class="tip-text"><h4>Use the job description's exact keywords</h4><p>Most companies use ATS (applicant tracking systems). If the JD says <code>Power BI</code> and yours says "BI tools" — you get filtered out.</p></div></div>
+        <div class="tip-item"><div class="tip-num">4</div><div class="tip-text"><h4>Projects > Education for freshers</h4><p>Nobody cares about your 7.8 CGPA. They care what you built. Lead with a Projects section if you have less than 2 years experience.</p></div></div>
+        <div class="tip-item"><div class="tip-num">5</div><div class="tip-text"><h4>Add a GitHub / Portfolio link</h4><p>If you have one, it's the single most effective addition to a tech resume. Proof of work beats everything else.</p></div></div>
+        <div class="tip-item"><div class="tip-num">6</div><div class="tip-text"><h4>Skills section: only what you can defend</h4><p>Don't list 30 skills. List 8–12 you can actually discuss in an interview. Fake skills get you rejected live on the call.</p></div></div>
+        <div class="tip-item"><div class="tip-num">7</div><div class="tip-text"><h4>Format: clean, ATS-safe, no tables or columns</h4><p>Fancy multi-column resumes break ATS parsers. Use single column, plain fonts (Calibri, Arial), and PDF format always.</p></div></div>
+        <div class="tip-item"><div class="tip-num">8</div><div class="tip-text"><h4>Tailor for every application</h4><p>Yes, every single one. Change 3–4 lines to match the specific JD. Takes 5 minutes and doubles your callback rate.</p></div></div>
+      </div>
+      <div class="resource-section">
+        <div class="resource-section-title">🛠️ Free Resume Tools</div>
+        <div class="resource-list">
+          <a class="resource-item" href="https://www.canva.com/resumes/" target="_blank">
+            <div class="resource-left"><div class="resource-badge" style="background:rgba(0,196,204,0.12)">🎨</div><div><div class="resource-name">Canva Resume Builder <span class="free-badge">FREE</span></div><div class="resource-meta">Clean, professional templates — download as PDF instantly</div></div></div>
+            <div class="resource-cta">Build ↗</div>
+          </a>
+          <a class="resource-item" href="https://rxresu.me" target="_blank">
+            <div class="resource-left"><div class="resource-badge" style="background:rgba(34,197,94,0.12)">📋</div><div><div class="resource-name">Reactive Resume <span class="free-badge">FREE</span></div><div class="resource-meta">Open source, ATS-friendly, no watermarks — best free resume builder</div></div></div>
+            <div class="resource-cta">Build ↗</div>
+          </a>
+          <a class="resource-item" href="https://www.jobscan.co" target="_blank">
+            <div class="resource-left"><div class="resource-badge" style="background:rgba(66,133,244,0.12)">🔍</div><div><div class="resource-name">JobScan ATS Checker <span class="free-badge">Free tier</span></div><div class="resource-meta">Paste your resume + JD — it tells you your ATS match score</div></div></div>
+            <div class="resource-cta">Check ↗</div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- INTERVIEW PREP MODAL -->
+<div class="modal-overlay" id="modal-interview">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title-wrap">
+        <div class="modal-icon blue">🎯</div>
+        <div><div class="modal-title">Interview Prep Guide</div><div class="modal-subtitle">Walk in confident, walk out with an offer</div></div>
+      </div>
+      <button class="modal-close" onclick="closeModal('interview')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="resource-section-title" style="font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;">🧠 The STAR Method — Answer Any Question</div>
+      <div class="motivation-tip">
+        <div class="motivation-tip-icon">⭐</div>
+        <div class="motivation-tip-text">
+          <h4>Situation → Task → Action → Result</h4>
+          <p>Every behavioral question ("Tell me about a challenge you faced") can be answered using STAR. Prepare 5 STAR stories from your experience and you can handle 80% of any interview.</p>
+        </div>
+      </div>
+      <div class="resource-section-title" style="font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:20px 0 16px;">🔥 Questions You WILL Be Asked</div>
+      <div class="tip-list">
+        <div class="tip-item"><div class="tip-num">Q1</div><div class="tip-text"><h4>"Tell me about yourself"</h4><p>Keep it 90 seconds. Past → Present → Future. "I'm a data analyst with X background, I currently work on Y, and I'm looking to Z." Practice it until it's natural.</p></div></div>
+        <div class="tip-item"><div class="tip-num">Q2</div><div class="tip-text"><h4>"Why do you want this role?"</h4><p>Research the company for 20 minutes beforehand. Mention something specific — a product, a value, a challenge they face. "I saw that you're expanding into X, and my background in Y aligns with that."</p></div></div>
+        <div class="tip-item"><div class="tip-num">Q3</div><div class="tip-text"><h4>"What's your biggest weakness?"</h4><p>Be honest and show growth. "I used to struggle with X, but I've been actively working on it by doing Y, and I've seen real improvement in Z." Never say "I work too hard."</p></div></div>
+        <div class="tip-item"><div class="tip-num">Q4</div><div class="tip-text"><h4>"Where do you see yourself in 5 years?"</h4><p>Show ambition without threatening the interviewer. "I want to grow into a senior analyst role and eventually lead a team. I think this company is a place where that growth is possible."</p></div></div>
+        <div class="tip-item"><div class="tip-num">Q5</div><div class="tip-text"><h4>"Do you have any questions for us?"</h4><p>ALWAYS say yes. Ask: "What does success look like in this role after 90 days?" or "What's the biggest challenge the team is facing right now?" Shows genuine interest.</p></div></div>
+      </div>
+      <div class="resource-section">
+        <div class="resource-section-title">🔧 Free Interview Prep Tools</div>
+        <div class="resource-list">
+          <a class="resource-item" href="https://www.interviewbit.com" target="_blank">
+            <div class="resource-left"><div class="resource-badge" style="background:rgba(66,133,244,0.12)">💻</div><div><div class="resource-name">InterviewBit <span class="free-badge">FREE</span></div><div class="resource-meta">Coding + data + system design interview prep with mock tests</div></div></div>
+            <div class="resource-cta">Practice ↗</div>
+          </a>
+          <a class="resource-item" href="https://www.glassdoor.co.in/Interview/index.htm" target="_blank">
+            <div class="resource-left"><div class="resource-badge" style="background:rgba(0,178,107,0.12)">🟢</div><div><div class="resource-name">Glassdoor Interview Questions <span class="free-badge">FREE</span></div><div class="resource-meta">Real questions from real interviews at specific companies</div></div></div>
+            <div class="resource-cta">Research ↗</div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Share Toast -->
+<div class="share-toast" id="shareToast">✅ Link copied to clipboard!</div>
 
 </body>
 </html>

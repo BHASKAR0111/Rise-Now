@@ -16,6 +16,15 @@
 <meta name="twitter:description" content="Free career paths, real comeback stories, and daily motivation. Your comeback starts here.">
 <link rel="canonical" href="https://bhaskar0111.github.io/Rise-Now/">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+<!-- Google Analytics — Replace G-XXXXXXXXXX with your Measurement ID -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX');
+</script>
 <style>
 :root{
   --bg:#0b0f19;
@@ -50,20 +59,26 @@ body.light footer{background:#e4ede4;}
 /* ── Mobile hamburger ─────────────────────── */
 .hamburger{
   display:none;flex-direction:column;gap:5px;
-  background:none;border:none;cursor:pointer;padding:4px;
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:8px;
+  cursor:pointer;padding:8px 10px;
 }
 .hamburger span{
-  display:block;width:24px;height:2px;
+  display:block;width:22px;height:2px;
   background:var(--text);border-radius:2px;transition:.3s;
 }
 .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
 .hamburger.open span:nth-child(2){opacity:0;}
 .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+body.light .hamburger{background:rgba(0,0,0,0.06);border-color:rgba(0,0,0,0.1);}
 .mobile-nav{
   display:none;position:fixed;top:64px;left:0;right:0;z-index:999;
   background:rgba(11,15,25,0.97);backdrop-filter:blur(16px);
   border-bottom:1px solid rgba(34,197,94,0.15);
-  flex-direction:column;padding:16px 24px 24px;gap:4px;
+  border-top:2px solid var(--accent);
+  flex-direction:column;padding:8px 24px 20px;gap:0;
+  box-shadow:0 8px 32px rgba(0,0,0,0.4);
 }
 .mobile-nav.open{display:flex;}
 .mobile-nav a{
@@ -637,7 +652,12 @@ footer p{font-size:14px;}
 .footer-links a{color:var(--muted);text-decoration:none;font-size:14px;transition:.3s;}
 .footer-links a:hover{color:var(--text);}
 
-/* Scroll */
+/* Calendly widget */
+.calendly-wrap{
+  border-radius:16px;overflow:hidden;
+  border:1px solid rgba(34,197,94,0.15);
+  min-height:650px;background:var(--card);
+}
 .fade{opacity:0;transform:translateY(30px);transition:0.8s cubic-bezier(0.25,0.46,0.45,0.94);}
 .fade.show{opacity:1;transform:translateY(0);}
 
@@ -1456,10 +1476,13 @@ footer p{font-size:14px;}
         </div>
       </div>
       <div>
-        <form id="contactForm">
-          <input type="text" placeholder="Your Name" required>
-          <input type="email" placeholder="Your Email" required>
-          <textarea rows="5" placeholder="Tell us how we can help you..." required></textarea>
+        <form id="contactForm"
+          action="https://formspree.io/f/YOUR_FORM_ID"
+          method="POST">
+          <input type="text" name="name" placeholder="Your Name" required>
+          <input type="email" name="email" placeholder="Your Email" required>
+          <textarea rows="5" name="message" placeholder="Tell us how we can help you..." required></textarea>
+          <input type="hidden" name="_subject" value="New RiseNow Support Request">
           <button type="submit">Send Message</button>
         </form>
         <div class="form-success" id="formSuccess">
@@ -1472,147 +1495,7 @@ footer p{font-size:14px;}
   </div>
 </section>
 
-<!-- Footer -->
-<footer>
-  <button onclick="window.scrollTo({top:0,behavior:'smooth'})" style="
-    background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);
-    color:var(--accent);font-size:13px;font-weight:700;letter-spacing:.1em;
-    padding:10px 24px;border-radius:20px;cursor:pointer;
-    display:inline-flex;align-items:center;gap:8px;
-    margin-bottom:28px;transition:all .25s;
-  " onmouseover="this.style.background='rgba(34,197,94,0.2)'" 
-     onmouseout="this.style.background='rgba(34,197,94,0.1)'">
-    ↑ BACK TO TOP
-  </button>
-  <div class="footer-logo">
-    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect width="100" height="100" rx="20" fill="#111827"/>
-      <text x="50%" y="55%" text-anchor="middle" font-family="Arial" font-size="55" font-weight="bold" fill="white" dy=".3em">R</text>
-      <circle cx="75" cy="75" r="8" fill="#22c55e"/>
-    </svg>
-    <strong>RiseNow</strong>
-  </div>
-  <p>Helping Strugglers Stand Again</p>
-  <div class="footer-links">
-    <a href="about.html">About</a>
-    <a href="blog.html">Blog</a>
-    <a href="#contact">Contact</a>
-    <a href="javascript:void(0)" onclick="openModal('resume')">Resume Tips</a>
-    <a href="javascript:void(0)" onclick="openModal('interview')">Interview Prep</a>
-    <a href="#bookcall">Book a Call</a>
-  </div>
-  <p style="margin-top:20px;">&copy; 2026 RiseNow. All rights reserved.</p>
-</footer>
 
-<script>
-// ── Scroll animation ──────────────────────────
-const faders = document.querySelectorAll('.fade');
-const obs = new IntersectionObserver((entries) => {
-  entries.forEach(e => { if(e.isIntersecting){e.target.classList.add('show');obs.unobserve(e.target);} });
-}, { threshold:0.15, rootMargin:'0px 0px -50px 0px' });
-faders.forEach(el => obs.observe(el));
-window.addEventListener('load', () => { document.querySelector('.hero .fade')?.classList.add('show'); });
-
-// ── Theme toggle ──────────────────────────────
-const themeBtn = document.getElementById('themeBtn');
-const savedTheme = localStorage.getItem('rn-theme');
-if(savedTheme === 'light'){ document.body.classList.add('light'); themeBtn.textContent = '☀️'; }
-function toggleTheme(){
-  document.body.classList.toggle('light');
-  const isLight = document.body.classList.contains('light');
-  themeBtn.textContent = isLight ? '☀️' : '🌙';
-  localStorage.setItem('rn-theme', isLight ? 'light' : 'dark');
-}
-
-// ── Modal open/close ──────────────────────────
-function openModal(id) {
-  document.getElementById('modal-'+id).classList.add('active');
-  document.body.style.overflow = 'hidden';
-}
-function closeModal(id) {
-  document.getElementById('modal-'+id).classList.remove('active');
-  document.body.style.overflow = '';
-}
-document.querySelectorAll('.modal-overlay').forEach(overlay => {
-  overlay.addEventListener('click', function(e) {
-    if(e.target === this){ this.classList.remove('active'); document.body.style.overflow = ''; }
-  });
-});
-document.addEventListener('keydown', e => {
-  if(e.key === 'Escape'){
-    document.querySelectorAll('.modal-overlay.active').forEach(m => {
-      m.classList.remove('active'); document.body.style.overflow = '';
-    });
-  }
-});
-
-// ── Progress tracker (localStorage) ──────────
-function updateProgress(track, total) {
-  const checkboxes = [];
-  for(let i=0;i<total;i++){
-    const cb = document.getElementById(track[0]+i);
-    if(cb) checkboxes.push(cb);
-  }
-  const done = checkboxes.filter(c=>c.checked).length;
-  const pct = Math.round((done/total)*100);
-  const pctEl = document.getElementById('progress-'+track+'-pct');
-  const barEl = document.getElementById('progress-'+track+'-bar');
-  if(pctEl) pctEl.textContent = pct+'%';
-  if(barEl) barEl.style.width = pct+'%';
-  // Update step styling
-  checkboxes.forEach((cb,i)=>{
-    const stepEl = document.getElementById('step-'+track+'-'+i);
-    if(stepEl){ stepEl.classList.toggle('checked', cb.checked); }
-  });
-  // Save
-  const state = checkboxes.map(c=>c.checked);
-  localStorage.setItem('rn-progress-'+track, JSON.stringify(state));
-}
-
-function loadProgress(track, total) {
-  const saved = localStorage.getItem('rn-progress-'+track);
-  if(!saved) return;
-  const state = JSON.parse(saved);
-  state.forEach((checked, i) => {
-    const cb = document.getElementById(track[0]+i);
-    if(cb){ cb.checked = checked; }
-  });
-  updateProgress(track, total);
-}
-
-// Load saved progress on modal open — data analytics
-window.addEventListener('load', ()=>{ loadProgress('data', 6); });
-
-// ── Share functions ───────────────────────────
-function shareStory(title, url) {
-  if(navigator.share){
-    navigator.share({ title, url }).catch(()=>{});
-  } else {
-    navigator.clipboard.writeText(url).then(()=>{
-      const toast = document.getElementById('shareToast');
-      toast.classList.add('show');
-      setTimeout(()=>toast.classList.remove('show'), 2500);
-    });
-  }
-}
-function shareToWhatsApp(text){
-  window.open('https://wa.me/?text='+encodeURIComponent(text), '_blank');
-}
-
-// ── Contact form ──────────────────────────────
-document.getElementById('contactForm').addEventListener('submit', function(e) {
-  e.preventDefault();
-  this.style.display = 'none';
-  document.getElementById('formSuccess').style.display = 'block';
-});
-
-// ── Newsletter form ───────────────────────────
-document.getElementById('newsletterForm').addEventListener('submit', function(e) {
-  e.preventDefault();
-  this.style.display = 'none';
-  document.getElementById('newsletterSuccess').style.display = 'block';
-});
-</script>
 <!-- DAILY MOTIVATION MODAL -->
 <div class="modal-overlay" id="modal-motivation">
   <div class="modal">
@@ -1914,8 +1797,12 @@ document.getElementById('newsletterForm').addEventListener('submit', function(e)
     <span class="section-label">Stay in the Loop</span>
     <h2>Weekly Motivation & Resources</h2>
     <p>Get one actionable career tip, a curated free resource, and a real comeback story every week. No spam. Unsubscribe anytime.</p>
-    <form class="newsletter-form" id="newsletterForm">
-      <input type="email" placeholder="Enter your email address" required>
+    <form class="newsletter-form" id="newsletterForm"
+      action="https://formspree.io/f/YOUR_FORM_ID"
+      method="POST">
+      <input type="email" name="email" placeholder="Enter your email address" required>
+      <input type="hidden" name="_subject" value="New RiseNow Newsletter Subscriber!">
+      <input type="hidden" name="_next" value="">
       <button type="submit">Subscribe Free →</button>
     </form>
     <div class="newsletter-success" id="newsletterSuccess">🎉 You're in! First email comes next Monday.</div>
@@ -1926,21 +1813,67 @@ document.getElementById('newsletterForm').addEventListener('submit', function(e)
 <!-- Book a 1:1 Call Section -->
 <div class="call-section" id="bookcall">
   <div class="container">
-    <div class="call-card">
-      <div class="call-badge">🗓️ Limited Slots Available</div>
-      <h2>Book a Free 1:1 Career Call</h2>
-      <p>Not sure which path to take? Struggling with your resume, portfolio, or job search? Get 30 minutes of honest, practical guidance.</p>
-      <div class="call-features">
+    <div style="text-align:center;margin-bottom:36px;">
+      <span class="section-label">1:1 Career Guidance</span>
+      <h2 style="margin-bottom:10px;">Book a Free Career Call</h2>
+      <p style="max-width:500px;margin:0 auto;">Not sure which path to take? Get 30 minutes of honest, practical guidance — resume review, career path clarity, job search strategy.</p>
+      <div class="call-features" style="justify-content:center;margin-top:20px;">
         <div class="call-feature"><span>✅</span> Career path clarity</div>
-        <div class="call-feature"><span>✅</span> Resume & portfolio review</div>
+        <div class="call-feature"><span>✅</span> Resume review</div>
         <div class="call-feature"><span>✅</span> Job search strategy</div>
-        <div class="call-feature"><span>✅</span> No fluff, just action steps</div>
+        <div class="call-feature"><span>✅</span> First call FREE</div>
       </div>
-      <a href="https://calendly.com" target="_blank" class="btn btn-primary" style="display:inline-block;margin:0 0 16px;">Book Your 30-Min Call →</a>
-      <div class="call-price">First call FREE · Follow-up calls ₹299 / 30 min</div>
+    </div>
+    <!-- Book a Call card — update href with your Calendly link -->
+    <div class="call-card" style="max-width:580px;margin:0 auto;text-align:center;">
+      <div style="font-size:56px;margin-bottom:16px;">🗓️</div>
+      <h3 style="font-size:22px;color:var(--text);margin-bottom:12px;">Schedule Your Free 30-Min Call</h3>
+      <p style="margin-bottom:28px;">Click below to pick a time that works for you. First call is completely free — no strings attached.</p>
+      <a href="https://calendly.com" target="_blank" class="btn btn-primary" style="display:inline-block;font-size:15px;padding:16px 36px;">
+        📅 Book Now on Calendly →
+      </a>
+      <p style="margin-top:20px;font-size:12px;color:var(--muted);">First call FREE · Follow-up calls ₹299 / 30 min</p>
+      <div style="margin-top:24px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.06);display:flex;justify-content:center;gap:32px;flex-wrap:wrap;">
+        <div style="text-align:center;"><div style="font-size:22px;margin-bottom:4px;">⚡</div><div style="font-size:12px;color:var(--muted);">Instant booking</div></div>
+        <div style="text-align:center;"><div style="font-size:22px;margin-bottom:4px;">🔒</div><div style="font-size:12px;color:var(--muted);">100% confidential</div></div>
+        <div style="text-align:center;"><div style="font-size:22px;margin-bottom:4px;">📱</div><div style="font-size:12px;color:var(--muted);">Google Meet / Phone</div></div>
+        <div style="text-align:center;"><div style="font-size:22px;margin-bottom:4px;">🎯</div><div style="font-size:12px;color:var(--muted);">No fluff, just action</div></div>
+      </div>
     </div>
   </div>
 </div>
+
+<!-- Footer — CORRECT POSITION: after all sections -->
+<footer>
+  <button onclick="window.scrollTo({top:0,behavior:'smooth'})" style="
+    background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);
+    color:var(--accent);font-size:13px;font-weight:700;letter-spacing:.1em;
+    padding:10px 24px;border-radius:20px;cursor:pointer;
+    display:inline-flex;align-items:center;gap:8px;
+    margin-bottom:28px;transition:all .25s;
+  " onmouseover="this.style.background='rgba(34,197,94,0.2)'"
+     onmouseout="this.style.background='rgba(34,197,94,0.1)'">
+    ↑ BACK TO TOP
+  </button>
+  <div class="footer-logo">
+    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="100" height="100" rx="20" fill="#111827"/>
+      <text x="50%" y="55%" text-anchor="middle" font-family="Arial" font-size="55" font-weight="bold" fill="white" dy=".3em">R</text>
+      <circle cx="75" cy="75" r="8" fill="#22c55e"/>
+    </svg>
+    <strong>RiseNow</strong>
+  </div>
+  <p>Helping Strugglers Stand Again</p>
+  <div class="footer-links">
+    <a href="#about">About</a>
+    <a href="#stories">Stories</a>
+    <a href="#contact">Contact</a>
+    <a href="javascript:void(0)" onclick="openModal('resume')">Resume Tips</a>
+    <a href="javascript:void(0)" onclick="openModal('interview')">Interview Prep</a>
+    <a href="#bookcall">Book a Call</a>
+  </div>
+  <p style="margin-top:20px;">&copy; 2026 RiseNow. All rights reserved.</p>
+</footer>
 
 <!-- RESUME TIPS MODAL -->
 <div class="modal-overlay" id="modal-resume">
@@ -2132,12 +2065,25 @@ function shareStory(title, url) {
 }
 function shareToWhatsApp(text){ window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank'); }
 
-// ── Forms ─────────────────────────────────────
+// ── Forms (Formspree) ─────────────────────────
 document.getElementById('contactForm').addEventListener('submit', function(e) {
-  e.preventDefault(); this.style.display='none'; document.getElementById('formSuccess').style.display='block';
+  e.preventDefault();
+  const data = new FormData(this);
+  fetch(this.action, { method:'POST', body:data, headers:{'Accept':'application/json'} })
+    .then(r => {
+      if(r.ok){ this.style.display='none'; document.getElementById('formSuccess').style.display='block'; }
+      else{ alert('Oops! Something went wrong. Please try again.'); }
+    }).catch(()=> alert('Network error. Please try again.'));
 });
+
 document.getElementById('newsletterForm').addEventListener('submit', function(e) {
-  e.preventDefault(); this.style.display='none'; document.getElementById('newsletterSuccess').style.display='block';
+  e.preventDefault();
+  const data = new FormData(this);
+  fetch(this.action, { method:'POST', body:data, headers:{'Accept':'application/json'} })
+    .then(r => {
+      if(r.ok){ this.style.display='none'; document.getElementById('newsletterSuccess').style.display='block'; }
+      else{ alert('Oops! Something went wrong. Please try again.'); }
+    }).catch(()=> alert('Network error. Please try again.'));
 });
 </script>
 

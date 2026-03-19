@@ -56,7 +56,170 @@ body.light .about-card,body.light .career-card,body.light .story-card,body.light
 body.light .internship-card{background:#ffffff;}
 body.light footer{background:#e4ede4;}
 
-/* ── Mobile hamburger ─────────────────────── */
+/* ── Scroll Progress Bar ──────────────────── */
+.scroll-progress{
+  position:fixed;top:0;left:0;z-index:9999;
+  height:3px;width:0%;
+  background:linear-gradient(90deg,var(--accent),#06b6d4);
+  transition:width .1s;
+}
+
+/* ── Preloader ────────────────────────────── */
+.preloader{
+  position:fixed;inset:0;z-index:99999;
+  background:var(--bg);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  transition:opacity .5s, visibility .5s;
+}
+.preloader.hidden{opacity:0;visibility:hidden;}
+.preloader-logo{
+  font-size:48px;font-weight:900;
+  background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;margin-bottom:24px;
+  animation:pulse 1s ease-in-out infinite alternate;
+}
+.preloader-bar{
+  width:200px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;overflow:hidden;
+}
+.preloader-fill{
+  height:100%;background:var(--gradient);border-radius:2px;
+  animation:load 1.5s ease-in-out forwards;
+}
+@keyframes load{from{width:0}to{width:100%}}
+@keyframes pulse{from{opacity:0.6}to{opacity:1}}
+
+/* ── SVG Wave Divider ─────────────────────── */
+.wave-divider{
+  line-height:0;overflow:hidden;margin:0;padding:0;
+}
+.wave-divider svg{display:block;width:100%;}
+
+/* ── Founder Story ────────────────────────── */
+.founder-section{padding:80px 20px;position:relative;z-index:1;}
+.founder-card{
+  max-width:900px;margin:0 auto;
+  background:var(--card);border:1px solid rgba(34,197,94,0.15);
+  border-radius:20px;padding:48px;
+  display:grid;grid-template-columns:180px 1fr;gap:40px;align-items:start;
+}
+.founder-avatar-wrap{text-align:center;}
+.founder-avatar-img{
+  width:140px;height:140px;border-radius:50%;
+  border:3px solid rgba(34,197,94,0.4);
+  background:linear-gradient(135deg,rgba(34,197,94,0.1),rgba(6,182,212,0.1));
+  display:flex;align-items:center;justify-content:center;
+  font-size:60px;margin:0 auto 16px;
+}
+.founder-name{font-size:16px;font-weight:700;color:var(--text);margin-bottom:4px;}
+.founder-role{font-size:12px;color:var(--accent);font-weight:600;letter-spacing:.08em;text-transform:uppercase;}
+.founder-socials{display:flex;gap:10px;justify-content:center;margin-top:14px;}
+.founder-social{
+  width:34px;height:34px;border-radius:8px;
+  background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);
+  display:flex;align-items:center;justify-content:center;
+  text-decoration:none;font-size:14px;transition:.2s;
+}
+.founder-social:hover{border-color:var(--accent);background:rgba(34,197,94,0.1);}
+.founder-content h2{font-size:24px;color:var(--text);margin-bottom:16px;}
+.founder-content p{font-size:15px;color:var(--muted);line-height:1.8;margin-bottom:12px;}
+.founder-quote{
+  border-left:3px solid var(--accent);padding-left:16px;
+  font-style:italic;color:var(--text);font-size:16px;margin:20px 0;line-height:1.8;
+}
+@media(max-width:768px){
+  .founder-card{grid-template-columns:1fr;text-align:center;}
+  .founder-socials{justify-content:center;}
+}
+
+/* ── FAQ ──────────────────────────────────── */
+.faq-section{padding:80px 20px;position:relative;z-index:1;}
+.faq-grid{max-width:800px;margin:40px auto 0;display:flex;flex-direction:column;gap:12px;}
+.faq-item{
+  background:var(--card);border:1px solid var(--border-clr);
+  border-radius:12px;overflow:hidden;transition:.3s;
+}
+.faq-item.open{border-color:rgba(34,197,94,0.3);}
+.faq-q{
+  padding:20px 24px;cursor:pointer;
+  display:flex;justify-content:space-between;align-items:center;gap:16px;
+}
+.faq-q h4{font-size:15px;color:var(--text);font-weight:600;margin:0;}
+.faq-icon{
+  width:28px;height:28px;border-radius:50%;flex-shrink:0;
+  background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--accent);font-size:16px;font-weight:700;transition:.3s;
+}
+.faq-item.open .faq-icon{transform:rotate(45deg);background:rgba(34,197,94,0.2);}
+.faq-a{
+  max-height:0;overflow:hidden;transition:max-height .35s ease, padding .35s;
+  padding:0 24px;
+}
+.faq-a p{font-size:14px;color:var(--muted);line-height:1.8;padding-bottom:20px;}
+.faq-item.open .faq-a{max-height:300px;padding-top:0;}
+
+/* ── Habit Tracker ────────────────────────── */
+.habit-section{padding:80px 20px;position:relative;z-index:1;
+  background:linear-gradient(180deg,var(--bg) 0%,#0d1a0d 50%,var(--bg) 100%);}
+.habit-card{
+  max-width:800px;margin:40px auto 0;
+  background:var(--card);border:1px solid rgba(34,197,94,0.2);
+  border-radius:20px;padding:36px;
+}
+.habit-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:12px;}
+.streak-badge{
+  display:flex;align-items:center;gap:8px;
+  background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);
+  padding:8px 16px;border-radius:20px;
+}
+.streak-fire{font-size:20px;}
+.streak-count{font-size:22px;font-weight:800;color:var(--accent);}
+.streak-label{font-size:12px;color:var(--muted);}
+.habit-date{font-size:13px;color:var(--muted);}
+.habits-list{display:flex;flex-direction:column;gap:10px;margin-bottom:24px;}
+.habit-item{
+  display:flex;align-items:center;gap:14px;
+  padding:14px 16px;border-radius:10px;
+  background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);
+  cursor:pointer;transition:.25s;user-select:none;
+}
+.habit-item:hover{border-color:rgba(34,197,94,0.2);background:rgba(34,197,94,0.04);}
+.habit-item.done{background:rgba(34,197,94,0.08);border-color:rgba(34,197,94,0.25);}
+.habit-check{
+  width:24px;height:24px;border-radius:50%;
+  border:2px solid rgba(34,197,94,0.4);
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;flex-shrink:0;transition:.25s;
+}
+.habit-item.done .habit-check{background:var(--accent);border-color:var(--accent);color:#000;font-weight:700;}
+.habit-icon{font-size:20px;flex-shrink:0;}
+.habit-text{flex:1;}
+.habit-text h4{font-size:14px;color:var(--text);font-weight:600;margin-bottom:2px;}
+.habit-text p{font-size:12px;color:var(--muted);}
+.habit-item.done .habit-text h4{text-decoration:line-through;color:var(--muted);}
+.habit-progress-wrap{margin-bottom:20px;}
+.habit-progress-top{display:flex;justify-content:space-between;margin-bottom:8px;}
+.habit-progress-label{font-size:12px;color:var(--muted);}
+.habit-progress-pct{font-size:12px;font-weight:700;color:var(--accent);}
+.habit-bar{height:6px;background:rgba(255,255,255,0.08);border-radius:3px;overflow:hidden;}
+.habit-fill{height:100%;background:var(--gradient);border-radius:3px;transition:.4s;}
+.habit-reset{
+  width:100%;padding:12px;border:1px solid rgba(255,255,255,0.1);
+  border-radius:8px;background:transparent;color:var(--muted);
+  font-size:13px;cursor:pointer;transition:.2s;
+}
+.habit-reset:hover{border-color:rgba(34,197,94,0.3);color:var(--accent);}
+.habit-complete-msg{
+  display:none;text-align:center;padding:16px;
+  background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);
+  border-radius:10px;margin-bottom:16px;
+  font-size:14px;font-weight:600;color:var(--accent);
+}
+
+/* light mode fixes */
+body.light .faq-item{background:#fff;border-color:rgba(0,0,0,0.08);}
+body.light .habit-card{background:#fff;}
+body.light .founder-card{background:#fff;}
 .hamburger{
   display:none;flex-direction:column;gap:5px;
   background:rgba(255,255,255,0.06);
@@ -686,6 +849,15 @@ footer p{font-size:14px;}
 </head>
 <body>
 
+<!-- Scroll Progress Bar -->
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- Preloader -->
+<div class="preloader" id="preloader">
+  <div class="preloader-logo">RiseNow</div>
+  <div class="preloader-bar"><div class="preloader-fill"></div></div>
+</div>
+
 <!-- Floating theme toggle -->
 <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn" title="Toggle light/dark mode">🌙</button>
 
@@ -716,9 +888,11 @@ footer p{font-size:14px;}
   <nav>
     <a href="#about">About</a>
     <a href="#careers">Careers</a>
-    <a href="#inspiration">Inspiration</a>
+    <a href="#habits">Habits</a>
     <a href="#stories">Stories</a>
+    <a href="#faq">FAQ</a>
     <a href="#contact">Contact</a>
+    <a href="dashboard.html" style="color:var(--accent);font-weight:700;border:1px solid rgba(34,197,94,0.3);padding:6px 14px;border-radius:20px;font-size:13px;">🚀 Dashboard</a>
   </nav>
   <button class="hamburger" id="hamburger" onclick="toggleMobileNav()" aria-label="Menu">
     <span></span><span></span><span></span>
@@ -731,8 +905,9 @@ footer p{font-size:14px;}
   <a href="#careers" onclick="closeMobileNav()">Careers</a>
   <a href="#inspiration" onclick="closeMobileNav()">Inspiration</a>
   <a href="#stories" onclick="closeMobileNav()">Stories</a>
+  <a href="#habits" onclick="closeMobileNav()">🔥 Habit Tracker</a>
+  <a href="#faq" onclick="closeMobileNav()">FAQ</a>
   <a href="#contact" onclick="closeMobileNav()">Contact</a>
-  <a href="#bookcall" onclick="closeMobileNav()">📞 Book a Call</a>
 </nav>
 
 <!-- Hero -->
@@ -751,6 +926,9 @@ footer p{font-size:14px;}
     </a>
     <a href="#contact" class="btn btn-outline">
       <span data-en>Get Support</span><span data-hi>Support लें</span>
+    </a>
+    <a href="dashboard.html" class="btn" style="background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.3);color:var(--accent);padding:14px 28px;border-radius:8px;text-decoration:none;font-weight:600;font-size:15px;transition:.3s;display:inline-block;margin:10px;" onmouseover="this.style.background='rgba(34,197,94,0.15)'" onmouseout="this.style.background='rgba(34,197,94,0.08)'">
+      🚀 <span data-en>My Dashboard</span><span data-hi>मेरा Dashboard</span>
     </a>
     <div class="hero-stats">
       <div class="hero-stat">
@@ -771,6 +949,13 @@ footer p{font-size:14px;}
     </div>
   </div>
 </section>
+
+<!-- Wave after hero -->
+<div class="wave-divider">
+  <svg viewBox="0 0 1440 60" preserveAspectRatio="none" style="height:60px;">
+    <path d="M0,30 C360,60 1080,0 1440,30 L1440,60 L0,60 Z" fill="#0d1117"/>
+  </svg>
+</div>
 
 <!-- About -->
 <section id="about">
@@ -1448,6 +1633,192 @@ footer p{font-size:14px;}
   </div>
 </section>
 
+<!-- Wave before new sections -->
+<div class="wave-divider">
+  <svg viewBox="0 0 1440 60" preserveAspectRatio="none" style="height:60px;">
+    <path d="M0,0 C360,60 1080,0 1440,60 L1440,60 L0,60 Z" fill="rgba(13,26,13,0.5)"/>
+  </svg>
+</div>
+
+<!-- Founder Story -->
+<section class="founder-section fade" id="about-founder">
+  <div class="container" style="text-align:center;margin-bottom:0;">
+    <span class="section-label">The Person Behind RiseNow</span>
+    <h2 style="font-family:'Segoe UI',sans-serif;font-size:32px;color:var(--text);margin-bottom:0;">Founder's Story</h2>
+  </div>
+  <div class="founder-card" style="margin-top:40px;">
+    <div class="founder-avatar-wrap">
+      <!-- SVG Illustrated Portrait -->
+      <div class="founder-avatar-img" style="padding:0;overflow:hidden;background:transparent;">
+        <svg viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg" width="140" height="140">
+          <!-- Background circle -->
+          <circle cx="70" cy="70" r="70" fill="#0d1a10"/>
+          <!-- Jacket/shoulders -->
+          <ellipse cx="70" cy="118" rx="42" ry="28" fill="#1a3a2a"/>
+          <rect x="28" y="100" width="84" height="40" rx="8" fill="#1a3a2a"/>
+          <!-- Shirt collar -->
+          <polygon points="60,95 70,105 80,95 75,90 65,90" fill="#f0f6fc"/>
+          <!-- Neck -->
+          <rect x="62" y="82" width="16" height="16" rx="6" fill="#d4956a"/>
+          <!-- Head -->
+          <ellipse cx="70" cy="65" rx="26" ry="28" fill="#d4956a"/>
+          <!-- Hair — short dark -->
+          <ellipse cx="70" cy="40" rx="26" ry="12" fill="#1a0f00"/>
+          <rect x="44" y="38" width="52" height="14" rx="4" fill="#1a0f00"/>
+          <ellipse cx="46" cy="52" rx="5" ry="8" fill="#1a0f00"/>
+          <ellipse cx="94" cy="52" rx="5" ry="8" fill="#1a0f00"/>
+          <!-- Eyebrows -->
+          <path d="M56 54 Q62 51 68 54" stroke="#2a1800" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <path d="M72 54 Q78 51 84 54" stroke="#2a1800" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <!-- Eyes -->
+          <ellipse cx="62" cy="59" rx="5" ry="5" fill="white"/>
+          <ellipse cx="78" cy="59" rx="5" ry="5" fill="white"/>
+          <circle cx="63" cy="60" r="3" fill="#1a0f00"/>
+          <circle cx="79" cy="60" r="3" fill="#1a0f00"/>
+          <circle cx="64" cy="59" r="1" fill="white"/>
+          <circle cx="80" cy="59" r="1" fill="white"/>
+          <!-- Nose -->
+          <path d="M70 63 Q67 70 65 72 Q70 74 75 72 Q73 70 70 63" fill="#c07850" opacity="0.5"/>
+          <!-- Confident smile -->
+          <path d="M60 76 Q70 84 80 76" stroke="#b07050" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <!-- Laptop hint at bottom -->
+          <rect x="36" y="118" width="68" height="5" rx="2" fill="#22c55e" opacity="0.4"/>
+        </svg>
+      </div>
+      <div class="founder-name">Bhaskar Baluni</div>
+      <div class="founder-role">MCA Graduate · Data Analyst</div>
+      <div style="font-size:11px;color:var(--muted);margin-top:4px;">Dehradun, Uttarakhand</div>
+      <div class="founder-socials">
+        <a href="https://www.linkedin.com/in/bhaskar-baluni" target="_blank" class="founder-social" title="LinkedIn">💼</a>
+        <a href="https://github.com/BHASKAR0111" target="_blank" class="founder-social" title="GitHub">🐙</a>
+        <a href="https://bhaskar0111.github.io/Bhaskar-Portfolio/" target="_blank" class="founder-social" title="Portfolio">🌐</a>
+      </div>
+    </div>
+    <div class="founder-content">
+      <h2>Why I Built RiseNow</h2>
+      <p>After class 12th, I started BCA — and alongside studying, I also tried teaching to figure out what I actually wanted to do. Job searching. Skill building. Switching directions. I was confused for a long time about which field to choose.</p>
+      <p>Then I pursued MCA, thinking it would give me clarity. It gave me knowledge — but not a job. After completing my degree, I was back to the same place: searching, applying, waiting, and wondering what I was doing wrong.</p>
+      <div class="founder-quote">"I felt stuck. But then I realized — I'm not alone in this. Thousands of graduates go through exactly this every year. That realization changed everything."</div>
+      <p>That's where RiseNow was born. Not in a startup incubator. Not with funding. But from a real frustration — the lack of a single honest platform that tells you: <strong style="color:var(--text)">here's where to start, here's what to learn, and here's proof that it's possible.</strong></p>
+      <p style="color:var(--accent);font-weight:600;">If you're confused, lost, or starting over — this platform is built for you. By someone who's been exactly there. 🙌</p>
+    </div>
+  </div>
+</section>
+
+<!-- Wave -->
+<div class="wave-divider">
+  <svg viewBox="0 0 1440 60" preserveAspectRatio="none" style="height:60px;">
+    <path d="M0,30 C360,0 1080,60 1440,30 L1440,60 L0,60 Z" fill="rgba(13,26,13,0.3)"/>
+  </svg>
+</div>
+
+<!-- Habit Tracker -->
+<section class="habit-section fade" id="habits">
+  <div class="container" style="text-align:center;">
+    <span class="section-label">Daily Growth System</span>
+    <h2 style="font-size:32px;color:var(--text);margin-bottom:10px;">Habit Tracker</h2>
+    <p style="max-width:500px;margin:0 auto;">Build momentum one day at a time. Check off your daily habits and watch your streak grow. Progress saves automatically!</p>
+  </div>
+  <div class="habit-card">
+    <div class="habit-header">
+      <div>
+        <h3 style="color:var(--text);font-size:18px;margin-bottom:4px;">Today's Habits</h3>
+        <div class="habit-date" id="habitDate"></div>
+      </div>
+      <div class="streak-badge">
+        <span class="streak-fire">🔥</span>
+        <span class="streak-count" id="streakCount">0</span>
+        <span class="streak-label">day streak</span>
+      </div>
+    </div>
+    <div class="habit-complete-msg" id="habitCompleteMsg">
+      🎉 All habits done! You're crushing it today!
+    </div>
+    <div class="habit-progress-wrap">
+      <div class="habit-progress-top">
+        <span class="habit-progress-label">Daily Progress</span>
+        <span class="habit-progress-pct" id="habitPct">0%</span>
+      </div>
+      <div class="habit-bar"><div class="habit-fill" id="habitFill" style="width:0%"></div></div>
+    </div>
+    <div class="habits-list" id="habitsList">
+      <div class="habit-item" data-habit="0" onclick="toggleHabit(0)">
+        <div class="habit-check" id="hcheck-0"></div>
+        <div class="habit-icon">📚</div>
+        <div class="habit-text"><h4>Learn something new (30 min)</h4><p>Course, tutorial, or article — just 30 minutes</p></div>
+      </div>
+      <div class="habit-item" data-habit="1" onclick="toggleHabit(1)">
+        <div class="habit-check" id="hcheck-1"></div>
+        <div class="habit-icon">💼</div>
+        <div class="habit-text"><h4>Apply to 2 jobs / opportunities</h4><p>LinkedIn, Naukri, Internshala — 2 minimum</p></div>
+      </div>
+      <div class="habit-item" data-habit="2" onclick="toggleHabit(2)">
+        <div class="habit-check" id="hcheck-2"></div>
+        <div class="habit-icon">🏃</div>
+        <div class="habit-text"><h4>Exercise or walk (20 min)</h4><p>Body and mind work together — move daily</p></div>
+      </div>
+      <div class="habit-item" data-habit="3" onclick="toggleHabit(3)">
+        <div class="habit-check" id="hcheck-3"></div>
+        <div class="habit-icon">📓</div>
+        <div class="habit-text"><h4>Journal 3 things you're grateful for</h4><p>Rewires your brain for positivity in 21 days</p></div>
+      </div>
+      <div class="habit-item" data-habit="4" onclick="toggleHabit(4)">
+        <div class="habit-check" id="hcheck-4"></div>
+        <div class="habit-icon">🔗</div>
+        <div class="habit-text"><h4>Build in public (LinkedIn post)</h4><p>Share your learning — visibility = opportunities</p></div>
+      </div>
+      <div class="habit-item" data-habit="5" onclick="toggleHabit(5)">
+        <div class="habit-check" id="hcheck-5"></div>
+        <div class="habit-icon">📵</div>
+        <div class="habit-text"><h4>No social media first hour</h4><p>Protect your morning brain — use it for growth</p></div>
+      </div>
+    </div>
+    <button class="habit-reset" onclick="resetHabits()">↺ Reset Today's Habits</button>
+  </div>
+</section>
+
+<!-- Wave -->
+<div class="wave-divider">
+  <svg viewBox="0 0 1440 60" preserveAspectRatio="none" style="height:60px;">
+    <path d="M0,60 C360,0 1080,60 1440,0 L1440,60 L0,60 Z" fill="rgba(15,21,36,0.5)"/>
+  </svg>
+</div>
+
+<!-- FAQ -->
+<section class="faq-section fade" id="faq">
+  <div class="container" style="text-align:center;">
+    <span class="section-label">Got Questions?</span>
+    <h2 style="font-size:32px;color:var(--text);margin-bottom:10px;">Frequently Asked</h2>
+    <p style="max-width:500px;margin:0 auto;">Everything you need to know about RiseNow and starting your comeback.</p>
+  </div>
+  <div class="faq-grid">
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q"><h4>Is RiseNow completely free?</h4><div class="faq-icon">+</div></div>
+      <div class="faq-a"><p>Yes — 100% free. All career paths, resources, stories, and tools on RiseNow are completely free. We curate only free learning platforms (Google, Kaggle, freeCodeCamp, etc.) and will always keep the core platform free.</p></div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q"><h4>I have no experience. Where do I start?</h4><div class="faq-icon">+</div></div>
+      <div class="faq-a"><p>Start with our Career Paths section — click on any path (Data Analytics, Web Dev, etc.) and you'll get a step-by-step roadmap from absolute zero. No experience needed. The first step is always the hardest — but it's just one click away.</p></div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q"><h4>How long does it take to switch careers?</h4><div class="faq-icon">+</div></div>
+      <div class="faq-a"><p>Realistically — 3 to 9 months with consistent daily effort (1-2 hours/day). The success stories on this platform show people landing jobs in 6-8 months using only free resources. Speed depends on consistency, not talent.</p></div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q"><h4>Do I need a degree for these career paths?</h4><div class="faq-icon">+</div></div>
+      <div class="faq-a"><p>No. All career paths on RiseNow are accessible without a traditional degree. Companies today hire based on skills and portfolio — not certificates. A strong GitHub profile and real projects matter more than most degrees in tech roles.</p></div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q"><h4>How does the Habit Tracker work?</h4><div class="faq-icon">+</div></div>
+      <div class="faq-a"><p>Check off your daily habits above and your progress saves automatically in your browser (localStorage). Your streak counter tracks consecutive days. It resets daily at midnight so you start fresh each day. No login required — it's all stored locally on your device.</p></div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q"><h4>Can I submit my own success story?</h4><div class="faq-icon">+</div></div>
+      <div class="faq-a"><p>Absolutely! Use the Contact form below to share your story. If it can inspire others, we'll feature it on RiseNow. Your comeback could be exactly what someone else needs to read today.</p></div>
+    </div>
+  </div>
+</section>
+
 <!-- Contact -->
 <section id="contact">
   <div class="container fade">
@@ -1970,6 +2341,19 @@ footer p{font-size:14px;}
 <div class="share-toast" id="shareToast">✅ Link copied to clipboard!</div>
 
 <script>
+// ── Preloader ─────────────────────────────────
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('preloader').classList.add('hidden');
+  }, 1600);
+});
+
+// ── Scroll Progress Bar ───────────────────────
+window.addEventListener('scroll', () => {
+  const scrolled = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+  document.getElementById('scrollProgress').style.width = scrolled + '%';
+});
+
 // ── Scroll animation ──────────────────────────
 const faders = document.querySelectorAll('.fade');
 const obs = new IntersectionObserver((entries) => {
@@ -2064,6 +2448,67 @@ function shareStory(title, url) {
   else { navigator.clipboard.writeText(url).then(() => { const t=document.getElementById('shareToast'); t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2500); }); }
 }
 function shareToWhatsApp(text){ window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank'); }
+
+// ── Habit Tracker ─────────────────────────────
+const HABITS_KEY = 'rn-habits';
+const STREAK_KEY = 'rn-streak';
+const LAST_DATE_KEY = 'rn-lastdate';
+const TODAY = new Date().toDateString();
+
+function getHabits(){ return JSON.parse(localStorage.getItem(HABITS_KEY) || '[false,false,false,false,false,false]'); }
+
+function renderHabits(){
+  document.getElementById('habitDate').textContent = new Date().toLocaleDateString('en-IN',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  const habits = getHabits();
+  const done = habits.filter(Boolean).length;
+  const pct = Math.round((done/habits.length)*100);
+  document.getElementById('habitPct').textContent = pct+'%';
+  document.getElementById('habitFill').style.width = pct+'%';
+  habits.forEach((v,i)=>{
+    const item = document.querySelector('[data-habit="'+i+'"]');
+    const check = document.getElementById('hcheck-'+i);
+    if(item){ item.classList.toggle('done',v); }
+    if(check){ check.textContent = v ? '✓' : ''; }
+  });
+  document.getElementById('habitCompleteMsg').style.display = done===habits.length ? 'block' : 'none';
+  // Streak
+  const lastDate = localStorage.getItem(LAST_DATE_KEY);
+  let streak = parseInt(localStorage.getItem(STREAK_KEY)||'0');
+  if(done===habits.length && lastDate!==TODAY){
+    const yesterday = new Date(); yesterday.setDate(yesterday.getDate()-1);
+    if(lastDate===yesterday.toDateString()) streak++;
+    else if(lastDate!==TODAY) streak=1;
+    localStorage.setItem(STREAK_KEY, streak);
+    localStorage.setItem(LAST_DATE_KEY, TODAY);
+  }
+  document.getElementById('streakCount').textContent = streak;
+}
+
+function toggleHabit(i){
+  const habits = getHabits();
+  habits[i] = !habits[i];
+  localStorage.setItem(HABITS_KEY, JSON.stringify(habits));
+  renderHabits();
+}
+
+function resetHabits(){
+  localStorage.setItem(HABITS_KEY, JSON.stringify([false,false,false,false,false,false]));
+  renderHabits();
+}
+
+// Check if new day — reset habits
+const lastDate = localStorage.getItem(LAST_DATE_KEY);
+if(lastDate && lastDate!==TODAY && !getHabits().every(Boolean)){
+  localStorage.setItem(HABITS_KEY, JSON.stringify([false,false,false,false,false,false]));
+}
+renderHabits();
+
+// ── FAQ Toggle ────────────────────────────────
+function toggleFaq(el){
+  const isOpen = el.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(f=>f.classList.remove('open'));
+  if(!isOpen) el.classList.add('open');
+}
 
 // ── Forms (Formspree) ─────────────────────────
 document.getElementById('contactForm').addEventListener('submit', function(e) {

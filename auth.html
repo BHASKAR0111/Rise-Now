@@ -95,7 +95,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
     <div class="step active" id="stepLogin">
       <div class="method-switch">
         <button class="method-btn active" id="lEmailBtn" onclick="switchMethod('login','email')">✉️ Email</button>
-        <button class="method-btn" id="lPhoneBtn" onclick="switchMethod('login','phone')">📱 Phone</button>
+        
       </div>
       <div id="lEmailFields">
         <div class="form-group"><label class="form-label">Email Address</label><input class="form-input" id="lEmail" type="email" placeholder="you@example.com"></div>
@@ -105,10 +105,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
         </div>
         <button class="submit-btn" onclick="doLoginEmail()">Sign In →</button>
       </div>
-      <div id="lPhoneFields" style="display:none;">
-        <div class="form-group"><label class="form-label">Phone Number</label>
-          <div class="phone-row"><select class="country-select" id="lCountry"><option value="+91">🇮🇳 +91</option><option value="+1">🇺🇸 +1</option><option value="+44">🇬🇧 +44</option></select><input class="form-input" id="lPhone" type="tel" placeholder="9876543210" maxlength="10"></div>
-        </div>
+      
         <div id="rc-login"></div>
         <button class="submit-btn" onclick="doSendOTP('login')">Send OTP →</button>
       </div>
@@ -118,7 +115,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
     <div class="step" id="stepSignup">
       <div class="method-switch">
         <button class="method-btn active" id="sEmailBtn" onclick="switchMethod('signup','email')">✉️ Email</button>
-        <button class="method-btn" id="sPhoneBtn" onclick="switchMethod('signup','phone')">📱 Phone</button>
+        
       </div>
       <div id="sEmailFields">
         <div class="form-group"><label class="form-label">Full Name</label><input class="form-input" id="sName" type="text" placeholder="Your name"></div>
@@ -128,11 +125,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
         </div>
         <button class="submit-btn" onclick="doSignupEmail()">Create Account →</button>
       </div>
-      <div id="sPhoneFields" style="display:none;">
-        <div class="form-group"><label class="form-label">Full Name</label><input class="form-input" id="sNamePhone" type="text" placeholder="Your name"></div>
-        <div class="form-group"><label class="form-label">Phone Number</label>
-          <div class="phone-row"><select class="country-select" id="sCountry"><option value="+91">🇮🇳 +91</option><option value="+1">🇺🇸 +1</option><option value="+44">🇬🇧 +44</option></select><input class="form-input" id="sPhone" type="tel" placeholder="9876543210" maxlength="10"></div>
-        </div>
+      
         <div id="rc-signup"></div>
         <button class="submit-btn" onclick="doSendOTP('signup')">Send OTP →</button>
       </div>

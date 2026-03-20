@@ -354,7 +354,47 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 </head>
 <body>
 
-<!-- Onboarding Popup -->
+<!-- Firebase Auth Guard -->
+<script type="module">
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js';
+  import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js';
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyB2__vKiROvrPOyomY8X-pDBY8VlArDbdY",
+    authDomain: "risenow-31893.firebaseapp.com",
+    projectId: "risenow-31893",
+    storageBucket: "risenow-31893.firebasestorage.app",
+    messagingSenderId: "230298271225",
+    appId: "1:230298271225:web:c24d7100fc8b89a268d128"
+  };
+
+  const app  = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  // Show loading until auth state confirmed
+  document.body.style.visibility = 'hidden';
+
+  onAuthStateChanged(auth, (user) => {
+    if(user){
+      // Logged in — show dashboard, set name
+      document.body.style.visibility = 'visible';
+      const name = user.displayName || user.email?.split('@')[0] || 'User';
+      localStorage.setItem('db-username', name);
+      localStorage.setItem('db-onboarded', '1');
+      // Update UI
+      const nameEls = ['topProfileName','dropdownName','sidebarName','welcomeName'];
+      nameEls.forEach(id => {
+        const el = document.getElementById(id);
+        if(el) el.textContent = name;
+      });
+      // Store logout function
+      window._firebaseAuth = auth;
+    } else {
+      // Not logged in — redirect to auth
+      window.location.href = 'auth.html';
+    }
+  });
+</script>
 <div class="onboarding-overlay" id="onboardingOverlay">
   <div class="onboarding-box">
     <div class="onboarding-emoji">🌱</div>
@@ -406,6 +446,9 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
   </nav>
   <div class="sidebar-footer">
     <a href="index.html" class="back-btn">← Back to RiseNow</a>
+    <div onclick="logoutUser()" style="display:flex;align-items:center;gap:8px;font-size:13px;color:#ef4444;cursor:pointer;padding:8px 0;transition:.2s;" onmouseover="this.style.opacity='.7'" onmouseout="this.style.opacity='1'">
+      🚪 Sign Out
+    </div>
   </div>
 </aside>
 
@@ -468,6 +511,7 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
           <div class="dropdown-item" onclick="showPage('badges')">🏆 &nbsp; My Badges</div>
           <div class="dropdown-item" onclick="showPage('goals')">🎯 &nbsp; My Goals</div>
           <div class="dropdown-divider"></div>
+          <div class="dropdown-item danger" onclick="logoutUser()">🚪 &nbsp; Sign Out</div>
           <div class="dropdown-item danger" onclick="clearAllData()">🗑️ &nbsp; Clear All Data</div>
         </div>
       </div>
@@ -1105,8 +1149,22 @@ function handlePicUpload(e){
 
 function clearAllData(){
   if(confirm('Clear all your data? This cannot be undone.')){
-    ['db-habits','db-streak','db-goals','db-career','db-username','db-userpic'].forEach(k=>localStorage.removeItem(k));
+    ['db-habits','db-streak','db-goals','db-career','db-username','db-userpic','db-notifs','db-course-pcts'].forEach(k=>localStorage.removeItem(k));
     location.reload();
+  }
+}
+
+function logoutUser(){
+  if(window._firebaseAuth){
+    import('https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js').then(({signOut})=>{
+      signOut(window._firebaseAuth).then(()=>{
+        localStorage.removeItem('db-username');
+        localStorage.removeItem('db-onboarded');
+        window.location.href = 'auth.html';
+      });
+    });
+  } else {
+    window.location.href = 'auth.html';
   }
 }
 
@@ -1126,5 +1184,61 @@ document.getElementById('goalModal').addEventListener('click', function(e){
   if(e.target===this) this.classList.remove('active');
 });
 </script>
+<!-- Firebase Auth Guard -->
+<script type="module">
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js';
+  import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js';
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyB2__vKiROvrPOyomY8X-pDBY8VlArDbdY",
+    authDomain: "risenow-31893.firebaseapp.com",
+    projectId: "risenow-31893",
+    storageBucket: "risenow-31893.firebasestorage.app",
+    messagingSenderId: "230298271225",
+    appId: "1:230298271225:web:c24d7100fc8b89a268d128"
+  };
+
+  const app  = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  // Show loading till auth check completes
+  document.body.style.visibility = 'hidden';
+
+  onAuthStateChanged(auth, (user) => {
+    if(user){
+      // ✅ Logged in — show dashboard, update name/pic
+      document.body.style.visibility = 'visible';
+      const displayName = user.displayName || user.email?.split('@')[0] || 'User';
+      localStorage.setItem('db-username', displayName);
+      localStorage.setItem('db-onboarded', '1');
+
+      // Update UI with real user data
+      const nameEls = ['topProfileName','dropdownName','sidebarName','welcomeName'];
+      nameEls.forEach(id => {
+        const el = document.getElementById(id);
+        if(el) el.textContent = displayName;
+      });
+
+      // Profile pic from Google
+      if(user.photoURL){
+        const picHTML = `<img src="${user.photoURL}" alt="Profile">`;
+        const picEls = ['topProfilePic','dropdownAvatar'];
+        picEls.forEach(id => {
+          const el = document.getElementById(id);
+          if(el) el.innerHTML = picHTML + (id==='dropdownAvatar' ? '<input type="file" id="picUpload" accept="image/*" style="display:none" onchange="handlePicUpload(event)">' : '');
+        });
+        const sidebarAvatar = document.querySelector('.user-avatar');
+        if(sidebarAvatar) sidebarAvatar.innerHTML = `<img src="${user.photoURL}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
+      }
+
+      // Store logout function
+      window._firebaseAuth = auth;
+    } else {
+      // ❌ Not logged in — redirect to auth
+      window.location.href = 'auth.html';
+    }
+  });
+</script>
+
 </body>
 </html>

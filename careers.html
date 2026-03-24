@@ -3,882 +3,318 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Career Explorer | RiseNow</title>
+  <title>Explore Careers | RiseNow</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    :root {
-      --green: #00e676; --teal: #00bcd4;
-      --bg: #0d1117; --card: #161b22;
-      --border: rgba(255,255,255,0.07);
-      --text: rgba(255,255,255,0.85);
-      --muted: rgba(255,255,255,0.4);
-    }
-    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
-
-    /* NAV */
-    nav {
-      position: sticky; top: 0; z-index: 200;
-      background: rgba(13,17,23,0.97); backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-      padding: 0 32px; height: 64px;
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-    .logo-r {
-      width: 36px; height: 36px; border-radius: 8px;
-      background: linear-gradient(135deg, var(--green), var(--teal));
-      display: flex; align-items: center; justify-content: center;
-      font-size: 18px; font-weight: 900; color: #0d1117;
-    }
-    .logo-name {
-      font-size: 20px; font-weight: 800;
-      background: linear-gradient(90deg, var(--green), var(--teal));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
-    .nav-right { display: flex; align-items: center; gap: 16px; }
-    .nav-tab {
-      padding: 8px 16px; border-radius: 8px;
-      font-size: 13px; font-weight: 600; cursor: pointer;
-      border: none; font-family: 'Inter', sans-serif;
-      transition: all 0.2s;
-    }
-    .nav-tab.explorer { background: transparent; color: var(--muted); }
-    .nav-tab.explorer:hover { color: var(--green); }
-    .nav-tab.dashboard { background: rgba(0,230,118,0.1); color: var(--green); border: 1px solid rgba(0,230,118,0.2); }
-    .nav-tab.active-tab { background: rgba(0,230,118,0.15); color: var(--green); border: 1px solid rgba(0,230,118,0.3); }
-    .enrolled-count {
-      background: var(--green); color: #0d1117;
-      font-size: 10px; font-weight: 800;
-      width: 18px; height: 18px; border-radius: 50%;
-      display: inline-flex; align-items: center; justify-content: center;
-      margin-left: 4px;
-    }
-
-    /* SCREENS */
-    .screen { display: none; }
-    .screen.active { display: block; }
-
-    /* ===== EXPLORER ===== */
-    .hero { text-align: center; padding: 56px 32px 36px; position: relative; }
-    .hero::before {
-      content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-      width: 700px; height: 350px;
-      background: radial-gradient(ellipse, rgba(0,230,118,0.06) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .hero-tag {
-      display: inline-flex; align-items: center; gap: 6px;
-      background: rgba(0,230,118,0.08); border: 1px solid rgba(0,230,118,0.2);
-      color: var(--green); font-size: 11px; font-weight: 700;
-      padding: 5px 14px; border-radius: 20px; letter-spacing: 1px;
-      text-transform: uppercase; margin-bottom: 18px;
-    }
-    .hero h1 { font-size: 46px; font-weight: 900; letter-spacing: -2px; margin-bottom: 12px; }
-    .hero h1 span {
-      background: linear-gradient(90deg, var(--green), var(--teal));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
-    .hero p { font-size: 15px; color: var(--muted); max-width: 480px; margin: 0 auto 28px; line-height: 1.7; }
-
-    /* SEARCH + FILTER */
-    .explorer-toolbar {
-      display: flex; align-items: center; gap: 12px;
-      padding: 0 32px 28px; max-width: 1200px; margin: 0 auto; flex-wrap: wrap;
-    }
-    .search-box {
-      flex: 1; min-width: 220px; position: relative;
-    }
-    .search-box input {
-      width: 100%; padding: 12px 16px 12px 42px;
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: 10px; color: white; font-size: 14px;
-      font-family: 'Inter', sans-serif; outline: none;
-    }
-    .search-box input:focus { border-color: rgba(0,230,118,0.3); }
-    .search-box input::placeholder { color: var(--muted); }
-    .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 16px; }
-
-    .filter-pills { display: flex; gap: 8px; flex-wrap: wrap; }
-    .pill {
-      padding: 8px 16px; border-radius: 20px;
-      border: 1px solid var(--border); background: transparent;
-      color: var(--muted); font-size: 12px; font-weight: 600;
-      cursor: pointer; transition: all 0.2s; font-family: 'Inter', sans-serif;
-      white-space: nowrap;
-    }
-    .pill:hover { border-color: rgba(0,230,118,0.3); color: var(--green); }
-    .pill.active { background: rgba(0,230,118,0.1); border-color: rgba(0,230,118,0.3); color: var(--green); }
-
-    /* CAREER GRID */
-    .career-grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 16px; padding: 0 32px 60px; max-width: 1200px; margin: 0 auto;
-    }
-
-    .career-card {
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: 16px; padding: 24px; cursor: pointer;
-      transition: all 0.25s; position: relative; overflow: hidden;
-    }
-    .career-card::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0;
-      height: 3px; opacity: 0; transition: opacity 0.25s;
-    }
-    .career-card:hover { border-color: rgba(0,230,118,0.2); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
-    .career-card:hover::before { opacity: 1; }
-    .career-card.enrolled { border-color: rgba(0,230,118,0.35); }
-    .career-card.enrolled::before { opacity: 1; }
-
-    .card-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 14px; }
-    .card-emoji { font-size: 36px; }
-    .card-badges { display: flex; flex-direction: column; gap: 4px; align-items: flex-end; }
-    .demand-badge {
-      font-size: 9px; font-weight: 700; padding: 3px 8px;
-      border-radius: 6px; text-transform: uppercase; letter-spacing: 0.5px;
-    }
-    .enrolled-badge {
-      font-size: 9px; font-weight: 700; padding: 3px 8px;
-      border-radius: 6px; background: rgba(0,230,118,0.15); color: #00e676;
-    }
-
-    .card-title { font-size: 17px; font-weight: 800; color: white; margin-bottom: 6px; }
-    .card-desc { font-size: 12px; color: var(--muted); line-height: 1.6; margin-bottom: 14px; }
-
-    .card-skills { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
-    .skill-tag {
-      font-size: 10px; font-weight: 600; padding: 3px 8px;
-      border-radius: 6px; background: rgba(255,255,255,0.05);
-      color: rgba(255,255,255,0.5); border: 1px solid var(--border);
-    }
-
-    .card-bottom { display: flex; align-items: center; justify-content: space-between; }
-    .card-salary { font-size: 12px; color: var(--green); font-weight: 600; }
-    .card-duration { font-size: 11px; color: var(--muted); }
-
-    /* PROGRESS MINI */
-    .card-progress { margin-top: 12px; }
-    .progress-mini-label { display: flex; justify-content: space-between; font-size: 10px; color: var(--muted); margin-bottom: 4px; }
-    .progress-mini-track { height: 4px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; }
-    .progress-mini-fill { height: 100%; background: linear-gradient(90deg, var(--green), var(--teal)); border-radius: 2px; }
-
-    /* ===== CAREER DETAIL MODAL ===== */
-    .modal-overlay {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.8);
-      backdrop-filter: blur(6px); z-index: 300;
-      display: none; align-items: flex-start; justify-content: center;
-      padding: 40px 20px; overflow-y: auto;
-    }
-    .modal-overlay.open { display: flex; }
-
-    .modal {
-      background: #13181f; border: 1px solid var(--border);
-      border-radius: 24px; width: 100%; max-width: 760px;
-      position: relative; overflow: hidden;
-    }
-
-    .modal-banner {
-      height: 140px; display: flex; align-items: flex-end;
-      padding: 24px; position: relative;
-    }
-    .modal-banner-emoji { font-size: 56px; position: absolute; right: 32px; top: 50%; transform: translateY(-50%); opacity: 0.3; }
-    .modal-banner-title { font-size: 28px; font-weight: 900; color: white; position: relative; z-index: 1; }
-
-    .modal-body { padding: 28px 32px; }
-
-    .modal-section { margin-bottom: 28px; }
-    .modal-section-title {
-      font-size: 11px; font-weight: 700; color: var(--muted);
-      text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 14px;
-    }
-
-    .scope-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-    .scope-card {
-      background: rgba(255,255,255,0.03); border: 1px solid var(--border);
-      border-radius: 12px; padding: 14px;
-    }
-    .scope-num { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
-    .scope-label { font-size: 11px; color: var(--muted); }
-
-    .skills-list { display: flex; flex-wrap: wrap; gap: 8px; }
-    .skill-chip {
-      padding: 6px 14px; border-radius: 20px;
-      font-size: 12px; font-weight: 600;
-      background: rgba(255,255,255,0.04); border: 1px solid var(--border);
-      color: rgba(255,255,255,0.7);
-    }
-
-    .resources-list { display: flex; flex-direction: column; gap: 8px; }
-    .resource-row {
-      display: flex; align-items: center; gap: 12px;
-      background: rgba(255,255,255,0.03); border: 1px solid var(--border);
-      border-radius: 10px; padding: 12px 16px; text-decoration: none;
-      transition: border 0.2s;
-    }
-    .resource-row:hover { border-color: rgba(0,230,118,0.2); }
-    .resource-type {
-      font-size: 9px; font-weight: 700; padding: 2px 8px;
-      border-radius: 6px; text-transform: uppercase; flex-shrink: 0;
-    }
-    .resource-name { font-size: 13px; font-weight: 600; color: white; flex: 1; }
-    .resource-arrow { color: var(--muted); font-size: 14px; }
-
-    .modal-footer {
-      padding: 20px 32px 28px;
-      display: flex; gap: 12px;
-    }
-    .btn-enroll {
-      flex: 1; padding: 14px;
-      background: linear-gradient(135deg, var(--green), var(--teal));
-      border: none; border-radius: 12px;
-      color: #0d1117; font-size: 15px; font-weight: 800;
-      cursor: pointer; font-family: 'Inter', sans-serif;
-      transition: opacity 0.2s;
-    }
-    .btn-enroll:hover { opacity: 0.9; }
-    .btn-enroll.unenroll { background: rgba(255,71,87,0.15); color: #ff4757; border: 1px solid rgba(255,71,87,0.3); }
-    .btn-close-modal {
-      padding: 14px 20px; background: transparent;
-      border: 1px solid var(--border); border-radius: 12px;
-      color: var(--muted); font-size: 14px; font-weight: 600;
-      cursor: pointer; font-family: 'Inter', sans-serif;
-    }
-
-    /* ===== DASHBOARD ===== */
-    .dashboard-hero { padding: 48px 32px 32px; }
-    .dashboard-hero h2 { font-size: 32px; font-weight: 900; letter-spacing: -1px; margin-bottom: 6px; }
-    .dashboard-hero h2 span {
-      background: linear-gradient(90deg, var(--green), var(--teal));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
-    .dashboard-hero p { font-size: 14px; color: var(--muted); }
-
-    /* DASHBOARD STATS */
-    .dash-stats {
-      display: flex; gap: 14px; padding: 0 32px 32px; flex-wrap: wrap;
-    }
-    .dash-stat {
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: 14px; padding: 20px 24px; flex: 1; min-width: 140px;
-    }
-    .dash-stat-num { font-size: 28px; font-weight: 900; margin-bottom: 4px; }
-    .dash-stat-lbl { font-size: 12px; color: var(--muted); }
-
-    /* ENROLLED COURSES */
-    .dash-section { padding: 0 32px 60px; max-width: 1200px; margin: 0 auto; }
-    .dash-section-title {
-      font-size: 13px; font-weight: 700; color: var(--muted);
-      text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 20px;
-    }
-
-    .enrolled-list { display: flex; flex-direction: column; gap: 14px; }
-
-    .enrolled-item {
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: 16px; padding: 24px; cursor: pointer;
-      transition: border 0.2s;
-    }
-    .enrolled-item:hover { border-color: rgba(0,230,118,0.2); }
-
-    .enrolled-top { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
-    .enrolled-emoji { font-size: 32px; }
-    .enrolled-info { flex: 1; }
-    .enrolled-title { font-size: 17px; font-weight: 700; color: white; margin-bottom: 3px; }
-    .enrolled-sub { font-size: 12px; color: var(--muted); }
-    .enrolled-pct { font-size: 22px; font-weight: 900; }
-
-    .big-progress-track { height: 8px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; }
-    .big-progress-fill { height: 100%; background: linear-gradient(90deg, var(--green), var(--teal)); border-radius: 4px; transition: width 0.5s; }
-
-    .enrolled-steps { margin-top: 16px; display: none; }
-    .enrolled-item.expanded .enrolled-steps { display: block; }
-
-    .step-row {
-      display: flex; align-items: center; gap: 12px;
-      padding: 10px 0; border-bottom: 1px solid var(--border);
-      cursor: pointer;
-    }
-    .step-row:last-child { border-bottom: none; }
-    .step-cb {
-      width: 20px; height: 20px; border-radius: 50%;
-      border: 2px solid var(--border); flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 10px; transition: all 0.2s;
-    }
-    .step-row.done .step-cb { background: var(--green); border-color: var(--green); color: #0d1117; }
-    .step-row-text { font-size: 13px; color: var(--text); flex: 1; }
-    .step-row.done .step-row-text { color: var(--muted); text-decoration: line-through; }
-    .step-week { font-size: 10px; color: var(--muted); }
-
-    .empty-dashboard { text-align: center; padding: 80px 20px; }
-    .empty-dashboard .empty-icon { font-size: 56px; margin-bottom: 20px; }
-    .empty-dashboard h3 { font-size: 20px; color: white; margin-bottom: 8px; }
-    .empty-dashboard p { font-size: 14px; color: var(--muted); margin-bottom: 28px; }
-    .btn-explore {
-      padding: 14px 32px;
-      background: linear-gradient(135deg, var(--green), var(--teal));
-      border: none; border-radius: 12px;
-      color: #0d1117; font-size: 15px; font-weight: 700;
-      cursor: pointer; font-family: 'Inter', sans-serif;
-    }
-
-    footer {
-      border-top: 1px solid var(--border); padding: 28px 32px;
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    footer p { font-size: 13px; color: var(--muted); }
+    *{margin:0;padding:0;box-sizing:border-box;}
+    :root{--green:#00e676;--teal:#00bcd4;--bg:#0a0f0d;--card:#111814;--border:rgba(255,255,255,0.07);--text:rgba(255,255,255,0.85);--muted:rgba(255,255,255,0.4);}
+    body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+    nav{position:sticky;top:0;z-index:100;background:rgba(10,15,13,0.97);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 40px;height:64px;display:flex;align-items:center;justify-content:space-between;}
+    .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+    .logo-box{width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,var(--green),var(--teal));display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#0a0f0d;}
+    .logo-text{font-size:20px;font-weight:800;background:linear-gradient(90deg,var(--green),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    .nav-right{display:flex;align-items:center;gap:8px;}
+    .nav-link{padding:8px 14px;font-size:13px;font-weight:500;color:var(--muted);text-decoration:none;border-radius:8px;}
+    .nav-link:hover{color:white;}
+    .profile-btn{width:38px;height:38px;border-radius:50%;border:2px solid var(--border);background:var(--card);cursor:pointer;overflow:hidden;display:flex;align-items:center;justify-content:center;transition:border-color 0.2s;position:relative;}
+    .profile-btn:hover{border-color:var(--green);}
+    .profile-btn img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;border-radius:50%;}
+    .hero{text-align:center;padding:56px 40px 40px;position:relative;}
+    .hero::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:700px;height:350px;background:radial-gradient(ellipse,rgba(0,230,118,0.06) 0%,transparent 70%);pointer-events:none;}
+    .hero-tag{display:inline-block;background:rgba(0,230,118,0.08);border:1px solid rgba(0,230,118,0.2);color:var(--green);font-size:11px;font-weight:700;padding:5px 14px;border-radius:20px;letter-spacing:2px;text-transform:uppercase;margin-bottom:18px;}
+    .hero h1{font-size:46px;font-weight:900;letter-spacing:-2px;margin-bottom:12px;}
+    .hero h1 span{background:linear-gradient(90deg,var(--green),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    .hero p{font-size:15px;color:var(--muted);max-width:500px;margin:0 auto;line-height:1.7;}
+    .toolbar{display:flex;align-items:center;gap:12px;padding:0 40px 28px;max-width:1200px;margin:0 auto;flex-wrap:wrap;}
+    .search-wrap{flex:1;min-width:220px;position:relative;}
+    .search-wrap input{width:100%;padding:12px 16px 12px 42px;background:var(--card);border:1px solid var(--border);border-radius:10px;color:white;font-size:14px;font-family:'Inter',sans-serif;outline:none;}
+    .search-wrap input:focus{border-color:rgba(0,230,118,0.3);}
+    .search-wrap input::placeholder{color:var(--muted);}
+    .s-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted);}
+    .pills{display:flex;gap:8px;flex-wrap:wrap;}
+    .pill{padding:8px 16px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;white-space:nowrap;transition:all 0.2s;}
+    .pill:hover,.pill.active{background:rgba(0,230,118,0.1);border-color:rgba(0,230,118,0.3);color:var(--green);}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;padding:0 40px 60px;max-width:1200px;margin:0 auto;}
+    .career-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;cursor:pointer;transition:all 0.25s;position:relative;overflow:hidden;}
+    .career-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;opacity:0;transition:opacity 0.25s;background:linear-gradient(90deg,var(--green),var(--teal));}
+    .career-card:hover{border-color:rgba(0,230,118,0.2);transform:translateY(-2px);}
+    .career-card:hover::before,.career-card.saved::before{opacity:1;}
+    .career-card.saved{border-color:rgba(0,230,118,0.35);}
+    .card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;}
+    .card-emoji{font-size:36px;}
+    .card-badges{display:flex;flex-direction:column;gap:4px;align-items:flex-end;}
+    .demand-badge{font-size:9px;font-weight:700;padding:3px 8px;border-radius:6px;text-transform:uppercase;}
+    .saved-badge{font-size:9px;font-weight:700;padding:3px 8px;border-radius:6px;background:rgba(0,230,118,0.15);color:#00e676;}
+    .card-title{font-size:17px;font-weight:800;color:white;margin-bottom:6px;}
+    .card-desc{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:14px;}
+    .card-skills{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;}
+    .skill-tag{font-size:10px;font-weight:600;padding:3px 8px;border-radius:6px;background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.5);border:1px solid var(--border);}
+    .card-bottom{display:flex;align-items:center;justify-content:space-between;}
+    .card-salary{font-size:12px;color:var(--green);font-weight:600;}
+    .card-dur{font-size:11px;color:var(--muted);}
+    .mini-prog{margin-top:12px;}
+    .mini-prog-label{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-bottom:4px;}
+    .mini-prog-track{height:4px;background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden;}
+    .mini-prog-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--teal));border-radius:2px;}
+    /* MODAL */
+    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);z-index:300;display:none;align-items:flex-start;justify-content:center;padding:40px 20px;overflow-y:auto;}
+    .modal-overlay.open{display:flex;}
+    .modal{background:#131a17;border:1px solid var(--border);border-radius:24px;width:100%;max-width:720px;}
+    .modal-top{padding:32px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:20px;}
+    .m-emoji{font-size:48px;}
+    .m-title{font-size:26px;font-weight:900;color:white;margin-bottom:8px;}
+    .m-meta{display:flex;gap:8px;flex-wrap:wrap;}
+    .m-tag{font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;}
+    .modal-body{padding:28px 32px;}
+    .ms{margin-bottom:24px;}
+    .ms-title{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;}
+    .scope-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+    .scope-card{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:12px;padding:14px;}
+    .scope-num{font-size:20px;font-weight:800;background:linear-gradient(90deg,var(--green),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px;}
+    .scope-lbl{font-size:11px;color:var(--muted);}
+    .skills-wrap{display:flex;flex-wrap:wrap;gap:8px;}
+    .skill-chip{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;background:rgba(255,255,255,0.04);border:1px solid var(--border);color:rgba(255,255,255,0.7);}
+    .res-list{display:flex;flex-direction:column;gap:8px;}
+    .res-row{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:10px;padding:12px 16px;text-decoration:none;transition:border 0.2s;}
+    .res-row:hover{border-color:rgba(0,230,118,0.2);}
+    .res-type{font-size:9px;font-weight:700;padding:2px 8px;border-radius:6px;text-transform:uppercase;flex-shrink:0;}
+    .res-name{font-size:13px;font-weight:600;color:white;flex:1;}
+    .login-prompt{background:rgba(0,230,118,0.05);border:1px solid rgba(0,230,118,0.15);border-radius:14px;padding:20px;text-align:center;margin:0 32px 20px;}
+    .login-prompt p{font-size:13px;color:var(--muted);margin-bottom:12px;}
+    .btn-login-inline{padding:10px 24px;background:linear-gradient(135deg,var(--green),var(--teal));border:none;border-radius:8px;color:#0a0f0d;font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
+    .modal-footer{padding:20px 32px 28px;display:flex;gap:12px;border-top:1px solid var(--border);}
+    .btn-save{flex:1;padding:14px;border:none;border-radius:12px;font-size:15px;font-weight:800;cursor:pointer;font-family:'Inter',sans-serif;background:linear-gradient(135deg,var(--green),var(--teal));color:#0a0f0d;transition:opacity 0.2s;}
+    .btn-save:hover{opacity:0.9;}
+    .btn-save.unsave{background:rgba(255,71,87,0.1);color:#ff4757;border:1px solid rgba(255,71,87,0.3);}
+    .btn-save.go{background:linear-gradient(135deg,var(--teal),var(--green));color:#0a0f0d;}
+    .btn-close-modal{padding:14px 20px;background:transparent;border:1px solid var(--border);border-radius:12px;color:var(--muted);font-size:14px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;}
+    /* LOGIN */
+    .login-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.9);backdrop-filter:blur(8px);z-index:500;display:none;align-items:center;justify-content:center;}
+    .login-overlay.open{display:flex;}
+    .login-box{background:#131a17;border:1px solid var(--border);border-radius:24px;padding:44px 40px;width:100%;max-width:400px;text-align:center;position:relative;}
+    .login-box h3{font-size:24px;font-weight:900;color:white;margin-bottom:8px;}
+    .login-box p{font-size:14px;color:var(--muted);margin-bottom:32px;line-height:1.6;}
+    .btn-google{width:100%;padding:14px;background:white;border:none;border-radius:12px;color:#111;font-size:15px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;justify-content:center;gap:12px;}
+    .btn-google img{width:20px;}
+    .lc{position:absolute;top:16px;right:16px;background:transparent;border:none;color:var(--muted);font-size:20px;cursor:pointer;}
   </style>
 </head>
 <body>
-
-<!-- NAV -->
 <nav>
   <a href="index.html" class="nav-logo">
-    <div class="logo-r">R</div>
-    <div class="logo-name">RiseNow</div>
+    <div class="logo-box">R</div>
+    <div class="logo-text">RiseNow</div>
   </a>
   <div class="nav-right">
-    <button class="nav-tab explorer active-tab" onclick="showScreen('explorer')">🧭 Explore Careers</button>
-    <button class="nav-tab dashboard" onclick="showScreen('dashboard')">
-      📊 My Dashboard <span class="enrolled-count" id="enrolledCount">0</span>
-    </button>
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="dashboard.html" class="nav-link">My Dashboard</a>
+    <a href="resources.html" class="nav-link">Resources</a>
+    <div class="profile-btn" id="profileBtn" onclick="handleProfileClick()">
+      <span id="pIcon" style="font-size:16px;color:var(--muted);">👤</span>
+      <img id="pImg" src="" alt="" style="display:none;"/>
+    </div>
   </div>
 </nav>
 
-<!-- ===== EXPLORER SCREEN ===== -->
-<div class="screen active" id="screen-explorer">
-
-  <div class="hero">
-    <div class="hero-tag">🧭 Career Explorer</div>
-    <h1>Find Your <span>Perfect Career</span></h1>
-    <p>Explore 17 career paths — read scope, skills & resources. Add to your dashboard and track progress.</p>
-  </div>
-
-  <div class="explorer-toolbar">
-    <div class="search-box">
-      <span class="search-icon">🔍</span>
-      <input type="text" id="searchInput" placeholder="Search careers..." oninput="renderCareers()"/>
-    </div>
-    <div class="filter-pills">
-      <button class="pill active" onclick="filterCat('all', this)">All</button>
-      <button class="pill" onclick="filterCat('tech', this)">💻 Tech</button>
-      <button class="pill" onclick="filterCat('creative', this)">🎨 Creative</button>
-      <button class="pill" onclick="filterCat('business', this)">📊 Business</button>
-      <button class="pill" onclick="filterCat('marketing', this)">📣 Marketing</button>
-    </div>
-  </div>
-
-  <div class="career-grid" id="careerGrid"></div>
-
+<div class="hero">
+  <div class="hero-tag">Explore All Paths</div>
+  <h1>Find Your <span>Career Path</span></h1>
+  <p>Browse 17 in-demand careers. Click any card to see scope, skills and resources — then save it to your dashboard.</p>
 </div>
 
-<!-- ===== DASHBOARD SCREEN ===== -->
-<div class="screen" id="screen-dashboard">
-  <div class="dashboard-hero">
-    <h2>My Learning <span>Dashboard</span></h2>
-    <p>Track your enrolled career paths and daily progress below.</p>
+<div class="toolbar">
+  <div class="search-wrap">
+    <span class="s-icon">🔍</span>
+    <input type="text" id="searchInput" placeholder="Search careers, skills..." oninput="renderGrid()"/>
   </div>
-
-  <div class="dash-stats">
-    <div class="dash-stat">
-      <div class="dash-stat-num" id="ds-enrolled" style="color:var(--green)">0</div>
-      <div class="dash-stat-lbl">Careers Enrolled</div>
-    </div>
-    <div class="dash-stat">
-      <div class="dash-stat-num" id="ds-steps" style="color:var(--teal)">0</div>
-      <div class="dash-stat-lbl">Steps Completed</div>
-    </div>
-    <div class="dash-stat">
-      <div class="dash-stat-num" id="ds-avg" style="color:#a78bfa">0%</div>
-      <div class="dash-stat-lbl">Avg Progress</div>
-    </div>
-  </div>
-
-  <div class="dash-section">
-    <div class="dash-section-title">Your Enrolled Paths</div>
-    <div class="enrolled-list" id="enrolledList"></div>
+  <div class="pills">
+    <button class="pill active" onclick="setFilter('all',this)">All</button>
+    <button class="pill" onclick="setFilter('tech',this)">Tech</button>
+    <button class="pill" onclick="setFilter('creative',this)">Creative</button>
+    <button class="pill" onclick="setFilter('business',this)">Business</button>
+    <button class="pill" onclick="setFilter('marketing',this)">Marketing</button>
   </div>
 </div>
 
-<!-- ===== CAREER DETAIL MODAL ===== -->
-<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
-  <div class="modal" id="modalBox">
-    <div class="modal-banner" id="modalBanner">
-      <div class="modal-banner-emoji" id="modalEmoji"></div>
-      <div class="modal-banner-title" id="modalTitle"></div>
+<div class="grid" id="careerGrid"></div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-top">
+      <div class="m-emoji" id="mEmoji"></div>
+      <div><div class="m-title" id="mTitle"></div><div class="m-meta" id="mMeta"></div></div>
     </div>
     <div class="modal-body">
-      <div class="modal-section">
-        <div class="modal-section-title">📈 Career Scope</div>
-        <div class="scope-grid" id="modalScope"></div>
-      </div>
-      <div class="modal-section">
-        <div class="modal-section-title">🛠️ Skills You'll Learn</div>
-        <div class="skills-list" id="modalSkills"></div>
-      </div>
-      <div class="modal-section">
-        <div class="modal-section-title">📚 Top Resources</div>
-        <div class="resources-list" id="modalResources"></div>
-      </div>
+      <div class="ms"><div class="ms-title">Career Scope</div><div class="scope-grid" id="mScope"></div></div>
+      <div class="ms"><div class="ms-title">Skills You'll Need</div><div class="skills-wrap" id="mSkills"></div></div>
+      <div class="ms"><div class="ms-title">Top Free Resources</div><div class="res-list" id="mResources"></div></div>
     </div>
+    <div id="mLoginPrompt"></div>
     <div class="modal-footer">
-      <button class="btn-enroll" id="btnEnroll" onclick="toggleEnroll()"></button>
-      <button class="btn-close-modal" onclick="closeModalBtn()">Close</button>
+      <button class="btn-save" id="btnSave" onclick="handleSave()">Save to My Dashboard</button>
+      <button class="btn-close-modal" onclick="closeModal()">Close</button>
     </div>
   </div>
 </div>
 
-<footer>
-  <a href="index.html" class="nav-logo">
-    <div class="logo-r">R</div>
-    <div class="logo-name">RiseNow</div>
-  </a>
-  <p>© 2026 RiseNow. Helping Strugglers Stand Again.</p>
-</footer>
+<!-- LOGIN -->
+<div class="login-overlay" id="loginOverlay">
+  <div class="login-box">
+    <button class="lc" onclick="closeLogin()">✕</button>
+    <h3>Sign in to Save</h3>
+    <p>Sign in with Google to save career paths and track your progress across all devices.</p>
+    <button class="btn-google" onclick="signInWithGoogle()">
+      <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="G"/>
+      Continue with Google
+    </button>
+  </div>
+</div>
 
-<script>
-// ============================
-// CAREER DATA
-// ============================
-const careers = [
-  {
-    id: 'da', emoji: '📊', title: 'Data Analytics', category: 'business',
-    desc: 'Analyze data to find patterns, trends and insights that drive business decisions.',
-    skills: ['Python', 'SQL', 'Power BI', 'Excel', 'Pandas', 'Statistics', 'EDA', 'Tableau'],
-    demand: 'Very High', demandColor: '#00e676', salary: '₹4–14 LPA', duration: '3–4 months',
-    scope: [{ num: '97,000+', lbl: 'Jobs on LinkedIn' }, { num: '₹8L', lbl: 'Avg Salary' }, { num: '28%', lbl: 'Growth Rate' }],
-    resources: [
-      { name: 'Google Data Analytics', type: 'Course', url: 'https://coursera.org', color: '#00e676' },
-      { name: 'Kaggle Learn', type: 'Free', url: 'https://kaggle.com', color: '#00bcd4' },
-      { name: 'StatQuest YouTube', type: 'YouTube', url: 'https://youtube.com', color: '#ff4757' },
-      { name: 'W3Schools SQL', type: 'Free', url: 'https://w3schools.com', color: '#00e676' },
-    ],
-    steps: ['Learn Python basics', 'Master Pandas & NumPy', 'SQL fundamentals', 'Advanced SQL', 'Power BI basics', 'Build first dashboard', 'Statistics & EDA', 'Machine Learning intro', 'Capstone project', 'Build portfolio & apply'],
-  },
-  {
-    id: 'ml', emoji: '🤖', title: 'Machine Learning / AI', category: 'tech',
-    desc: 'Build intelligent systems that learn from data and make predictions automatically.',
-    skills: ['Python', 'Scikit-learn', 'TensorFlow', 'Deep Learning', 'NLP', 'Computer Vision', 'Statistics'],
-    demand: 'Extremely High', demandColor: '#00e676', salary: '₹8–25 LPA', duration: '5–6 months',
-    scope: [{ num: '75,000+', lbl: 'AI Jobs' }, { num: '₹15L', lbl: 'Avg Salary' }, { num: '40%', lbl: 'Growth Rate' }],
-    resources: [
-      { name: 'Fast.ai Deep Learning', type: 'Free', url: 'https://fast.ai', color: '#00e676' },
-      { name: 'Google ML Crash Course', type: 'Free', url: 'https://developers.google.com', color: '#00bcd4' },
-      { name: 'Kaggle ML Competitions', type: 'Free', url: 'https://kaggle.com', color: '#00e676' },
-      { name: 'Andrew Ng ML Course', type: 'Course', url: 'https://coursera.org', color: '#ffa500' },
-    ],
-    steps: ['Python & Math basics', 'Supervised Learning', 'Unsupervised Learning', 'Neural Networks', 'Deep Learning', 'NLP basics', 'Computer Vision', 'Model deployment', 'Kaggle competition', 'Build AI project'],
-  },
-  {
-    id: 'wd', emoji: '🌐', title: 'Web Development', category: 'tech',
-    desc: 'Build websites and web applications that millions of people use every day.',
-    skills: ['HTML', 'CSS', 'JavaScript', 'React', 'Node.js', 'Git', 'REST APIs', 'Databases'],
-    demand: 'High', demandColor: '#00e676', salary: '₹5–18 LPA', duration: '4–5 months',
-    scope: [{ num: '1.8M+', lbl: 'Jobs Globally' }, { num: '₹10L', lbl: 'Avg Salary' }, { num: '25%', lbl: 'Growth Rate' }],
-    resources: [
-      { name: 'freeCodeCamp', type: 'Free', url: 'https://freecodecamp.org', color: '#00e676' },
-      { name: 'The Odin Project', type: 'Free', url: 'https://theodinproject.com', color: '#00bcd4' },
-      { name: 'React Docs', type: 'Free', url: 'https://react.dev', color: '#00e676' },
-      { name: 'JavaScript.info', type: 'Free', url: 'https://javascript.info', color: '#ffa500' },
-    ],
-    steps: ['HTML basics', 'CSS & Flexbox', 'Responsive design', 'JavaScript basics', 'DOM manipulation', 'ES6+ features', 'React basics', 'React projects', 'Node.js & APIs', 'Deploy & portfolio'],
-  },
-  {
-    id: 'fs', emoji: '⚡', title: 'Full Stack Development', category: 'tech',
-    desc: 'Master both frontend and backend — build complete web applications from scratch.',
-    skills: ['React', 'Node.js', 'Express', 'MongoDB', 'SQL', 'REST APIs', 'Docker', 'Git'],
-    demand: 'Very High', demandColor: '#00e676', salary: '₹8–22 LPA', duration: '6–8 months',
-    scope: [{ num: '120,000+', lbl: 'Jobs' }, { num: '₹14L', lbl: 'Avg Salary' }, { num: '30%', lbl: 'Growth Rate' }],
-    resources: [
-      { name: 'The Odin Project Full Stack', type: 'Free', url: 'https://theodinproject.com', color: '#00e676' },
-      { name: 'Full Stack Open (Helsinki)', type: 'Free', url: 'https://fullstackopen.com', color: '#00bcd4' },
-      { name: 'MongoDB University', type: 'Free', url: 'https://university.mongodb.com', color: '#00e676' },
-    ],
-    steps: ['HTML/CSS/JS', 'React frontend', 'Node.js backend', 'Express & APIs', 'MongoDB database', 'Authentication', 'Full stack project', 'Docker basics', 'CI/CD basics', 'Deploy & portfolio'],
-  },
-  {
-    id: 'mob', emoji: '📱', title: 'Mobile App Development', category: 'tech',
-    desc: 'Build iOS and Android apps that people carry in their pockets every day.',
-    skills: ['React Native', 'Flutter', 'Dart', 'JavaScript', 'App Store', 'APIs', 'Firebase'],
-    demand: 'High', demandColor: '#00e676', salary: '₹6–20 LPA', duration: '4–5 months',
-    scope: [{ num: '60,000+', lbl: 'Mobile Jobs' }, { num: '₹12L', lbl: 'Avg Salary' }, { num: '22%', lbl: 'Growth Rate' }],
-    resources: [
-      { name: 'Flutter Official Docs', type: 'Free', url: 'https://flutter.dev', color: '#00e676' },
-      { name: 'React Native Docs', type: 'Free', url: 'https://reactnative.dev', color: '#00bcd4' },
-      { name: 'Firebase by Google', type: 'Free', url: 'https://firebase.google.com', color: '#ffa500' },
-    ],
-    steps: ['Choose Flutter or React Native', 'Language basics (Dart/JS)', 'UI components', 'Navigation & routing', 'State management', 'APIs & Firebase', 'Build first app', 'Testing', 'Publish to store', 'Portfolio & apply'],
-  },
-  {
-    id: 'cyber', emoji: '🔐', title: 'Cybersecurity', category: 'tech',
-    desc: 'Protect systems, networks and data from hackers and digital threats.',
-    skills: ['Networking', 'Linux', 'Python', 'Ethical Hacking', 'Kali Linux', 'Firewalls', 'Cryptography'],
-    demand: 'Extremely High', demandColor: '#00e676', salary: '₹6–20 LPA', duration: '5–6 months',
-    scope: [{ num: '3.5M', lbl: 'Jobs Unfilled' }, { num: '₹12L', lbl: 'Avg Salary' }, { num: '35%', lbl: 'Growth Rate' }],
-    resources: [
-      { name: 'TryHackMe', type: 'Free', url: 'https://tryhackme.com', color: '#00e676' },
-      { name: 'Hack The Box', type: 'Free', url: 'https://hackthebox.com', color: '#00bcd4' },
-      { name: 'CompTIA Security+ Guide', type: 'Course', url: 'https://comptia.org', color: '#ffa500' },
-    ],
-    steps: ['Networking basics', 'Linux fundamentals', 'Python scripting', 'Web security basics', 'Network security', 'Ethical hacking intro', 'TryHackMe rooms', 'CTF challenges', 'CompTIA Security+', 'Build lab & portfolio'],
-  },
-  {
-    id: 'cloud', emoji: '☁️', title: 'Cloud Computing', category: 'tech',
-    desc: 'Deploy and manage applications on AWS, Azure or Google Cloud.',
-    skills: ['AWS', 'Azure', 'GCP', 'Docker', 'Kubernetes', 'Terraform', 'Linux', 'CI/CD'],
-    demand: 'Extremely High', demandColor: '#00e676', salary: '₹8–25 LPA', duration: '4–5 months',
-    scope: [{ num: '150,000+', lbl: 'Cloud Jobs' }, { num: '₹16L', lbl: 'Avg Salary' }, { num: '38%', lbl: 'Growth Rate' }],
-    resources: [
-      { name: 'AWS Free Tier', type: 'Free', url: 'https://aws.amazon.com', color: '#ffa500' },
-      { name: 'Google Cloud Skills Boost', type: 'Free', url: 'https://cloudskillsboost.google', color: '#00e676' },
-      { name: 'Linux Foundation Courses', type: 'Free', url: 'https://training.linuxfoundation.org', color: '#00bcd4' },
-    ],
-    steps: ['Cloud concepts basics', 'Linux fundamentals', 'AWS core services', 'Storage & databases', 'Networking in cloud', 'Docker containers', 'Kubernetes basics', 'CI/CD pipelines', 'AWS certification', 'Build cloud project'],
-  },
-  {
-    id: 'java', emoji: '☕', title: 'Java / Backend Dev', category: 'tech',
-    desc: 'Build powerful server-side applications and APIs using Java and Spring Boot.',
-    skills: ['Java', 'Spring Boot', 'SQL', 'REST APIs', 'Maven', 'Git', 'Microservices', 'JPA'],
-    demand: 'High', demandColor: '#00e676', salary: '₹5–18 LPA', duration: '4–5 months',
-    scope: [{ num: '80,000+', lbl: 'Java Jobs' }, { num: '₹10L', lbl: 'Avg Salary' }, { num: '20%', lbl: 'Growth Rate' }],
-    resources: [
-      { name: 'Java Programming - Mooc.fi', type: 'Free', url: 'https://java-programming.mooc.fi', color: '#00e676' },
-      { name: 'Spring Boot Official', type: 'Free', url: 'https://spring.io', color: '#00bcd4' },
-      { name: 'Baeldung Tutorials', type: 'Free', url: 'https://baeldung.com', color: '#ffa500' },
-    ],
-    steps: ['Java basics', 'OOP concepts', 'Data structures', 'Collections & generics', 'Spring Boot intro', 'REST API development', 'Database & JPA', 'Authentication & JWT', 'Microservices basics', 'Build & deploy project'],
-  },
-  {
-    id: 'uiux', emoji: '🎯', title: 'UI/UX Design', category: 'creative',
-    desc: 'Design intuitive, beautiful digital experiences that users love.',
-    skills: ['Figma', 'Wireframing', 'Prototyping', 'User Research', 'Design Systems', 'Accessibility'],
-    demand: 'High', demandColor: '#00e676', salary: '₹4–15 LPA', duration: '3–4 months',
-    scope: [{ num: '50,000+', lbl: 'UX Jobs' }, { num: '₹9L', lbl: 'Avg Salary' }, { num: '24%', lbl: 'Growth Rate' }],
-    resources: [
-      { name: 'Figma Free Plan', type: 'Free', url: 'https://figma.com', color: '#00e676' },
-      { name: 'Google UX Design Certificate', type: 'Course', url: 'https://coursera.org', color: '#00bcd4' },
-      { name: 'Refactoring UI Book', type: 'Paid', url: 'https://refactoringui.com', color: '#ffa500' },
-    ],
-    steps: ['Design principles', 'User research basics', 'Wireframing', 'Figma fundamentals', 'Prototyping', 'Design systems', 'Usability testing', 'Portfolio case study 1', 'Portfolio case study 2', 'Apply for UX roles'],
-  },
-  {
-    id: 'gd', emoji: '🎨', title: 'Graphic Design', category: 'creative',
-    desc: 'Create visual identities, marketing materials and digital art that communicates.',
-    skills: ['Figma', 'Canva', 'Adobe Photoshop', 'Illustrator', 'Typography', 'Color Theory', 'Branding'],
-    demand: 'Medium', demandColor: '#ffa500', salary: '₹3–10 LPA', duration: '2–3 months',
-    scope: [{ num: '30,000+', lbl: 'Design Jobs' }, { num: '₹6L', lbl: 'Avg Salary' }, { num: '15%', lbl: 'Growth Rate' }],
-    resources: [
-      { name: 'Canva Design School', type: 'Free', url: 'https://canva.com', color: '#00e676' },
-      { name: 'Behance Portfolio', type: 'Free', url: 'https://behance.net', color: '#00bcd4' },
-      { name: 'Adobe Express', type: 'Free', url: 'https://express.adobe.com', color: '#ffa500' },
-    ],
-    steps: ['Design principles', 'Color theory', 'Typography', 'Canva mastery', 'Figma basics', 'Logo design', 'Brand identity project', 'Social media kit', 'Behance portfolio', 'Start freelancing or apply'],
-  },
-  {
-    id: 've', emoji: '🎬', title: 'Video Editing', category: 'creative',
-    desc: 'Edit compelling videos for YouTube, social media, films and corporate content.',
-    skills: ['Premiere Pro', 'DaVinci Resolve', 'After Effects', 'Color Grading', 'Audio Mixing', 'Motion Graphics'],
-    demand: 'Medium', demandColor: '#ffa500', salary: '₹3–12 LPA', duration: '2–3 months',
-    scope: [{ num: '25,000+', lbl: 'Video Jobs' }, { num: '₹6L', lbl: 'Avg Salary' }, { num: '20%', lbl: 'Growth Rate' }],
-    resources: [
-      { name: 'DaVinci Resolve (Free)', type: 'Free', url: 'https://blackmagicdesign.com', color: '#00e676' },
-      { name: 'YouTube Creator Academy', type: 'Free', url: 'https://youtube.com', color: '#ff4757' },
-      { name: 'Premiere Pro Tutorials', type: 'YouTube', url: 'https://youtube.com', color: '#ff4757' },
-    ],
-    steps: ['Video concepts & terminology', 'DaVinci Resolve basics', 'Cut & trim footage', 'Transitions & effects', 'Color grading basics', 'Audio mixing', 'Motion graphics intro', 'Edit a short film', 'YouTube reel project', 'Portfolio & freelancing'],
-  },
-  {
-    id: 'cw', emoji: '✍️', title: 'Content Writing', category: 'creative',
-    desc: 'Write compelling content that attracts audiences, ranks on Google and converts readers.',
-    skills: ['SEO Writing', 'Blog Writing', 'Copywriting', 'Research', 'Content Strategy', 'Grammar', 'Editing'],
-    demand: 'High', demandColor: '#00e676', salary: '₹3–10 LPA', duration: '1–2 months',
-    scope: [{ num: '40,000+', lbl: 'Writing Jobs' }, { num: '₹5L', lbl: 'Avg Salary' }, { num: '18%', lbl: 'Growth Rate' }],
-    resources: [
-      { name: 'Hemingway App', type: 'Free', url: 'https://hemingwayapp.com', color: '#00e676' },
-      { name: 'Hubspot Blog Writing Guide', type: 'Free', url: 'https://hubspot.com', color: '#00bcd4' },
-      { name: 'Copyblogger', type: 'Free', url: 'https://copyblogger.com', color: '#ffa500' },
-    ],
-    steps: ['Writing fundamentals', 'Grammar & style', 'SEO basics', 'Keyword research', 'Write first blog post', 'Headlines & hooks', 'Long-form content', 'Copywriting basics', 'Portfolio of 5 articles', 'Apply or freelance on Upwork'],
-  },
-  {
-    id: 'dm', emoji: '📣', title: 'Digital Marketing', category: 'marketing',
-    desc: 'Grow businesses online through SEO, paid ads, email and social media.',
-    skills: ['SEO', 'Google Ads', 'Meta Ads', 'Email Marketing', 'Analytics', 'Content Strategy', 'Canva'],
-    demand: 'High', demandColor: '#00e676', salary: '₹3–12 LPA', duration: '2–3 months',
-    scope: [{ num: '55,000+', lbl: 'Marketing Jobs' }, { num: '₹7L', lbl: 'Avg Salary' }, { num: '22%', lbl: 'Growth Rate' }],
-    resources: [
-      { name: 'Google Skillshop', type: 'Free', url: 'https://skillshop.google.com', color: '#00e676' },
-      { name: 'HubSpot Academy', type: 'Free', url: 'https://academy.hubspot.com', color: '#00bcd4' },
-      { name: 'Neil Patel Blog', type: 'Free', url: 'https://neilpatel.com', color: '#ffa500' },
-    ],
-    steps: ['Marketing fundamentals', 'Google Analytics', 'SEO basics', 'Content marketing', 'Email campaigns', 'Google Ads', 'Meta Ads', 'Social media strategy', 'Campaign case study', 'Get certified & apply'],
-  },
-  {
-    id: 'pm', emoji: '🧩', title: 'Product Management', category: 'business',
-    desc: 'Define, build and launch products by bridging tech, design and business teams.',
-    skills: ['Product Strategy', 'Roadmapping', 'Agile/Scrum', 'User Research', 'JIRA', 'A/B Testing', 'Analytics'],
-    demand: 'Very High', demandColor: '#00e676', salary: '₹8–25 LPA', duration: '3–4 months',
-    scope: [{ num: '35,000+', lbl: 'PM Jobs' }, { num: '₹16L', lbl: 'Avg Salary' }, { num: '32%', lbl: 'Growth Rate' }],
-    resources: [
-      { name: 'Product School Free Content', type: 'Free', url: 'https://productschool.com', color: '#00e676' },
-      { name: 'Reforge Blog', type: 'Free', url: 'https://reforge.com', color: '#00bcd4' },
-      { name: 'Lenny\'s Newsletter', type: 'Free', url: 'https://lennysnewsletter.com', color: '#ffa500' },
-    ],
-    steps: ['Product thinking basics', 'User research & personas', 'Problem discovery', 'Writing PRDs', 'Agile & Scrum', 'Roadmap prioritization', 'Metrics & KPIs', 'A/B testing basics', 'Build mock PRD', 'PM interview prep'],
-  },
-  {
-    id: 'ba', emoji: '📋', title: 'Business Analysis', category: 'business',
-    desc: 'Bridge business needs and tech solutions — analyze, document and improve processes.',
-    skills: ['Requirements Gathering', 'JIRA', 'SQL', 'Excel', 'Process Mapping', 'Stakeholder Management', 'Agile'],
-    demand: 'High', demandColor: '#00e676', salary: '₹5–15 LPA', duration: '3–4 months',
-    scope: [{ num: '45,000+', lbl: 'BA Jobs' }, { num: '₹10L', lbl: 'Avg Salary' }, { num: '26%', lbl: 'Growth Rate' }],
-    resources: [
-      { name: 'IIBA Study Guides', type: 'Free', url: 'https://iiba.org', color: '#00e676' },
-      { name: 'Business Analyst Course', type: 'Course', url: 'https://coursera.org', color: '#00bcd4' },
-      { name: 'Lucidchart for Process Maps', type: 'Free', url: 'https://lucidchart.com', color: '#ffa500' },
-    ],
-    steps: ['BA role & responsibilities', 'Requirements gathering', 'Use cases & user stories', 'Process mapping', 'JIRA basics', 'SQL for BAs', 'Excel for analysis', 'Stakeholder communication', 'CBAP basics', 'Portfolio & apply'],
-  },
-  {
-    id: 'excel', emoji: '📈', title: 'Excel & Power BI', category: 'business',
-    desc: 'Master Excel and Power BI to analyze data and create powerful business dashboards.',
-    skills: ['Excel', 'Power BI', 'DAX', 'Power Query', 'VLOOKUP', 'Pivot Tables', 'Charts', 'SQL basics'],
-    demand: 'Very High', demandColor: '#00e676', salary: '₹3–10 LPA', duration: '1–2 months',
-    scope: [{ num: '80,000+', lbl: 'Excel/BI Jobs' }, { num: '₹6L', lbl: 'Avg Salary' }, { num: '20%', lbl: 'Growth Rate' }],
-    resources: [
-      { name: 'Microsoft Learn Power BI', type: 'Free', url: 'https://learn.microsoft.com', color: '#00e676' },
-      { name: 'ExcelJet (shortcuts & tips)', type: 'Free', url: 'https://exceljet.net', color: '#00bcd4' },
-      { name: 'DAX Formatter', type: 'Free', url: 'https://daxformatter.com', color: '#ffa500' },
-    ],
-    steps: ['Excel basics', 'Formulas & functions', 'VLOOKUP & INDEX MATCH', 'Pivot tables', 'Excel charts & dashboards', 'Power BI intro', 'Import & transform data', 'DAX basics', 'Build Power BI dashboard', 'Portfolio project'],
-  },
-];
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+  import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-let enrolledCareers = JSON.parse(localStorage.getItem('risenow_enrolled') || '{}');
-let stepProgress = JSON.parse(localStorage.getItem('risenow_step_progress') || '{}');
-let currentCategory = 'all';
-let currentCareer = null;
+  const app = initializeApp({
+    apiKey:"AIzaSyB2__vKiROvrPOyomY8X-pDBY8VlArDbdY",
+    authDomain:"risenow-31893.firebaseapp.com",
+    projectId:"risenow-31893",
+    storageBucket:"risenow-31893.firebasestorage.app",
+    messagingSenderId:"230298271225",
+    appId:"1:230298271225:web:c24d7100fc8b89a268d128"
+  });
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+  const provider = new GoogleAuthProvider();
 
-// ============================
-// EXPLORER
-// ============================
-function renderCareers() {
-  const q = document.getElementById('searchInput').value.toLowerCase();
-  const filtered = careers.filter(c => {
-    const matchQ = c.title.toLowerCase().includes(q) || c.desc.toLowerCase().includes(q) || c.skills.join(' ').toLowerCase().includes(q);
-    const matchCat = currentCategory === 'all' || c.category === currentCategory;
-    return matchQ && matchCat;
+  let currentUser = null, userData = {paths:{}}, currentId = null, currentFilter = 'all';
+
+  const careers = [
+    {id:'da',emoji:'📊',title:'Data Analytics',category:'business',desc:'Analyze data to find patterns and insights that drive business decisions.',skills:['Python','SQL','Power BI','Excel','Pandas','Statistics','Tableau'],demand:'Very High',dc:'#00e676',salary:'₹4–14 LPA',dur:'3–4 months',scope:[{n:'97,000+',l:'Jobs'},{n:'₹8L',l:'Avg Salary'},{n:'28%',l:'Growth Rate'}],res:[{n:'Google Data Analytics',t:'Course',u:'https://coursera.org',c:'#00e676'},{n:'Kaggle Learn',t:'Free',u:'https://kaggle.com/learn',c:'#00bcd4'},{n:'StatQuest YouTube',t:'YouTube',u:'https://youtube.com/@statquest',c:'#ff4757'},{n:'W3Schools SQL',t:'Free',u:'https://w3schools.com/sql',c:'#00e676'}]},
+    {id:'ml',emoji:'🤖',title:'Machine Learning / AI',category:'tech',desc:'Build intelligent systems that learn from data and make predictions.',skills:['Python','Scikit-learn','TensorFlow','Deep Learning','NLP','Computer Vision'],demand:'Extremely High',dc:'#00e676',salary:'₹8–25 LPA',dur:'5–6 months',scope:[{n:'75,000+',l:'AI Jobs'},{n:'₹15L',l:'Avg Salary'},{n:'40%',l:'Growth Rate'}],res:[{n:'Fast.ai Deep Learning',t:'Free',u:'https://fast.ai',c:'#00e676'},{n:'Google ML Crash Course',t:'Free',u:'https://developers.google.com/machine-learning/crash-course',c:'#00bcd4'},{n:'Andrew Ng on Coursera',t:'Course',u:'https://coursera.org',c:'#ffa500'}]},
+    {id:'wd',emoji:'🌐',title:'Web Development',category:'tech',desc:'Build websites and web applications that millions of people use.',skills:['HTML','CSS','JavaScript','React','Node.js','Git','REST APIs'],demand:'High',dc:'#00e676',salary:'₹5–18 LPA',dur:'4–5 months',scope:[{n:'1.8M+',l:'Jobs Globally'},{n:'₹10L',l:'Avg Salary'},{n:'25%',l:'Growth Rate'}],res:[{n:'freeCodeCamp',t:'Free',u:'https://freecodecamp.org',c:'#00e676'},{n:'The Odin Project',t:'Free',u:'https://theodinproject.com',c:'#00bcd4'},{n:'JavaScript.info',t:'Free',u:'https://javascript.info',c:'#ffa500'}]},
+    {id:'fs',emoji:'⚡',title:'Full Stack Development',category:'tech',desc:'Master frontend and backend — build complete web apps from scratch.',skills:['React','Node.js','Express','MongoDB','SQL','Docker','Git'],demand:'Very High',dc:'#00e676',salary:'₹8–22 LPA',dur:'6–8 months',scope:[{n:'120,000+',l:'Jobs'},{n:'₹14L',l:'Avg Salary'},{n:'30%',l:'Growth Rate'}],res:[{n:'Full Stack Open (Helsinki)',t:'Free',u:'https://fullstackopen.com',c:'#00e676'},{n:'The Odin Project',t:'Free',u:'https://theodinproject.com',c:'#00bcd4'}]},
+    {id:'mob',emoji:'📱',title:'Mobile App Development',category:'tech',desc:'Build iOS and Android apps that people carry in their pockets.',skills:['Flutter','React Native','Dart','JavaScript','Firebase','APIs'],demand:'High',dc:'#00e676',salary:'₹6–20 LPA',dur:'4–5 months',scope:[{n:'60,000+',l:'Mobile Jobs'},{n:'₹12L',l:'Avg Salary'},{n:'22%',l:'Growth Rate'}],res:[{n:'Flutter Official Docs',t:'Free',u:'https://flutter.dev',c:'#00e676'},{n:'React Native Docs',t:'Free',u:'https://reactnative.dev',c:'#00bcd4'}]},
+    {id:'cyber',emoji:'🔐',title:'Cybersecurity',category:'tech',desc:'Protect systems, networks and data from hackers and threats.',skills:['Networking','Linux','Python','Ethical Hacking','Kali Linux','Cryptography'],demand:'Extremely High',dc:'#00e676',salary:'₹6–20 LPA',dur:'5–6 months',scope:[{n:'3.5M',l:'Jobs Unfilled'},{n:'₹12L',l:'Avg Salary'},{n:'35%',l:'Growth Rate'}],res:[{n:'TryHackMe',t:'Free',u:'https://tryhackme.com',c:'#00e676'},{n:'Hack The Box',t:'Free',u:'https://hackthebox.com',c:'#00bcd4'}]},
+    {id:'cloud',emoji:'☁️',title:'Cloud Computing',category:'tech',desc:'Deploy and manage apps on AWS, Azure or Google Cloud.',skills:['AWS','Azure','Docker','Kubernetes','Linux','CI/CD','Terraform'],demand:'Extremely High',dc:'#00e676',salary:'₹8–25 LPA',dur:'4–5 months',scope:[{n:'150,000+',l:'Cloud Jobs'},{n:'₹16L',l:'Avg Salary'},{n:'38%',l:'Growth Rate'}],res:[{n:'AWS Free Tier',t:'Free',u:'https://aws.amazon.com/free',c:'#ffa500'},{n:'Google Cloud Skills Boost',t:'Free',u:'https://cloudskillsboost.google',c:'#00e676'}]},
+    {id:'java',emoji:'☕',title:'Java / Backend Dev',category:'tech',desc:'Build powerful server-side apps and APIs using Java and Spring Boot.',skills:['Java','Spring Boot','SQL','REST APIs','Maven','JPA','Microservices'],demand:'High',dc:'#00e676',salary:'₹5–18 LPA',dur:'4–5 months',scope:[{n:'80,000+',l:'Java Jobs'},{n:'₹10L',l:'Avg Salary'},{n:'20%',l:'Growth Rate'}],res:[{n:'Mooc.fi Java Course',t:'Free',u:'https://java-programming.mooc.fi',c:'#00e676'},{n:'Baeldung Tutorials',t:'Free',u:'https://baeldung.com',c:'#00bcd4'}]},
+    {id:'uiux',emoji:'🎯',title:'UI/UX Design',category:'creative',desc:'Design intuitive, beautiful digital experiences that users love.',skills:['Figma','Wireframing','Prototyping','User Research','Design Systems'],demand:'High',dc:'#00e676',salary:'₹4–15 LPA',dur:'3–4 months',scope:[{n:'50,000+',l:'UX Jobs'},{n:'₹9L',l:'Avg Salary'},{n:'24%',l:'Growth Rate'}],res:[{n:'Figma Free Plan',t:'Free',u:'https://figma.com',c:'#00e676'},{n:'Google UX Certificate',t:'Course',u:'https://coursera.org',c:'#00bcd4'}]},
+    {id:'gd',emoji:'🎨',title:'Graphic Design',category:'creative',desc:'Create visual identities, marketing materials and digital art.',skills:['Figma','Canva','Photoshop','Typography','Color Theory','Branding'],demand:'Medium',dc:'#ffa500',salary:'₹3–10 LPA',dur:'2–3 months',scope:[{n:'30,000+',l:'Design Jobs'},{n:'₹6L',l:'Avg Salary'},{n:'15%',l:'Growth Rate'}],res:[{n:'Canva Design School',t:'Free',u:'https://canva.com',c:'#00e676'},{n:'Behance',t:'Free',u:'https://behance.net',c:'#00bcd4'}]},
+    {id:'ve',emoji:'🎬',title:'Video Editing',category:'creative',desc:'Edit compelling videos for YouTube, social media and films.',skills:['DaVinci Resolve','Premiere Pro','After Effects','Color Grading','Audio'],demand:'Medium',dc:'#ffa500',salary:'₹3–12 LPA',dur:'2–3 months',scope:[{n:'25,000+',l:'Video Jobs'},{n:'₹6L',l:'Avg Salary'},{n:'20%',l:'Growth Rate'}],res:[{n:'DaVinci Resolve (Free)',t:'Free',u:'https://blackmagicdesign.com',c:'#00e676'},{n:'YouTube Creator Academy',t:'Free',u:'https://youtube.com',c:'#ff4757'}]},
+    {id:'cw',emoji:'✍️',title:'Content Writing',category:'creative',desc:'Write compelling content that attracts audiences and ranks on Google.',skills:['SEO Writing','Copywriting','Research','Content Strategy','Editing'],demand:'High',dc:'#00e676',salary:'₹3–10 LPA',dur:'1–2 months',scope:[{n:'40,000+',l:'Writing Jobs'},{n:'₹5L',l:'Avg Salary'},{n:'18%',l:'Growth Rate'}],res:[{n:'Hemingway App',t:'Free',u:'https://hemingwayapp.com',c:'#00e676'},{n:'Copyblogger',t:'Free',u:'https://copyblogger.com',c:'#00bcd4'}]},
+    {id:'dm',emoji:'📣',title:'Digital Marketing',category:'marketing',desc:'Grow businesses online through SEO, paid ads, email and social media.',skills:['SEO','Google Ads','Meta Ads','Email Marketing','Analytics','Canva'],demand:'High',dc:'#00e676',salary:'₹3–12 LPA',dur:'2–3 months',scope:[{n:'55,000+',l:'Marketing Jobs'},{n:'₹7L',l:'Avg Salary'},{n:'22%',l:'Growth Rate'}],res:[{n:'Google Skillshop',t:'Free',u:'https://skillshop.google.com',c:'#00e676'},{n:'HubSpot Academy',t:'Free',u:'https://academy.hubspot.com',c:'#00bcd4'}]},
+    {id:'pm',emoji:'🧩',title:'Product Management',category:'business',desc:'Define, build and launch products bridging tech, design and business.',skills:['Product Strategy','Roadmapping','Agile','User Research','JIRA','Analytics'],demand:'Very High',dc:'#00e676',salary:'₹8–25 LPA',dur:'3–4 months',scope:[{n:'35,000+',l:'PM Jobs'},{n:'₹16L',l:'Avg Salary'},{n:'32%',l:'Growth Rate'}],res:[{n:'Product School',t:'Free',u:'https://productschool.com',c:'#00e676'},{n:"Lenny's Newsletter",t:'Free',u:'https://lennysnewsletter.com',c:'#00bcd4'}]},
+    {id:'ba',emoji:'📋',title:'Business Analysis',category:'business',desc:'Bridge business needs and tech solutions — analyze and improve processes.',skills:['Requirements Gathering','JIRA','SQL','Excel','Process Mapping','Agile'],demand:'High',dc:'#00e676',salary:'₹5–15 LPA',dur:'3–4 months',scope:[{n:'45,000+',l:'BA Jobs'},{n:'₹10L',l:'Avg Salary'},{n:'26%',l:'Growth Rate'}],res:[{n:'IIBA Study Guides',t:'Free',u:'https://iiba.org',c:'#00e676'},{n:'Lucidchart',t:'Free',u:'https://lucidchart.com',c:'#00bcd4'}]},
+    {id:'excel',emoji:'📈',title:'Excel & Power BI',category:'business',desc:'Master Excel and Power BI to analyze data and build powerful dashboards.',skills:['Excel','Power BI','DAX','Power Query','VLOOKUP','Pivot Tables'],demand:'Very High',dc:'#00e676',salary:'₹3–10 LPA',dur:'1–2 months',scope:[{n:'80,000+',l:'Jobs'},{n:'₹6L',l:'Avg Salary'},{n:'20%',l:'Growth Rate'}],res:[{n:'Microsoft Learn Power BI',t:'Free',u:'https://learn.microsoft.com/power-bi',c:'#00e676'},{n:'ExcelJet',t:'Free',u:'https://exceljet.net',c:'#00bcd4'}]},
+    {id:'ds',emoji:'📐',title:'Data Science',category:'business',desc:'Combine statistics, programming and domain knowledge to extract insights.',skills:['Python','R','Statistics','ML','SQL','Pandas','Big Data'],demand:'Very High',dc:'#00e676',salary:'₹6–20 LPA',dur:'5–6 months',scope:[{n:'90,000+',l:'DS Jobs'},{n:'₹12L',l:'Avg Salary'},{n:'33%',l:'Growth Rate'}],res:[{n:'Kaggle Learn',t:'Free',u:'https://kaggle.com/learn',c:'#00e676'},{n:'Towards Data Science',t:'Free',u:'https://towardsdatascience.com',c:'#00bcd4'}]},
+  ];
+
+  window.careers = careers;
+
+  onAuthStateChanged(auth, async (user) => {
+    currentUser = user;
+    if (user) {
+      if (user.photoURL) { document.getElementById('pImg').src=user.photoURL; document.getElementById('pImg').style.display='block'; document.getElementById('pIcon').style.display='none'; }
+      await loadData();
+    }
+    renderGrid();
   });
 
-  const grid = document.getElementById('careerGrid');
-  grid.innerHTML = filtered.map(c => {
-    const isEnrolled = enrolledCareers[c.id];
-    const progress = getProgress(c.id, c.steps.length);
-    return `
-      <div class="career-card ${isEnrolled ? 'enrolled' : ''}" onclick="openModal('${c.id}')"
-           style="${isEnrolled ? `border-top: 3px solid var(--green);` : ''}">
-        <div class="card-top">
-          <div class="card-emoji">${c.emoji}</div>
-          <div class="card-badges">
-            <span class="demand-badge" style="background:${c.demandColor}18;color:${c.demandColor}">${c.demand}</span>
-            ${isEnrolled ? `<span class="enrolled-badge">✓ Enrolled</span>` : ''}
-          </div>
-        </div>
+  async function loadData() {
+    if (!currentUser) return;
+    try {
+      const snap = await getDoc(doc(db,'users',currentUser.uid));
+      if (snap.exists()) { userData = snap.data(); if(!userData.paths) userData.paths={}; }
+    } catch(e) {}
+  }
+
+  async function saveData() {
+    if (!currentUser) return;
+    try { await setDoc(doc(db,'users',currentUser.uid), userData, {merge:true}); } catch(e) {}
+  }
+
+  window.setFilter = (cat, btn) => {
+    currentFilter = cat;
+    document.querySelectorAll('.pill').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    renderGrid();
+  };
+
+  window.renderGrid = () => {
+    const q = document.getElementById('searchInput').value.toLowerCase();
+    const filtered = careers.filter(c => {
+      const mq = !q || c.title.toLowerCase().includes(q) || c.skills.join(' ').toLowerCase().includes(q);
+      const mc = currentFilter==='all' || c.category===currentFilter;
+      return mq && mc;
+    });
+    document.getElementById('careerGrid').innerHTML = filtered.map(c => {
+      const saved = userData.paths && userData.paths[c.id]!==undefined;
+      const done = saved ? Object.values(userData.paths[c.id]||{}).filter(Boolean).length : 0;
+      const pct = Math.round((done/10)*100);
+      return `<div class="career-card ${saved?'saved':''}" onclick="openModal('${c.id}')">
+        <div class="card-top"><div class="card-emoji">${c.emoji}</div><div class="card-badges">
+          <span class="demand-badge" style="background:${c.dc}18;color:${c.dc}">${c.demand}</span>
+          ${saved?'<span class="saved-badge">✓ Saved</span>':''}
+        </div></div>
         <div class="card-title">${c.title}</div>
         <div class="card-desc">${c.desc}</div>
-        <div class="card-skills">
-          ${c.skills.slice(0,4).map(s => `<span class="skill-tag">${s}</span>`).join('')}
-          ${c.skills.length > 4 ? `<span class="skill-tag">+${c.skills.length - 4}</span>` : ''}
-        </div>
-        <div class="card-bottom">
-          <span class="card-salary">${c.salary}</span>
-          <span class="card-duration">⏱ ${c.duration}</span>
-        </div>
-        ${isEnrolled ? `
-        <div class="card-progress">
-          <div class="progress-mini-label"><span>${progress}% complete</span><span>${Math.round(progress * c.steps.length / 100)}/${c.steps.length} steps</span></div>
-          <div class="progress-mini-track"><div class="progress-mini-fill" style="width:${progress}%"></div></div>
-        </div>` : ''}
-      </div>
-    `;
-  }).join('');
+        <div class="card-skills">${c.skills.slice(0,4).map(s=>`<span class="skill-tag">${s}</span>`).join('')}${c.skills.length>4?`<span class="skill-tag">+${c.skills.length-4}</span>`:''}</div>
+        <div class="card-bottom"><span class="card-salary">${c.salary}</span><span class="card-dur">⏱ ${c.dur}</span></div>
+        ${saved?`<div class="mini-prog"><div class="mini-prog-label"><span>${pct}%</span><span>${done}/10 steps</span></div><div class="mini-prog-track"><div class="mini-prog-fill" style="width:${pct}%"></div></div></div>`:''}
+      </div>`;
+    }).join('');
+  };
 
-  updateEnrolledCount();
-}
+  window.openModal = (id) => {
+    const c = careers.find(x=>x.id===id);
+    if (!c) return;
+    currentId = id;
+    document.getElementById('mEmoji').textContent = c.emoji;
+    document.getElementById('mTitle').textContent = c.title;
+    document.getElementById('mMeta').innerHTML = `<span class="m-tag" style="background:${c.dc}15;color:${c.dc}">${c.demand} Demand</span><span class="m-tag" style="background:rgba(0,188,212,0.1);color:#00bcd4">${c.salary}</span><span class="m-tag" style="background:rgba(255,255,255,0.05);color:var(--muted)">⏱ ${c.dur}</span>`;
+    document.getElementById('mScope').innerHTML = c.scope.map(s=>`<div class="scope-card"><div class="scope-num">${s.n}</div><div class="scope-lbl">${s.l}</div></div>`).join('');
+    document.getElementById('mSkills').innerHTML = c.skills.map(s=>`<span class="skill-chip">${s}</span>`).join('');
+    document.getElementById('mResources').innerHTML = c.res.map(r=>`<a class="res-row" href="${r.u}" target="_blank"><span class="res-type" style="background:${r.c}18;color:${r.c}">${r.t}</span><span class="res-name">${r.n}</span><span style="color:var(--muted)">→</span></a>`).join('');
+    document.getElementById('mLoginPrompt').innerHTML = !currentUser ? `<div class="login-prompt"><p>Sign in with Google to save this path and track progress on any device.</p><button class="btn-login-inline" onclick="openLogin()">Sign in with Google — Free</button></div>` : '';
+    updateBtn();
+    document.getElementById('modalOverlay').classList.add('open');
+  };
 
-function filterCat(cat, btn) {
-  currentCategory = cat;
-  document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
-  btn.classList.add('active');
-  renderCareers();
-}
-
-// ============================
-// MODAL
-// ============================
-function openModal(id) {
-  const c = careers.find(x => x.id === id);
-  if (!c) return;
-  currentCareer = c;
-
-  document.getElementById('modalBanner').style.background = `linear-gradient(135deg, #1a1f2e, #0f172a)`;
-  document.getElementById('modalEmoji').textContent = c.emoji;
-  document.getElementById('modalTitle').textContent = c.title;
-
-  document.getElementById('modalScope').innerHTML = c.scope.map(s => `
-    <div class="scope-card">
-      <div class="scope-num" style="background:linear-gradient(90deg,var(--green),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent">${s.num}</div>
-      <div class="scope-label">${s.lbl}</div>
-    </div>
-  `).join('');
-
-  document.getElementById('modalSkills').innerHTML = c.skills.map(s => `<span class="skill-chip">${s}</span>`).join('');
-
-  document.getElementById('modalResources').innerHTML = c.resources.map(r => `
-    <a class="resource-row" href="${r.url}" target="_blank">
-      <span class="resource-type" style="background:${r.color}18;color:${r.color}">${r.type}</span>
-      <span class="resource-name">${r.name}</span>
-      <span class="resource-arrow">→</span>
-    </a>
-  `).join('');
-
-  updateEnrollBtn();
-  document.getElementById('modalOverlay').classList.add('open');
-}
-
-function updateEnrollBtn() {
-  const btn = document.getElementById('btnEnroll');
-  if (!currentCareer) return;
-  if (enrolledCareers[currentCareer.id]) {
-    btn.textContent = '✓ Enrolled — Remove from Dashboard';
-    btn.className = 'btn-enroll unenroll';
-  } else {
-    btn.textContent = '+ Add to My Dashboard';
-    btn.className = 'btn-enroll';
-  }
-}
-
-function toggleEnroll() {
-  if (!currentCareer) return;
-  enrolledCareers[currentCareer.id] = !enrolledCareers[currentCareer.id];
-  if (!enrolledCareers[currentCareer.id]) delete enrolledCareers[currentCareer.id];
-  localStorage.setItem('risenow_enrolled', JSON.stringify(enrolledCareers));
-  updateEnrollBtn();
-  renderCareers();
-  renderDashboard();
-}
-
-function closeModal(e) {
-  if (e && e.target !== document.getElementById('modalOverlay')) return;
-  document.getElementById('modalOverlay').classList.remove('open');
-}
-function closeModalBtn() {
-  document.getElementById('modalOverlay').classList.remove('open');
-}
-
-// ============================
-// DASHBOARD
-// ============================
-function getProgress(id, total) {
-  if (!stepProgress[id]) return 0;
-  const done = Object.values(stepProgress[id]).filter(Boolean).length;
-  return Math.round((done / total) * 100);
-}
-
-function renderDashboard() {
-  const enrolled = careers.filter(c => enrolledCareers[c.id]);
-  updateEnrolledCount();
-
-  // Stats
-  document.getElementById('ds-enrolled').textContent = enrolled.length;
-  let totalSteps = 0, doneSteps = 0;
-  enrolled.forEach(c => {
-    totalSteps += c.steps.length;
-    if (stepProgress[c.id]) doneSteps += Object.values(stepProgress[c.id]).filter(Boolean).length;
-  });
-  document.getElementById('ds-steps').textContent = doneSteps;
-  document.getElementById('ds-avg').textContent = enrolled.length ? `${Math.round((doneSteps / totalSteps) * 100)}%` : '0%';
-
-  const list = document.getElementById('enrolledList');
-
-  if (enrolled.length === 0) {
-    list.innerHTML = `
-      <div class="empty-dashboard">
-        <div class="empty-icon">🧭</div>
-        <h3>No courses added yet</h3>
-        <p>Explore career paths and add them to your dashboard to start tracking progress.</p>
-        <button class="btn-explore" onclick="showScreen('explorer')">Explore Careers →</button>
-      </div>
-    `;
-    return;
+  function updateBtn() {
+    const btn = document.getElementById('btnSave');
+    const saved = userData.paths && userData.paths[currentId]!==undefined;
+    if (!currentUser) { btn.textContent='Sign in to Save This Path'; btn.className='btn-save'; }
+    else if (saved) { btn.textContent='✓ Saved — Remove from Dashboard'; btn.className='btn-save unsave'; }
+    else { btn.textContent='+ Save to My Dashboard'; btn.className='btn-save'; }
   }
 
-  list.innerHTML = enrolled.map(c => {
-    const progress = getProgress(c.id, c.steps.length);
-    const done = stepProgress[c.id] ? Object.values(stepProgress[c.id]).filter(Boolean).length : 0;
-    return `
-      <div class="enrolled-item" id="enrolled-${c.id}">
-        <div class="enrolled-top" onclick="toggleExpand('${c.id}')">
-          <div class="enrolled-emoji">${c.emoji}</div>
-          <div class="enrolled-info">
-            <div class="enrolled-title">${c.title}</div>
-            <div class="enrolled-sub">${done} of ${c.steps.length} steps done · Click to expand</div>
-          </div>
-          <div class="enrolled-pct" style="background:linear-gradient(90deg,var(--green),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent">${progress}%</div>
-        </div>
-        <div class="big-progress-track">
-          <div class="big-progress-fill" style="width:${progress}%"></div>
-        </div>
-        <div class="enrolled-steps">
-          ${c.steps.map((step, i) => {
-            const isDone = stepProgress[c.id] && stepProgress[c.id][i];
-            return `
-              <div class="step-row ${isDone ? 'done' : ''}" onclick="toggleStep('${c.id}', ${i})">
-                <div class="step-cb">${isDone ? '✓' : ''}</div>
-                <div class="step-row-text">${step}</div>
-                <div class="step-week">Step ${i + 1}</div>
-              </div>
-            `;
-          }).join('')}
-        </div>
-      </div>
-    `;
-  }).join('');
-}
+  window.handleSave = async () => {
+    if (!currentUser) { openLogin(); return; }
+    if (!userData.paths) userData.paths = {};
+    if (userData.paths[currentId]!==undefined) { delete userData.paths[currentId]; }
+    else { userData.paths[currentId] = {}; }
+    await saveData();
+    renderGrid();
+    const saved = userData.paths[currentId]!==undefined;
+    if (saved) {
+      const btn = document.getElementById('btnSave');
+      btn.textContent = '✓ Saved! Go to Dashboard →';
+      btn.className = 'btn-save go';
+      btn.onclick = () => window.location.href='dashboard.html';
+    } else { updateBtn(); }
+  };
 
-function toggleExpand(id) {
-  document.getElementById(`enrolled-${id}`).classList.toggle('expanded');
-}
+  window.closeModal = () => { document.getElementById('modalOverlay').classList.remove('open'); currentId=null; };
+  window.openLogin = () => document.getElementById('loginOverlay').classList.add('open');
+  window.closeLogin = () => document.getElementById('loginOverlay').classList.remove('open');
+  window.handleProfileClick = () => currentUser ? window.location.href='dashboard.html' : openLogin();
+  window.signInWithGoogle = async () => {
+    try { await signInWithPopup(auth,provider); closeLogin(); await loadData(); renderGrid(); if(currentId) updateBtn(); } catch(e) {}
+  };
 
-function toggleStep(careerId, stepIdx) {
-  if (!stepProgress[careerId]) stepProgress[careerId] = {};
-  stepProgress[careerId][stepIdx] = !stepProgress[careerId][stepIdx];
-  localStorage.setItem('risenow_step_progress', JSON.stringify(stepProgress));
-  renderDashboard();
-}
-
-function updateEnrolledCount() {
-  const count = Object.keys(enrolledCareers).length;
-  document.getElementById('enrolledCount').textContent = count;
-}
-
-// ============================
-// SCREEN SWITCHING
-// ============================
-function showScreen(name) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(`screen-${name}`).classList.add('active');
-  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active-tab'));
-  if (name === 'explorer') {
-    document.querySelector('.nav-tab.explorer').classList.add('active-tab');
-  } else {
-    document.querySelector('.nav-tab.dashboard').classList.add('active-tab');
-    renderDashboard();
-  }
-}
-
-// INIT
-renderCareers();
+  document.getElementById('modalOverlay').addEventListener('click',e=>{ if(e.target===document.getElementById('modalOverlay')) closeModal(); });
+  document.getElementById('loginOverlay').addEventListener('click',e=>{ if(e.target===document.getElementById('loginOverlay')) closeLogin(); });
 </script>
 </body>
 </html>

@@ -4,1575 +4,674 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>My Dashboard | RiseNow</title>
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
+    *{margin:0;padding:0;box-sizing:border-box;}
+    :root{
+      --green:#00e676;--teal:#00bcd4;
+      --bg:#0a0f0d;--card:#111814;--card2:#161d1a;
+      --border:rgba(255,255,255,0.07);
+      --text:rgba(255,255,255,0.85);
+      --muted:rgba(255,255,255,0.4);
+    }
+    body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
 
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    /* NAV */
+    nav{
+      position:sticky;top:0;z-index:100;
+      background:rgba(10,15,13,0.97);backdrop-filter:blur(16px);
+      border-bottom:1px solid var(--border);
+      padding:0 40px;height:64px;
+      display:flex;align-items:center;justify-content:space-between;
+    }
+    .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+    .logo-box{width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,var(--green),var(--teal));display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#0a0f0d;}
+    .logo-text{font-size:20px;font-weight:800;background:linear-gradient(90deg,var(--green),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    .nav-right{display:flex;align-items:center;gap:12px;}
+    .nav-link{padding:8px 14px;font-size:13px;font-weight:500;color:var(--muted);text-decoration:none;border-radius:8px;transition:color 0.2s;}
+    .nav-link:hover{color:white;}
+    .profile-mini{display:flex;align-items:center;gap:10px;padding:6px 12px;background:var(--card2);border:1px solid var(--border);border-radius:20px;cursor:pointer;transition:border-color 0.2s;}
+    .profile-mini:hover{border-color:rgba(0,230,118,0.3);}
+    .profile-mini img{width:28px;height:28px;border-radius:50%;object-fit:cover;}
+    .profile-mini-name{font-size:13px;font-weight:600;color:white;}
+    .btn-signout{padding:8px 16px;background:transparent;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.2s;}
+    .btn-signout:hover{border-color:rgba(255,71,87,0.3);color:#ff4757;}
 
-    :root {
-      --green: #00e676; --teal: #00bcd4;
-      --bg: #0a0e13; --card: #111820; --card2: #161f2c;
-      --border: rgba(255,255,255,0.07);
-      --border-g: rgba(0,230,118,0.15);
-      --text: rgba(255,255,255,0.9);
-      --muted: rgba(255,255,255,0.42);
-      --grad: linear-gradient(135deg, #00e676, #00bcd4);
-      --sidebar: 260px;
-    }
+    /* LOADING */
+    #loadingScreen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:999;flex-direction:column;gap:16px;}
+    .loader{width:40px;height:40px;border:3px solid rgba(0,230,118,0.2);border-top:3px solid var(--green);border-radius:50%;animation:spin 0.8s linear infinite;}
+    @keyframes spin{to{transform:rotate(360deg);}}
+    #loadingScreen p{font-size:14px;color:var(--muted);}
 
-    html { scroll-behavior: smooth; }
-    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); display: flex; min-height: 100vh; }
+    /* NOT LOGGED IN */
+    #notLoggedIn{display:none;text-align:center;padding:120px 40px;}
+    #notLoggedIn h2{font-size:28px;font-weight:800;color:white;margin-bottom:12px;}
+    #notLoggedIn p{font-size:15px;color:var(--muted);margin-bottom:32px;}
+    .btn-login{padding:14px 32px;background:linear-gradient(135deg,var(--green),var(--teal));border:none;border-radius:12px;color:#0a0f0d;font-size:15px;font-weight:800;cursor:pointer;font-family:'Inter',sans-serif;}
 
-    /* ══════════════ SIDEBAR ══════════════ */
-    .sidebar {
-      width: var(--sidebar); flex-shrink: 0;
-      background: var(--card);
-      border-right: 1px solid var(--border);
-      display: flex; flex-direction: column;
-      position: fixed; top: 0; left: 0; bottom: 0; z-index: 200;
-      transition: transform .3s;
-    }
-    .sidebar-head {
-      padding: 24px 20px 20px;
-      border-bottom: 1px solid var(--border);
-    }
-    .sb-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; margin-bottom: 20px; }
-    .sb-logo-icon {
-      width: 34px; height: 34px; border-radius: 8px;
-      background: var(--grad);
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 900; color: #0a0e13;
-    }
-    .sb-logo-name {
-      font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800;
-      background: var(--grad);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-    }
+    /* DASHBOARD */
+    #dashboardContent{display:none;}
 
-    /* user profile in sidebar */
-    .sb-user {
-      display: flex; align-items: center; gap: 12px;
-    }
-    .sb-avatar {
-      width: 46px; height: 46px; border-radius: 50%;
-      border: 2px solid rgba(0,230,118,0.35);
-      background: rgba(0,230,118,0.1);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 20px; overflow: hidden; flex-shrink: 0;
-    }
-    .sb-avatar img { width: 100%; height: 100%; object-fit: cover; }
-    .sb-user-name { font-size: 14px; font-weight: 700; }
-    .sb-user-career {
-      font-size: 11px; color: var(--green); font-weight: 600;
-      margin-top: 2px;
-    }
+    /* WELCOME BANNER */
+    .welcome{padding:40px 40px 0;}
+    .welcome h2{font-size:30px;font-weight:900;letter-spacing:-1px;color:white;margin-bottom:4px;}
+    .welcome h2 span{background:linear-gradient(90deg,var(--green),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    .welcome p{font-size:14px;color:var(--muted);}
 
-    /* nav links */
-    .sidebar-nav { flex: 1; padding: 16px 12px; overflow-y: auto; }
-    .sb-section-label {
-      font-size: 10px; font-weight: 700; letter-spacing: 2px;
-      text-transform: uppercase; color: var(--muted);
-      padding: 8px 10px 6px; margin-top: 6px;
-    }
-    .sb-link {
-      display: flex; align-items: center; gap: 12px;
-      padding: 10px 12px; border-radius: 10px;
-      text-decoration: none; color: var(--muted);
-      font-size: 13px; font-weight: 600; transition: all .2s;
-      margin-bottom: 2px;
-    }
-    .sb-link:hover { background: rgba(255,255,255,0.04); color: var(--text); }
-    .sb-link.active { background: rgba(0,230,118,0.08); color: var(--green); }
-    .sb-link .sb-icon { font-size: 16px; width: 20px; text-align: center; flex-shrink: 0; }
-    .sb-link .sb-badge {
-      margin-left: auto; font-size: 10px; font-weight: 800;
-      background: rgba(0,230,118,0.15); color: var(--green);
-      padding: 2px 7px; border-radius: 10px;
-    }
+    /* STATS */
+    .stats-row{display:flex;gap:14px;padding:28px 40px;flex-wrap:wrap;}
+    .stat-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px 24px;flex:1;min-width:140px;}
+    .stat-num{font-size:28px;font-weight:900;margin-bottom:4px;}
+    .stat-lbl{font-size:12px;color:var(--muted);font-weight:500;}
 
-    /* streak pill in sidebar */
-    .sb-streak {
-      margin: 0 12px 12px;
-      background: rgba(0,230,118,0.07); border: 1px solid rgba(0,230,118,0.18);
-      border-radius: 10px; padding: 10px 14px;
-      display: flex; align-items: center; gap: 10px;
-    }
-    .sb-streak-num { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800; color: var(--green); }
-    .sb-streak-lbl { font-size: 11px; color: var(--muted); }
+    /* MAIN GRID */
+    .main-grid{display:grid;grid-template-columns:1fr 340px;gap:20px;padding:0 40px 60px;}
 
-    .sidebar-footer { padding: 14px 12px; border-top: 1px solid var(--border); }
-    .btn-logout {
-      width: 100%; padding: 10px; background: transparent;
-      border: 1px solid var(--border); border-radius: 9px;
-      color: var(--muted); font-size: 13px; font-weight: 600;
-      cursor: pointer; font-family: 'Inter', sans-serif; transition: all .2s;
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-    }
-    .btn-logout:hover { border-color: rgba(255,82,82,0.4); color: #ff5252; }
+    /* CAREER PATHS */
+    .section-title{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:16px;}
 
-    /* ══════════════ MAIN CONTENT ══════════════ */
-    .main {
-      margin-left: var(--sidebar);
-      flex: 1; min-width: 0;
-      display: flex; flex-direction: column;
-    }
+    .empty-state{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:48px 24px;text-align:center;}
+    .empty-icon{font-size:48px;margin-bottom:16px;}
+    .empty-state h3{font-size:18px;font-weight:700;color:white;margin-bottom:8px;}
+    .empty-state p{font-size:13px;color:var(--muted);margin-bottom:24px;line-height:1.6;}
+    .btn-explore{padding:12px 28px;background:linear-gradient(135deg,var(--green),var(--teal));border:none;border-radius:10px;color:#0a0f0d;font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;text-decoration:none;display:inline-block;}
 
-    /* TOP BAR */
-    .topbar {
-      height: 64px; background: rgba(10,14,19,0.92);
-      backdrop-filter: blur(14px);
-      border-bottom: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 32px; position: sticky; top: 0; z-index: 100;
-    }
-    .topbar-left h2 { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; }
-    .topbar-left p  { font-size: 12px; color: var(--muted); margin-top: 1px; }
-    .topbar-right { display: flex; align-items: center; gap: 12px; }
-    .topbar-avatar {
-      width: 36px; height: 36px; border-radius: 50%;
-      border: 2px solid rgba(0,230,118,0.3);
-      background: rgba(0,230,118,0.1);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 16px; overflow: hidden; cursor: pointer;
-    }
-    .topbar-avatar img { width: 100%; height: 100%; object-fit: cover; }
-    .topbar-name { font-size: 13px; font-weight: 600; }
-    .ham-btn {
-      display: none; background: transparent;
-      border: 1px solid var(--border); border-radius: 8px;
-      padding: 7px 9px; cursor: pointer; flex-direction: column; gap: 4px;
-    }
-    .ham-btn span { display: block; width: 18px; height: 2px; background: var(--text); border-radius: 2px; }
+    /* PATH CARD */
+    .path-card{background:var(--card);border:1px solid var(--border);border-radius:16px;margin-bottom:14px;overflow:hidden;transition:border-color 0.2s;}
+    .path-card:hover{border-color:rgba(0,230,118,0.2);}
+    .path-header{padding:20px 24px;cursor:pointer;display:flex;align-items:center;gap:16px;}
+    .path-emoji{font-size:28px;flex-shrink:0;}
+    .path-info{flex:1;}
+    .path-title{font-size:16px;font-weight:700;color:white;margin-bottom:3px;}
+    .path-sub{font-size:12px;color:var(--muted);}
+    .path-pct{font-size:22px;font-weight:900;background:linear-gradient(90deg,var(--green),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;flex-shrink:0;}
+    .path-chevron{color:var(--muted);font-size:14px;transition:transform 0.3s;flex-shrink:0;}
+    .path-card.expanded .path-chevron{transform:rotate(180deg);}
 
-    /* ══════════════ PAGE SECTIONS ══════════════ */
-    .page { display: none; padding: 32px; max-width: 1100px; }
-    .page.active { display: block; }
+    .path-progress{padding:0 24px 16px;}
+    .prog-track{height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;}
+    .prog-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--teal));border-radius:3px;transition:width 0.5s;}
 
-    /* Section header */
-    .sec-hd { margin-bottom: 28px; }
-    .sec-hd .label {
-      font-size: 11px; font-weight: 700; letter-spacing: 2px;
-      text-transform: uppercase; color: var(--green); margin-bottom: 6px;
-    }
-    .sec-hd h2 { font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800; letter-spacing: -.5px; }
-    .sec-hd p  { font-size: 14px; color: var(--muted); margin-top: 6px; }
+    .path-steps{display:none;border-top:1px solid var(--border);}
+    .path-card.expanded .path-steps{display:block;}
+    .steps-inner{padding:16px 24px;max-height:400px;overflow-y:auto;}
+    .steps-inner::-webkit-scrollbar{width:4px;}
+    .steps-inner::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:2px;}
 
-    /* Cards */
-    .card {
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: 16px; padding: 24px;
-    }
-    .card-g { border-color: var(--border-g); }
+    .step-item{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.04);cursor:pointer;}
+    .step-item:last-child{border-bottom:none;}
+    .step-cb{width:22px;height:22px;border-radius:50%;border:2px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;transition:all 0.2s;margin-top:1px;}
+    .step-item.done .step-cb{background:var(--green);border-color:var(--green);color:#0a0f0d;}
+    .step-text{flex:1;}
+    .step-name{font-size:13px;font-weight:600;color:var(--text);}
+    .step-item.done .step-name{color:var(--muted);text-decoration:line-through;}
+    .step-resource-link{font-size:11px;color:var(--teal);margin-top:3px;display:block;text-decoration:none;}
+    .step-resource-link:hover{text-decoration:underline;}
+    .step-num-badge{font-size:10px;color:var(--muted);flex-shrink:0;margin-top:4px;}
 
-    /* Grid layouts */
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-    .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
-    .grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; }
+    /* NEXT STEP HIGHLIGHT */
+    .next-step-highlight{
+      background:rgba(0,230,118,0.06);border:1px solid rgba(0,230,118,0.15);
+      border-radius:12px;padding:16px;margin-bottom:12px;
+    }
+    .next-step-label{font-size:10px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;}
+    .next-step-text{font-size:14px;font-weight:600;color:white;margin-bottom:4px;}
+    .next-step-path{font-size:12px;color:var(--muted);}
 
-    /* Stat mini cards */
-    .stat-card {
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: 14px; padding: 20px; position: relative; overflow: hidden;
-    }
-    .stat-card::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-      background: var(--grad);
-    }
-    .stat-num {
-      font-family: 'Syne', sans-serif; font-size: 32px; font-weight: 800;
-      background: var(--grad);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-    }
-    .stat-lbl { font-size: 12px; color: var(--muted); margin-top: 4px; }
-    .stat-icon { position: absolute; top: 20px; right: 20px; font-size: 24px; opacity: .35; }
+    /* SIDEBAR */
+    .sidebar{}
+    .sidebar-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:16px;}
+    .sidebar-card h4{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;}
 
-    /* Progress bar */
-    .prog-bar { height: 6px; background: rgba(255,255,255,0.07); border-radius: 3px; overflow: hidden; margin-top: 10px; }
-    .prog-fill { height: 100%; background: var(--grad); border-radius: 3px; transition: width .5s; }
+    /* QUICK LINKS */
+    .quick-link{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;text-decoration:none;transition:background 0.2s;color:var(--text);}
+    .quick-link:hover{background:rgba(255,255,255,0.04);}
+    .quick-link-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;background:rgba(255,255,255,0.05);}
+    .quick-link-text{font-size:13px;font-weight:600;}
 
-    /* ══ OVERVIEW page ══ */
-    .welcome-banner {
-      background: linear-gradient(135deg, rgba(0,230,118,0.08), rgba(0,188,212,0.05));
-      border: 1px solid var(--border-g);
-      border-radius: 18px; padding: 28px 32px;
-      display: flex; align-items: center; gap: 24px;
-      margin-bottom: 24px; position: relative; overflow: hidden;
-    }
-    .welcome-banner::before {
-      content: ''; position: absolute; top: -40%; right: -10%;
-      width: 300px; height: 300px;
-      background: radial-gradient(circle, rgba(0,230,118,0.06) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .wb-avatar {
-      width: 72px; height: 72px; border-radius: 50%;
-      border: 3px solid rgba(0,230,118,0.4);
-      background: rgba(0,230,118,0.1);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 30px; overflow: hidden; flex-shrink: 0;
-    }
-    .wb-avatar img { width: 100%; height: 100%; object-fit: cover; }
-    .wb-text h2 { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; margin-bottom: 4px; }
-    .wb-text p  { font-size: 14px; color: var(--muted); }
-    .wb-career {
-      margin-left: auto; text-align: center; flex-shrink: 0;
-    }
-    .wb-career .career-emoji { font-size: 36px; display: block; margin-bottom: 4px; }
-    .wb-career .career-name  { font-size: 12px; font-weight: 700; color: var(--green); }
+    /* DAILY QUOTE */
+    .quote-card{background:linear-gradient(135deg,rgba(0,230,118,0.08),rgba(0,188,212,0.08));border:1px solid rgba(0,230,118,0.15);border-radius:16px;padding:20px;margin-bottom:16px;}
+    .quote-card .q-label{font-size:10px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;}
+    .quote-card .q-text{font-size:14px;font-style:italic;color:rgba(255,255,255,0.8);line-height:1.6;margin-bottom:8px;}
+    .quote-card .q-author{font-size:11px;color:var(--muted);}
 
-    /* Quick action chips */
-    .quick-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 24px; }
-    .qa-chip {
-      display: flex; align-items: center; gap: 8px;
-      padding: 9px 16px; border-radius: 20px;
-      background: var(--card2); border: 1px solid var(--border);
-      color: var(--text); font-size: 13px; font-weight: 600;
-      text-decoration: none; cursor: pointer;
-      transition: all .2s; white-space: nowrap;
-    }
-    .qa-chip:hover { border-color: var(--border-g); color: var(--green); }
+    /* REMOVE PATH BTN */
+    .btn-remove-path{padding:8px 16px;background:transparent;border:1px solid rgba(255,71,87,0.2);border-radius:8px;color:#ff4757;font-size:11px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;margin:0 24px 16px;transition:background 0.2s;}
+    .btn-remove-path:hover{background:rgba(255,71,87,0.1);}
 
-    /* ══ HABIT TRACKER ══ */
-    .habit-row {
-      display: flex; align-items: center; gap: 14px;
-      padding: 14px 16px; border-radius: 12px;
-      background: rgba(255,255,255,0.02); border: 1px solid var(--border);
-      cursor: pointer; transition: all .2s; user-select: none; margin-bottom: 10px;
-    }
-    .habit-row:hover  { border-color: var(--border-g); background: rgba(0,230,118,0.03); }
-    .habit-row.done   { background: rgba(0,230,118,0.06); border-color: rgba(0,230,118,0.22); }
-    .h-check {
-      width: 24px; height: 24px; border-radius: 50%;
-      border: 2px solid rgba(0,230,118,0.3);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 11px; font-weight: 700; flex-shrink: 0; transition: all .2s;
-    }
-    .habit-row.done .h-check { background: var(--green); border-color: var(--green); color: #0a0e13; }
-    .h-info h4 { font-size: 14px; font-weight: 600; }
-    .h-info p  { font-size: 12px; color: var(--muted); margin-top: 2px; }
-    .habit-row.done .h-info h4 { text-decoration: line-through; color: var(--muted); }
-    .streak-big {
-      display: flex; align-items: center; gap: 12px;
-      padding: 16px 20px; background: rgba(0,230,118,0.07);
-      border: 1px solid rgba(0,230,118,0.18);
-      border-radius: 12px; margin-bottom: 20px;
-    }
-    .streak-big .num { font-family: 'Syne', sans-serif; font-size: 36px; font-weight: 900; color: var(--green); }
-
-    /* ══ ROADMAP ══ */
-    .roadmap-step {
-      display: flex; gap: 16px; align-items: flex-start;
-      padding-bottom: 24px; position: relative;
-    }
-    .roadmap-step:not(:last-child)::after {
-      content: ''; position: absolute; left: 15px; top: 36px;
-      width: 2px; bottom: 0;
-      background: linear-gradient(to bottom, rgba(0,230,118,0.3), rgba(255,255,255,0.05));
-    }
-    .step-dot {
-      width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
-      border: 2px solid rgba(0,230,118,0.3);
-      background: var(--card2);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 12px; font-weight: 800; color: var(--green); z-index: 1;
-      position: relative; transition: all .25s; cursor: pointer;
-    }
-    .step-dot.done { background: var(--green); border-color: var(--green); color: #0a0e13; }
-    .step-dot.active { background: rgba(0,230,118,0.15); border-color: var(--green); box-shadow: 0 0 12px rgba(0,230,118,0.3); }
-    .step-content { flex: 1; padding-top: 4px; }
-    .step-content h4 { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
-    .step-content p  { font-size: 13px; color: var(--muted); line-height: 1.6; }
-    .step-tag {
-      display: inline-block; margin-top: 8px;
-      padding: 3px 10px; border-radius: 6px; font-size: 11px; font-weight: 700;
-    }
-    .tag-free   { background: rgba(0,230,118,0.1); color: var(--green); }
-    .tag-active { background: rgba(0,188,212,0.1); color: var(--teal); }
-    .tag-done   { background: rgba(255,255,255,0.06); color: var(--muted); }
-
-    /* ══ RESOURCES ══ */
-    .res-item {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 14px 16px; border-radius: 12px;
-      background: rgba(255,255,255,0.02); border: 1px solid var(--border);
-      text-decoration: none; margin-bottom: 10px; transition: all .2s; gap: 12px;
-    }
-    .res-item:hover { border-color: var(--border-g); transform: translateX(4px); background: rgba(0,230,118,0.03); }
-    .res-left { display: flex; align-items: center; gap: 12px; }
-    .res-icon {
-      width: 36px; height: 36px; border-radius: 8px;
-      display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0;
-    }
-    .res-name { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
-    .res-meta { font-size: 12px; color: var(--muted); }
-    .res-cta   { font-size: 11px; font-weight: 700; color: var(--green); white-space: nowrap; }
-    .badge-free { display: inline-block; padding: 2px 7px; border-radius: 8px; font-size: 10px; font-weight: 700; background: rgba(0,230,118,0.12); color: var(--green); margin-left: 6px; }
-    .badge-paid { display: inline-block; padding: 2px 7px; border-radius: 8px; font-size: 10px; font-weight: 700; background: rgba(255,152,0,0.12); color: #ffa726; margin-left: 6px; }
-
-    /* ══ JOB TRACKER ══ */
-    .job-form {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px;
-    }
-    .jf-input {
-      padding: 12px 14px; background: var(--card2); border: 1px solid var(--border);
-      border-radius: 10px; color: var(--text); font-size: 13px;
-      font-family: 'Inter', sans-serif; outline: none; transition: .2s;
-    }
-    .jf-input:focus { border-color: rgba(0,230,118,0.35); }
-    .jf-input::placeholder { color: var(--muted); }
-    .btn-add {
-      padding: 12px 20px; background: var(--grad); border: none;
-      border-radius: 10px; color: #0a0e13; font-size: 13px; font-weight: 700;
-      cursor: pointer; font-family: 'Inter', sans-serif; transition: .2s;
-    }
-    .btn-add:hover { opacity: .9; }
-
-    .job-table { width: 100%; border-collapse: collapse; }
-    .job-table th {
-      text-align: left; font-size: 11px; font-weight: 700; letter-spacing: 1px;
-      text-transform: uppercase; color: var(--muted);
-      padding: 8px 14px; border-bottom: 1px solid var(--border);
-    }
-    .job-table td {
-      padding: 13px 14px; font-size: 13px;
-      border-bottom: 1px solid rgba(255,255,255,0.04);
-    }
-    .job-table tr:hover td { background: rgba(255,255,255,0.02); }
-    .status-pill {
-      display: inline-block; padding: 3px 10px; border-radius: 20px;
-      font-size: 11px; font-weight: 700;
-    }
-    .s-applied   { background: rgba(0,188,212,0.12); color: #00bcd4; }
-    .s-interview { background: rgba(255,152,0,0.12); color: #ffa726; }
-    .s-offer     { background: rgba(0,230,118,0.12); color: var(--green); }
-    .s-rejected  { background: rgba(255,82,82,0.12); color: #ff5252; }
-    .btn-del {
-      background: transparent; border: none; color: var(--muted);
-      cursor: pointer; font-size: 16px; padding: 4px 8px; transition: .2s;
-    }
-    .btn-del:hover { color: #ff5252; }
-
-    /* ══ INTERVIEW ══ */
-    .iq-card {
-      background: var(--card2); border: 1px solid var(--border);
-      border-radius: 12px; margin-bottom: 12px; overflow: hidden;
-    }
-    .iq-q {
-      padding: 16px 18px; cursor: pointer;
-      display: flex; justify-content: space-between; align-items: center; gap: 16px;
-    }
-    .iq-q h4 { font-size: 14px; font-weight: 600; }
-    .iq-ico {
-      width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
-      background: rgba(0,230,118,0.08); border: 1px solid rgba(0,230,118,0.2);
-      display: flex; align-items: center; justify-content: center;
-      color: var(--green); font-size: 14px; font-weight: 700; transition: .3s;
-    }
-    .iq-card.open .iq-ico { transform: rotate(45deg); }
-    .iq-a { max-height: 0; overflow: hidden; transition: max-height .35s ease; padding: 0 18px; }
-    .iq-a p { font-size: 13px; color: var(--muted); line-height: 1.8; padding-bottom: 16px; }
-    .iq-card.open .iq-a { max-height: 300px; }
-
-    /* ══ CHALLENGE ══ */
-    .challenge-days { display: grid; grid-template-columns: repeat(6,1fr); gap: 8px; }
-    .day-mini {
-      aspect-ratio: 1; border-radius: 10px;
-      background: var(--card2); border: 1px solid var(--border);
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      cursor: pointer; transition: all .2s; position: relative;
-    }
-    .day-mini.done   { background: rgba(0,230,118,0.08); border-color: rgba(0,230,118,0.3); }
-    .day-mini.locked { opacity: .4; cursor: not-allowed; }
-    .day-mini .d-num { font-size: 9px; color: var(--muted); font-weight: 700; }
-    .day-mini .d-ico { font-size: 13px; margin-top: 2px; }
-
-    /* ══ QUOTE ══ */
-    .quote-box {
-      background: linear-gradient(135deg, rgba(0,230,118,0.06), rgba(0,188,212,0.04));
-      border: 1px solid var(--border-g);
-      border-radius: 16px; padding: 28px;
-      text-align: center; margin-bottom: 20px;
-    }
-    .quote-box .q-mark { font-size: 48px; opacity: .3; line-height: 1; }
-    .quote-box blockquote {
-      font-size: 18px; font-style: italic; line-height: 1.8;
-      color: var(--text); margin: 8px 0 12px;
-    }
-    .quote-box cite { font-size: 12px; font-weight: 700; color: var(--green); letter-spacing: 1px; text-transform: uppercase; }
-    .btn-refresh {
-      padding: 10px 22px; background: transparent;
-      border: 1px solid var(--border-g); border-radius: 9px;
-      color: var(--green); font-size: 13px; font-weight: 700;
-      cursor: pointer; font-family: 'Inter', sans-serif; transition: .2s;
-    }
-    .btn-refresh:hover { background: rgba(0,230,118,0.07); }
-
-    /* ══ PROFILE ══ */
-    .profile-avatar-wrap {
-      display: flex; align-items: center; gap: 20px; margin-bottom: 28px;
-    }
-    .profile-avatar {
-      width: 88px; height: 88px; border-radius: 50%;
-      border: 3px solid rgba(0,230,118,0.35);
-      background: rgba(0,230,118,0.1);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 38px; overflow: hidden;
-    }
-    .profile-avatar img { width: 100%; height: 100%; object-fit: cover; }
-    .btn-change-photo {
-      padding: 9px 18px; background: transparent;
-      border: 1px solid var(--border-g); border-radius: 9px;
-      color: var(--green); font-size: 13px; font-weight: 600;
-      cursor: pointer; font-family: 'Inter', sans-serif; transition: .2s;
-    }
-    .btn-change-photo:hover { background: rgba(0,230,118,0.07); }
-    #profileAvatarInput { display: none; }
-
-    .pf-field { margin-bottom: 16px; }
-    .pf-label { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; display: block; }
-    .pf-val { font-size: 14px; color: var(--text); padding: 12px 16px; background: var(--card2); border: 1px solid var(--border); border-radius: 10px; }
-
-    .career-switcher { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
-    .cs-opt {
-      padding: 12px; background: var(--card2); border: 1px solid var(--border);
-      border-radius: 10px; cursor: pointer; text-align: center; transition: .2s;
-    }
-    .cs-opt:hover { border-color: var(--border-g); }
-    .cs-opt.active { border-color: var(--green); background: rgba(0,230,118,0.06); }
-    .cs-opt .cs-e { font-size: 20px; display: block; margin-bottom: 4px; }
-    .cs-opt .cs-n { font-size: 12px; font-weight: 700; }
-    .btn-save {
-      margin-top: 20px; padding: 12px 28px; background: var(--grad);
-      border: none; border-radius: 10px; color: #0a0e13;
-      font-size: 14px; font-weight: 700; cursor: pointer;
-      font-family: 'Inter', sans-serif; transition: .2s;
-    }
-    .btn-save:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,230,118,0.25); }
-
-    /* Toast */
-    .toast {
-      position: fixed; bottom: 24px; right: 24px; z-index: 9999;
-      background: var(--green); color: #0a0e13;
-      font-weight: 700; font-size: 13px;
-      padding: 12px 22px; border-radius: 10px;
-      transform: translateY(80px); opacity: 0; transition: .3s;
-    }
-    .toast.show { transform: translateY(0); opacity: 1; }
-
-    /* ══ RESPONSIVE ══ */
-    @media (max-width: 900px) {
-      .sidebar { transform: translateX(-100%); }
-      .sidebar.open { transform: translateX(0); }
-      .main { margin-left: 0; }
-      .ham-btn { display: flex; }
-      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
-      .job-form { grid-template-columns: 1fr; }
-      .challenge-days { grid-template-columns: repeat(5,1fr); }
-      .page { padding: 20px 16px; }
-      .career-switcher { grid-template-columns: 1fr 1fr; }
-    }
-    @media (max-width: 600px) {
-      .welcome-banner { flex-wrap: wrap; }
-      .wb-career { margin-left: 0; }
-      .challenge-days { grid-template-columns: repeat(4,1fr); }
+    @media(max-width:900px){
+      .main-grid{grid-template-columns:1fr;}
+      nav{padding:0 20px;}
+      .stats-row{gap:10px;}
+      .welcome,.stats-row,.main-grid{padding-left:20px;padding-right:20px;}
     }
   </style>
 </head>
 <body>
 
-<!-- ═══ SIDEBAR ═══ -->
-<aside class="sidebar" id="sidebar">
-  <div class="sidebar-head">
-    <a href="index.html" class="sb-logo">
-      <div class="sb-logo-icon">R</div>
-      <span class="sb-logo-name">RiseNow</span>
+<!-- LOADING -->
+<div id="loadingScreen">
+  <div class="loader"></div>
+  <p>Loading your dashboard...</p>
+</div>
+
+<!-- NOT LOGGED IN -->
+<div id="notLoggedIn">
+  <div style="font-size:56px;margin-bottom:20px;">🔐</div>
+  <h2>Sign in to access your Dashboard</h2>
+  <p>Your progress, career paths and job tracker — all saved securely across devices.</p>
+  <button class="btn-login" onclick="window.location.href='index.html'">Go to Home & Sign In</button>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboardContent">
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="nav-logo">
+      <div class="logo-box">R</div>
+      <div class="logo-text">RiseNow</div>
     </a>
-    <div class="sb-user">
-      <div class="sb-avatar" id="sbAvatar">🙂</div>
-      <div>
-        <div class="sb-user-name" id="sbName">Loading…</div>
-        <div class="sb-user-career" id="sbCareer"></div>
+    <div class="nav-right">
+      <a href="careers.html" class="nav-link">Explore Careers</a>
+      <a href="job-tracker.html" class="nav-link">Job Tracker</a>
+      <a href="interview.html" class="nav-link">Interview Prep</a>
+      <div class="profile-mini" id="profileMini">
+        <img id="userPhoto" src="" alt=""/>
+        <span class="profile-mini-name" id="userName">User</span>
       </div>
+      <button class="btn-signout" onclick="signOutUser()">Sign Out</button>
     </div>
-  </div>
-
-  <nav class="sidebar-nav">
-    <div class="sb-section-label">Main</div>
-    <a class="sb-link active" onclick="showPage('overview')" href="#">
-      <span class="sb-icon">🏠</span> Overview
-    </a>
-    <a class="sb-link" onclick="showPage('habits')" href="#">
-      <span class="sb-icon">🔥</span> Habit Tracker
-      <span class="sb-badge" id="sbHabitBadge">0/6</span>
-    </a>
-    <a class="sb-link" onclick="showPage('roadmap')" href="#">
-      <span class="sb-icon">🗺️</span> My Roadmap
-    </a>
-    <a class="sb-link" onclick="showPage('resources')" href="#">
-      <span class="sb-icon">📚</span> Resources
-    </a>
-
-    <div class="sb-section-label">Tools</div>
-    <a class="sb-link" onclick="showPage('challenge')" href="#">
-      <span class="sb-icon">🔥</span> 30-Day Challenge
-    </a>
-    <a class="sb-link" onclick="showPage('jobs')" href="#">
-      <span class="sb-icon">📋</span> Job Tracker
-    </a>
-    <a class="sb-link" onclick="showPage('interview')" href="#">
-      <span class="sb-icon">💬</span> Interview Prep
-    </a>
-    <a class="sb-link" onclick="showPage('quote')" href="#">
-      <span class="sb-icon">✨</span> Daily Quote
-    </a>
-
-    <div class="sb-section-label">Account</div>
-    <a class="sb-link" onclick="showPage('profile')" href="#">
-      <span class="sb-icon">👤</span> My Profile
-    </a>
-    <a class="sb-link" href="index.html">
-      <span class="sb-icon">🌐</span> Main Site
-    </a>
   </nav>
 
-  <div class="sb-streak">
-    <span style="font-size:22px;">🔥</span>
+  <!-- WELCOME -->
+  <div class="welcome">
+    <h2>Welcome back, <span id="welcomeName">Champ</span> 👋</h2>
+    <p id="welcomeSub">Here's where you left off.</p>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-num" id="statPaths" style="color:var(--green)">0</div>
+      <div class="stat-lbl">Career Paths Saved</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" id="statSteps" style="color:var(--teal)">0</div>
+      <div class="stat-lbl">Steps Completed</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" id="statAvg" style="color:#a78bfa">0%</div>
+      <div class="stat-lbl">Avg Progress</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" id="statJobs" style="color:#ffa500">0</div>
+      <div class="stat-lbl">Jobs Applied</div>
+    </div>
+  </div>
+
+  <!-- MAIN GRID -->
+  <div class="main-grid">
+
+    <!-- LEFT: CAREER PATHS -->
     <div>
-      <div class="sb-streak-num" id="sbStreakNum">0</div>
-      <div class="sb-streak-lbl">day streak</div>
+      <div class="section-title">My Career Paths</div>
+      <div id="pathsList"></div>
+    </div>
+
+    <!-- RIGHT: SIDEBAR -->
+    <div class="sidebar">
+
+      <!-- NEXT STEP -->
+      <div class="sidebar-card" id="nextStepCard" style="display:none;">
+        <h4>Next Step</h4>
+        <div id="nextStepContent"></div>
+      </div>
+
+      <!-- DAILY QUOTE -->
+      <div class="quote-card">
+        <div class="q-label">Today's Motivation</div>
+        <div class="q-text" id="dailyQuoteText">"The comeback is always stronger than the setback."</div>
+        <div class="q-author" id="dailyQuoteAuthor">— Unknown</div>
+      </div>
+
+      <!-- QUICK LINKS -->
+      <div class="sidebar-card">
+        <h4>Quick Links</h4>
+        <a href="careers.html" class="quick-link">
+          <div class="quick-link-icon">🧭</div>
+          <div class="quick-link-text">Explore More Careers</div>
+        </a>
+        <a href="job-tracker.html" class="quick-link">
+          <div class="quick-link-icon">📋</div>
+          <div class="quick-link-text">Job Tracker</div>
+        </a>
+        <a href="interview.html" class="quick-link">
+          <div class="quick-link-icon">🎤</div>
+          <div class="quick-link-text">Interview Prep</div>
+        </a>
+        <a href="resources.html" class="quick-link">
+          <div class="quick-link-icon">📚</div>
+          <div class="quick-link-text">Resource Library</div>
+        </a>
+        <a href="daily-quote.html" class="quick-link">
+          <div class="quick-link-icon">💫</div>
+          <div class="quick-link-text">Daily Motivation</div>
+        </a>
+      </div>
+
     </div>
   </div>
+</div>
 
-  <div class="sidebar-footer">
-    <button class="btn-logout" onclick="logout()">🚪 Sign Out</button>
-  </div>
-</aside>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+  import { getFirestore, doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-<!-- ═══ MAIN ═══ -->
-<div class="main">
+  const firebaseConfig = {
+    apiKey: "AIzaSyB2__vKiROvrPOyomY8X-pDBY8VlArDbdY",
+    authDomain: "risenow-31893.firebaseapp.com",
+    databaseURL: "https://risenow-31893-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "risenow-31893",
+    storageBucket: "risenow-31893.firebasestorage.app",
+    messagingSenderId: "230298271225",
+    appId: "1:230298271225:web:c24d7100fc8b89a268d128",
+    measurementId: "G-RC17E84XEV"
+  };
 
-  <!-- TOP BAR -->
-  <div class="topbar">
-    <div style="display:flex;align-items:center;gap:12px;">
-      <button class="ham-btn" id="hamBtn" onclick="toggleSidebar()">
-        <span></span><span></span><span></span>
-      </button>
-      <div class="topbar-left">
-        <h2 id="pageTitle">Overview</h2>
-        <p id="pageDate"></p>
-      </div>
-    </div>
-    <div class="topbar-right">
-      <span class="topbar-name" id="topbarName"></span>
-      <div class="topbar-avatar" id="topbarAvatar" onclick="showPage('profile')">🙂</div>
-    </div>
-  </div>
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
 
-  <!-- ══════ PAGE: OVERVIEW ══════ -->
-  <div class="page active" id="page-overview">
+  // CAREER DATA (same as careers.html)
+  const careerData = {
+    da: { emoji:'📊', title:'Data Analytics', steps:[
+      {name:'Learn Python Basics',resource:'W3Schools Python',url:'https://w3schools.com/python'},
+      {name:'Excel & Google Sheets',resource:'YouTube Tutorial',url:'https://youtube.com'},
+      {name:'Statistics Fundamentals',resource:'Khan Academy',url:'https://khanacademy.org'},
+      {name:'Pandas & NumPy',resource:'Kaggle Learn',url:'https://kaggle.com/learn'},
+      {name:'SQL Fundamentals',resource:'W3Schools SQL',url:'https://w3schools.com/sql'},
+      {name:'Data Visualization',resource:'Google Colab',url:'https://colab.research.google.com'},
+      {name:'Power BI Basics',resource:'Microsoft Learn',url:'https://learn.microsoft.com'},
+      {name:'Advanced SQL',resource:'HackerRank',url:'https://hackerrank.com/domains/sql'},
+      {name:'Machine Learning Basics',resource:'StatQuest YouTube',url:'https://youtube.com/@statquest'},
+      {name:'Build Portfolio & Apply',resource:'GitHub',url:'https://github.com'},
+    ]},
+    ml: { emoji:'🤖', title:'Machine Learning / AI', steps:[
+      {name:'Python & Math Basics',resource:'W3Schools',url:'https://w3schools.com/python'},
+      {name:'Supervised Learning',resource:'Google ML Crash Course',url:'https://developers.google.com/machine-learning/crash-course'},
+      {name:'Unsupervised Learning',resource:'Scikit-learn Docs',url:'https://scikit-learn.org'},
+      {name:'Neural Networks',resource:'Fast.ai',url:'https://fast.ai'},
+      {name:'Deep Learning',resource:'Fast.ai',url:'https://fast.ai'},
+      {name:'NLP Basics',resource:'Hugging Face',url:'https://huggingface.co'},
+      {name:'Computer Vision',resource:'OpenCV Docs',url:'https://opencv.org'},
+      {name:'Model Deployment',resource:'Streamlit',url:'https://streamlit.io'},
+      {name:'Kaggle Competition',resource:'Kaggle',url:'https://kaggle.com'},
+      {name:'Build AI Project Portfolio',resource:'GitHub',url:'https://github.com'},
+    ]},
+    wd: { emoji:'🌐', title:'Web Development', steps:[
+      {name:'HTML Basics',resource:'freeCodeCamp',url:'https://freecodecamp.org'},
+      {name:'CSS & Flexbox',resource:'CSS Tricks',url:'https://css-tricks.com'},
+      {name:'Responsive Design',resource:'freeCodeCamp',url:'https://freecodecamp.org'},
+      {name:'JavaScript Basics',resource:'JavaScript.info',url:'https://javascript.info'},
+      {name:'DOM Manipulation',resource:'MDN Docs',url:'https://developer.mozilla.org'},
+      {name:'ES6+ Features',resource:'JavaScript.info',url:'https://javascript.info'},
+      {name:'React Basics',resource:'React Docs',url:'https://react.dev'},
+      {name:'React Projects',resource:'YouTube',url:'https://youtube.com'},
+      {name:'Node.js & APIs',resource:'The Odin Project',url:'https://theodinproject.com'},
+      {name:'Deploy & Portfolio',resource:'GitHub Pages',url:'https://pages.github.com'},
+    ]},
+    fs: { emoji:'⚡', title:'Full Stack Development', steps:[
+      {name:'HTML/CSS/JS',resource:'freeCodeCamp',url:'https://freecodecamp.org'},
+      {name:'React Frontend',resource:'React Docs',url:'https://react.dev'},
+      {name:'Node.js Backend',resource:'The Odin Project',url:'https://theodinproject.com'},
+      {name:'Express & APIs',resource:'Express Docs',url:'https://expressjs.com'},
+      {name:'MongoDB Database',resource:'MongoDB University',url:'https://university.mongodb.com'},
+      {name:'Authentication & JWT',resource:'YouTube',url:'https://youtube.com'},
+      {name:'Full Stack Project',resource:'GitHub',url:'https://github.com'},
+      {name:'Docker Basics',resource:'Docker Docs',url:'https://docs.docker.com'},
+      {name:'Deploy to Cloud',resource:'Vercel',url:'https://vercel.com'},
+      {name:'Portfolio & Apply',resource:'LinkedIn',url:'https://linkedin.com'},
+    ]},
+    mob: { emoji:'📱', title:'Mobile App Development', steps:[
+      {name:'Choose Flutter or React Native',resource:'Flutter vs RN Guide',url:'https://flutter.dev'},
+      {name:'Language Basics',resource:'Flutter Docs',url:'https://flutter.dev'},
+      {name:'UI Components',resource:'Flutter Widget Catalog',url:'https://flutter.dev/docs/development/ui/widgets'},
+      {name:'Navigation & Routing',resource:'Flutter Docs',url:'https://flutter.dev'},
+      {name:'State Management',resource:'Provider Docs',url:'https://pub.dev/packages/provider'},
+      {name:'APIs & Firebase',resource:'Firebase Docs',url:'https://firebase.google.com'},
+      {name:'Build First App',resource:'YouTube',url:'https://youtube.com'},
+      {name:'Testing',resource:'Flutter Test Docs',url:'https://flutter.dev/docs/testing'},
+      {name:'Publish to Store',resource:'Google Play Console',url:'https://play.google.com/console'},
+      {name:'Portfolio & Apply',resource:'LinkedIn',url:'https://linkedin.com'},
+    ]},
+    cyber: { emoji:'🔐', title:'Cybersecurity', steps:[
+      {name:'Networking Basics',resource:'CompTIA Network+',url:'https://comptia.org'},
+      {name:'Linux Fundamentals',resource:'TryHackMe',url:'https://tryhackme.com'},
+      {name:'Python Scripting',resource:'Automate the Boring Stuff',url:'https://automatetheboringstuff.com'},
+      {name:'Web Security Basics',resource:'OWASP',url:'https://owasp.org'},
+      {name:'Network Security',resource:'TryHackMe',url:'https://tryhackme.com'},
+      {name:'Ethical Hacking Intro',resource:'Hack The Box',url:'https://hackthebox.com'},
+      {name:'TryHackMe Rooms',resource:'TryHackMe',url:'https://tryhackme.com'},
+      {name:'CTF Challenges',resource:'PicoCTF',url:'https://picoctf.org'},
+      {name:'CompTIA Security+',resource:'CompTIA',url:'https://comptia.org'},
+      {name:'Build Lab & Portfolio',resource:'GitHub',url:'https://github.com'},
+    ]},
+    cloud: { emoji:'☁️', title:'Cloud Computing', steps:[
+      {name:'Cloud Concepts Basics',resource:'AWS Training',url:'https://aws.amazon.com/training'},
+      {name:'Linux Fundamentals',resource:'Linux Foundation',url:'https://training.linuxfoundation.org'},
+      {name:'AWS Core Services',resource:'AWS Free Tier',url:'https://aws.amazon.com/free'},
+      {name:'Storage & Databases',resource:'AWS Docs',url:'https://docs.aws.amazon.com'},
+      {name:'Networking in Cloud',resource:'AWS VPC Guide',url:'https://aws.amazon.com/vpc'},
+      {name:'Docker Containers',resource:'Docker Docs',url:'https://docs.docker.com'},
+      {name:'Kubernetes Basics',resource:'Kubernetes Docs',url:'https://kubernetes.io/docs'},
+      {name:'CI/CD Pipelines',resource:'GitHub Actions',url:'https://github.com/features/actions'},
+      {name:'AWS Certification',resource:'AWS Certified Cloud Practitioner',url:'https://aws.amazon.com/certification'},
+      {name:'Build Cloud Project',resource:'GitHub',url:'https://github.com'},
+    ]},
+    java: { emoji:'☕', title:'Java / Backend Dev', steps:[
+      {name:'Java Basics',resource:'Mooc.fi Java',url:'https://java-programming.mooc.fi'},
+      {name:'OOP Concepts',resource:'Baeldung',url:'https://baeldung.com'},
+      {name:'Data Structures',resource:'LeetCode',url:'https://leetcode.com'},
+      {name:'Collections & Generics',resource:'Baeldung',url:'https://baeldung.com'},
+      {name:'Spring Boot Intro',resource:'Spring.io',url:'https://spring.io'},
+      {name:'REST API Development',resource:'Spring Boot Docs',url:'https://spring.io/guides'},
+      {name:'Database & JPA',resource:'Baeldung JPA Guide',url:'https://baeldung.com/jpa-tutorial'},
+      {name:'Authentication & JWT',resource:'YouTube',url:'https://youtube.com'},
+      {name:'Microservices Basics',resource:'Spring Cloud',url:'https://spring.io/projects/spring-cloud'},
+      {name:'Build & Deploy Project',resource:'GitHub',url:'https://github.com'},
+    ]},
+    uiux: { emoji:'🎯', title:'UI/UX Design', steps:[
+      {name:'Design Principles',resource:'YouTube',url:'https://youtube.com'},
+      {name:'User Research Basics',resource:'Google UX Certificate',url:'https://coursera.org'},
+      {name:'Wireframing',resource:'Figma',url:'https://figma.com'},
+      {name:'Figma Fundamentals',resource:'Figma Academy',url:'https://figma.com'},
+      {name:'Prototyping',resource:'Figma',url:'https://figma.com'},
+      {name:'Design Systems',resource:'Material Design',url:'https://m3.material.io'},
+      {name:'Usability Testing',resource:'UX Tweak',url:'https://uxtweak.com'},
+      {name:'Portfolio Case Study 1',resource:'Behance',url:'https://behance.net'},
+      {name:'Portfolio Case Study 2',resource:'Behance',url:'https://behance.net'},
+      {name:'Apply for UX Roles',resource:'LinkedIn',url:'https://linkedin.com'},
+    ]},
+    gd: { emoji:'🎨', title:'Graphic Design', steps:[
+      {name:'Design Principles',resource:'YouTube',url:'https://youtube.com'},
+      {name:'Color Theory',resource:'Adobe Color',url:'https://color.adobe.com'},
+      {name:'Typography',resource:'Google Fonts',url:'https://fonts.google.com'},
+      {name:'Canva Mastery',resource:'Canva Design School',url:'https://canva.com'},
+      {name:'Figma Basics',resource:'Figma',url:'https://figma.com'},
+      {name:'Logo Design',resource:'YouTube',url:'https://youtube.com'},
+      {name:'Brand Identity Project',resource:'Behance',url:'https://behance.net'},
+      {name:'Social Media Kit',resource:'Canva',url:'https://canva.com'},
+      {name:'Behance Portfolio',resource:'Behance',url:'https://behance.net'},
+      {name:'Start Freelancing or Apply',resource:'Fiverr',url:'https://fiverr.com'},
+    ]},
+    ve: { emoji:'🎬', title:'Video Editing', steps:[
+      {name:'Video Concepts & Terminology',resource:'YouTube',url:'https://youtube.com'},
+      {name:'DaVinci Resolve Basics',resource:'DaVinci Resolve',url:'https://blackmagicdesign.com'},
+      {name:'Cut & Trim Footage',resource:'YouTube Tutorials',url:'https://youtube.com'},
+      {name:'Transitions & Effects',resource:'YouTube Tutorials',url:'https://youtube.com'},
+      {name:'Color Grading Basics',resource:'DaVinci Resolve Guide',url:'https://blackmagicdesign.com'},
+      {name:'Audio Mixing',resource:'YouTube',url:'https://youtube.com'},
+      {name:'Motion Graphics Intro',resource:'After Effects Basics',url:'https://youtube.com'},
+      {name:'Edit a Short Film',resource:'YouTube',url:'https://youtube.com'},
+      {name:'YouTube Reel Project',resource:'YouTube Studio',url:'https://studio.youtube.com'},
+      {name:'Portfolio & Freelancing',resource:'Fiverr',url:'https://fiverr.com'},
+    ]},
+    cw: { emoji:'✍️', title:'Content Writing', steps:[
+      {name:'Writing Fundamentals',resource:'Hemingway App',url:'https://hemingwayapp.com'},
+      {name:'Grammar & Style',resource:'Grammarly',url:'https://grammarly.com'},
+      {name:'SEO Basics',resource:'Neil Patel Blog',url:'https://neilpatel.com'},
+      {name:'Keyword Research',resource:'Ubersuggest',url:'https://neilpatel.com/ubersuggest'},
+      {name:'Write First Blog Post',resource:'Medium',url:'https://medium.com'},
+      {name:'Headlines & Hooks',resource:'Copyblogger',url:'https://copyblogger.com'},
+      {name:'Long-form Content',resource:'HubSpot Blog',url:'https://blog.hubspot.com'},
+      {name:'Copywriting Basics',resource:'Copyhackers',url:'https://copyhackers.com'},
+      {name:'Portfolio of 5 Articles',resource:'Medium',url:'https://medium.com'},
+      {name:'Apply or Freelance',resource:'Upwork',url:'https://upwork.com'},
+    ]},
+    dm: { emoji:'📣', title:'Digital Marketing', steps:[
+      {name:'Marketing Fundamentals',resource:'HubSpot Academy',url:'https://academy.hubspot.com'},
+      {name:'Google Analytics',resource:'Google Skillshop',url:'https://skillshop.google.com'},
+      {name:'SEO Basics',resource:'Neil Patel',url:'https://neilpatel.com'},
+      {name:'Content Marketing',resource:'HubSpot',url:'https://hubspot.com'},
+      {name:'Email Campaigns',resource:'Mailchimp',url:'https://mailchimp.com'},
+      {name:'Google Ads',resource:'Google Skillshop',url:'https://skillshop.google.com'},
+      {name:'Meta Ads',resource:'Meta Blueprint',url:'https://www.facebook.com/business/learn'},
+      {name:'Social Media Strategy',resource:'Buffer Blog',url:'https://buffer.com/resources'},
+      {name:'Campaign Case Study',resource:'LinkedIn',url:'https://linkedin.com'},
+      {name:'Get Certified & Apply',resource:'Coursera',url:'https://coursera.org'},
+    ]},
+    pm: { emoji:'🧩', title:'Product Management', steps:[
+      {name:'Product Thinking Basics',resource:'Product School',url:'https://productschool.com'},
+      {name:'User Research & Personas',resource:'Nielsen Norman Group',url:'https://nngroup.com'},
+      {name:'Problem Discovery',resource:'Reforge Blog',url:'https://reforge.com'},
+      {name:'Writing PRDs',resource:"Lenny's Newsletter",url:'https://lennysnewsletter.com'},
+      {name:'Agile & Scrum',resource:'Atlassian',url:'https://atlassian.com/agile'},
+      {name:'Roadmap Prioritization',resource:'Product School',url:'https://productschool.com'},
+      {name:'Metrics & KPIs',resource:'Mixpanel Blog',url:'https://mixpanel.com/blog'},
+      {name:'A/B Testing Basics',resource:'Optimizely',url:'https://optimizely.com'},
+      {name:'Build Mock PRD',resource:'Notion',url:'https://notion.so'},
+      {name:'PM Interview Prep',resource:'Exponent',url:'https://tryexponent.com'},
+    ]},
+    ba: { emoji:'📋', title:'Business Analysis', steps:[
+      {name:'BA Role & Responsibilities',resource:'IIBA',url:'https://iiba.org'},
+      {name:'Requirements Gathering',resource:'Coursera',url:'https://coursera.org'},
+      {name:'Use Cases & User Stories',resource:'Atlassian',url:'https://atlassian.com'},
+      {name:'Process Mapping',resource:'Lucidchart',url:'https://lucidchart.com'},
+      {name:'JIRA Basics',resource:'Atlassian',url:'https://atlassian.com/software/jira'},
+      {name:'SQL for BAs',resource:'W3Schools',url:'https://w3schools.com/sql'},
+      {name:'Excel for Analysis',resource:'ExcelJet',url:'https://exceljet.net'},
+      {name:'Stakeholder Communication',resource:'YouTube',url:'https://youtube.com'},
+      {name:'CBAP Basics',resource:'IIBA',url:'https://iiba.org'},
+      {name:'Portfolio & Apply',resource:'LinkedIn',url:'https://linkedin.com'},
+    ]},
+    excel: { emoji:'📈', title:'Excel & Power BI', steps:[
+      {name:'Excel Basics',resource:'ExcelJet',url:'https://exceljet.net'},
+      {name:'Formulas & Functions',resource:'ExcelJet',url:'https://exceljet.net'},
+      {name:'VLOOKUP & INDEX MATCH',resource:'ExcelJet',url:'https://exceljet.net'},
+      {name:'Pivot Tables',resource:'YouTube',url:'https://youtube.com'},
+      {name:'Excel Charts & Dashboards',resource:'YouTube',url:'https://youtube.com'},
+      {name:'Power BI Intro',resource:'Microsoft Learn',url:'https://learn.microsoft.com/power-bi'},
+      {name:'Import & Transform Data',resource:'Power Query Docs',url:'https://learn.microsoft.com'},
+      {name:'DAX Basics',resource:'DAX Formatter',url:'https://daxformatter.com'},
+      {name:'Build Power BI Dashboard',resource:'YouTube',url:'https://youtube.com'},
+      {name:'Portfolio Project',resource:'GitHub',url:'https://github.com'},
+    ]},
+  };
 
-    <!-- Welcome banner -->
-    <div class="welcome-banner">
-      <div class="wb-avatar" id="wbAvatar">🙂</div>
-      <div class="wb-text">
-        <h2 id="wbGreeting">Good morning! 👋</h2>
-        <p id="wbSub">Ready to keep building? Your comeback is happening.</p>
-      </div>
-      <div class="wb-career">
-        <span class="career-emoji" id="wbCareerEmoji">📊</span>
-        <span class="career-name" id="wbCareerName">Data Analytics</span>
-      </div>
-    </div>
+  const quotes = [
+    {text:'The comeback is always stronger than the setback.',author:'Unknown'},
+    {text:"You don't have to be great to start, but you have to start to be great.",author:'Zig Ziglar'},
+    {text:'Opportunities don\'t happen. You create them.',author:'Chris Grosser'},
+    {text:'It always seems impossible until it\'s done.',author:'Nelson Mandela'},
+    {text:'One day or day one. You decide.',author:'Unknown'},
+    {text:'Rejection is redirection.',author:'Unknown'},
+    {text:'Hard times never last, but hard people do.',author:'Robert H. Schuller'},
+    {text:'Every day is a second chance.',author:'Unknown'},
+  ];
 
-    <!-- Quick action chips -->
-    <div class="quick-actions">
-      <span class="qa-chip" onclick="showPage('habits')">🔥 Habits</span>
-      <span class="qa-chip" onclick="showPage('roadmap')">🗺️ Roadmap</span>
-      <span class="qa-chip" onclick="showPage('challenge')">⚡ Challenge</span>
-      <span class="qa-chip" onclick="showPage('jobs')">📋 Job Tracker</span>
-      <span class="qa-chip" onclick="showPage('interview')">💬 Interview</span>
-      <span class="qa-chip" onclick="showPage('quote')">✨ Today's Quote</span>
-    </div>
+  let currentUser = null;
+  let userData = { paths:{}, jobs:[] };
 
-    <!-- Stats row -->
-    <div class="grid-4" style="margin-bottom:24px;">
-      <div class="stat-card">
-        <div class="stat-icon">🔥</div>
-        <div class="stat-num" id="ovStreak">0</div>
-        <div class="stat-lbl">Day Streak</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon">✅</div>
-        <div class="stat-num" id="ovHabits">0/6</div>
-        <div class="stat-lbl">Habits Today</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon">📋</div>
-        <div class="stat-num" id="ovJobs">0</div>
-        <div class="stat-lbl">Jobs Tracked</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon">⚡</div>
-        <div class="stat-num" id="ovChallenge">0%</div>
-        <div class="stat-lbl">Challenge Done</div>
-      </div>
-    </div>
+  // Daily quote
+  const today = new Date().toDateString();
+  const qi = today.split('').reduce((a,c)=>a+c.charCodeAt(0),0) % quotes.length;
+  document.getElementById('dailyQuoteText').textContent = `"${quotes[qi].text}"`;
+  document.getElementById('dailyQuoteAuthor').textContent = `— ${quotes[qi].author}`;
 
-    <!-- Habits + Roadmap preview side by side -->
-    <div class="grid-2" style="margin-bottom:24px;">
-      <!-- Habit mini -->
-      <div class="card card-g">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
-          <div>
-            <div style="font-size:15px;font-weight:700;">Today's Habits</div>
-            <div style="font-size:12px;color:var(--muted);margin-top:2px;" id="ovHabitPct">0% done</div>
-          </div>
-          <div style="font-size:11px;font-weight:700;color:var(--green);cursor:pointer;" onclick="showPage('habits')">View all →</div>
-        </div>
-        <div class="prog-bar" style="margin-bottom:14px;"><div class="prog-fill" id="ovHabitBar" style="width:0%"></div></div>
-        <div id="ovHabitList"></div>
-      </div>
-
-      <!-- Roadmap progress mini -->
-      <div class="card">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
-          <div>
-            <div style="font-size:15px;font-weight:700;">Roadmap Progress</div>
-            <div style="font-size:12px;color:var(--muted);margin-top:2px;" id="ovRoadmapPct">0 steps completed</div>
-          </div>
-          <div style="font-size:11px;font-weight:700;color:var(--green);cursor:pointer;" onclick="showPage('roadmap')">View all →</div>
-        </div>
-        <div class="prog-bar" style="margin-bottom:14px;"><div class="prog-fill" id="ovRoadmapBar" style="width:0%"></div></div>
-        <div id="ovRoadmapList"></div>
-      </div>
-    </div>
-
-    <!-- Daily quote preview -->
-    <div class="card" onclick="showPage('quote')" style="cursor:pointer;border-color:var(--border-g);">
-      <div style="font-size:11px;font-weight:700;color:var(--green);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;">✨ Today's Quote</div>
-      <div style="font-size:16px;font-style:italic;line-height:1.7;" id="ovQuote">"Loading today's quote…"</div>
-    </div>
-  </div>
-
-  <!-- ══════ PAGE: HABITS ══════ -->
-  <div class="page" id="page-habits">
-    <div class="sec-hd">
-      <div class="label">Daily Growth</div>
-      <h2>Habit Tracker</h2>
-      <p>Check off your 6 daily habits. Build momentum. Watch your streak grow.</p>
-    </div>
-    <div class="streak-big">
-      <span style="font-size:30px;">🔥</span>
-      <div>
-        <div class="num" id="habStreak">0</div>
-        <div style="font-size:12px;color:var(--muted);">day streak — keep going!</div>
-      </div>
-      <div style="margin-left:auto;text-align:right;">
-        <div style="font-size:22px;font-weight:800;" id="habPct">0%</div>
-        <div style="font-size:12px;color:var(--muted);">done today</div>
-      </div>
-    </div>
-    <div class="prog-bar" style="margin-bottom:24px;height:8px;">
-      <div class="prog-fill" id="habBar" style="width:0%"></div>
-    </div>
-    <div id="habAllDone" style="display:none;text-align:center;padding:14px;background:rgba(0,230,118,0.07);border:1px solid rgba(0,230,118,0.2);border-radius:12px;margin-bottom:16px;font-size:14px;font-weight:700;color:var(--green);">🎉 All habits done! You're crushing it today!</div>
-    <div id="habitsList"></div>
-    <button class="btn-refresh" style="margin-top:8px;" onclick="resetHabits()">↺ Reset Today's Habits</button>
-  </div>
-
-  <!-- ══════ PAGE: ROADMAP ══════ -->
-  <div class="page" id="page-roadmap">
-    <div class="sec-hd">
-      <div class="label">Your Learning Path</div>
-      <h2 id="rmTitle">Roadmap</h2>
-      <p id="rmSub">Your personalized step-by-step guide to becoming job-ready.</p>
-    </div>
-    <div class="grid-2" style="gap:10px;margin-bottom:28px;">
-      <div class="card" style="padding:18px;">
-        <div style="font-size:12px;color:var(--muted);margin-bottom:4px;">Steps Completed</div>
-        <div style="font-size:28px;font-weight:800;color:var(--green);" id="rmDone">0</div>
-      </div>
-      <div class="card" style="padding:18px;">
-        <div style="font-size:12px;color:var(--muted);margin-bottom:4px;">Overall Progress</div>
-        <div style="font-size:28px;font-weight:800;color:var(--green);" id="rmPct">0%</div>
-      </div>
-    </div>
-    <div class="prog-bar" style="margin-bottom:32px;height:8px;">
-      <div class="prog-fill" id="rmBar" style="width:0%"></div>
-    </div>
-    <div id="roadmapSteps"></div>
-  </div>
-
-  <!-- ══════ PAGE: RESOURCES ══════ -->
-  <div class="page" id="page-resources">
-    <div class="sec-hd">
-      <div class="label">Free Learning</div>
-      <h2 id="resTitle">Resources</h2>
-      <p>Curated free resources specifically for your chosen career path.</p>
-    </div>
-    <div id="resourcesList"></div>
-  </div>
-
-  <!-- ══════ PAGE: CHALLENGE ══════ -->
-  <div class="page" id="page-challenge">
-    <div class="sec-hd">
-      <div class="label">30-Day Program</div>
-      <h2 id="chalTitle">30-Day Challenge</h2>
-      <p>Complete one task daily. Build an unstoppable habit in 30 days.</p>
-    </div>
-    <div class="grid-2" style="margin-bottom:24px;gap:10px;">
-      <div class="card" style="padding:18px;">
-        <div style="font-size:12px;color:var(--muted);margin-bottom:4px;">Days Completed</div>
-        <div style="font-size:28px;font-weight:800;color:var(--green);" id="chalDone">0</div>
-      </div>
-      <div class="card" style="padding:18px;">
-        <div style="font-size:12px;color:var(--muted);margin-bottom:4px;">Progress</div>
-        <div style="font-size:28px;font-weight:800;color:var(--green);" id="chalPct">0%</div>
-      </div>
-    </div>
-    <div class="prog-bar" style="margin-bottom:24px;height:8px;">
-      <div class="prog-fill" id="chalBar" style="width:0%"></div>
-    </div>
-    <div class="challenge-days" id="challengeDays"></div>
-    <div style="margin-top:16px;text-align:right;">
-      <a href="challenge.html" style="font-size:13px;font-weight:700;color:var(--green);text-decoration:none;">Open full challenge view →</a>
-    </div>
-  </div>
-
-  <!-- ══════ PAGE: JOBS ══════ -->
-  <div class="page" id="page-jobs">
-    <div class="sec-hd">
-      <div class="label">Stay Organised</div>
-      <h2>Job Application Tracker</h2>
-      <p>Log every application. Track follow-ups. Never lose track of your job search.</p>
-    </div>
-    <div class="card" style="margin-bottom:20px;">
-      <div style="font-size:14px;font-weight:700;margin-bottom:16px;">Add New Application</div>
-      <div class="job-form">
-        <input class="jf-input" id="jCompany" placeholder="Company name">
-        <input class="jf-input" id="jRole"    placeholder="Role / Position">
-        <input class="jf-input" id="jDate"    type="date">
-        <select class="jf-input" id="jStatus">
-          <option value="Applied">Applied</option>
-          <option value="Interview">Interview</option>
-          <option value="Offer">Offer</option>
-          <option value="Rejected">Rejected</option>
-        </select>
-        <input class="jf-input" id="jLink" placeholder="Job link (optional)" style="grid-column:span 2">
-      </div>
-      <button class="btn-add" onclick="addJob()">+ Add Application</button>
-    </div>
-    <div class="card">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
-        <div style="font-size:14px;font-weight:700;">All Applications (<span id="jobCount">0</span>)</div>
-        <a href="job-tracker.html" style="font-size:12px;font-weight:700;color:var(--green);text-decoration:none;">Full tracker →</a>
-      </div>
-      <div style="overflow-x:auto;">
-        <table class="job-table">
-          <thead>
-            <tr>
-              <th>Company</th><th>Role</th><th>Date</th><th>Status</th><th>Link</th><th></th>
-            </tr>
-          </thead>
-          <tbody id="jobTableBody"></tbody>
-        </table>
-        <div id="jobEmpty" style="text-align:center;padding:32px;color:var(--muted);font-size:14px;">No applications yet. Add your first one above.</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ══════ PAGE: INTERVIEW ══════ -->
-  <div class="page" id="page-interview">
-    <div class="sec-hd">
-      <div class="label">Interview Prep</div>
-      <h2>Interview Q&amp;A Bank</h2>
-      <p>Common interview questions with model answers for your path. Click to expand.</p>
-    </div>
-    <div id="interviewQA"></div>
-    <div style="margin-top:20px;text-align:right;">
-      <a href="interview.html" style="font-size:13px;font-weight:700;color:var(--green);text-decoration:none;">Open full interview prep →</a>
-    </div>
-  </div>
-
-  <!-- ══════ PAGE: QUOTE ══════ -->
-  <div class="page" id="page-quote">
-    <div class="sec-hd">
-      <div class="label">Daily Motivation</div>
-      <h2>Today's Quote</h2>
-      <p>One quote a day to keep the doubt away. Refresh for a new one.</p>
-    </div>
-    <div class="quote-box">
-      <div class="q-mark">"</div>
-      <blockquote id="quoteText">Loading…</blockquote>
-      <cite id="quoteAuthor"></cite>
-    </div>
-    <div style="text-align:center;margin-bottom:24px;">
-      <button class="btn-refresh" onclick="refreshQuote()">↻ New Quote</button>
-    </div>
-    <div class="card" style="text-align:center;">
-      <div style="font-size:13px;font-weight:700;color:var(--green);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;">💡 Today's Affirmation</div>
-      <div style="font-size:16px;line-height:1.75;" id="quoteAffirm">Loading…</div>
-    </div>
-  </div>
-
-  <!-- ══════ PAGE: PROFILE ══════ -->
-  <div class="page" id="page-profile">
-    <div class="sec-hd">
-      <div class="label">Account</div>
-      <h2>My Profile</h2>
-      <p>Update your photo, name, and career path.</p>
-    </div>
-    <div class="grid-2" style="align-items:start;gap:24px;">
-      <div class="card">
-        <div style="font-size:14px;font-weight:700;margin-bottom:20px;">Profile Details</div>
-        <div class="profile-avatar-wrap">
-          <div class="profile-avatar" id="pfAvatar">🙂</div>
-          <div>
-            <button class="btn-change-photo" onclick="document.getElementById('profileAvatarInput').click()">Change Photo</button>
-            <input type="file" id="profileAvatarInput" accept="image/*" onchange="updateProfilePhoto(this)">
-            <div style="font-size:11px;color:var(--muted);margin-top:6px;">JPG, PNG · optional</div>
-          </div>
-        </div>
-        <div class="pf-field">
-          <span class="pf-label">Full Name</span>
-          <div class="pf-val" id="pfName">—</div>
-        </div>
-        <div class="pf-field">
-          <span class="pf-label">Email</span>
-          <div class="pf-val" id="pfEmail">—</div>
-        </div>
-        <div class="pf-field">
-          <span class="pf-label">Member Since</span>
-          <div class="pf-val" id="pfJoined">—</div>
-        </div>
-      </div>
-      <div class="card">
-        <div style="font-size:14px;font-weight:700;margin-bottom:16px;">Change Career Path</div>
-        <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">Switching paths will update your roadmap and resources.</p>
-        <div class="career-switcher" id="careerSwitcher">
-          <div class="cs-opt" onclick="switchCareer('da',this)">
-            <span class="cs-e">📊</span><span class="cs-n">Data Analytics</span>
-          </div>
-          <div class="cs-opt" onclick="switchCareer('wd',this)">
-            <span class="cs-e">💻</span><span class="cs-n">Web Dev</span>
-          </div>
-          <div class="cs-opt" onclick="switchCareer('dm',this)">
-            <span class="cs-e">📣</span><span class="cs-n">Digital Marketing</span>
-          </div>
-          <div class="cs-opt" onclick="switchCareer('gd',this)">
-            <span class="cs-e">🎨</span><span class="cs-n">Graphic Design</span>
-          </div>
-        </div>
-        <button class="btn-save" onclick="saveCareer()">Save Changes</button>
-
-        <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--border);">
-          <div style="font-size:14px;font-weight:700;margin-bottom:12px;">Quick Links</div>
-          <div style="display:flex;flex-direction:column;gap:8px;">
-            <a href="challenge.html" style="font-size:13px;color:var(--muted);text-decoration:none;">🔥 Full 30-Day Challenge</a>
-            <a href="quiz.html"      style="font-size:13px;color:var(--muted);text-decoration:none;">🎯 Retake Skill Assessment</a>
-            <a href="resources.html" style="font-size:13px;color:var(--muted);text-decoration:none;">📚 Full Resource Library</a>
-            <a href="interview.html" style="font-size:13px;color:var(--muted);text-decoration:none;">💬 Full Interview Bank</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-</div><!-- /main -->
-
-<div class="toast" id="toast"></div>
-
-<script>
-// ══════════════════════════════════════════════════
-//  BOOT — auth guard + load user
-// ══════════════════════════════════════════════════
-let USER = null;
-let pendingCareer = null;
-
-(function boot() {
-  const s = localStorage.getItem('rn_session');
-  if (!s) { window.location.href = 'auth.html'; return; }
-  USER = JSON.parse(s);
-  initDashboard();
-})();
-
-function initDashboard() {
-  // set today date in topbar
-  const now = new Date();
-  const opts = { weekday:'long', year:'numeric', month:'long', day:'numeric' };
-  document.getElementById('pageDate').textContent = now.toLocaleDateString('en-IN', opts);
-
-  // Greeting
-  const hr = now.getHours();
-  const greet = hr < 12 ? 'Good morning' : hr < 17 ? 'Good afternoon' : 'Good evening';
-  document.getElementById('wbGreeting').textContent = greet + ', ' + USER.name.split(' ')[0] + '! 👋';
-  document.getElementById('wbSub').textContent = 'Keep building, ' + USER.careerName + ' path · ' + now.toLocaleDateString('en-IN', { month:'long', day:'numeric' });
-
-  // Fill user info across UI
-  fillUserUI();
-  // Load all widgets
-  loadHabits();
-  loadRoadmap();
-  loadResources();
-  loadChallenge();
-  loadJobs();
-  loadInterview();
-  loadQuote();
-  loadProfile();
-  updateOverview();
-}
-
-// ══════════════════════════════════════════════════
-//  USER UI HELPERS
-// ══════════════════════════════════════════════════
-function fillUserUI() {
-  const setAv = (el, fallback) => {
-    if (!el) return;
-    if (USER.avatar) {
-      el.innerHTML = '<img src="' + USER.avatar + '" alt="avatar">';
-    } else {
-      el.textContent = fallback || '🙂';
+  onAuthStateChanged(auth, async (user) => {
+    document.getElementById('loadingScreen').style.display = 'none';
+    if (!user) {
+      document.getElementById('notLoggedIn').style.display = 'block';
+      return;
     }
-  };
-  ['sbAvatar','wbAvatar','topbarAvatar','pfAvatar'].forEach(id => setAv(document.getElementById(id)));
+    currentUser = user;
+    document.getElementById('dashboardContent').style.display = 'block';
 
-  document.getElementById('sbName').textContent = USER.name;
-  document.getElementById('sbCareer').textContent = USER.careerEmoji + ' ' + USER.careerName;
-  document.getElementById('topbarName').textContent = USER.name.split(' ')[0];
-  document.getElementById('wbCareerEmoji').textContent = USER.careerEmoji;
-  document.getElementById('wbCareerName').textContent = USER.careerName;
-}
+    // Set user info
+    document.getElementById('welcomeName').textContent = user.displayName?.split(' ')[0] || 'Champ';
+    document.getElementById('userName').textContent = user.displayName || 'User';
+    if (user.photoURL) document.getElementById('userPhoto').src = user.photoURL;
 
-// ══════════════════════════════════════════════════
-//  PAGE NAVIGATION
-// ══════════════════════════════════════════════════
-const pageTitles = {
-  overview: 'Overview', habits: 'Habit Tracker', roadmap: 'My Roadmap',
-  resources: 'Resources', challenge: '30-Day Challenge', jobs: 'Job Tracker',
-  interview: 'Interview Prep', quote: 'Daily Quote', profile: 'My Profile'
-};
-function showPage(id) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.sb-link').forEach(l => l.classList.remove('active'));
-  document.getElementById('page-' + id).classList.add('active');
-  document.querySelectorAll('.sb-link').forEach(l => {
-    if (l.getAttribute('onclick') && l.getAttribute('onclick').includes("'" + id + "'")) l.classList.add('active');
+    // Load user data from Firestore
+    await loadUserData();
+    renderDashboard();
   });
-  document.getElementById('pageTitle').textContent = pageTitles[id] || id;
-  // close mobile sidebar
-  document.getElementById('sidebar').classList.remove('open');
-  window.scrollTo({ top: 0 });
-  if (id === 'overview') updateOverview();
-}
 
-function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
-
-// ══════════════════════════════════════════════════
-//  TOAST
-// ══════════════════════════════════════════════════
-function toast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2800);
-}
-
-// ══════════════════════════════════════════════════
-//  HABIT TRACKER
-// ══════════════════════════════════════════════════
-const HK = 'rn-habits', SK = 'rn-streak', DK = 'rn-lastdate';
-const HABITS_DEF = [
-  { icon:'📚', label:'Learn something new (30 min)', sub:'Course, tutorial, or article' },
-  { icon:'💼', label:'Apply to 2 jobs / opportunities', sub:'LinkedIn, Naukri, Internshala' },
-  { icon:'🏃', label:'Exercise or walk (20 min)', sub:'Move your body every day' },
-  { icon:'📓', label:'Journal 3 things you\'re grateful for', sub:'Rewires your brain in 21 days' },
-  { icon:'🔗', label:'Share progress on LinkedIn', sub:'Build in public = more opportunities' },
-  { icon:'📵', label:'No social media first hour', sub:'Guard your morning brain' },
-];
-const TODAY = new Date().toDateString();
-
-function getHabits() { return JSON.parse(localStorage.getItem(HK) || '[false,false,false,false,false,false]'); }
-
-function loadHabits() {
-  // reset if new day
-  const last = localStorage.getItem(DK);
-  if (last && last !== TODAY && !getHabits().every(Boolean)) {
-    localStorage.setItem(HK, JSON.stringify([false,false,false,false,false,false]));
-  }
-  renderHabits();
-}
-
-function renderHabits() {
-  const habits = getHabits();
-  const done = habits.filter(Boolean).length;
-  const pct = Math.round(done / habits.length * 100);
-
-  // Full habits page
-  const list = document.getElementById('habitsList');
-  if (list) {
-    list.innerHTML = HABITS_DEF.map((h,i) => `
-      <div class="habit-row ${habits[i]?'done':''}" onclick="toggleHabit(${i})">
-        <div class="h-check">${habits[i]?'✓':''}</div>
-        <span style="font-size:20px;">${h.icon}</span>
-        <div class="h-info"><h4>${h.label}</h4><p>${h.sub}</p></div>
-      </div>`).join('');
+  async function loadUserData() {
+    try {
+      const ref = doc(db, 'users', currentUser.uid);
+      const snap = await getDoc(ref);
+      if (snap.exists()) {
+        userData = snap.data();
+        if (!userData.paths) userData.paths = {};
+        if (!userData.jobs) userData.jobs = [];
+      } else {
+        // First time user — create doc
+        userData = { paths:{}, jobs:[], createdAt: new Date().toISOString() };
+        await setDoc(ref, userData);
+      }
+    } catch(e) { console.error(e); }
   }
 
-  // Habit page stats
-  if (document.getElementById('habPct')) {
-    document.getElementById('habPct').textContent = pct + '%';
-    document.getElementById('habBar').style.width = pct + '%';
-    document.getElementById('habAllDone').style.display = done === habits.length ? 'block' : 'none';
+  async function saveUserData() {
+    try {
+      const ref = doc(db, 'users', currentUser.uid);
+      await setDoc(ref, userData, { merge:true });
+    } catch(e) { console.error(e); }
   }
 
-  // Overview mini list (first 3)
-  const ovList = document.getElementById('ovHabitList');
-  if (ovList) {
-    ovList.innerHTML = HABITS_DEF.slice(0,3).map((h,i) => `
-      <div class="habit-row ${habits[i]?'done':''}" onclick="toggleHabit(${i})" style="padding:10px 12px;margin-bottom:8px;">
-        <div class="h-check" style="width:20px;height:20px;font-size:9px;">${habits[i]?'✓':''}</div>
-        <span style="font-size:16px;">${h.icon}</span>
-        <div style="font-size:13px;font-weight:600;">${h.label}</div>
-      </div>`).join('');
-  }
-  if (document.getElementById('ovHabitBar')) {
-    document.getElementById('ovHabitBar').style.width = pct + '%';
-    document.getElementById('ovHabitPct').textContent = pct + '% done today';
-  }
+  function renderDashboard() {
+    const savedPaths = Object.keys(userData.paths || {});
+    const jobs = userData.jobs || [];
 
-  // Sidebar badge + streak
-  document.getElementById('sbHabitBadge').textContent = done + '/6';
-  updateStreak(done);
-  updateOverviewStats(done, pct);
-}
+    // Stats
+    let totalSteps = 0, doneSteps = 0;
+    savedPaths.forEach(pid => {
+      const career = careerData[pid];
+      if (!career) return;
+      totalSteps += career.steps.length;
+      const progress = userData.paths[pid] || {};
+      doneSteps += Object.values(progress).filter(Boolean).length;
+    });
 
-function toggleHabit(i) {
-  const h = getHabits(); h[i] = !h[i];
-  localStorage.setItem(HK, JSON.stringify(h));
-  renderHabits();
-}
+    document.getElementById('statPaths').textContent = savedPaths.length;
+    document.getElementById('statSteps').textContent = doneSteps;
+    document.getElementById('statAvg').textContent = savedPaths.length ? `${Math.round((doneSteps/totalSteps)*100)}%` : '0%';
+    document.getElementById('statJobs').textContent = jobs.length;
 
-function resetHabits() {
-  localStorage.setItem(HK, JSON.stringify([false,false,false,false,false,false]));
-  renderHabits(); toast('↺ Habits reset for today');
-}
+    // Welcome sub
+    const hour = new Date().getHours();
+    const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
+    document.getElementById('welcomeSub').textContent = `${greeting}! ${doneSteps > 0 ? `You've completed ${doneSteps} step${doneSteps>1?'s':''} so far. Keep going!` : "Let's start your journey today."}`;
 
-function updateStreak(done) {
-  let streak = parseInt(localStorage.getItem(SK) || '0');
-  const last = localStorage.getItem(DK);
-  if (done === 6 && last !== TODAY) {
-    const yest = new Date(); yest.setDate(yest.getDate()-1);
-    streak = (last === yest.toDateString()) ? streak+1 : 1;
-    localStorage.setItem(SK, streak); localStorage.setItem(DK, TODAY);
-  }
-  ['sbStreakNum','habStreak','ovStreak'].forEach(id => {
-    const el = document.getElementById(id); if (el) el.textContent = streak;
-  });
-  return streak;
-}
+    // Next step
+    let nextStepFound = false;
+    for (const pid of savedPaths) {
+      const career = careerData[pid];
+      if (!career) continue;
+      const progress = userData.paths[pid] || {};
+      const nextIdx = career.steps.findIndex((_, i) => !progress[i]);
+      if (nextIdx !== -1) {
+        document.getElementById('nextStepCard').style.display = 'block';
+        document.getElementById('nextStepContent').innerHTML = `
+          <div class="next-step-highlight">
+            <div class="next-step-label">Up Next</div>
+            <div class="next-step-text">${career.steps[nextIdx].name}</div>
+            <div class="next-step-path">${career.emoji} ${career.title} · Step ${nextIdx+1}</div>
+          </div>
+          <a href="${career.steps[nextIdx].url}" target="_blank" style="display:block;padding:10px 14px;background:rgba(0,230,118,0.1);border:1px solid rgba(0,230,118,0.2);border-radius:10px;color:var(--green);font-size:13px;font-weight:600;text-decoration:none;text-align:center;">
+            Start on ${career.steps[nextIdx].resource} →
+          </a>
+        `;
+        nextStepFound = true;
+        break;
+      }
+    }
+    if (!nextStepFound) document.getElementById('nextStepCard').style.display = 'none';
 
-function updateOverviewStats(done, pct) {
-  if (document.getElementById('ovHabits')) document.getElementById('ovHabits').textContent = done+'/6';
-  if (document.getElementById('ovStreak')) document.getElementById('ovStreak').textContent = localStorage.getItem(SK)||'0';
-}
+    // Paths list
+    const list = document.getElementById('pathsList');
+    if (savedPaths.length === 0) {
+      list.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-icon">🧭</div>
+          <h3>No career paths saved yet</h3>
+          <p>Browse career options, explore scope and skills, then save a path to start tracking your progress here.</p>
+          <a href="careers.html" class="btn-explore">Explore Career Options →</a>
+        </div>
+      `;
+      return;
+    }
 
-// ══════════════════════════════════════════════════
-//  ROADMAP DATA
-// ══════════════════════════════════════════════════
-const ROADMAPS = {
-  da: {
-    name: 'Data Analytics',
-    steps: [
-      { title:'Excel & Google Sheets', desc:'Master pivot tables, VLOOKUP, data cleaning. Foundation of all data work.', link:'https://www.kaggle.com/learn', tag:'Start here' },
-      { title:'SQL Fundamentals', desc:'Queries, joins, aggregations, subqueries. Practice on HackerRank SQL track.', link:'https://www.w3schools.com/sql/', tag:'Week 2' },
-      { title:'Python & Pandas', desc:'DataFrames, cleaning, groupby, merging datasets. Kaggle Learn is free.', link:'https://www.kaggle.com/learn/pandas', tag:'Week 3-4' },
-      { title:'Power BI / Tableau', desc:'Build dashboards and visual stories from your data. Microsoft offers free training.', link:'https://powerbi.microsoft.com/en-us/learning/', tag:'Week 5' },
-      { title:'Statistics & Basic ML', desc:'Mean, median, regression, correlation. Google Data Analytics covers this well.', link:'https://www.coursera.org/professional-certificates/google-data-analytics', tag:'Week 6-7' },
-      { title:'Portfolio Projects (2+)', desc:'Build on Kaggle datasets. Put everything on GitHub. Apply to jobs!', link:'https://www.kaggle.com/datasets', tag:'Final' },
-    ]
-  },
-  wd: {
-    name: 'Web Development',
-    steps: [
-      { title:'HTML & CSS Basics', desc:'Headings, layouts, flexbox, responsive design. MDN Web Docs is your bible.', link:'https://developer.mozilla.org/en-US/docs/Learn', tag:'Start here' },
-      { title:'JavaScript Fundamentals', desc:'Variables, functions, DOM manipulation, events. javascript.info is the best resource.', link:'https://javascript.info', tag:'Week 2-3' },
-      { title:'React Framework', desc:'Components, props, state, hooks. The most in-demand frontend skill today.', link:'https://react.dev', tag:'Week 4-5' },
-      { title:'Backend & Databases', desc:'Node.js, Express, SQL or MongoDB. Build a full-stack app.', link:'https://www.theodinproject.com', tag:'Week 6-7' },
-      { title:'Deploy & Go Live', desc:'GitHub Pages, Vercel, Netlify — get your work live on the internet.', link:'https://vercel.com', tag:'Week 8' },
-      { title:'Portfolio + Job Applications', desc:'3 projects on GitHub, optimised LinkedIn, start applying!', link:'https://www.freecodecamp.org', tag:'Final' },
-    ]
-  },
-  dm: {
-    name: 'Digital Marketing',
-    steps: [
-      { title:'Marketing Fundamentals', desc:'Funnel, buyer journey, content strategy. Google Digital Garage is free & certified.', link:'https://learndigital.withgoogle.com/digitalgarage', tag:'Start here' },
-      { title:'SEO & Content Marketing', desc:'Keyword research, on-page SEO, blogging. Neil Patel YouTube is excellent.', link:'https://www.semrush.com/academy/', tag:'Week 2' },
-      { title:'Social Media Strategy', desc:'Content calendar, engagement, platform differences. HubSpot Academy is free.', link:'https://academy.hubspot.com', tag:'Week 3' },
-      { title:'Paid Ads (Google & Meta)', desc:'Google Ads, Facebook/Instagram Ads basics. Both platforms offer free training.', link:'https://www.facebook.com/business/learn', tag:'Week 4-5' },
-      { title:'Email Marketing & Analytics', desc:'Mailchimp, open rates, A/B testing, Google Analytics.', link:'https://mailchimp.com/resources/', tag:'Week 6' },
-      { title:'Portfolio + Freelance / Jobs', desc:'Case studies, certifications on LinkedIn, start applying or open Fiverr.', link:'https://www.fiverr.com', tag:'Final' },
-    ]
-  },
-  gd: {
-    name: 'Graphic Design',
-    steps: [
-      { title:'Design Principles', desc:'Contrast, alignment, proximity, hierarchy. Study on Canva Design School.', link:'https://www.canva.com/designschool/', tag:'Start here' },
-      { title:'Canva & Figma', desc:'Canva for quick designs, Figma for UI/UX and professional work.', link:'https://www.figma.com', tag:'Week 2' },
-      { title:'Color & Typography', desc:'Color wheel, font pairing, visual mood. Create brand palettes.', link:'https://color.adobe.com', tag:'Week 3' },
-      { title:'Logo & Brand Identity', desc:'Design logos, style guides. Study real brands on Behance.', link:'https://www.behance.net', tag:'Week 4-5' },
-      { title:'Adobe Tools (optional)', desc:'Photoshop / Illustrator basics. Free trials or alternatives.', link:'https://www.youtube.com/@GarethDavid', tag:'Week 6' },
-      { title:'Portfolio on Behance + Fiverr', desc:'Upload 5+ projects, create a Fiverr gig, start earning!', link:'https://www.fiverr.com', tag:'Final' },
-    ]
-  }
-};
-
-function loadRoadmap() {
-  const career = USER.career;
-  const rm = ROADMAPS[career] || ROADMAPS['da'];
-  const saved = JSON.parse(localStorage.getItem('risenow_steps') || '{}');
-  const careerSaved = saved[career] || {};
-  const total = rm.steps.length;
-  const done = rm.steps.filter((_, i) => careerSaved[i]).length;
-  const pct = Math.round(done / total * 100);
-
-  if (document.getElementById('rmTitle')) document.getElementById('rmTitle').textContent = rm.name + ' Roadmap';
-  if (document.getElementById('rmDone'))  document.getElementById('rmDone').textContent  = done;
-  if (document.getElementById('rmPct'))   document.getElementById('rmPct').textContent   = pct + '%';
-  if (document.getElementById('rmBar'))   document.getElementById('rmBar').style.width   = pct + '%';
-
-  if (document.getElementById('roadmapSteps')) {
-    document.getElementById('roadmapSteps').innerHTML = rm.steps.map((s, i) => {
-      const isDone   = !!careerSaved[i];
-      const isActive = !isDone && (i === 0 || careerSaved[i-1]);
+    list.innerHTML = savedPaths.map(pid => {
+      const career = careerData[pid];
+      if (!career) return '';
+      const progress = userData.paths[pid] || {};
+      const done = Object.values(progress).filter(Boolean).length;
+      const pct = Math.round((done / career.steps.length) * 100);
       return `
-        <div class="roadmap-step">
-          <div class="step-dot ${isDone?'done':isActive?'active':''}" onclick="toggleStep(${i})">${isDone?'✓':i+1}</div>
-          <div class="step-content">
-            <h4>${s.title}</h4>
-            <p>${s.desc}</p>
-            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px;">
-              <span class="step-tag ${isDone?'tag-done':isActive?'tag-active':'tag-free'}">${isDone?'✓ Done':isActive?'▶ In Progress':s.tag}</span>
-              <a href="${s.link}" target="_blank" style="font-size:12px;color:var(--green);text-decoration:none;font-weight:600;">Free Resource →</a>
+        <div class="path-card" id="card-${pid}">
+          <div class="path-header" onclick="toggleCard('${pid}')">
+            <div class="path-emoji">${career.emoji}</div>
+            <div class="path-info">
+              <div class="path-title">${career.title}</div>
+              <div class="path-sub">${done} of ${career.steps.length} steps completed</div>
             </div>
+            <div class="path-pct">${pct}%</div>
+            <div class="path-chevron">▾</div>
           </div>
-        </div>`;
-    }).join('');
-  }
-
-  // Overview mini roadmap (first 3)
-  if (document.getElementById('ovRoadmapList')) {
-    document.getElementById('ovRoadmapList').innerHTML = rm.steps.slice(0,3).map((s,i) => {
-      const isDone = !!careerSaved[i];
-      return `<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
-        <div class="step-dot ${isDone?'done':''}" style="width:24px;height:24px;font-size:10px;">${isDone?'✓':i+1}</div>
-        <div style="font-size:13px;font-weight:600;${isDone?'text-decoration:line-through;color:var(--muted)':''}">${s.title}</div>
-      </div>`;
-    }).join('');
-    document.getElementById('ovRoadmapPct').textContent = done + ' of ' + total + ' steps completed';
-    document.getElementById('ovRoadmapBar').style.width = pct + '%';
-  }
-  if (document.getElementById('ovChallenge')) updateChallengeOverview();
-}
-
-function toggleStep(i) {
-  const career = USER.career;
-  let saved = JSON.parse(localStorage.getItem('risenow_steps') || '{}');
-  if (!saved[career]) saved[career] = {};
-  saved[career][i] = !saved[career][i];
-  localStorage.setItem('risenow_steps', JSON.stringify(saved));
-  loadRoadmap();
-  toast(saved[career][i] ? '✅ Step marked complete!' : '↩ Step unmarked');
-}
-
-// ══════════════════════════════════════════════════
-//  RESOURCES
-// ══════════════════════════════════════════════════
-const RESOURCES = {
-  da: {
-    title: 'Data Analytics Resources',
-    sections: [
-      { heading: '🎓 Courses & Certifications', items: [
-        { icon:'🚀', name:'Google Data Analytics Certificate', meta:'Coursera · SQL, Tableau, R · Industry recognized', link:'https://www.coursera.org/professional-certificates/google-data-analytics', badge:'paid' },
-        { icon:'🐋', name:'Kaggle Learn', meta:'Python, Pandas, SQL, ML — all in browser', link:'https://www.kaggle.com/learn', badge:'free' },
-        { icon:'📝', name:'W3Schools SQL', meta:'Interactive SQL tutorial from beginner to advanced', link:'https://www.w3schools.com/sql/', badge:'free' },
-        { icon:'📈', name:'Microsoft Power BI Learning', meta:'Official dashboards, DAX, reports training', link:'https://powerbi.microsoft.com/en-us/learning/', badge:'free' },
-      ]},
-      { heading: '📺 YouTube Channels', items: [
-        { icon:'▶️', name:'Alex The Analyst', meta:'Best for beginners — SQL, Excel, Python, Power BI', link:'https://www.youtube.com/@AlexTheAnalyst', badge:'free' },
-        { icon:'▶️', name:'Chandoo', meta:'Excel, Power BI & data visualization tutorials', link:'https://www.youtube.com/@chandoo_', badge:'free' },
-      ]},
-      { heading: '🧪 Practice & Projects', items: [
-        { icon:'🗄️', name:'Kaggle Datasets', meta:'Thousands of real datasets for portfolio projects', link:'https://www.kaggle.com/datasets', badge:'free' },
-        { icon:'💻', name:'HackerRank SQL', meta:'Practice SQL — great for interview prep', link:'https://www.hackerrank.com/domains/sql', badge:'free' },
-      ]},
-    ]
-  },
-  wd: {
-    title: 'Web Development Resources',
-    sections: [
-      { heading: '🎓 Best Free Platforms', items: [
-        { icon:'🏕️', name:'freeCodeCamp', meta:'Full curriculum — HTML to React. Free certificates', link:'https://www.freecodecamp.org', badge:'free' },
-        { icon:'⚡', name:'The Odin Project', meta:'Most complete free web dev course — used to get hired', link:'https://www.theodinproject.com', badge:'free' },
-        { icon:'🦊', name:'MDN Web Docs', meta:'Official reference from Mozilla — HTML, CSS, JS', link:'https://developer.mozilla.org/en-US/docs/Learn', badge:'free' },
-        { icon:'🌟', name:'javascript.info', meta:'The best JavaScript tutorial on the internet', link:'https://javascript.info', badge:'free' },
-      ]},
-      { heading: '📺 YouTube Channels', items: [
-        { icon:'▶️', name:'Traversy Media', meta:'HTML, CSS, JavaScript, React, Node.js crash courses', link:'https://www.youtube.com/@TraversyMedia', badge:'free' },
-        { icon:'▶️', name:'Web Dev Simplified', meta:'Clean, beginner-friendly — great for React & JS', link:'https://www.youtube.com/@WebDevSimplified', badge:'free' },
-      ]},
-      { heading: '🚀 Deploy Your Work', items: [
-        { icon:'▲', name:'Vercel', meta:'Deploy React & Next.js apps for free in seconds', link:'https://vercel.com', badge:'free' },
-        { icon:'🌍', name:'GitHub Pages', meta:'Free static site hosting from your GitHub repo', link:'https://pages.github.com', badge:'free' },
-      ]},
-    ]
-  },
-  dm: {
-    title: 'Digital Marketing Resources',
-    sections: [
-      { heading: '🎓 Courses & Certifications', items: [
-        { icon:'🌐', name:'Google Digital Garage', meta:'26 modules · Google certified · Beginner to pro', link:'https://learndigital.withgoogle.com/digitalgarage', badge:'free' },
-        { icon:'🟠', name:'HubSpot Digital Marketing', meta:'Industry cert · SEO, content, social, email', link:'https://academy.hubspot.com/courses/digital-marketing', badge:'free' },
-        { icon:'🔍', name:'SEMrush Academy', meta:'SEO, content & competitive analysis courses', link:'https://www.semrush.com/academy/', badge:'free' },
-        { icon:'📘', name:'Meta Blueprint', meta:'Facebook & Instagram Ads — official Meta training', link:'https://www.facebook.com/business/learn', badge:'free' },
-      ]},
-      { heading: '📺 YouTube', items: [
-        { icon:'▶️', name:'Neil Patel', meta:'SEO, content marketing and growth strategies', link:'https://www.youtube.com/@NeilPatel', badge:'free' },
-        { icon:'▶️', name:'Ahrefs YouTube', meta:'Deep SEO — keyword research, backlinks, audits', link:'https://www.youtube.com/@AhrefsTV', badge:'free' },
-      ]},
-    ]
-  },
-  gd: {
-    title: 'Graphic Design Resources',
-    sections: [
-      { heading: '🎓 Courses & Tools', items: [
-        { icon:'🖌️', name:'Canva Design School', meta:'Beginner-friendly — typography, branding, social', link:'https://www.canva.com/designschool/', badge:'free' },
-        { icon:'💜', name:'Figma Official Docs', meta:'Industry standard UI/UX tool — free to use', link:'https://help.figma.com', badge:'free' },
-        { icon:'🎓', name:'CalArts Graphic Design (Coursera)', meta:'4-course specialization — audit for free', link:'https://www.coursera.org/specializations/graphic-design', badge:'free' },
-      ]},
-      { heading: '📺 YouTube', items: [
-        { icon:'▶️', name:'Gareth David Studio', meta:'Photoshop, Illustrator & InDesign tutorials', link:'https://www.youtube.com/@GarethDavid', badge:'free' },
-        { icon:'▶️', name:'CharliMarieTV', meta:'Web design, freelancing tips and career advice', link:'https://www.youtube.com/@CharliMarieTV', badge:'free' },
-      ]},
-      { heading: '💰 Start Earning', items: [
-        { icon:'💼', name:'Fiverr', meta:'Create a gig — Logo, social media, branding', link:'https://www.fiverr.com', badge:'free' },
-        { icon:'🎨', name:'Behance', meta:'Portfolio platform — upload your work, get noticed', link:'https://www.behance.net', badge:'free' },
-      ]},
-    ]
-  }
-};
-
-function loadResources() {
-  const career = USER.career;
-  const data = RESOURCES[career] || RESOURCES['da'];
-  if (document.getElementById('resTitle')) document.getElementById('resTitle').textContent = data.title;
-  if (!document.getElementById('resourcesList')) return;
-  document.getElementById('resourcesList').innerHTML = data.sections.map(sec => `
-    <div style="margin-bottom:28px;">
-      <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border);">${sec.heading}</div>
-      ${sec.items.map(item => `
-        <a class="res-item" href="${item.link}" target="_blank">
-          <div class="res-left">
-            <div class="res-icon" style="background:rgba(0,230,118,0.08);">${item.icon}</div>
-            <div>
-              <div class="res-name">${item.name}<span class="${item.badge==='free'?'badge-free':'badge-paid'}">${item.badge==='free'?'FREE':'PAID'}</span></div>
-              <div class="res-meta">${item.meta}</div>
+          <div class="path-progress">
+            <div class="prog-track"><div class="prog-fill" style="width:${pct}%"></div></div>
+          </div>
+          <div class="path-steps">
+            <div class="steps-inner">
+              ${career.steps.map((step, i) => {
+                const isDone = progress[i];
+                return `
+                  <div class="step-item ${isDone?'done':''}" onclick="toggleStep('${pid}',${i})">
+                    <div class="step-cb">${isDone?'✓':''}</div>
+                    <div class="step-text">
+                      <div class="step-name">${step.name}</div>
+                      <a class="step-resource-link" href="${step.url}" target="_blank" onclick="event.stopPropagation()">
+                        Learn on ${step.resource} →
+                      </a>
+                    </div>
+                    <div class="step-num-badge">${i+1}</div>
+                  </div>
+                `;
+              }).join('')}
             </div>
+            <button class="btn-remove-path" onclick="removePath('${pid}')">Remove this path</button>
           </div>
-          <div class="res-cta">Open ↗</div>
-        </a>`).join('')}
-    </div>`).join('');
-}
-
-// ══════════════════════════════════════════════════
-//  30-DAY CHALLENGE
-// ══════════════════════════════════════════════════
-const CHALLENGE_TRACKS = {
-  da: ['Learn Excel — SUM, AVERAGE, pivot tables','Practice VLOOKUP & data cleaning in Excel','Set up Google Sheets & explore functions','Install Python & Jupyter Notebook','Python basics — variables, lists, loops','Pandas — load & explore a CSV','Filter & sort data with Pandas','Handle missing values & duplicates','SQL basics — SELECT, WHERE, ORDER BY','SQL JOINs — INNER, LEFT, RIGHT','SQL aggregations — GROUP BY, COUNT, SUM','Complex SQL queries & subqueries','Install Power BI / Tableau Public','Connect a dataset to Power BI','Build your first bar & line chart','Create a KPI dashboard in Power BI','Learn basic statistics — mean, median, std','Explore a Kaggle dataset (EDA)','Build a data visualization story','Learn Git & push to GitHub','Start Capstone Project — choose dataset','Clean & prepare capstone data','Analyze and find 5 key insights','Build a dashboard for capstone','Write a report on your findings','Create a GitHub portfolio page','Optimize your LinkedIn profile','Apply to 5 Data Analyst roles','Write a cover letter for your dream role','🎉 Celebrate — You are Job Ready!'],
-  wd: ['Learn HTML — headings, paragraphs, links','Build a simple webpage with HTML','Learn CSS — colors, fonts, box model','Style your page with CSS','Learn Flexbox','Learn CSS Grid','Make your page fully responsive','Push to GitHub','JS basics — variables & functions','DOM manipulation','Build a calculator','Build a to-do list app','ES6 — arrow functions, template literals','Fetch data from a public API','Display API data on your page','Build a weather app','React basics — components & props','Build a React counter app','Learn useState hook','Build a React to-do app','React Router — multi-page app','Connect React to an API','Build your portfolio in React','Deploy to Vercel or GitHub Pages','Add 3 projects to portfolio','Learn Node.js basics','Build a simple Express server','Optimize LinkedIn & GitHub','Apply to 5 Web Dev roles','🎉 Celebrate — You are Job Ready!'],
-  dm: ['Read: marketing funnel & buyer journey','Set up Google Analytics','Learn SEO — keyword research basics','Find 10 keywords for a niche','Write an SEO-optimized blog post','Create Google Skillshop account','Complete Google Analytics cert','Set up Mailchimp','Create your first email campaign','Learn Facebook & Instagram Ads','Design 3 social media posts in Canva','Schedule posts with Buffer or Later','Research 5 competitors in a niche','Learn Google Ads basics','Create a mock Search Ad campaign','Write 5 ad copies for a product','Learn landing pages & conversion','Analyze a site with Neil Patel SEO','Build a content calendar','Complete HubSpot Content cert','YouTube channel optimization guide','Write a marketing case study','Run a small Instagram campaign','Measure results & write insights','Build a digital marketing portfolio PDF','Update LinkedIn with certifications','Write a LinkedIn post on marketing','Create your marketing resume','Apply to 5 Digital Marketing roles','🎉 Celebrate — You are Job Ready!'],
-  gd: ['Study design principles — contrast, alignment','Study 10 logos on Behance','Create Canva account & explore templates','Design your first social media post','Create Figma account & learn tools','Design a wireframe in Figma','Learn color theory — wheel & palettes','Create a color palette for a brand','Learn typography — font pairing','Design a poster with strong typography','Study 5 brand identities on Behance','Design a logo for a fictional company','Learn visual hierarchy','Redesign a bad design you find online','Create 5 Instagram story templates','Design a business card in Figma','Learn UI vs UX design','Create a simple app wireframe','Build a mood board for a project','Design a complete social media kit','Create a Behance account','Upload first 3 projects to Behance','Design a presentation template','Get feedback from a design community','Redesign based on feedback','Learn Photoshop basics','Create a before/after showcase','Build your portfolio PDF','Apply to 5 Graphic Design roles','🎉 Celebrate — You are Job Ready!']
-};
-
-function loadChallenge() {
-  const career = USER.career;
-  const tasks = CHALLENGE_TRACKS[career] || CHALLENGE_TRACKS['da'];
-  const saved = JSON.parse(localStorage.getItem('risenow_challenge') || '{}');
-  const careerSaved = saved[career] || {};
-  const done = tasks.filter((_, i) => careerSaved[i]).length;
-  const pct = Math.round(done / 30 * 100);
-
-  if (document.getElementById('chalTitle')) {
-    const names = { da:'Data Analytics', wd:'Web Dev', dm:'Digital Marketing', gd:'Graphic Design' };
-    document.getElementById('chalTitle').textContent = (names[career]||'') + ' — 30-Day Challenge';
-  }
-  if (document.getElementById('chalDone')) document.getElementById('chalDone').textContent = done;
-  if (document.getElementById('chalPct'))  document.getElementById('chalPct').textContent  = pct + '%';
-  if (document.getElementById('chalBar'))  document.getElementById('chalBar').style.width  = pct + '%';
-
-  if (document.getElementById('challengeDays')) {
-    document.getElementById('challengeDays').innerHTML = tasks.map((task,i) => {
-      const isDone   = !!careerSaved[i];
-      const isLocked = i > 0 && !careerSaved[i-1] && !isDone;
-      return `<div class="day-mini ${isDone?'done':''} ${isLocked?'locked':''}" onclick="${isLocked?'':(`toggleChalDay(${i})`)}" title="${task}">
-        <div class="d-num">Day ${i+1}</div>
-        <div class="d-ico">${isDone?'✓':'○'}</div>
-      </div>`;
+        </div>
+      `;
     }).join('');
   }
-}
 
-function toggleChalDay(i) {
-  const career = USER.career;
-  let saved = JSON.parse(localStorage.getItem('risenow_challenge') || '{}');
-  if (!saved[career]) saved[career] = {};
-  saved[career][i] = !saved[career][i];
-  localStorage.setItem('risenow_challenge', JSON.stringify(saved));
-  loadChallenge(); updateChallengeOverview();
-  toast(saved[career][i] ? '✅ Day ' + (i+1) + ' complete!' : '↩ Day ' + (i+1) + ' unmarked');
-}
-
-function updateChallengeOverview() {
-  const career = USER.career;
-  const saved = JSON.parse(localStorage.getItem('risenow_challenge') || '{}');
-  const careerSaved = saved[career] || {};
-  const done = Object.values(careerSaved).filter(Boolean).length;
-  const pct = Math.round(done / 30 * 100);
-  if (document.getElementById('ovChallenge')) document.getElementById('ovChallenge').textContent = pct + '%';
-}
-
-// ══════════════════════════════════════════════════
-//  JOB TRACKER
-// ══════════════════════════════════════════════════
-function loadJobs() { renderJobs(); }
-
-function addJob() {
-  const company = document.getElementById('jCompany').value.trim();
-  const role    = document.getElementById('jRole').value.trim();
-  const date    = document.getElementById('jDate').value;
-  const status  = document.getElementById('jStatus').value;
-  const link    = document.getElementById('jLink').value.trim();
-
-  if (!company || !role) { toast('⚠️ Please enter company and role'); return; }
-
-  const jobs = JSON.parse(localStorage.getItem('risenow_jobs') || '[]');
-  jobs.unshift({ id: Date.now(), company, role, date, status, link });
-  localStorage.setItem('risenow_jobs', JSON.stringify(jobs));
-
-  ['jCompany','jRole','jDate','jLink'].forEach(id => document.getElementById(id).value = '');
-  document.getElementById('jStatus').value = 'Applied';
-  renderJobs(); toast('✅ Application added!');
-}
-
-function renderJobs() {
-  const jobs = JSON.parse(localStorage.getItem('risenow_jobs') || '[]');
-  document.getElementById('jobCount').textContent = jobs.length;
-  if (document.getElementById('ovJobs')) document.getElementById('ovJobs').textContent = jobs.length;
-  const tbody = document.getElementById('jobTableBody');
-  const empty = document.getElementById('jobEmpty');
-  if (!tbody) return;
-  if (jobs.length === 0) { tbody.innerHTML = ''; empty.style.display = 'block'; return; }
-  empty.style.display = 'none';
-  const sMap = { Applied:'s-applied', Interview:'s-interview', Offer:'s-offer', Rejected:'s-rejected' };
-  tbody.innerHTML = jobs.map(j => `
-    <tr>
-      <td style="font-weight:600;">${j.company}</td>
-      <td>${j.role}</td>
-      <td style="color:var(--muted)">${j.date||'—'}</td>
-      <td><span class="status-pill ${sMap[j.status]||'s-applied'}">${j.status}</span></td>
-      <td>${j.link ? `<a href="${j.link}" target="_blank" style="color:var(--green);font-size:12px;font-weight:700;text-decoration:none;">View →</a>` : '—'}</td>
-      <td><button class="btn-del" onclick="deleteJob(${j.id})">🗑</button></td>
-    </tr>`).join('');
-}
-
-function deleteJob(id) {
-  let jobs = JSON.parse(localStorage.getItem('risenow_jobs') || '[]');
-  jobs = jobs.filter(j => j.id !== id);
-  localStorage.setItem('risenow_jobs', JSON.stringify(jobs));
-  renderJobs(); toast('🗑 Application removed');
-}
-
-// ══════════════════════════════════════════════════
-//  INTERVIEW Q&A
-// ══════════════════════════════════════════════════
-const INTERVIEW_QA = {
-  da: [
-    { q:'What is the difference between a left join and an inner join?', a:'An INNER JOIN returns only rows where there is a match in both tables. A LEFT JOIN returns all rows from the left table plus matched rows from the right — unmatched right rows show as NULL. Use LEFT JOIN when you want all records from the primary table regardless of matches.' },
-    { q:'How do you handle missing values in a dataset?', a:'Strategies depend on context: 1) Drop rows if few nulls and data is abundant. 2) Fill with mean/median for numeric data. 3) Fill with mode for categorical. 4) Use forward/backward fill for time series. 5) Flag missing as a separate category. Always document your choices.' },
-    { q:'What is the difference between mean, median and mode?', a:'Mean is the arithmetic average. Median is the middle value — better for skewed data. Mode is the most frequent value. For salary data, median is more meaningful because extreme values don't skew it the way they do the mean.' },
-    { q:'Tell me about a project where you used data to solve a problem.', a:'Use STAR: Situation (context), Task (what you needed to solve), Action (what analysis you did, what tools), Result (what decision was made or what improved). Quantify the result if possible — "reduced churn by 12%" beats "improved retention".' },
-    { q:'What tools are you comfortable with?', a:'Be honest and specific. "I work with Excel, SQL for querying, Python with Pandas for analysis, and Power BI for dashboards. I am currently learning Tableau." Show breadth but also depth in at least 2 tools.' },
-  ],
-  wd: [
-    { q:'What is the difference between == and === in JavaScript?', a:'== does type coercion (loose equality) — "5" == 5 is true. === is strict equality and checks both value AND type — "5" === 5 is false. Always use === in production code to avoid unexpected bugs.' },
-    { q:'What is the virtual DOM in React?', a:'The virtual DOM is a lightweight in-memory copy of the real DOM. When state changes, React re-renders the virtual DOM, diffs it with the previous version, and only updates the specific real DOM nodes that changed. This makes React very fast compared to direct DOM manipulation.' },
-    { q:'What is responsive design and how do you implement it?', a:'Responsive design makes websites look good on all screen sizes. Tools: CSS media queries to change styles at breakpoints, Flexbox and Grid for flexible layouts, relative units (%, rem, vw) instead of fixed pixels, and mobile-first approach.' },
-    { q:'Explain the difference between async/await and Promises.', a:'Promises represent a future value — they have .then() and .catch() chains. async/await is syntactic sugar over Promises that makes async code look synchronous and easier to read. Both solve the same problem — async/await is generally preferred for clarity.' },
-    { q:'What is your process for debugging a bug?', a:'1) Reproduce it reliably. 2) Isolate the area — console.log or browser DevTools. 3) Check error messages. 4) Understand the expected vs actual behavior. 5) Form a hypothesis. 6) Test the fix. 7) Verify no regressions.' },
-  ],
-  dm: [
-    { q:'What is SEO and why does it matter?', a:'SEO (Search Engine Optimization) is the practice of improving a website\'s visibility in organic search results. It matters because organic traffic is free, has high intent, and compounds over time. Key pillars: technical SEO, on-page content, and backlinks.' },
-    { q:'What is a conversion rate and how do you improve it?', a:'Conversion rate = (conversions / total visitors) × 100. To improve it: A/B test landing pages, improve page load speed, clarify CTAs, add social proof, reduce friction in forms, and personalise content for the audience.' },
-    { q:'What is the difference between organic and paid traffic?', a:'Organic traffic comes from unpaid search results (SEO). Paid traffic comes from ads (Google Ads, Meta Ads). Paid gives immediate results but stops when budget runs out. Organic compounds over time and is sustainable.' },
-    { q:'How would you measure the success of a social media campaign?', a:'KPIs: Reach/impressions (awareness), engagement rate (content quality), click-through rate (interest), conversion rate (action), cost per result (efficiency). Always tie metrics to the campaign goal — awareness vs engagement vs conversion are measured differently.' },
-    { q:'What tools do you use for digital marketing?', a:'Be specific: "Google Analytics for traffic analysis, Google Search Console for SEO, Canva for design, Mailchimp for email, Hootsuite/Buffer for scheduling, SEMrush for keyword research." Show you know the industry-standard stack.' },
-  ],
-  gd: [
-    { q:'Walk me through your design process.', a:'Discovery → Define → Ideate → Design → Test → Iterate. Start by understanding the client\'s audience, goals and constraints. Then research competitors and references. Sketch ideas, build wireframes, create high-fidelity designs, collect feedback, and refine.' },
-    { q:'What is the difference between UI and UX design?', a:'UX (User Experience) focuses on the overall feel — how easy and enjoyable the product is to use. UI (User Interface) focuses on the visual elements — buttons, colors, typography, spacing. Good UX comes first; UI gives it visual form.' },
-    { q:'How do you choose fonts for a project?', a:'1) Understand the brand tone (playful vs corporate). 2) Pair a distinctive display font with a readable body font. 3) Limit to 2-3 fonts. 4) Ensure legibility at all sizes. 5) Check licensing. Google Fonts and Adobe Fonts are common free resources.' },
-    { q:'How do you handle feedback that you disagree with?', a:'Listen fully, ask clarifying questions to understand the reason behind the feedback, and separate ego from design decisions. Present your reasoning for the original choice. Ultimately, design serves the user and client goals — be open to being wrong.' },
-    { q:'What software are you proficient in?', a:'Be honest: Canva for quick social content, Figma for UI/UX and wireframes, Adobe Photoshop and Illustrator for complex visuals. Figma is the most in-demand tool right now — if you know it well, lead with it.' },
-  ]
-};
-
-function loadInterview() {
-  const career = USER.career;
-  const qs = INTERVIEW_QA[career] || INTERVIEW_QA['da'];
-  if (!document.getElementById('interviewQA')) return;
-  document.getElementById('interviewQA').innerHTML = qs.map((item, i) => `
-    <div class="iq-card" id="iq${i}">
-      <div class="iq-q" onclick="toggleIQ(${i})">
-        <h4>Q${i+1}: ${item.q}</h4>
-        <div class="iq-ico">+</div>
-      </div>
-      <div class="iq-a"><p>${item.a}</p></div>
-    </div>`).join('');
-}
-function toggleIQ(i) {
-  document.querySelectorAll('.iq-card').forEach((c,j) => { if (j !== i) c.classList.remove('open'); });
-  document.getElementById('iq' + i).classList.toggle('open');
-}
-
-// ══════════════════════════════════════════════════
-//  DAILY QUOTE
-// ══════════════════════════════════════════════════
-const QUOTES = [
-  { q:'The secret of getting ahead is getting started.', a:'Mark Twain' },
-  { q:'Your setback is setting you up for your greatest comeback.', a:'Unknown' },
-  { q:'Don\'t watch the clock; do what it does. Keep going.', a:'Sam Levenson' },
-  { q:'Success is not final; failure is not fatal. It is the courage to continue that counts.', a:'Winston Churchill' },
-  { q:'The only way to do great work is to love what you do.', a:'Steve Jobs' },
-  { q:'It does not matter how slowly you go as long as you do not stop.', a:'Confucius' },
-  { q:'Everything you\'ve ever wanted is on the other side of fear.', a:'George Addair' },
-  { q:'Start where you are. Use what you have. Do what you can.', a:'Arthur Ashe' },
-  { q:'The expert in everything was once a beginner.', a:'Helen Hayes' },
-  { q:'Believe you can and you\'re halfway there.', a:'Theodore Roosevelt' },
-  { q:'Hard work beats talent when talent doesn\'t work hard.', a:'Tim Notke' },
-  { q:'Your life does not get better by chance. It gets better by change.', a:'Jim Rohn' },
-  { q:'The pain you feel today will be the strength you feel tomorrow.', a:'Unknown' },
-  { q:'Fall seven times, stand up eight.', a:'Japanese Proverb' },
-  { q:'Opportunities don\'t happen. You create them.', a:'Chris Grosser' },
-];
-const AFFIRMATIONS = [
-  'I am capable of achieving great things with consistent effort.',
-  'Every small step I take today is building the life I want.',
-  'I have everything I need to start. I just need to begin.',
-  'My past does not define my future. I am rewriting my story.',
-  'I am stronger than my fear and braver than my doubt.',
-  'My career comeback is already in motion.',
-  'I choose progress over perfection, every single day.',
-];
-
-let quoteIdx = Math.floor(Date.now() / 86400000) % QUOTES.length;
-
-function loadQuote() { setQuote(quoteIdx); }
-function refreshQuote() { quoteIdx = (quoteIdx + 1) % QUOTES.length; setQuote(quoteIdx); }
-function setQuote(i) {
-  const q = QUOTES[i];
-  const affirmIdx = i % AFFIRMATIONS.length;
-  ['quoteText','ovQuote'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.textContent = '"' + q.q + '"';
-  });
-  if (document.getElementById('quoteAuthor'))  document.getElementById('quoteAuthor').textContent  = '— ' + q.a;
-  if (document.getElementById('quoteAffirm'))  document.getElementById('quoteAffirm').textContent  = AFFIRMATIONS[affirmIdx];
-}
-
-// ══════════════════════════════════════════════════
-//  PROFILE
-// ══════════════════════════════════════════════════
-let pendingProfileCareer = null;
-
-function loadProfile() {
-  if (!document.getElementById('pfName')) return;
-  document.getElementById('pfName').textContent   = USER.name;
-  document.getElementById('pfEmail').textContent  = USER.email;
-  document.getElementById('pfJoined').textContent = new Date(USER.joinedAt).toLocaleDateString('en-IN', { year:'numeric', month:'long', day:'numeric' });
-
-  const setAv = (id) => {
-    const el = document.getElementById(id); if (!el) return;
-    if (USER.avatar) { el.innerHTML = '<img src="' + USER.avatar + '" alt="">'; }
-    else { el.textContent = '🙂'; }
+  window.toggleCard = (pid) => {
+    document.getElementById(`card-${pid}`).classList.toggle('expanded');
   };
-  setAv('pfAvatar');
 
-  // highlight current career
-  pendingProfileCareer = USER.career;
-  document.querySelectorAll('#careerSwitcher .cs-opt').forEach(el => {
-    el.classList.remove('active');
-    const key = el.getAttribute('onclick').match(/'([^']+)'/)[1];
-    if (key === USER.career) el.classList.add('active');
-  });
-}
-
-function updateProfilePhoto(input) {
-  const file = input.files[0]; if (!file) return;
-  const reader = new FileReader();
-  reader.onload = e => {
-    USER.avatar = e.target.result;
-    // save to users array
-    const users = JSON.parse(localStorage.getItem('rn_users') || '[]');
-    const idx = users.findIndex(u => u.id === USER.id);
-    if (idx > -1) { users[idx].avatar = USER.avatar; localStorage.setItem('rn_users', JSON.stringify(users)); }
-    localStorage.setItem('rn_session', JSON.stringify(USER));
-    fillUserUI(); loadProfile();
-    toast('✅ Photo updated!');
+  window.toggleStep = async (pid, idx) => {
+    if (!userData.paths[pid]) userData.paths[pid] = {};
+    userData.paths[pid][idx] = !userData.paths[pid][idx];
+    await saveUserData();
+    renderDashboard();
   };
-  reader.readAsDataURL(file);
-}
 
-function switchCareer(key, el) {
-  pendingProfileCareer = key;
-  document.querySelectorAll('#careerSwitcher .cs-opt').forEach(c => c.classList.remove('active'));
-  el.classList.add('active');
-}
+  window.removePath = async (pid) => {
+    if (!confirm('Remove this career path from your dashboard?')) return;
+    delete userData.paths[pid];
+    await saveUserData();
+    renderDashboard();
+  };
 
-function saveCareer() {
-  if (!pendingProfileCareer) { toast('Select a career path first'); return; }
-  const careerMap  = { da:'Data Analytics', wd:'Web Development', dm:'Digital Marketing', gd:'Graphic Design' };
-  const emojiMap   = { da:'📊', wd:'💻', dm:'📣', gd:'🎨' };
-
-  USER.career      = pendingProfileCareer;
-  USER.careerName  = careerMap[pendingProfileCareer];
-  USER.careerEmoji = emojiMap[pendingProfileCareer];
-
-  const users = JSON.parse(localStorage.getItem('rn_users') || '[]');
-  const idx = users.findIndex(u => u.id === USER.id);
-  if (idx > -1) { users[idx] = { ...users[idx], ...USER }; localStorage.setItem('rn_users', JSON.stringify(users)); }
-  localStorage.setItem('rn_session', JSON.stringify(USER));
-
-  fillUserUI(); loadRoadmap(); loadResources(); loadChallenge(); loadInterview();
-  toast('✅ Career path updated to ' + USER.careerName + '!');
-}
-
-// ══════════════════════════════════════════════════
-//  OVERVIEW FINAL UPDATE
-// ══════════════════════════════════════════════════
-function updateOverview() {
-  updateChallengeOverview();
-  loadQuote();
-  renderHabits();
-  loadRoadmap();
-}
-
-// ══════════════════════════════════════════════════
-//  LOGOUT
-// ══════════════════════════════════════════════════
-function logout() {
-  localStorage.removeItem('rn_session');
-  window.location.href = 'auth.html';
-}
+  window.signOutUser = async () => {
+    await signOut(auth);
+    window.location.href = 'index.html';
+  };
 </script>
 </body>
 </html>

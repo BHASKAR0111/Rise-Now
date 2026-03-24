@@ -1,327 +1,569 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RiseNow — Sign In</title>
-<style>
-:root{--bg:#080c10;--card:#111820;--border:#1e2d3d;--accent:#22c55e;--text:#f0f6fc;--muted:#5a7080;--gradient:linear-gradient(135deg,#22c55e,#06b6d4);}
-*{margin:0;padding:0;box-sizing:border-box;}
-html,body{height:100%;}
-body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow-x:hidden;}
-body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(34,197,94,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(34,197,94,0.03) 1px,transparent 1px);background-size:50px 50px;pointer-events:none;z-index:0;}
-.orb{position:fixed;border-radius:50%;filter:blur(80px);pointer-events:none;opacity:.12;}
-.orb1{width:400px;height:400px;background:#22c55e;top:-100px;right:-80px;}
-.orb2{width:300px;height:300px;background:#06b6d4;bottom:0;left:-80px;}
-.auth-wrap{position:relative;z-index:1;width:100%;max-width:440px;padding:20px;}
-.auth-logo{text-align:center;margin-bottom:32px;}
-.logo-pill{display:inline-flex;align-items:center;gap:10px;background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);padding:8px 20px;border-radius:20px;margin-bottom:16px;text-decoration:none;}
-.logo-icon{width:32px;height:32px;border-radius:8px;background:var(--gradient);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;color:#000;}
-.logo-name{font-size:17px;font-weight:800;color:var(--text);}
-.auth-logo h1{font-size:26px;font-weight:800;color:var(--text);margin-bottom:6px;}
-.auth-logo p{font-size:14px;color:var(--muted);}
-.auth-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:32px;}
-.auth-tabs{display:flex;margin-bottom:28px;border-radius:10px;overflow:hidden;border:1px solid var(--border);}
-.tab-btn{flex:1;padding:11px;font-size:14px;font-weight:700;background:transparent;border:none;color:var(--muted);cursor:pointer;transition:.2s;}
-.tab-btn.active{background:rgba(34,197,94,0.1);color:var(--accent);}
-.method-switch{display:flex;gap:8px;margin-bottom:20px;}
-.method-btn{flex:1;padding:10px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;transition:.2s;border:1px solid var(--border);background:transparent;color:var(--muted);display:flex;align-items:center;justify-content:center;gap:6px;}
-.method-btn.active{border-color:rgba(34,197,94,0.4);color:var(--accent);background:rgba(34,197,94,0.06);}
-.form-group{margin-bottom:16px;}
-.form-label{font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:7px;display:flex;justify-content:space-between;align-items:center;}
-.form-input{width:100%;padding:13px 16px;border:1px solid var(--border);border-radius:10px;background:rgba(255,255,255,0.04);color:var(--text);font-size:15px;font-family:inherit;outline:none;transition:.2s;}
-.form-input:focus{border-color:rgba(34,197,94,0.5);box-shadow:0 0 0 3px rgba(34,197,94,0.08);}
-.form-input::placeholder{color:var(--muted);}
-.input-wrap{position:relative;}
-.pass-toggle{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;}
-.submit-btn{width:100%;padding:14px;background:var(--gradient);color:#000;border:none;border-radius:10px;font-size:15px;font-weight:800;cursor:pointer;transition:.2s;margin-top:4px;display:flex;align-items:center;justify-content:center;gap:8px;}
-.submit-btn:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(34,197,94,0.3);}
-.submit-btn:disabled{opacity:0.6;cursor:not-allowed;transform:none;}
-.divider{display:flex;align-items:center;gap:12px;margin:20px 0;}
-.divider-line{flex:1;height:1px;background:var(--border);}
-.divider-text{font-size:12px;color:var(--muted);}
-.google-btn{width:100%;padding:13px;border:1px solid var(--border);border-radius:10px;background:rgba(255,255,255,0.03);color:var(--text);font-size:14px;font-weight:600;cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center;gap:10px;}
-.google-btn:hover{border-color:rgba(255,255,255,0.2);background:rgba(255,255,255,0.06);}
-.msg{padding:12px 14px;border-radius:8px;font-size:13px;font-weight:600;margin-bottom:16px;display:none;}
-.msg.error{background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);color:#ef4444;}
-.msg.success{background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);color:var(--accent);}
-.msg.show{display:block;}
-.forgot-link{font-size:12px;color:var(--accent);cursor:pointer;background:none;border:none;}
-.otp-group{display:flex;gap:10px;justify-content:center;margin-bottom:16px;}
-.otp-input{width:52px;height:56px;border:1px solid var(--border);border-radius:10px;background:rgba(255,255,255,0.04);color:var(--text);font-size:22px;font-weight:700;text-align:center;outline:none;transition:.2s;font-family:inherit;}
-.otp-input:focus{border-color:rgba(34,197,94,0.5);}
-.phone-row{display:flex;gap:8px;}
-.country-select{padding:13px 10px;border:1px solid var(--border);border-radius:10px;background:rgba(255,255,255,0.04);color:var(--text);font-size:14px;font-family:inherit;outline:none;cursor:pointer;min-width:95px;}
-.step{display:none;}
-.step.active{display:block;}
-.auth-footer{text-align:center;margin-top:20px;font-size:13px;color:var(--muted);}
-.auth-footer a{color:var(--accent);text-decoration:none;font-weight:600;}
-.loading-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);display:none;align-items:center;justify-content:center;z-index:9999;}
-.loading-overlay.show{display:flex;}
-.loading-box{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:32px;text-align:center;}
-.spin{width:36px;height:36px;border:3px solid rgba(34,197,94,0.2);border-top-color:var(--accent);border-radius:50%;animation:sp .7s linear infinite;margin:0 auto;}
-@keyframes sp{to{transform:rotate(360deg)}}
-.loading-box p{margin-top:12px;font-size:14px;color:var(--muted);}
-.resend-row{text-align:center;margin-top:12px;}
-.resend-btn{background:none;border:none;color:var(--accent);font-size:13px;font-weight:600;cursor:pointer;}
-.resend-timer{font-size:13px;color:var(--muted);}
-</style>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Join RiseNow — Sign In / Sign Up</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --green: #00e676;
+      --teal:  #00bcd4;
+      --bg:    #0a0e13;
+      --card:  #111820;
+      --card2: #161f2c;
+      --border: rgba(255,255,255,0.07);
+      --border-g: rgba(0,230,118,0.18);
+      --text:  rgba(255,255,255,0.9);
+      --muted: rgba(255,255,255,0.42);
+      --grad:  linear-gradient(135deg, #00e676, #00bcd4);
+      --err:   #ff5252;
+    }
+
+    html { height: 100%; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    /* ── LEFT PANEL ── */
+    .left-panel {
+      background: linear-gradient(160deg, #0d1a11 0%, #091520 100%);
+      border-right: 1px solid var(--border);
+      display: flex; flex-direction: column;
+      justify-content: space-between;
+      padding: 48px 56px;
+      position: relative; overflow: hidden;
+      min-height: 100vh;
+    }
+    .left-panel::before {
+      content: '';
+      position: absolute; top: -30%; left: -20%;
+      width: 80%; height: 80%;
+      background: radial-gradient(circle, rgba(0,230,118,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .left-panel::after {
+      content: '';
+      position: absolute; bottom: -20%; right: -20%;
+      width: 70%; height: 70%;
+      background: radial-gradient(circle, rgba(0,188,212,0.05) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .lp-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; position: relative; z-index: 1; }
+    .lp-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: var(--grad);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 900; color: #0a0e13;
+    }
+    .lp-name {
+      font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800;
+      background: var(--grad);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+
+    .lp-content { position: relative; z-index: 1; }
+    .lp-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(0,230,118,0.08); border: 1px solid rgba(0,230,118,0.2);
+      color: var(--green); font-size: 11px; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase;
+      padding: 6px 16px; border-radius: 20px; margin-bottom: 24px;
+    }
+    .lp-content h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: 44px; font-weight: 800;
+      letter-spacing: -1.5px; line-height: 1.1;
+      margin-bottom: 18px;
+    }
+    .lp-content h1 span {
+      background: var(--grad);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .lp-content p { font-size: 15px; color: var(--muted); line-height: 1.75; margin-bottom: 36px; }
+
+    .lp-features { display: flex; flex-direction: column; gap: 14px; }
+    .lp-feat {
+      display: flex; align-items: center; gap: 14px;
+      padding: 14px 18px;
+      background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+    .lp-feat-icon {
+      width: 38px; height: 38px; border-radius: 9px;
+      background: rgba(0,230,118,0.1); flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; font-size: 18px;
+    }
+    .lp-feat h4 { font-size: 13px; font-weight: 700; margin-bottom: 2px; }
+    .lp-feat p  { font-size: 12px; color: var(--muted); }
+
+    .lp-stats {
+      display: flex; gap: 24px; position: relative; z-index: 1; flex-wrap: wrap;
+    }
+    .lp-stat { text-align: center; }
+    .lp-stat-num {
+      font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800;
+      background: var(--grad);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .lp-stat-lbl { font-size: 11px; color: var(--muted); margin-top: 3px; }
+
+    /* ── RIGHT PANEL ── */
+    .right-panel {
+      display: flex; align-items: center; justify-content: center;
+      padding: 48px 56px; min-height: 100vh;
+    }
+    .auth-box { width: 100%; max-width: 420px; }
+
+    .auth-tabs {
+      display: flex; background: var(--card2);
+      border: 1px solid var(--border); border-radius: 12px;
+      padding: 4px; margin-bottom: 32px; gap: 4px;
+    }
+    .auth-tab {
+      flex: 1; padding: 10px; border-radius: 9px;
+      background: transparent; border: none;
+      color: var(--muted); font-size: 14px; font-weight: 600;
+      cursor: pointer; font-family: 'Inter', sans-serif; transition: all .25s;
+    }
+    .auth-tab.active {
+      background: var(--card); color: var(--text);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    .auth-form { display: none; flex-direction: column; gap: 14px; }
+    .auth-form.active { display: flex; }
+
+    .auth-form h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 26px; font-weight: 800;
+      margin-bottom: 4px;
+    }
+    .auth-form .sub { font-size: 14px; color: var(--muted); margin-bottom: 8px; }
+
+    .field-label {
+      font-size: 12px; font-weight: 700; color: var(--muted);
+      letter-spacing: .8px; text-transform: uppercase;
+      margin-bottom: 6px; display: block;
+    }
+    .field-wrap { position: relative; }
+    .field-wrap .f-icon {
+      position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+      font-size: 16px; pointer-events: none;
+    }
+    .f-input {
+      width: 100%; padding: 13px 16px 13px 42px;
+      background: var(--card2); border: 1px solid var(--border);
+      border-radius: 10px; color: var(--text);
+      font-size: 14px; font-family: 'Inter', sans-serif;
+      outline: none; transition: all .25s;
+    }
+    .f-input:focus { border-color: rgba(0,230,118,0.4); box-shadow: 0 0 0 3px rgba(0,230,118,0.07); }
+    .f-input::placeholder { color: var(--muted); }
+    .f-input.error { border-color: var(--err); }
+
+    /* avatar upload */
+    .avatar-upload {
+      display: flex; align-items: center; gap: 16px;
+      padding: 14px; background: var(--card2);
+      border: 1px dashed rgba(0,230,118,0.25); border-radius: 10px;
+      cursor: pointer; transition: all .25s;
+    }
+    .avatar-upload:hover { border-color: rgba(0,230,118,0.5); background: rgba(0,230,118,0.03); }
+    .avatar-preview {
+      width: 52px; height: 52px; border-radius: 50%;
+      background: rgba(0,230,118,0.1); border: 2px solid rgba(0,230,118,0.25);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; overflow: hidden; flex-shrink: 0;
+    }
+    .avatar-preview img { width: 100%; height: 100%; object-fit: cover; }
+    .avatar-text h4 { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+    .avatar-text p  { font-size: 11px; color: var(--muted); }
+    #avatarInput { display: none; }
+
+    /* career selector */
+    .career-select-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+    }
+    .cs-card {
+      padding: 12px 14px; background: var(--card2);
+      border: 1px solid var(--border); border-radius: 10px;
+      cursor: pointer; transition: all .2s; text-align: center;
+    }
+    .cs-card:hover { border-color: rgba(0,230,118,0.25); }
+    .cs-card.chosen { border-color: var(--green); background: rgba(0,230,118,0.06); }
+    .cs-card .cs-emoji { font-size: 22px; display: block; margin-bottom: 4px; }
+    .cs-card .cs-name { font-size: 12px; font-weight: 700; }
+
+    .field-err { font-size: 12px; color: var(--err); margin-top: 4px; display: none; }
+    .field-err.show { display: block; }
+
+    .btn-auth {
+      padding: 14px; background: var(--grad);
+      border: none; border-radius: 10px;
+      color: #0a0e13; font-size: 15px; font-weight: 800;
+      cursor: pointer; font-family: 'Inter', sans-serif;
+      transition: all .25s; margin-top: 4px;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-auth:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(0,230,118,0.3); }
+    .btn-auth:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+
+    .divider {
+      display: flex; align-items: center; gap: 12px; color: var(--muted); font-size: 12px;
+    }
+    .divider::before, .divider::after {
+      content: ''; flex: 1; height: 1px; background: var(--border);
+    }
+
+    .auth-switch {
+      text-align: center; font-size: 13px; color: var(--muted);
+    }
+    .auth-switch a { color: var(--green); text-decoration: none; font-weight: 600; cursor: pointer; }
+
+    .toast {
+      position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(80px);
+      background: var(--green); color: #0a0e13;
+      font-weight: 700; font-size: 13px; padding: 12px 24px;
+      border-radius: 10px; transition: .35s; z-index: 9999; white-space: nowrap;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+    .toast.err { background: var(--err); color: white; }
+
+    /* responsive */
+    @media (max-width: 900px) {
+      body { grid-template-columns: 1fr; }
+      .left-panel { display: none; }
+      .right-panel { padding: 40px 24px; }
+    }
+  </style>
 </head>
 <body>
-<div class="orb orb1"></div><div class="orb orb2"></div>
 
-<div class="loading-overlay" id="loadingOverlay">
-  <div class="loading-box"><div class="spin"></div><p id="loadingText">Please wait...</p></div>
-</div>
+<!-- LEFT PANEL -->
+<div class="left-panel">
+  <a href="index.html" class="lp-logo">
+    <div class="lp-icon">R</div>
+    <span class="lp-name">RiseNow</span>
+  </a>
 
-<div class="auth-wrap">
-  <div class="auth-logo">
-    <a href="index.html" class="logo-pill">
-      <div class="logo-icon">R</div><span class="logo-name">RiseNow</span>
-    </a>
-    <h1 id="authHeading">Welcome Back 👋</h1>
-    <p id="authSub">Sign in to your comeback dashboard</p>
+  <div class="lp-content">
+    <div class="lp-tag">🌱 Personal Dashboard</div>
+    <h1>Your comeback<br>starts with a<br><span>free account</span></h1>
+    <p>Get a personalized dashboard — track your habits, follow your roadmap, prep for interviews, and build the career you deserve. All free.</p>
+    <div class="lp-features">
+      <div class="lp-feat">
+        <div class="lp-feat-icon">🗺️</div>
+        <div>
+          <h4>Personalized Career Roadmap</h4>
+          <p>Pick your path — we build the step-by-step plan for you</p>
+        </div>
+      </div>
+      <div class="lp-feat">
+        <div class="lp-feat-icon">🔥</div>
+        <div>
+          <h4>Habit Tracker with Streak Counter</h4>
+          <p>Daily habits that compound into career breakthroughs</p>
+        </div>
+      </div>
+      <div class="lp-feat">
+        <div class="lp-feat-icon">📊</div>
+        <div>
+          <h4>Progress Dashboard</h4>
+          <p>See your 30-day challenge progress, jobs tracked &amp; more</p>
+        </div>
+      </div>
+      <div class="lp-feat">
+        <div class="lp-feat-icon">📚</div>
+        <div>
+          <h4>Curated Resources for Your Path</h4>
+          <p>Only the resources relevant to your chosen career</p>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div class="auth-card">
+  <div class="lp-stats">
+    <div class="lp-stat"><div class="lp-stat-num">5K+</div><div class="lp-stat-lbl">People Helped</div></div>
+    <div class="lp-stat"><div class="lp-stat-num">100%</div><div class="lp-stat-lbl">Free Forever</div></div>
+    <div class="lp-stat"><div class="lp-stat-num">7</div><div class="lp-stat-lbl">Tools Included</div></div>
+  </div>
+</div>
+
+<!-- RIGHT PANEL -->
+<div class="right-panel">
+  <div class="auth-box">
+
+    <!-- Tabs -->
     <div class="auth-tabs">
-      <button class="tab-btn active" id="tabLogin" onclick="switchTab('login')">Sign In</button>
-      <button class="tab-btn" id="tabSignup" onclick="switchTab('signup')">Sign Up</button>
+      <button class="auth-tab active" id="tabSignin" onclick="switchTab('signin')">Sign In</button>
+      <button class="auth-tab" id="tabSignup" onclick="switchTab('signup')">Sign Up</button>
     </div>
-    <div class="msg error" id="errorMsg"></div>
-    <div class="msg success" id="successMsg"></div>
 
-    <!-- LOGIN -->
-    <div class="step active" id="stepLogin">
-      <div class="method-switch">
-        <button class="method-btn active" id="lEmailBtn" onclick="switchMethod('login','email')">✉️ Email</button>
-        
-      </div>
-      <div id="lEmailFields">
-        <div class="form-group"><label class="form-label">Email Address</label><input class="form-input" id="lEmail" type="email" placeholder="you@example.com"></div>
-        <div class="form-group">
-          <label class="form-label">Password <button class="forgot-link" onclick="forgotPassword()">Forgot?</button></label>
-          <div class="input-wrap"><input class="form-input" id="lPass" type="password" placeholder="Your password"><button class="pass-toggle" onclick="togglePass('lPass',this)" type="button">👁</button></div>
+    <!-- SIGN IN FORM -->
+    <div class="auth-form active" id="formSignin">
+      <h2>Welcome back 👋</h2>
+      <p class="sub">Sign in to your personal RiseNow dashboard.</p>
+
+      <div>
+        <label class="field-label">Email</label>
+        <div class="field-wrap">
+          <span class="f-icon">📧</span>
+          <input class="f-input" type="email" id="siEmail" placeholder="you@example.com" autocomplete="email">
         </div>
-        <button class="submit-btn" onclick="doLoginEmail()">Sign In →</button>
+        <div class="field-err" id="siEmailErr">Please enter a valid email.</div>
       </div>
-      
-        <div id="rc-login"></div>
-        <button class="submit-btn" onclick="doSendOTP('login')">Send OTP →</button>
-      </div>
-    </div>
 
-    <!-- SIGNUP -->
-    <div class="step" id="stepSignup">
-      <div class="method-switch">
-        <button class="method-btn active" id="sEmailBtn" onclick="switchMethod('signup','email')">✉️ Email</button>
-        
-      </div>
-      <div id="sEmailFields">
-        <div class="form-group"><label class="form-label">Full Name</label><input class="form-input" id="sName" type="text" placeholder="Your name"></div>
-        <div class="form-group"><label class="form-label">Email Address</label><input class="form-input" id="sEmail" type="email" placeholder="you@example.com"></div>
-        <div class="form-group"><label class="form-label">Password</label>
-          <div class="input-wrap"><input class="form-input" id="sPass" type="password" placeholder="Min 6 characters"><button class="pass-toggle" onclick="togglePass('sPass',this)" type="button">👁</button></div>
+      <div>
+        <label class="field-label">Password</label>
+        <div class="field-wrap">
+          <span class="f-icon">🔒</span>
+          <input class="f-input" type="password" id="siPass" placeholder="Your password" autocomplete="current-password">
         </div>
-        <button class="submit-btn" onclick="doSignupEmail()">Create Account →</button>
+        <div class="field-err" id="siPassErr">Password must be at least 6 characters.</div>
       </div>
-      
-        <div id="rc-signup"></div>
-        <button class="submit-btn" onclick="doSendOTP('signup')">Send OTP →</button>
-      </div>
+
+      <button class="btn-auth" id="btnSignin" onclick="signIn()">Sign In →</button>
+
+      <div class="divider">or</div>
+
+      <div class="auth-switch">Don't have an account? <a onclick="switchTab('signup')">Sign up free</a></div>
+      <div class="auth-switch" style="margin-top:6px;"><a href="index.html" style="color:var(--muted);font-weight:500;font-size:12px;">← Back to homepage</a></div>
     </div>
 
-    <!-- OTP -->
-    <div class="step" id="stepOTP">
-      <div style="text-align:center;margin-bottom:20px;">
-        <div style="font-size:40px;margin-bottom:8px;">📱</div>
-        <h3 style="color:var(--text);font-size:18px;margin-bottom:6px;">Enter OTP</h3>
-        <p style="font-size:13px;color:var(--muted);">Sent to <strong id="otpPhone" style="color:var(--text)"></strong></p>
+    <!-- SIGN UP FORM -->
+    <div class="auth-form" id="formSignup">
+      <h2>Create your account 🚀</h2>
+      <p class="sub">Join thousands of people rebuilding their careers for free.</p>
+
+      <!-- Avatar upload -->
+      <div>
+        <label class="field-label">Profile Photo</label>
+        <div class="avatar-upload" onclick="document.getElementById('avatarInput').click()">
+          <div class="avatar-preview" id="avatarPreview">🙂</div>
+          <div class="avatar-text">
+            <h4>Upload your photo</h4>
+            <p>Click to choose · JPG, PNG or GIF · optional</p>
+          </div>
+        </div>
+        <input type="file" id="avatarInput" accept="image/*" onchange="previewAvatar(this)">
       </div>
-      <div class="otp-group">
-        <input class="otp-input" maxlength="1" id="o0" oninput="otpNext(this,0)" onkeydown="otpBack(event,0)">
-        <input class="otp-input" maxlength="1" id="o1" oninput="otpNext(this,1)" onkeydown="otpBack(event,1)">
-        <input class="otp-input" maxlength="1" id="o2" oninput="otpNext(this,2)" onkeydown="otpBack(event,2)">
-        <input class="otp-input" maxlength="1" id="o3" oninput="otpNext(this,3)" onkeydown="otpBack(event,3)">
-        <input class="otp-input" maxlength="1" id="o4" oninput="otpNext(this,4)" onkeydown="otpBack(event,4)">
-        <input class="otp-input" maxlength="1" id="o5" oninput="otpNext(this,5)" onkeydown="otpBack(event,5)">
+
+      <div>
+        <label class="field-label">Full Name</label>
+        <div class="field-wrap">
+          <span class="f-icon">👤</span>
+          <input class="f-input" type="text" id="suName" placeholder="Bhaskar Baluni" autocomplete="name">
+        </div>
+        <div class="field-err" id="suNameErr">Please enter your name.</div>
       </div>
-      <button class="submit-btn" onclick="doVerifyOTP()">Verify →</button>
-      <div class="resend-row">
-        <button class="resend-btn" id="resendBtn" style="display:none;" onclick="doResendOTP()">Resend OTP</button>
-        <span class="resend-timer" id="resendTimer"></span>
+
+      <div>
+        <label class="field-label">Email</label>
+        <div class="field-wrap">
+          <span class="f-icon">📧</span>
+          <input class="f-input" type="email" id="suEmail" placeholder="you@example.com" autocomplete="email">
+        </div>
+        <div class="field-err" id="suEmailErr">Please enter a valid email.</div>
       </div>
-      <button onclick="backFromOTP()" style="width:100%;margin-top:12px;padding:10px;border:1px solid var(--border);border-radius:8px;background:transparent;color:var(--muted);font-size:13px;cursor:pointer;">← Back</button>
+
+      <div>
+        <label class="field-label">Password</label>
+        <div class="field-wrap">
+          <span class="f-icon">🔒</span>
+          <input class="f-input" type="password" id="suPass" placeholder="Minimum 6 characters" autocomplete="new-password">
+        </div>
+        <div class="field-err" id="suPassErr">Password must be at least 6 characters.</div>
+      </div>
+
+      <!-- Career choice -->
+      <div>
+        <label class="field-label">Choose Your Career Path</label>
+        <div class="career-select-grid" id="careerGrid">
+          <div class="cs-card" onclick="selectCareer('da',this)">
+            <span class="cs-emoji">📊</span>
+            <span class="cs-name">Data Analytics</span>
+          </div>
+          <div class="cs-card" onclick="selectCareer('wd',this)">
+            <span class="cs-emoji">💻</span>
+            <span class="cs-name">Web Development</span>
+          </div>
+          <div class="cs-card" onclick="selectCareer('dm',this)">
+            <span class="cs-emoji">📣</span>
+            <span class="cs-name">Digital Marketing</span>
+          </div>
+          <div class="cs-card" onclick="selectCareer('gd',this)">
+            <span class="cs-emoji">🎨</span>
+            <span class="cs-name">Graphic Design</span>
+          </div>
+        </div>
+        <div class="field-err" id="suCareerErr">Please choose a career path.</div>
+      </div>
+
+      <button class="btn-auth" id="btnSignup" onclick="signUp()">Create Account →</button>
+
+      <div class="divider">or</div>
+      <div class="auth-switch">Already have an account? <a onclick="switchTab('signin')">Sign in</a></div>
+      <div class="auth-switch" style="margin-top:6px;"><a href="index.html" style="color:var(--muted);font-weight:500;font-size:12px;">← Back to homepage</a></div>
     </div>
 
-    <!-- Google -->
-    <div id="googleSection">
-      <div class="divider"><div class="divider-line"></div><span class="divider-text">or continue with</span><div class="divider-line"></div></div>
-      <button class="google-btn" onclick="doLoginGoogle()">
-        <svg width="20" height="20" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-        Continue with Google
-      </button>
-    </div>
-  </div>
-
-  <div class="auth-footer" id="authFooter">
-    Don't have an account? <a href="#" onclick="switchTab('signup');return false;">Sign up free</a>
   </div>
 </div>
 
-<!-- Firebase Compat SDKs (no module needed) -->
-<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
 <script>
-firebase.initializeApp({
-  apiKey:"AIzaSyB2__vKiROvrPOyomY8X-pDBY8VlArDbdY",
-  authDomain:"risenow-31893.firebaseapp.com",
-  projectId:"risenow-31893",
-  storageBucket:"risenow-31893.firebasestorage.app",
-  messagingSenderId:"230298271225",
-  appId:"1:230298271225:web:c24d7100fc8b89a268d128"
-});
+  let chosenCareer = null;
+  let avatarDataUrl = null;
 
-const auth = firebase.auth();
-let confirmResult=null, recaptcha=null, otpFlow='login', resendInterval=null;
-
-// Redirect if already logged in
-auth.onAuthStateChanged(user=>{
-  if(user){
-    localStorage.setItem('db-username', user.displayName||user.email||'User');
-    localStorage.setItem('db-onboarded','1');
-    window.location.href='dashboard.html';
+  // ── Tab switch ─────────────────────────────
+  function switchTab(t) {
+    document.getElementById('formSignin').classList.toggle('active', t === 'signin');
+    document.getElementById('formSignup').classList.toggle('active', t === 'signup');
+    document.getElementById('tabSignin').classList.toggle('active', t === 'signin');
+    document.getElementById('tabSignup').classList.toggle('active', t === 'signup');
   }
-});
 
-function showErr(msg){document.getElementById('errorMsg').textContent='⚠ '+msg;document.getElementById('errorMsg').classList.add('show');document.getElementById('successMsg').classList.remove('show');}
-function showOk(msg){document.getElementById('successMsg').textContent='✓ '+msg;document.getElementById('successMsg').classList.add('show');document.getElementById('errorMsg').classList.remove('show');}
-function clearMsg(){document.getElementById('errorMsg').classList.remove('show');document.getElementById('successMsg').classList.remove('show');}
-function setLoad(show,txt='Please wait...'){document.getElementById('loadingOverlay').classList.toggle('show',show);document.getElementById('loadingText').textContent=txt;}
-function togglePass(id,btn){const el=document.getElementById(id);el.type=el.type==='password'?'text':'password';btn.textContent=el.type==='password'?'👁':'🙈';}
-function errMsg(c){const m={'auth/user-not-found':'No account with this email.','auth/wrong-password':'Wrong password.','auth/invalid-credential':'Invalid email or password.','auth/email-already-in-use':'Email already registered. Sign in instead.','auth/invalid-email':'Invalid email.','auth/weak-password':'Password too weak. Min 6 chars.','auth/too-many-requests':'Too many attempts. Wait and try again.','auth/popup-closed-by-user':'Cancelled.','auth/network-request-failed':'Network error.'};return m[c]||'Something went wrong. Try again.';}
+  // ── Career select ──────────────────────────
+  function selectCareer(key, el) {
+    chosenCareer = key;
+    document.querySelectorAll('.cs-card').forEach(c => c.classList.remove('chosen'));
+    el.classList.add('chosen');
+    document.getElementById('suCareerErr').classList.remove('show');
+  }
 
-function switchTab(tab){
-  clearMsg();
-  const isL=tab==='login';
-  document.getElementById('tabLogin').classList.toggle('active',isL);
-  document.getElementById('tabSignup').classList.toggle('active',!isL);
-  document.getElementById('stepLogin').classList.toggle('active',isL);
-  document.getElementById('stepSignup').classList.toggle('active',!isL);
-  document.getElementById('stepOTP').classList.remove('active');
-  document.getElementById('authHeading').textContent=isL?'Welcome Back 👋':'Join RiseNow 🌱';
-  document.getElementById('authSub').textContent=isL?'Sign in to your comeback dashboard':'Start your comeback journey today';
-  document.getElementById('authFooter').innerHTML=isL?"Don't have an account? <a href='#' onclick='switchTab(\"signup\");return false;'>Sign up free</a>":"Already have an account? <a href='#' onclick='switchTab(\"login\");return false;'>Sign in</a>";
-  document.getElementById('googleSection').style.display='block';
-  document.querySelector('.auth-tabs').style.display='flex';
-}
+  // ── Avatar preview ─────────────────────────
+  function previewAvatar(input) {
+    const file = input.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+      avatarDataUrl = e.target.result;
+      const prev = document.getElementById('avatarPreview');
+      prev.textContent = '';
+      const img = document.createElement('img');
+      img.src = avatarDataUrl;
+      prev.appendChild(img);
+    };
+    reader.readAsDataURL(file);
+  }
 
-function switchMethod(form,method){
-  clearMsg();
-  const isE=method==='email';
-  const p=form==='login'?'l':'s';
-  document.getElementById(p+'EmailBtn').classList.toggle('active',isE);
-  document.getElementById(p+'PhoneBtn').classList.toggle('active',!isE);
-  document.getElementById(p+'EmailFields').style.display=isE?'block':'none';
-  document.getElementById(p+'PhoneFields').style.display=isE?'none':'block';
-  document.getElementById('googleSection').style.display=isE?'block':'none';
-}
+  // ── Validation helpers ─────────────────────
+  function showErr(id, msg) {
+    const el = document.getElementById(id);
+    el.textContent = msg; el.classList.add('show');
+  }
+  function clearErr(id) { document.getElementById(id).classList.remove('show'); }
+  function setFieldErr(inputId, errId, msg) {
+    document.getElementById(inputId).classList.add('error');
+    showErr(errId, msg);
+  }
+  function clearField(inputId, errId) {
+    document.getElementById(inputId).classList.remove('error');
+    clearErr(errId);
+  }
 
-async function doLoginEmail(){
-  clearMsg();
-  const email=document.getElementById('lEmail').value.trim();
-  const pass=document.getElementById('lPass').value;
-  if(!email||!pass){showErr('Please fill all fields');return;}
-  setLoad(true,'Signing you in...');
-  try{await auth.signInWithEmailAndPassword(email,pass);}
-  catch(e){setLoad(false);showErr(errMsg(e.code));}
-}
+  // ── Toast ──────────────────────────────────
+  function showToast(msg, isErr = false) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'toast' + (isErr ? ' err' : '');
+    setTimeout(() => t.classList.add('show'), 10);
+    setTimeout(() => t.classList.remove('show'), 3200);
+  }
 
-async function doSignupEmail(){
-  clearMsg();
-  const name=document.getElementById('sName').value.trim();
-  const email=document.getElementById('sEmail').value.trim();
-  const pass=document.getElementById('sPass').value;
-  if(!name||!email||!pass){showErr('Please fill all fields');return;}
-  if(pass.length<6){showErr('Password must be at least 6 characters');return;}
-  setLoad(true,'Creating your account...');
-  try{
-    const cred=await auth.createUserWithEmailAndPassword(email,pass);
-    await cred.user.updateProfile({displayName:name});
-  }catch(e){setLoad(false);showErr(errMsg(e.code));}
-}
+  // ── Users DB (localStorage) ────────────────
+  function getUsers() { return JSON.parse(localStorage.getItem('rn_users') || '[]'); }
+  function saveUsers(u) { localStorage.setItem('rn_users', JSON.stringify(u)); }
+  function setSession(user) { localStorage.setItem('rn_session', JSON.stringify(user)); }
 
-async function doLoginGoogle(){
-  clearMsg();
-  setLoad(true,'Opening Google...');
-  try{await auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());}
-  catch(e){setLoad(false);showErr(errMsg(e.code));}
-}
+  // ── SIGN UP ────────────────────────────────
+  function signUp() {
+    const name  = document.getElementById('suName').value.trim();
+    const email = document.getElementById('suEmail').value.trim().toLowerCase();
+    const pass  = document.getElementById('suPass').value;
+    let valid = true;
 
-async function doSendOTP(flow){
-  clearMsg();otpFlow=flow;
-  const ph=document.getElementById(flow==='login'?'lPhone':'sPhone').value.trim();
-  const cc=document.getElementById(flow==='login'?'lCountry':'sCountry').value;
-  if(!ph||ph.length<10){showErr('Enter a valid 10-digit number');return;}
-  const full=cc+ph;
-  document.getElementById('otpPhone').textContent=full;
-  setLoad(true,'Sending OTP...');
-  try{
-    if(!recaptcha) recaptcha=new firebase.auth.RecaptchaVerifier(flow==='login'?'rc-login':'rc-signup',{size:'invisible'});
-    confirmResult=await auth.signInWithPhoneNumber(full,recaptcha);
-    setLoad(false);showOtpStep();showOk('OTP sent!');startResend(30);
-  }catch(e){setLoad(false);showErr('Failed to send OTP: '+e.message);recaptcha=null;}
-}
+    clearField('suName','suNameErr'); clearField('suEmail','suEmailErr'); clearField('suPass','suPassErr'); clearErr('suCareerErr');
 
-async function doVerifyOTP(){
-  clearMsg();
-  const otp=[0,1,2,3,4,5].map(i=>document.getElementById('o'+i).value).join('');
-  if(otp.length<6){showErr('Enter the complete 6-digit OTP');return;}
-  setLoad(true,'Verifying...');
-  try{
-    const cred=await confirmResult.confirm(otp);
-    if(otpFlow==='signup'){const n=document.getElementById('sNamePhone')?.value.trim();if(n)await cred.user.updateProfile({displayName:n});}
-  }catch(e){setLoad(false);showErr('Invalid OTP. Try again.');}
-}
+    if (!name) { setFieldErr('suName','suNameErr','Please enter your full name.'); valid = false; }
+    if (!email || !/\S+@\S+\.\S+/.test(email)) { setFieldErr('suEmail','suEmailErr','Please enter a valid email.'); valid = false; }
+    if (pass.length < 6) { setFieldErr('suPass','suPassErr','Password must be at least 6 characters.'); valid = false; }
+    if (!chosenCareer) { document.getElementById('suCareerErr').classList.add('show'); valid = false; }
+    if (!valid) return;
 
-function doResendOTP(){doSendOTP(otpFlow);}
+    const users = getUsers();
+    if (users.find(u => u.email === email)) {
+      setFieldErr('suEmail','suEmailErr','This email is already registered. Sign in instead.');
+      return;
+    }
 
-async function forgotPassword(){
-  const email=document.getElementById('lEmail').value.trim();
-  if(!email){showErr('Enter your email first');return;}
-  setLoad(true,'Sending reset email...');
-  try{await auth.sendPasswordResetEmail(email);setLoad(false);showOk('Reset email sent! Check inbox.');}
-  catch(e){setLoad(false);showErr(errMsg(e.code));}
-}
+    const careerMap = { da:'Data Analytics', wd:'Web Development', dm:'Digital Marketing', gd:'Graphic Design' };
+    const emojiMap  = { da:'📊', wd:'💻', dm:'📣', gd:'🎨' };
 
-function showOtpStep(){
-  document.getElementById('stepLogin').classList.remove('active');
-  document.getElementById('stepSignup').classList.remove('active');
-  document.getElementById('stepOTP').classList.add('active');
-  document.querySelector('.auth-tabs').style.display='none';
-  document.getElementById('googleSection').style.display='none';
-  document.getElementById('o0').focus();
-}
-function backFromOTP(){
-  document.getElementById('stepOTP').classList.remove('active');
-  document.querySelector('.auth-tabs').style.display='flex';
-  document.getElementById('googleSection').style.display='block';
-  document.getElementById(otpFlow==='login'?'stepLogin':'stepSignup').classList.add('active');
-}
-function otpNext(el,idx){el.value=el.value.replace(/\D/g,'');if(el.value&&idx<5)document.getElementById('o'+(idx+1)).focus();}
-function otpBack(e,idx){if(e.key==='Backspace'&&!e.target.value&&idx>0)document.getElementById('o'+(idx-1)).focus();}
-function startResend(s){
-  clearInterval(resendInterval);
-  document.getElementById('resendBtn').style.display='none';
-  document.getElementById('resendTimer').textContent='Resend in '+s+'s';
-  resendInterval=setInterval(()=>{s--;if(s<=0){clearInterval(resendInterval);document.getElementById('resendBtn').style.display='inline';document.getElementById('resendTimer').textContent='';}else{document.getElementById('resendTimer').textContent='Resend in '+s+'s';}},1000);
-}
-document.addEventListener('keydown',e=>{
-  if(e.key!=='Enter')return;
-  if(document.getElementById('stepLogin').classList.contains('active'))doLoginEmail();
-  else if(document.getElementById('stepSignup').classList.contains('active'))doSignupEmail();
-  else if(document.getElementById('stepOTP').classList.contains('active'))doVerifyOTP();
-});
+    const user = {
+      id: Date.now().toString(),
+      name, email, pass,
+      career: chosenCareer,
+      careerName: careerMap[chosenCareer],
+      careerEmoji: emojiMap[chosenCareer],
+      avatar: avatarDataUrl,
+      joinedAt: new Date().toISOString(),
+    };
+
+    users.push(user);
+    saveUsers(users);
+    setSession(user);
+
+    const btn = document.getElementById('btnSignup');
+    btn.textContent = '✅ Account Created!'; btn.disabled = true;
+    showToast('🎉 Welcome to RiseNow, ' + name.split(' ')[0] + '!');
+    setTimeout(() => { window.location.href = 'dashboard.html'; }, 1200);
+  }
+
+  // ── SIGN IN ────────────────────────────────
+  function signIn() {
+    const email = document.getElementById('siEmail').value.trim().toLowerCase();
+    const pass  = document.getElementById('siPass').value;
+    let valid = true;
+
+    clearField('siEmail','siEmailErr'); clearField('siPass','siPassErr');
+
+    if (!email || !/\S+@\S+\.\S+/.test(email)) { setFieldErr('siEmail','siEmailErr','Please enter a valid email.'); valid = false; }
+    if (pass.length < 6) { setFieldErr('siPass','siPassErr','Password must be at least 6 characters.'); valid = false; }
+    if (!valid) return;
+
+    const user = getUsers().find(u => u.email === email && u.pass === pass);
+    if (!user) {
+      showToast('❌ Invalid email or password.', true); return;
+    }
+
+    setSession(user);
+    showToast('👋 Welcome back, ' + user.name.split(' ')[0] + '!');
+    setTimeout(() => { window.location.href = 'dashboard.html'; }, 1000);
+  }
+
+  // ── Enter key support ─────────────────────
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      if (document.getElementById('formSignin').classList.contains('active')) signIn();
+      else signUp();
+    }
+  });
+
+  // ── Already logged in? ─────────────────────
+  if (localStorage.getItem('rn_session')) window.location.href = 'dashboard.html';
 </script>
 </body>
 </html>

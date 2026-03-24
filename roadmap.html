@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Roadmap Builder | RiseNow</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --green: #00e676; --teal: #00bcd4;
+      --bg: #0d1117; --card: #161b22;
+      --border: rgba(255,255,255,0.07);
+      --text: rgba(255,255,255,0.85);
+      --muted: rgba(255,255,255,0.4);
+    }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(13,17,23,0.95); backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 40px; height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-r {
+      width: 36px; height: 36px; border-radius: 8px;
+      background: linear-gradient(135deg, var(--green), var(--teal));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; font-weight: 900; color: #0d1117;
+    }
+    .logo-name {
+      font-size: 20px; font-weight: 800;
+      background: linear-gradient(90deg, var(--green), var(--teal));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a { text-decoration: none; color: var(--muted); font-size: 14px; font-weight: 500; }
+    .nav-links a:hover, .nav-links a.active { color: var(--green); }
+
+    .hero { text-align: center; padding: 60px 40px 40px; position: relative; }
+    .hero::before {
+      content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+      width: 600px; height: 300px;
+      background: radial-gradient(ellipse, rgba(0,230,118,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(0,230,118,0.08); border: 1px solid rgba(0,230,118,0.2);
+      color: var(--green); font-size: 12px; font-weight: 600;
+      padding: 6px 16px; border-radius: 20px; letter-spacing: 1px;
+      text-transform: uppercase; margin-bottom: 20px;
+    }
+    .hero h1 { font-size: 44px; font-weight: 900; letter-spacing: -2px; margin-bottom: 12px; }
+    .hero h1 span {
+      background: linear-gradient(90deg, var(--green), var(--teal));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .hero p { font-size: 15px; color: var(--muted); }
+
+    /* CAREER SELECTOR */
+    .career-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px; padding: 40px; max-width: 1100px; margin: 0 auto;
+    }
+    .career-card {
+      background: var(--card); border: 2px solid var(--border);
+      border-radius: 16px; padding: 28px 24px;
+      cursor: pointer; transition: all 0.25s; text-align: center;
+    }
+    .career-card:hover { border-color: rgba(0,230,118,0.3); transform: translateY(-3px); }
+    .career-card.selected { border-color: var(--green); background: rgba(0,230,118,0.05); }
+    .career-emoji { font-size: 40px; margin-bottom: 14px; display: block; }
+    .career-title { font-size: 16px; font-weight: 700; color: white; margin-bottom: 6px; }
+    .career-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+    .career-badge {
+      display: inline-block; margin-top: 12px;
+      font-size: 10px; font-weight: 700; padding: 3px 10px;
+      border-radius: 10px; text-transform: uppercase; letter-spacing: 0.5px;
+    }
+
+    /* ROADMAP */
+    .roadmap-section { padding: 0 40px 60px; max-width: 900px; margin: 0 auto; display: none; }
+    .roadmap-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 40px; flex-wrap: gap;
+    }
+    .roadmap-title { font-size: 28px; font-weight: 800; }
+    .roadmap-title span {
+      background: linear-gradient(90deg, var(--green), var(--teal));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .btn-back {
+      padding: 10px 20px; background: transparent;
+      border: 1px solid var(--border); border-radius: 10px;
+      color: var(--muted); font-size: 13px; font-weight: 600;
+      cursor: pointer; font-family: 'Inter', sans-serif;
+    }
+    .btn-back:hover { border-color: rgba(0,230,118,0.3); color: var(--green); }
+
+    /* PROGRESS BAR */
+    .progress-wrap { margin-bottom: 40px; }
+    .progress-label { display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); margin-bottom: 8px; }
+    .progress-track { height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, var(--green), var(--teal)); border-radius: 3px; transition: width 0.5s ease; }
+
+    /* PHASE */
+    .phase { margin-bottom: 32px; }
+    .phase-header {
+      display: flex; align-items: center; gap: 14px; margin-bottom: 16px;
+    }
+    .phase-num {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--green), var(--teal));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 800; color: #0d1117; flex-shrink: 0;
+    }
+    .phase-name { font-size: 18px; font-weight: 700; color: white; }
+    .phase-duration { font-size: 12px; color: var(--muted); margin-left: auto; }
+
+    .phase-line { display: flex; flex-direction: column; gap: 10px; }
+    .step-item {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 16px 20px;
+      display: flex; align-items: center; gap: 14px;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .step-item:hover { border-color: rgba(0,230,118,0.2); }
+    .step-item.done { border-color: rgba(0,230,118,0.3); background: rgba(0,230,118,0.04); }
+
+    .step-check {
+      width: 22px; height: 22px; border-radius: 50%;
+      border: 2px solid var(--border); flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s; font-size: 11px;
+    }
+    .step-item.done .step-check { background: var(--green); border-color: var(--green); color: #0d1117; }
+
+    .step-text { flex: 1; }
+    .step-name { font-size: 14px; font-weight: 600; color: white; margin-bottom: 2px; }
+    .step-item.done .step-name { color: rgba(255,255,255,0.5); text-decoration: line-through; }
+    .step-sub { font-size: 12px; color: var(--muted); }
+
+    .step-resource {
+      font-size: 11px; color: var(--teal); font-weight: 600;
+      padding: 4px 10px; border-radius: 8px;
+      background: rgba(0,188,212,0.08); white-space: nowrap;
+    }
+
+    footer {
+      border-top: 1px solid var(--border); padding: 32px 40px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    footer p { font-size: 13px; color: var(--muted); }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <div class="logo-r">R</div>
+    <div class="logo-name">RiseNow</div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html#about">About</a></li>
+    <li><a href="resources.html">Resources</a></li>
+    <li><a href="job-tracker.html">Job Tracker</a></li>
+    <li><a href="roadmap.html" class="active">Roadmap</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<div class="hero">
+  <div class="hero-tag">🗺️ Career Roadmap Builder</div>
+  <h1>Choose Your <span>Career Path</span></h1>
+  <p>Pick a path and get a step-by-step roadmap to become job-ready.</p>
+</div>
+
+<!-- CAREER SELECTOR -->
+<div class="career-grid" id="careerGrid">
+  <div class="career-card" onclick="showRoadmap('da')">
+    <span class="career-emoji">📊</span>
+    <div class="career-title">Data Analytics</div>
+    <div class="career-desc">Python, SQL, Power BI, ML — analyze data and drive decisions</div>
+    <span class="career-badge" style="background:rgba(0,230,118,0.1);color:#00e676;">In Demand</span>
+  </div>
+  <div class="career-card" onclick="showRoadmap('wd')">
+    <span class="career-emoji">🌐</span>
+    <div class="career-title">Web Development</div>
+    <div class="career-desc">HTML, CSS, JS, React — build websites and web apps from scratch</div>
+    <span class="career-badge" style="background:rgba(0,188,212,0.1);color:#00bcd4;">High Paying</span>
+  </div>
+  <div class="career-card" onclick="showRoadmap('dm')">
+    <span class="career-emoji">📣</span>
+    <div class="career-title">Digital Marketing</div>
+    <div class="career-desc">SEO, Social Media, Google Ads — grow businesses online</div>
+    <span class="career-badge" style="background:rgba(255,165,0,0.1);color:#ffa500;">Growing Fast</span>
+  </div>
+  <div class="career-card" onclick="showRoadmap('gd')">
+    <span class="career-emoji">🎨</span>
+    <div class="career-title">Graphic Design</div>
+    <div class="career-desc">Figma, Canva, Adobe — create visuals and brand identities</div>
+    <span class="career-badge" style="background:rgba(255,71,87,0.1);color:#ff4757;">Creative</span>
+  </div>
+</div>
+
+<!-- ROADMAP SECTION -->
+<div class="roadmap-section" id="roadmapSection">
+  <div class="roadmap-header">
+    <div class="roadmap-title" id="roadmapTitle">Data Analytics <span>Roadmap</span></div>
+    <button class="btn-back" onclick="goBack()">← Back</button>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress-label">
+      <span id="progressLabel">0 of 0 steps completed</span>
+      <span id="progressPct">0%</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill" style="width:0%"></div>
+    </div>
+  </div>
+
+  <div id="roadmapContent"></div>
+</div>
+
+<footer>
+  <a href="index.html" class="nav-logo">
+    <div class="logo-r">R</div>
+    <div class="logo-name">RiseNow</div>
+  </a>
+  <p>© 2026 RiseNow. Helping Strugglers Stand Again.</p>
+</footer>
+
+<script>
+const roadmaps = {
+  da: {
+    title: 'Data Analytics',
+    phases: [
+      { name: 'Foundation', duration: '2 Weeks', steps: [
+        { name: 'Learn Python Basics', sub: 'Variables, loops, functions, lists', resource: 'W3Schools' },
+        { name: 'Excel & Google Sheets', sub: 'Formulas, pivot tables, VLOOKUP', resource: 'YouTube' },
+        { name: 'Statistics Fundamentals', sub: 'Mean, median, distribution, probability', resource: 'Khan Academy' },
+        { name: 'Setup Jupyter Notebook', sub: 'Install Python, Jupyter, VS Code', resource: 'Official Docs' },
+      ]},
+      { name: 'Core Skills', duration: '1 Month', steps: [
+        { name: 'Pandas & NumPy', sub: 'Data cleaning, manipulation, EDA', resource: 'Kaggle' },
+        { name: 'SQL Fundamentals', sub: 'SELECT, JOINs, GROUP BY, subqueries', resource: 'W3Schools' },
+        { name: 'Data Visualization', sub: 'Matplotlib, Seaborn — charts & graphs', resource: 'Google Colab' },
+        { name: 'Power BI Basics', sub: 'Import data, build dashboards, DAX intro', resource: 'YouTube' },
+      ]},
+      { name: 'Advanced', duration: '1 Month', steps: [
+        { name: 'Advanced SQL', sub: 'Window functions, CTEs, optimization', resource: 'HackerRank' },
+        { name: 'Machine Learning Basics', sub: 'Regression, classification, Scikit-learn', resource: 'StatQuest' },
+        { name: 'Advanced Power BI', sub: 'DAX formulas, Power Query, relationships', resource: 'DAX Formatter' },
+        { name: 'Real Project', sub: 'Build end-to-end project on Kaggle dataset', resource: 'Kaggle' },
+      ]},
+      { name: 'Job Ready', duration: '2 Weeks', steps: [
+        { name: 'Build Portfolio', sub: 'GitHub + portfolio website with 3 projects', resource: 'GitHub' },
+        { name: 'Google Certification', sub: 'Google Data Analytics on Coursera', resource: 'Coursera' },
+        { name: 'LinkedIn Optimization', sub: 'Headline, About, Featured, Projects', resource: 'LinkedIn' },
+        { name: 'Start Applying', sub: 'Naukri, LinkedIn, Internshala — daily apply', resource: 'Naukri' },
+      ]},
+    ]
+  },
+  wd: {
+    title: 'Web Development',
+    phases: [
+      { name: 'Foundation', duration: '2 Weeks', steps: [
+        { name: 'HTML Basics', sub: 'Tags, structure, forms, semantic HTML', resource: 'freeCodeCamp' },
+        { name: 'CSS Fundamentals', sub: 'Selectors, box model, flexbox, grid', resource: 'CSS Tricks' },
+        { name: 'Responsive Design', sub: 'Media queries, mobile-first approach', resource: 'freeCodeCamp' },
+        { name: 'Git & GitHub', sub: 'Version control, push, pull, branches', resource: 'GitHub' },
+      ]},
+      { name: 'JavaScript', duration: '1 Month', steps: [
+        { name: 'JS Basics', sub: 'Variables, functions, DOM manipulation', resource: 'JavaScript.info' },
+        { name: 'ES6+ Features', sub: 'Arrow functions, promises, async/await', resource: 'MDN Docs' },
+        { name: 'Build 3 Projects', sub: 'Calculator, todo app, weather app', resource: 'YouTube' },
+        { name: 'APIs & Fetch', sub: 'REST APIs, JSON, fetch data from APIs', resource: 'RapidAPI' },
+      ]},
+      { name: 'Framework', duration: '1 Month', steps: [
+        { name: 'React Basics', sub: 'Components, props, state, hooks', resource: 'React Docs' },
+        { name: 'React Projects', sub: 'Build 2 full React apps', resource: 'YouTube' },
+        { name: 'Node.js Basics', sub: 'Server-side JS, Express, APIs', resource: 'The Odin Project' },
+        { name: 'Database', sub: 'MySQL or MongoDB basics', resource: 'W3Schools' },
+      ]},
+      { name: 'Job Ready', duration: '2 Weeks', steps: [
+        { name: 'Portfolio Website', sub: 'Showcase 3-5 projects on GitHub Pages', resource: 'GitHub' },
+        { name: 'Deploy Projects', sub: 'Netlify, Vercel — live projects online', resource: 'Netlify' },
+        { name: 'LinkedIn + Resume', sub: 'Optimize profile, add projects', resource: 'LinkedIn' },
+        { name: 'Start Applying', sub: 'Internshala, LinkedIn, AngelList', resource: 'Internshala' },
+      ]},
+    ]
+  },
+  dm: {
+    title: 'Digital Marketing',
+    phases: [
+      { name: 'Foundation', duration: '1 Week', steps: [
+        { name: 'Marketing Basics', sub: 'Marketing funnel, buyer journey, channels', resource: 'HubSpot' },
+        { name: 'Google Analytics', sub: 'Track website traffic, user behavior', resource: 'Google Skillshop' },
+        { name: 'Content Marketing', sub: 'Blog writing, content strategy', resource: 'Neil Patel' },
+        { name: 'Social Media Basics', sub: 'Instagram, LinkedIn, Twitter strategy', resource: 'YouTube' },
+      ]},
+      { name: 'Core Skills', duration: '1 Month', steps: [
+        { name: 'SEO Fundamentals', sub: 'Keywords, on-page, off-page, backlinks', resource: 'Neil Patel' },
+        { name: 'Google Ads', sub: 'Search ads, display ads, campaigns', resource: 'Google Skillshop' },
+        { name: 'Email Marketing', sub: 'Campaigns, automation, Mailchimp', resource: 'HubSpot' },
+        { name: 'Canva for Marketing', sub: 'Social media graphics, ads design', resource: 'Canva' },
+      ]},
+      { name: 'Advanced', duration: '3 Weeks', steps: [
+        { name: 'Facebook & Instagram Ads', sub: 'Ad targeting, campaigns, budgets', resource: 'Meta Blueprint' },
+        { name: 'Analytics & Reporting', sub: 'GA4, campaign performance, ROI', resource: 'Google Skillshop' },
+        { name: 'E-Commerce Marketing', sub: 'Shopify, product marketing, conversion', resource: 'YouTube' },
+      ]},
+      { name: 'Job Ready', duration: '1 Week', steps: [
+        { name: 'Get Certified', sub: 'Google Ads + HubSpot + Meta certifications', resource: 'Coursera' },
+        { name: 'Build Case Studies', sub: 'Run a real campaign — document results', resource: 'LinkedIn' },
+        { name: 'Start Applying', sub: 'LinkedIn, Naukri, Internshala', resource: 'LinkedIn' },
+      ]},
+    ]
+  },
+  gd: {
+    title: 'Graphic Design',
+    phases: [
+      { name: 'Foundation', duration: '1 Week', steps: [
+        { name: 'Design Principles', sub: 'Color theory, typography, composition', resource: 'YouTube' },
+        { name: 'Canva Mastery', sub: 'Templates, branding, social media posts', resource: 'Canva' },
+        { name: 'Figma Basics', sub: 'UI design, frames, components, prototypes', resource: 'Figma Docs' },
+        { name: 'Design Inspiration', sub: 'Behance, Dribbble — study good design', resource: 'Behance' },
+      ]},
+      { name: 'Core Skills', duration: '1 Month', steps: [
+        { name: 'Logo Design', sub: 'Brand identity, logo creation in Figma', resource: 'YouTube' },
+        { name: 'Social Media Design', sub: 'Posts, stories, thumbnails — all formats', resource: 'Canva' },
+        { name: 'UI/UX Basics', sub: 'Wireframes, user flows, prototyping', resource: 'Figma Docs' },
+        { name: 'Typography Deep Dive', sub: 'Font pairing, hierarchy, readability', resource: 'Google Fonts' },
+      ]},
+      { name: 'Advanced', duration: '3 Weeks', steps: [
+        { name: 'Brand Identity Projects', sub: 'Design complete brand — logo, colors, fonts', resource: 'Behance' },
+        { name: 'Presentation Design', sub: 'Pitch decks, business presentations', resource: 'Canva' },
+        { name: 'Adobe Basics', sub: 'Photoshop or Illustrator fundamentals', resource: 'YouTube' },
+      ]},
+      { name: 'Job Ready', duration: '1 Week', steps: [
+        { name: 'Build Portfolio', sub: 'Behance profile with 5+ projects', resource: 'Behance' },
+        { name: 'Freelance Start', sub: 'Fiverr, Upwork — first client', resource: 'Fiverr' },
+        { name: 'Start Applying', sub: 'LinkedIn, Internshala, agencies', resource: 'LinkedIn' },
+      ]},
+    ]
+  }
+};
+
+let currentPath = null;
+let completedSteps = JSON.parse(localStorage.getItem('risenow_steps') || '{}');
+
+function showRoadmap(path) {
+  currentPath = path;
+  const r = roadmaps[path];
+  document.getElementById('careerGrid').style.display = 'none';
+  document.getElementById('roadmapSection').style.display = 'block';
+  document.getElementById('roadmapTitle').innerHTML = `${r.title} <span>Roadmap</span>`;
+
+  if (!completedSteps[path]) completedSteps[path] = {};
+
+  renderRoadmap(path);
+}
+
+function renderRoadmap(path) {
+  const r = roadmaps[path];
+  let allSteps = 0, doneSteps = 0;
+  let html = '';
+
+  r.phases.forEach((phase, pi) => {
+    html += `<div class="phase">
+      <div class="phase-header">
+        <div class="phase-num">${pi + 1}</div>
+        <div class="phase-name">${phase.name}</div>
+        <div class="phase-duration">${phase.duration}</div>
+      </div>
+      <div class="phase-line">`;
+
+    phase.steps.forEach((step, si) => {
+      const key = `${pi}-${si}`;
+      const done = completedSteps[path][key];
+      allSteps++; if (done) doneSteps++;
+      html += `<div class="step-item ${done ? 'done' : ''}" onclick="toggleStep('${path}','${key}',this)">
+        <div class="step-check">${done ? '✓' : ''}</div>
+        <div class="step-text">
+          <div class="step-name">${step.name}</div>
+          <div class="step-sub">${step.sub}</div>
+        </div>
+        <div class="step-resource">${step.resource}</div>
+      </div>`;
+    });
+
+    html += `</div></div>`;
+  });
+
+  document.getElementById('roadmapContent').innerHTML = html;
+
+  const pct = Math.round((doneSteps / allSteps) * 100);
+  document.getElementById('progressLabel').textContent = `${doneSteps} of ${allSteps} steps completed`;
+  document.getElementById('progressPct').textContent = `${pct}%`;
+  document.getElementById('progressFill').style.width = `${pct}%`;
+}
+
+function toggleStep(path, key, el) {
+  completedSteps[path][key] = !completedSteps[path][key];
+  localStorage.setItem('risenow_steps', JSON.stringify(completedSteps));
+  renderRoadmap(path);
+}
+
+function goBack() {
+  document.getElementById('careerGrid').style.display = 'grid';
+  document.getElementById('roadmapSection').style.display = 'none';
+  currentPath = null;
+}
+</script>
+</body>
+</html>

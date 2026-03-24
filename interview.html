@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Interview Q&A Bank | RiseNow</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --green: #00e676; --teal: #00bcd4;
+      --bg: #0d1117; --card: #161b22;
+      --border: rgba(255,255,255,0.07);
+      --text: rgba(255,255,255,0.85);
+      --muted: rgba(255,255,255,0.4);
+    }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(13,17,23,0.95); backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 40px; height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-r {
+      width: 36px; height: 36px; border-radius: 8px;
+      background: linear-gradient(135deg, var(--green), var(--teal));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; font-weight: 900; color: #0d1117;
+    }
+    .logo-name {
+      font-size: 20px; font-weight: 800;
+      background: linear-gradient(90deg, var(--green), var(--teal));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a { text-decoration: none; color: var(--muted); font-size: 14px; font-weight: 500; }
+    .nav-links a:hover, .nav-links a.active { color: var(--green); }
+
+    .hero { text-align: center; padding: 60px 40px 40px; position: relative; }
+    .hero::before {
+      content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+      width: 600px; height: 300px;
+      background: radial-gradient(ellipse, rgba(0,230,118,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(0,230,118,0.08); border: 1px solid rgba(0,230,118,0.2);
+      color: var(--green); font-size: 12px; font-weight: 600;
+      padding: 6px 16px; border-radius: 20px; letter-spacing: 1px;
+      text-transform: uppercase; margin-bottom: 20px;
+    }
+    .hero h1 { font-size: 44px; font-weight: 900; letter-spacing: -2px; margin-bottom: 12px; }
+    .hero h1 span {
+      background: linear-gradient(90deg, var(--green), var(--teal));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .hero p { font-size: 15px; color: var(--muted); }
+
+    /* TABS */
+    .tabs { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; padding: 0 40px 40px; }
+    .tab {
+      padding: 10px 22px; border-radius: 20px;
+      border: 1px solid var(--border); background: transparent;
+      color: var(--muted); font-size: 14px; font-weight: 500;
+      cursor: pointer; transition: all 0.2s; font-family: 'Inter', sans-serif;
+    }
+    .tab:hover { border-color: rgba(0,230,118,0.3); color: var(--green); }
+    .tab.active { background: rgba(0,230,118,0.1); border-color: rgba(0,230,118,0.3); color: var(--green); }
+
+    /* Q&A */
+    .qa-section { max-width: 800px; margin: 0 auto; padding: 0 40px 60px; }
+    .section-label { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 16px; }
+
+    .qa-item {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 14px; margin-bottom: 12px; overflow: hidden;
+      transition: border 0.2s;
+    }
+    .qa-item:hover { border-color: rgba(0,230,118,0.2); }
+
+    .qa-question {
+      padding: 20px 24px; cursor: pointer;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    }
+    .qa-q-text { font-size: 15px; font-weight: 600; color: white; line-height: 1.4; flex: 1; }
+    .qa-arrow { font-size: 18px; color: var(--muted); transition: transform 0.3s; flex-shrink: 0; }
+    .qa-item.open .qa-arrow { transform: rotate(180deg); color: var(--green); }
+
+    .qa-answer {
+      max-height: 0; overflow: hidden; transition: max-height 0.4s ease;
+      border-top: 0px solid var(--border);
+    }
+    .qa-item.open .qa-answer {
+      max-height: 500px;
+      border-top: 1px solid var(--border);
+    }
+    .qa-answer-inner { padding: 20px 24px; }
+    .qa-answer-inner p { font-size: 14px; color: var(--muted); line-height: 1.8; margin-bottom: 12px; }
+    .qa-answer-inner p:last-child { margin-bottom: 0; }
+    .qa-tip {
+      background: rgba(0,230,118,0.06); border: 1px solid rgba(0,230,118,0.15);
+      border-radius: 10px; padding: 12px 16px; margin-top: 12px;
+      font-size: 13px; color: rgba(0,230,118,0.8); line-height: 1.6;
+    }
+    .diff-badge {
+      font-size: 10px; font-weight: 700; padding: 3px 10px;
+      border-radius: 10px; text-transform: uppercase; flex-shrink: 0;
+    }
+    .diff-easy { background: rgba(0,230,118,0.1); color: #00e676; }
+    .diff-medium { background: rgba(255,165,0,0.1); color: #ffa500; }
+    .diff-hard { background: rgba(255,71,87,0.1); color: #ff4757; }
+
+    footer {
+      border-top: 1px solid var(--border); padding: 32px 40px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    footer p { font-size: 13px; color: var(--muted); }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <div class="logo-r">R</div>
+    <div class="logo-name">RiseNow</div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="resources.html">Resources</a></li>
+    <li><a href="roadmap.html">Roadmap</a></li>
+    <li><a href="quiz.html">Quiz</a></li>
+    <li><a href="interview.html" class="active">Interview Prep</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<div class="hero">
+  <div class="hero-tag">🎤 Interview Prep</div>
+  <h1>Interview <span>Q&A Bank</span></h1>
+  <p>Most asked interview questions with model answers — practice until you're confident.</p>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab active" onclick="showTab('hr', this)">🤝 HR & Behavioral</button>
+  <button class="tab" onclick="showTab('da', this)">📊 Data Analytics</button>
+  <button class="tab" onclick="showTab('sql', this)">🗄️ SQL</button>
+  <button class="tab" onclick="showTab('py', this)">🐍 Python</button>
+  <button class="tab" onclick="showTab('wd', this)">🌐 Web Dev</button>
+</div>
+
+<!-- Q&A SECTIONS -->
+<div class="qa-section">
+
+  <!-- HR -->
+  <div id="tab-hr">
+    <div class="section-label">HR & Behavioral Questions</div>
+
+    <div class="qa-item" onclick="toggleQA(this)">
+      <div class="qa-question">
+        <div class="qa-q-text">Tell me about yourself.</div>
+        <span class="diff-badge diff-easy">Easy</span>
+        <span class="qa-arrow">▾</span>
+      </div>
+      <div class="qa-answer"><div class="qa-answer-inner">
+        <p>Keep it professional and structured — present, past, future formula works best.</p>
+        <p><strong style="color:white">Model Answer:</strong> "I'm a Data Analyst with an MCA from Graphic Era University. I specialize in Python, SQL, and Power BI. I've built projects like a customer churn analysis dashboard and a real-time vehicle detection system. I'm passionate about turning data into decisions that drive real impact, and I'm now looking for a full-time role where I can contribute and grow."</p>
+        <div class="qa-tip">💡 Tip: Keep it under 90 seconds. End with why you want THIS role at THIS company.</div>
+      </div></div>
+    </div>
+
+    <div class="qa-item" onclick="toggleQA(this)">
+      <div class="qa-question">
+        <div class="qa-q-text">What is your greatest weakness?</div>
+        <span class="diff-badge diff-medium">Medium</span>
+        <span class="qa-arrow">▾</span>
+      </div>
+      <div class="qa-answer"><div class="qa-answer-inner">
+        <p>Be honest but show self-awareness and growth. Never say "I'm a perfectionist" — it's overused.</p>
+        <p><strong style="color:white">Model Answer:</strong> "I sometimes spend too much time trying to get every detail perfect before presenting results. I've been working on this by setting time limits and sharing work-in-progress earlier to get feedback. It's helped me move faster without sacrificing quality."</p>
+        <div class="qa-tip">💡 Tip: Pick a real weakness, then show what you're doing to improve it.</div>
+      </div></div>
+    </div>
+
+    <div class="qa-item" onclick="toggleQA(this)">
+      <div class="qa-question">
+        <div class="qa-q-text">Where do you see yourself in 5 years?</div>
+        <span class="diff-badge diff-easy">Easy</span>
+        <span class="qa-arrow">▾</span>
+      </div>
+      <div class="qa-answer"><div class="qa-answer-inner">
+        <p>Show ambition but keep it realistic and relevant to the role.</p>
+        <p><strong style="color:white">Model Answer:</strong> "In 5 years, I see myself as a senior data analyst or analytics lead — someone who not only delivers insights but helps shape data strategy. I want to grow technically with ML and also develop skills in stakeholder management and leadership."</p>
+        <div class="qa-tip">💡 Tip: Always connect your future goals to what the company does.</div>
+      </div></div>
+    </div>
+
+    <div class="qa-item" onclick="toggleQA(this)">
+      <div class="qa-question">
+        <div class="qa-q-text">Why should we hire you?</div>
+        <span class="diff-badge diff-medium">Medium</span>
+        <span class="qa-arrow">▾</span>
+      </div>
+      <div class="qa-answer"><div class="qa-answer-inner">
+        <p>This is your sales pitch. Be confident, specific, and match it to the job description.</p>
+        <p><strong style="color:white">Model Answer:</strong> "I bring a combination of strong technical skills — Python, SQL, Power BI — and real project experience. I've already built end-to-end dashboards analyzing 7,000+ records and can hit the ground running. I'm also a fast learner who adapts quickly, and I'm genuinely passionate about data-driven decision making."</p>
+        <div class="qa-tip">💡 Tip: Use specific numbers and project examples — it makes you memorable.</div>
+      </div></div>
+    </div>
+
+    <div class="qa-item" onclick="toggleQA(this)">
+      <div class="qa-question">
+        <div class="qa-q-text">Tell me about a time you failed and what you learned.</div>
+        <span class="diff-badge diff-hard">Hard</span>
+        <span class="qa-arrow">▾</span>
+      </div>
+      <div class="qa-answer"><div class="qa-answer-inner">
+        <p>Use the STAR method: Situation, Task, Action, Result. Interviewers want to see maturity.</p>
+        <p><strong style="color:white">Model Answer:</strong> "During a project, I underestimated the time needed for data cleaning and missed our initial deadline. I learned to always do a quick data audit before committing to timelines. Since then, I buffer 20-30% extra time for data preparation, which has made my estimates much more accurate."</p>
+        <div class="qa-tip">💡 Tip: End with what you learned and how you changed. Never end on the failure itself.</div>
+      </div></div>
+    </div>
+
+  </div>
+
+  <!-- DATA ANALYTICS -->
+  <div id="tab-da" style="display:none">
+    <div class="section-label">Data Analytics Questions</div>
+
+    <div class="qa-item" onclick="toggleQA(this)">
+      <div class="qa-question">
+        <div class="qa-q-text">What is the difference between a KPI and a metric?</div>
+        <span class="diff-badge diff-easy">Easy</span>
+        <span class="qa-arrow">▾</span>
+      </div>
+      <div class="qa-answer"><div class="qa-answer-inner">
+        <p>A <strong style="color:white">metric</strong> is any measurable value (page views, clicks, revenue). A <strong style="color:white">KPI (Key Performance Indicator)</strong> is a metric that is directly tied to a business goal or objective.</p>
+        <p>Example: "Revenue" is a metric. "Monthly Revenue Growth of 10%" is a KPI.</p>
+        <div class="qa-tip">💡 Tip: All KPIs are metrics but not all metrics are KPIs.</div>
+      </div></div>
+    </div>
+
+    <div class="qa-item" onclick="toggleQA(this)">
+      <div class="qa-question">
+        <div class="qa-q-text">What steps do you follow when starting a new data analysis project?</div>
+        <span class="diff-badge diff-medium">Medium</span>
+        <span class="qa-arrow">▾</span>
+      </div>
+      <div class="qa-answer"><div class="qa-answer-inner">
+        <p><strong style="color:white">The standard approach:</strong></p>
+        <p>1. <strong style="color:white">Define the problem</strong> — what question are we answering?<br>
+        2. <strong style="color:white">Collect data</strong> — identify sources and gather raw data<br>
+        3. <strong style="color:white">Clean data</strong> — handle nulls, duplicates, outliers<br>
+        4. <strong style="color:white">Explore (EDA)</strong> — distributions, correlations, patterns<br>
+        5. <strong style="color:white">Analyze</strong> — apply statistics or models<br>
+        6. <strong style="color:white">Visualize & Present</strong> — dashboards, charts, storytelling</p>
+        <div class="qa-tip">💡 Tip: Mention a real project where you followed this process.</div>
+      </div></div>
+    </div>
+
+    <div class="qa-item" onclick="toggleQA(this)">
+      <div class="qa-question">
+        <div class="qa-q-text">What is the difference between correlation and causation?</div>
+        <span class="diff-badge diff-medium">Medium</span>
+        <span class="qa-arrow">▾</span>
+      </div>
+      <div class="qa-answer"><div class="qa-answer-inner">
+        <p><strong style="color:white">Correlation</strong> means two variables move together — when one goes up, the other tends to go up (or down).</p>
+        <p><strong style="color:white">Causation</strong> means one variable directly causes the change in another.</p>
+        <p>Example: Ice cream sales and drowning rates are correlated (both increase in summer) — but ice cream doesn't cause drowning. The real cause is hot weather.</p>
+        <div class="qa-tip">💡 Tip: "Correlation does not imply causation" — this is a classic analyst interview point.</div>
+      </div></div>
+    </div>
+
+    <div class="qa-item" onclick="toggleQA(this)">
+      <div class="qa-question">
+        <div class="qa-q-text">How do you handle missing data?</div>
+        <span class="diff-badge diff-medium">Medium</span>
+        <span class="qa-arrow">▾</span>
+      </div>
+      <div class="qa-answer"><div class="qa-answer-inner">
+        <p>Common strategies depending on context:</p>
+        <p>• <strong style="color:white">Delete rows</strong> — if missing data is less than 5% and random<br>
+        • <strong style="color:white">Mean/Median imputation</strong> — fill with average (for numerical)<br>
+        • <strong style="color:white">Mode imputation</strong> — fill with most common value (for categorical)<br>
+        • <strong style="color:white">Forward/Backward fill</strong> — for time series data<br>
+        • <strong style="color:white">Flag as "Unknown"</strong> — keep it as a separate category</p>
+        <div class="qa-tip">💡 Tip: Always explain WHY you chose a specific method — context matters.</div>
+      </div></div>
+    </div>
+
+    <div class="qa-item" onclick="toggleQA(this)">
+      <div class="qa-question">
+        <div class="qa-q-text">Explain what an outlier is and how you would handle it.</div>
+        <span class="diff-badge diff-hard">Hard</span>
+        <span class="qa-arrow">▾</span>
+      </div>
+      <div class="qa-answer"><div class="qa-answer-inner">
+        <p>An <strong style="color:white">outlier</strong> is a data point that is significantly different from other observations. It can be detected using Z-score, IQR method, or box plots.</p>
+        <p>How to handle: Remove if it's a data entry error. Keep if it's a genuine extreme value. Cap/floor using winsorization. Use robust models that handle outliers well (e.g. median instead of mean).</p>
+        <div class="qa-tip">💡 Tip: Say "it depends on the context and cause of the outlier" — shows analytical maturity.</div>
+      </div></div>
+    </div>
+
+  </div>
+
+  <!-- SQL -->
+  <div id="tab-sql" style="display:none">
+    <div class="section-label">SQL Interview Questions</div>
+
+    <div class="qa-item" onclick="toggleQA(this)">
+      <div class="qa-question">
+        <div class="qa-q-text">What is the difference between WHERE and HAVING?</div>
+        <span class="diff-badge diff-easy">Easy</span>
+        <span class="qa-arrow">▾</span>
+      </div>
+      <div class="qa-answer"><div class="qa-answer-inner">
+        <p><strong style="color:white">WHERE</strong> filters rows BEFORE grouping. <strong style="color:white">HAVING</strong> filters groups AFTER the GROUP BY clause.</p>
+        <p>Example: <code style="color:#00e676;background:rgba(0,230,118,0.08);padding:2px 6px;border-radius:4px;">WHERE salary > 50000</code> — filters individual rows.<br>
+        <code style="color:#00e676;background:rgba(0,230,118,0.08);padding:2px 6px;border-radius:4px;">HAVING COUNT(*) > 5</code> — filters groups with more than 5 records.</p>
+        <div class="qa-tip">💡 Tip: WHERE cannot be used with aggregate functions — HAVING can.</div>
+      </div></div>
+    </div>
+
+    <div class="qa-item" onclick="toggleQA(this)">
+      <div class="qa-question">
+        <div class="qa-q-text">What are the different types of JOINs in SQL?</div>
+        <span class="diff-badge diff-medium">Medium</span>
+        <span class="qa-arrow">▾</span>
+      </div>
+      <div class="qa-answer"><div class="qa-answer-inner">
+        <p>• <strong style="color:white">INNER JOIN</strong> — returns only matching rows from both tables<br>
+        • <strong style="color:white">LEFT JOIN</strong> — all rows from left table + matching from right<br>
+        • <strong style="color:white">RIGHT JOIN</strong> — all rows from right table + matching from left<br>
+        • <strong style="color:white">FULL OUTER JOIN</strong> — all rows from both tables<br>
+        • <strong style="color:white">CROSS JOIN</strong> — cartesian product of both tables<br>
+        • <strong style="color:white">SELF JOIN</strong> — joining a table with itself</p>
+        <div class="qa-tip">💡 Tip: INNER JOIN is most commonly used in interviews. Know LEFT JOIN well too.</div>
+      </div></div>
+    </div>
+
+    <div class="qa-item" onclick="toggleQA(this)">
+      <div class="qa-question">
+        <div class="qa-q-text">What is the difference between DELETE, TRUNCATE, and DROP?</div>
+        <span class="diff-badge diff-medium">Medium</span>
+        <span class="qa-arrow">▾</span>
+      </div>
+      <div class="qa-answer"><div class="qa-answer-inner">
+        <p>• <strong style="color:white">DELETE</strong> — removes specific rows, can be rolled back, slow for large tables<br>
+        • <strong style="color:white">TRUNCATE</strong> — removes all rows, faster, cannot be rolled back easily<br>
+        • <strong style="color:white">DROP</strong> — removes the entire table including structure</p>
+        <div class="qa-tip">💡 Tip: DELETE is DML, TRUNCATE is DDL, DROP is DDL — interviewers love this distinction.</div>
+      </div></div>
+    </div>
+
+    <div class="qa-item" onclick="toggleQA(this)">
+      <div class="qa-question">
+        <div class="qa-q-text">What are Window Functions? Give an example.</div>
+        <span class="diff-badge diff-hard">Hard</span>
+        <span class="qa-arrow">▾</span>
+      </div>
+      <div class="qa-answer"><div class="qa-answer-inner">
+        <p>Window functions perform calculations across a set of rows related to the current row, without collapsing the result like GROUP BY.</p>
+        <p>Common window functions: <code style="color:#00e676;background:rgba(0,230,118,0.08);padding:2px 6px;border-radius:4px;">ROW_NUMBER()</code>, <code style="color:#00e676;background:rgba(0,230,118,0.08);padding:2px 6px;border-radius:4px;">RANK()</code>, <code style="color:#00e676;background:rgba(0,230,118,0.08);padding:2px 6px;border-radius:4px;">DENSE_RANK()</code>, <code style="color:#00e676;background:rgba(0,230,118,0.08);padding:2px 6px;border-radius:4px;">LAG()</code>, <code style="color:#00e676;background:rgba(0,230,118,0.08);padding:2px 6px;border-radius:4px;">LEAD()</code>, <code style="color:#00e676;background:rgba(0,230,118,0.08);padding:2px 6px;border-radius:4px;">SUM() OVER()</code></p>
+        <p>Example: <code style="color:#00e676;background:rgba(0,230,118,0.08);padding:2px 6px;border-radius:4px;">SELECT name, salary, RANK() OVER (ORDER BY salary DESC) as rank FROM employees</code></p>
+        <div class="qa-tip">💡 Tip: Window functions are a senior-level topic — knowing this sets you apart.</div>
+      </div></div>
+    </div>
+
+  </div>
+
+  <!-- PYTHON -->
+  <div id="tab-py" style="display:none">
+    <div class="section-label">Python Interview Questions</div>
+
+    <div class="qa-item" onclick="toggleQA(this)">
+      <div class="qa-question">
+        <div class="qa-q-text">What is the difference between a list and a tuple in Python?</div>
+        <span class="diff-badge diff-easy">Easy</span>
+        <span class="qa-arrow">▾</span>
+      </div>
+      <div class="qa-answer"><div class="qa-answer-inner">
+        <p>• <strong style="color:white">List</strong> — mutable (can be changed), uses square brackets <code style="color:#00e676;background:rgba(0,230,118,0.08);padding:2px 6px;border-radius:4px;">[]</code>, slower<br>
+        • <strong style="color:white">Tuple</strong> — immutable (cannot be changed), uses parentheses <code style="color:#00e676;background:rgba(0,230,118,0.08);padding:2px 6px;border-radius:4px;">()</code>, faster</p>
+        <p>Use tuples when data should not change (e.g. coordinates). Use lists when data will change.</p>
+        <div class="qa-tip">💡 Tip: Tuples are hashable and can be used as dictionary keys — lists cannot.</div>
+      </div></div>
+    </div>
+
+    <div class="qa-item" onclick="toggleQA(this)">
+      <div class="qa-question">
+        <div class="qa-q-text">What are Python decorators?</div>
+        <span class="diff-badge diff-hard">Hard</span>
+        <span class="qa-arrow">▾</span>
+      </div>
+      <div class="qa-answer"><div class="qa-answer-inner">
+        <p>A decorator is a function that takes another function as input and extends or modifies its behavior without changing its source code.</p>
+        <p>Example: <code style="color:#00e676;background:rgba(0,230,118,0.08);padding:2px 6px;border-radius:4px;">@login_required</code> in web frameworks — checks if user is logged in before running a function.</p>
+        <div class="qa-tip">💡 Tip: Decorators follow the @wrapper syntax. Common ones: @staticmethod, @classmethod, @property.</div>
+      </div></div>
+    </div>
+
+    <div class="qa-item" onclick="toggleQA(this)">
+      <div class="qa-question">
+        <div class="qa-q-text">How do you handle missing values in Pandas?</div>
+        <span class="diff-badge diff-medium">Medium</span>
+        <span class="qa-arrow">▾</span>
+      </div>
+      <div class="qa-answer"><div class="qa-answer-inner">
+        <p>Common Pandas methods for missing values:</p>
+        <p>• <code style="color:#00e676;background:rgba(0,230,118,0.08);padding:2px 6px;border-radius:4px;">df.isnull().sum()</code> — check missing values<br>
+        • <code style="color:#00e676;background:rgba(0,230,118,0.08);padding:2px 6px;border-radius:4px;">df.dropna()</code> — drop rows with missing values<br>
+        • <code style="color:#00e676;background:rgba(0,230,118,0.08);padding:2px 6px;border-radius:4px;">df.fillna(value)</code> — fill with a specific value<br>
+        • <code style="color:#00e676;background:rgba(0,230,118,0.08);padding:2px 6px;border-radius:4px;">df.fillna(df.mean())</code> — fill with mean</p>
+        <div class="qa-tip">💡 Tip: Always explain why you chose a specific strategy — shows analytical thinking.</div>
+      </div></div>
+    </div>
+
+  </div>
+
+  <!-- WEB DEV -->
+  <div id="tab-wd" style="display:none">
+    <div class="section-label">Web Development Questions</div>
+
+    <div class="qa-item" onclick="toggleQA(this)">
+      <div class="qa-question">
+        <div class="qa-q-text">What is the difference between CSS Flexbox and Grid?</div>
+        <span class="diff-badge diff-medium">Medium</span>
+        <span class="qa-arrow">▾</span>
+      </div>
+      <div class="qa-answer"><div class="qa-answer-inner">
+        <p>• <strong style="color:white">Flexbox</strong> — one-dimensional layout (row OR column). Best for aligning items in a single direction.</p>
+        <p>• <strong style="color:white">Grid</strong> — two-dimensional layout (rows AND columns). Best for complex page layouts.</p>
+        <p>Use Flexbox for navigation bars, buttons, small components. Use Grid for full page layouts.</p>
+        <div class="qa-tip">💡 Tip: They work great together — Grid for layout, Flexbox for components inside.</div>
+      </div></div>
+    </div>
+
+    <div class="qa-item" onclick="toggleQA(this)">
+      <div class="qa-question">
+        <div class="qa-q-text">What is the difference between == and === in JavaScript?</div>
+        <span class="diff-badge diff-easy">Easy</span>
+        <span class="qa-arrow">▾</span>
+      </div>
+      <div class="qa-answer"><div class="qa-answer-inner">
+        <p>• <strong style="color:white">==</strong> (loose equality) — compares values after type conversion. <code style="color:#00e676;background:rgba(0,230,118,0.08);padding:2px 6px;border-radius:4px;">5 == "5"</code> is <strong style="color:#00e676">true</strong></p>
+        <p>• <strong style="color:white">===</strong> (strict equality) — compares both value AND type. <code style="color:#00e676;background:rgba(0,230,118,0.08);padding:2px 6px;border-radius:4px;">5 === "5"</code> is <strong style="color:#ff4757">false</strong></p>
+        <div class="qa-tip">💡 Tip: Always use === in real code — it avoids unexpected type coercion bugs.</div>
+      </div></div>
+    </div>
+
+    <div class="qa-item" onclick="toggleQA(this)">
+      <div class="qa-question">
+        <div class="qa-q-text">What is the difference between var, let, and const in JavaScript?</div>
+        <span class="diff-badge diff-medium">Medium</span>
+        <span class="qa-arrow">▾</span>
+      </div>
+      <div class="qa-answer"><div class="qa-answer-inner">
+        <p>• <strong style="color:white">var</strong> — function-scoped, can be re-declared, hoisted (old way, avoid)<br>
+        • <strong style="color:white">let</strong> — block-scoped, can be reassigned, not re-declared<br>
+        • <strong style="color:white">const</strong> — block-scoped, cannot be reassigned after declaration</p>
+        <div class="qa-tip">💡 Tip: Use const by default, use let when you need to reassign. Never use var in modern JS.</div>
+      </div></div>
+    </div>
+
+  </div>
+
+</div>
+
+<footer>
+  <a href="index.html" class="nav-logo">
+    <div class="logo-r">R</div>
+    <div class="logo-name">RiseNow</div>
+  </a>
+  <p>© 2026 RiseNow. Helping Strugglers Stand Again.</p>
+</footer>
+
+<script>
+function showTab(tab, btn) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  ['hr','da','sql','py','wd'].forEach(id => {
+    document.getElementById(`tab-${id}`).style.display = id === tab ? 'block' : 'none';
+  });
+}
+
+function toggleQA(el) {
+  el.classList.toggle('open');
+}
+</script>
+</body>
+</html>

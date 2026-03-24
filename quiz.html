@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Skill Assessment | RiseNow</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --green: #00e676; --teal: #00bcd4;
+      --bg: #0d1117; --card: #161b22;
+      --border: rgba(255,255,255,0.07);
+      --text: rgba(255,255,255,0.85);
+      --muted: rgba(255,255,255,0.4);
+    }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(13,17,23,0.95); backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 40px; height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-r {
+      width: 36px; height: 36px; border-radius: 8px;
+      background: linear-gradient(135deg, var(--green), var(--teal));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; font-weight: 900; color: #0d1117;
+    }
+    .logo-name {
+      font-size: 20px; font-weight: 800;
+      background: linear-gradient(90deg, var(--green), var(--teal));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a { text-decoration: none; color: var(--muted); font-size: 14px; font-weight: 500; }
+    .nav-links a:hover, .nav-links a.active { color: var(--green); }
+
+    .container { max-width: 700px; margin: 0 auto; padding: 60px 40px; }
+
+    /* START SCREEN */
+    #startScreen { text-align: center; }
+    .start-tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(0,230,118,0.08); border: 1px solid rgba(0,230,118,0.2);
+      color: var(--green); font-size: 12px; font-weight: 600;
+      padding: 6px 16px; border-radius: 20px; letter-spacing: 1px;
+      text-transform: uppercase; margin-bottom: 24px;
+    }
+    #startScreen h1 { font-size: 44px; font-weight: 900; letter-spacing: -2px; margin-bottom: 14px; }
+    #startScreen h1 span {
+      background: linear-gradient(90deg, var(--green), var(--teal));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    #startScreen p { font-size: 15px; color: var(--muted); margin-bottom: 40px; line-height: 1.7; }
+
+    .info-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 40px; }
+    .info-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 14px; padding: 20px; text-align: center;
+    }
+    .info-card .num { font-size: 28px; font-weight: 800; background: linear-gradient(90deg, var(--green), var(--teal)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .info-card .lbl { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+    .btn-start {
+      padding: 16px 48px;
+      background: linear-gradient(135deg, var(--green), var(--teal));
+      border: none; border-radius: 12px;
+      color: #0d1117; font-size: 16px; font-weight: 800;
+      cursor: pointer; font-family: 'Inter', sans-serif;
+      transition: opacity 0.2s;
+    }
+    .btn-start:hover { opacity: 0.9; }
+
+    /* QUIZ SCREEN */
+    #quizScreen { display: none; }
+
+    .quiz-top { margin-bottom: 32px; }
+    .quiz-progress-label { display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); margin-bottom: 8px; }
+    .quiz-track { height: 4px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; }
+    .quiz-fill { height: 100%; background: linear-gradient(90deg, var(--green), var(--teal)); border-radius: 2px; transition: width 0.4s; }
+
+    .question-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 20px; padding: 40px; margin-bottom: 24px;
+    }
+    .q-num { font-size: 12px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
+    .q-text { font-size: 22px; font-weight: 700; color: white; line-height: 1.4; }
+
+    .options { display: flex; flex-direction: column; gap: 12px; }
+    .option {
+      background: var(--bg); border: 2px solid var(--border);
+      border-radius: 12px; padding: 16px 20px;
+      cursor: pointer; transition: all 0.2s;
+      font-size: 15px; color: var(--text); font-weight: 500;
+      display: flex; align-items: center; gap: 14px;
+    }
+    .option:hover { border-color: rgba(0,230,118,0.3); }
+    .option.selected { border-color: var(--green); background: rgba(0,230,118,0.05); }
+    .option-letter {
+      width: 32px; height: 32px; border-radius: 8px;
+      background: rgba(255,255,255,0.05); flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700; color: var(--muted);
+    }
+    .option.selected .option-letter { background: var(--green); color: #0d1117; }
+
+    .btn-next {
+      width: 100%; padding: 14px;
+      background: linear-gradient(135deg, var(--green), var(--teal));
+      border: none; border-radius: 12px;
+      color: #0d1117; font-size: 15px; font-weight: 700;
+      cursor: pointer; font-family: 'Inter', sans-serif;
+      opacity: 0.4; transition: opacity 0.2s;
+    }
+    .btn-next.active { opacity: 1; }
+
+    /* RESULT SCREEN */
+    #resultScreen { display: none; text-align: center; }
+    .result-emoji { font-size: 64px; margin-bottom: 20px; }
+    #resultScreen h2 { font-size: 36px; font-weight: 900; margin-bottom: 12px; }
+    #resultScreen h2 span {
+      background: linear-gradient(90deg, var(--green), var(--teal));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .result-desc { font-size: 15px; color: var(--muted); margin-bottom: 36px; line-height: 1.7; }
+
+    .result-path {
+      background: var(--card); border: 2px solid rgba(0,230,118,0.3);
+      border-radius: 20px; padding: 32px; margin-bottom: 24px;
+    }
+    .result-path h3 { font-size: 22px; font-weight: 800; color: white; margin-bottom: 8px; }
+    .result-path p { font-size: 14px; color: var(--muted); margin-bottom: 20px; }
+
+    .traits { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 24px; }
+    .trait {
+      padding: 6px 14px; border-radius: 20px;
+      font-size: 12px; font-weight: 600;
+      background: rgba(0,230,118,0.1); color: var(--green);
+      border: 1px solid rgba(0,230,118,0.2);
+    }
+
+    .result-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn-roadmap {
+      padding: 14px 32px;
+      background: linear-gradient(135deg, var(--green), var(--teal));
+      border: none; border-radius: 12px;
+      color: #0d1117; font-size: 15px; font-weight: 700;
+      cursor: pointer; font-family: 'Inter', sans-serif; text-decoration: none;
+      display: inline-block;
+    }
+    .btn-retry {
+      padding: 14px 32px; background: transparent;
+      border: 1px solid var(--border); border-radius: 12px;
+      color: var(--muted); font-size: 15px; font-weight: 600;
+      cursor: pointer; font-family: 'Inter', sans-serif;
+    }
+    .btn-retry:hover { border-color: rgba(0,230,118,0.3); color: var(--green); }
+
+    footer {
+      border-top: 1px solid var(--border); padding: 32px 40px;
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 60px;
+    }
+    footer p { font-size: 13px; color: var(--muted); }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <div class="logo-r">R</div>
+    <div class="logo-name">RiseNow</div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html#about">About</a></li>
+    <li><a href="resources.html">Resources</a></li>
+    <li><a href="roadmap.html">Roadmap</a></li>
+    <li><a href="quiz.html" class="active">Quiz</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<div class="container">
+
+  <!-- START -->
+  <div id="startScreen">
+    <div class="start-tag">🧠 Skill Assessment</div>
+    <h1>Find Your <span>Best Career Path</span></h1>
+    <p>Answer 10 quick questions and we'll suggest the best career path based on your interests, skills and personality.</p>
+    <div class="info-cards">
+      <div class="info-card"><div class="num">10</div><div class="lbl">Questions</div></div>
+      <div class="info-card"><div class="num">2</div><div class="lbl">Minutes</div></div>
+      <div class="info-card"><div class="num">4</div><div class="lbl">Career Paths</div></div>
+    </div>
+    <button class="btn-start" onclick="startQuiz()">Start Assessment →</button>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="quizScreen">
+    <div class="quiz-top">
+      <div class="quiz-progress-label">
+        <span id="qLabel">Question 1 of 10</span>
+        <span id="qPct">10%</span>
+      </div>
+      <div class="quiz-track"><div class="quiz-fill" id="quizFill" style="width:10%"></div></div>
+    </div>
+    <div class="question-card">
+      <div class="q-num" id="qNum">Question 1</div>
+      <div class="q-text" id="qText"></div>
+    </div>
+    <div class="options" id="optionsWrap"></div>
+    <br/>
+    <button class="btn-next" id="btnNext" onclick="nextQuestion()">Next →</button>
+  </div>
+
+  <!-- RESULT -->
+  <div id="resultScreen">
+    <div class="result-emoji" id="resultEmoji">🎯</div>
+    <h2>Your Best Path: <span id="resultPath">Data Analytics</span></h2>
+    <div class="result-desc" id="resultDesc"></div>
+    <div class="result-path">
+      <h3 id="resultTitle"></h3>
+      <p id="resultSub"></p>
+      <div class="traits" id="resultTraits"></div>
+    </div>
+    <div class="result-actions">
+      <a href="roadmap.html" class="btn-roadmap">View Roadmap →</a>
+      <button class="btn-retry" onclick="retryQuiz()">Retake Quiz</button>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <a href="index.html" class="nav-logo">
+    <div class="logo-r">R</div>
+    <div class="logo-name">RiseNow</div>
+  </a>
+  <p>© 2026 RiseNow. Helping Strugglers Stand Again.</p>
+</footer>
+
+<script>
+const questions = [
+  { text: "What do you enjoy most?", options: [
+    { text: "🔢 Working with numbers and finding patterns", scores: { da: 3 } },
+    { text: "🎨 Creating visually appealing things", scores: { gd: 3 } },
+    { text: "💻 Building websites and apps", scores: { wd: 3 } },
+    { text: "📣 Convincing and connecting with people", scores: { dm: 3 } },
+  ]},
+  { text: "Which tool would you rather master?", options: [
+    { text: "📊 Excel / Power BI / SQL", scores: { da: 3 } },
+    { text: "🎨 Figma / Photoshop / Canva", scores: { gd: 3 } },
+    { text: "💻 VS Code / React / Node.js", scores: { wd: 3 } },
+    { text: "📈 Google Ads / SEO / Analytics", scores: { dm: 3 } },
+  ]},
+  { text: "What kind of problems do you like solving?", options: [
+    { text: "📉 Why did sales drop last month?", scores: { da: 3 } },
+    { text: "🎯 How can we reach more customers online?", scores: { dm: 3 } },
+    { text: "🌐 How do I make this website work faster?", scores: { wd: 3 } },
+    { text: "✏️ How can this design look more professional?", scores: { gd: 3 } },
+  ]},
+  { text: "Your dream work output is:", options: [
+    { text: "📊 A dashboard full of insights", scores: { da: 3 } },
+    { text: "🌐 A live website or app", scores: { wd: 3 } },
+    { text: "🎨 A beautiful brand identity", scores: { gd: 3 } },
+    { text: "📣 A campaign that went viral", scores: { dm: 3 } },
+  ]},
+  { text: "How comfortable are you with coding?", options: [
+    { text: "💪 Love it — give me more", scores: { wd: 3, da: 1 } },
+    { text: "🤔 A little, learning more", scores: { da: 2, wd: 1 } },
+    { text: "😅 Not much, prefer visual tools", scores: { gd: 2, dm: 2 } },
+    { text: "❌ Not at all — prefer no code", scores: { dm: 3, gd: 2 } },
+  ]},
+  { text: "Which subject did you enjoy in school?", options: [
+    { text: "🔢 Maths / Statistics", scores: { da: 3 } },
+    { text: "🖥️ Computer Science / Programming", scores: { wd: 3 } },
+    { text: "🎨 Art / Design", scores: { gd: 3 } },
+    { text: "📝 English / Business Studies", scores: { dm: 3 } },
+  ]},
+  { text: "How do you prefer to work?", options: [
+    { text: "🔍 Analyzing data alone for hours", scores: { da: 3 } },
+    { text: "🛠️ Building and coding", scores: { wd: 3 } },
+    { text: "✏️ Designing and being creative", scores: { gd: 3 } },
+    { text: "🤝 Collaborating with teams and clients", scores: { dm: 3 } },
+  ]},
+  { text: "What excites you most about tech?", options: [
+    { text: "📊 AI and data making decisions", scores: { da: 3 } },
+    { text: "🌍 Websites that billions use", scores: { wd: 3 } },
+    { text: "✨ Beautiful apps and interfaces", scores: { gd: 2, wd: 1 } },
+    { text: "📲 Social media and digital influence", scores: { dm: 3 } },
+  ]},
+  { text: "Salary is important — which field's salary attracts you?", options: [
+    { text: "📊 Data Analyst — ₹4-12 LPA", scores: { da: 2 } },
+    { text: "🌐 Web Developer — ₹5-15 LPA", scores: { wd: 2 } },
+    { text: "🎨 Graphic Designer — ₹3-8 LPA", scores: { gd: 2 } },
+    { text: "📣 Digital Marketer — ₹3-10 LPA", scores: { dm: 2 } },
+  ]},
+  { text: "Finally — which describes you best?", options: [
+    { text: "🧠 I'm analytical and love data", scores: { da: 3 } },
+    { text: "🛠️ I'm technical and love building", scores: { wd: 3 } },
+    { text: "🎨 I'm creative and love design", scores: { gd: 3 } },
+    { text: "💬 I'm a communicator and love marketing", scores: { dm: 3 } },
+  ]},
+];
+
+const results = {
+  da: { emoji: '📊', name: 'Data Analytics', title: 'You are a Data-Driven Thinker!', sub: 'You love finding patterns, solving problems with numbers, and turning raw data into decisions.', desc: 'Your analytical mindset and love for numbers make Data Analytics your perfect fit. Companies need people who can make sense of data — and that is you!', traits: ['Analytical', 'Detail-oriented', 'Problem solver', 'Python & SQL', 'Power BI'] },
+  wd: { emoji: '🌐', name: 'Web Development', title: 'You are a Builder!', sub: 'You love creating things from scratch, solving technical challenges, and seeing results live.', desc: 'Your technical mindset and love for building makes Web Development your ideal career. The demand for web developers is massive and growing every year!', traits: ['Technical', 'Creative', 'Problem solver', 'HTML/CSS/JS', 'React'] },
+  dm: { emoji: '📣', name: 'Digital Marketing', title: 'You are a Growth Driver!', sub: 'You love connecting with people, understanding behavior, and growing things online.', desc: 'Your communication skills and love for connecting with people makes Digital Marketing your perfect career. Every business needs great marketers!', traits: ['Communicator', 'Creative', 'Strategic', 'SEO & Ads', 'Social Media'] },
+  gd: { emoji: '🎨', name: 'Graphic Design', title: 'You are a Creative!', sub: 'You have a strong aesthetic sense, love visual storytelling, and creating beautiful things.', desc: 'Your creativity and visual thinking makes Graphic Design your natural home. Every brand needs great designers — and you have the eye for it!', traits: ['Creative', 'Visual thinker', 'Aesthetic', 'Figma & Canva', 'Brand identity'] },
+};
+
+let current = 0, scores = { da: 0, wd: 0, dm: 0, gd: 0 }, selected = null;
+
+function startQuiz() {
+  document.getElementById('startScreen').style.display = 'none';
+  document.getElementById('quizScreen').style.display = 'block';
+  loadQuestion();
+}
+
+function loadQuestion() {
+  const q = questions[current];
+  selected = null;
+  document.getElementById('qNum').textContent = `Question ${current + 1}`;
+  document.getElementById('qLabel').textContent = `Question ${current + 1} of ${questions.length}`;
+  document.getElementById('qPct').textContent = `${Math.round(((current + 1) / questions.length) * 100)}%`;
+  document.getElementById('quizFill').style.width = `${((current + 1) / questions.length) * 100}%`;
+  document.getElementById('qText').textContent = q.text;
+  document.getElementById('btnNext').classList.remove('active');
+
+  const letters = ['A', 'B', 'C', 'D'];
+  document.getElementById('optionsWrap').innerHTML = q.options.map((o, i) => `
+    <div class="option" onclick="selectOption(${i}, this)">
+      <div class="option-letter">${letters[i]}</div>
+      ${o.text}
+    </div>
+  `).join('');
+}
+
+function selectOption(idx, el) {
+  document.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  selected = idx;
+  document.getElementById('btnNext').classList.add('active');
+}
+
+function nextQuestion() {
+  if (selected === null) return;
+  const q = questions[current];
+  const s = q.options[selected].scores;
+  Object.keys(s).forEach(k => scores[k] += s[k]);
+  current++;
+  if (current < questions.length) {
+    loadQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function showResult() {
+  document.getElementById('quizScreen').style.display = 'none';
+  document.getElementById('resultScreen').style.display = 'block';
+  const best = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
+  const r = results[best];
+  document.getElementById('resultEmoji').textContent = r.emoji;
+  document.getElementById('resultPath').textContent = r.name;
+  document.getElementById('resultDesc').textContent = r.desc;
+  document.getElementById('resultTitle').textContent = r.title;
+  document.getElementById('resultSub').textContent = r.sub;
+  document.getElementById('resultTraits').innerHTML = r.traits.map(t => `<div class="trait">${t}</div>`).join('');
+}
+
+function retryQuiz() {
+  current = 0; scores = { da: 0, wd: 0, dm: 0, gd: 0 }; selected = null;
+  document.getElementById('resultScreen').style.display = 'none';
+  document.getElementById('startScreen').style.display = 'block';
+}
+</script>
+</body>
+</html>

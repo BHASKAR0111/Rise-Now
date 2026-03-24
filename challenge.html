@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>30 Day Challenge | RiseNow</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --green: #00e676; --teal: #00bcd4;
+      --bg: #0d1117; --card: #161b22;
+      --border: rgba(255,255,255,0.07);
+      --text: rgba(255,255,255,0.85);
+      --muted: rgba(255,255,255,0.4);
+    }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(13,17,23,0.95); backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 40px; height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-r {
+      width: 36px; height: 36px; border-radius: 8px;
+      background: linear-gradient(135deg, var(--green), var(--teal));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; font-weight: 900; color: #0d1117;
+    }
+    .logo-name {
+      font-size: 20px; font-weight: 800;
+      background: linear-gradient(90deg, var(--green), var(--teal));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a { text-decoration: none; color: var(--muted); font-size: 14px; font-weight: 500; }
+    .nav-links a:hover, .nav-links a.active { color: var(--green); }
+
+    /* HERO */
+    .hero { text-align: center; padding: 60px 40px 40px; position: relative; }
+    .hero::before {
+      content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+      width: 600px; height: 300px;
+      background: radial-gradient(ellipse, rgba(0,230,118,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(0,230,118,0.08); border: 1px solid rgba(0,230,118,0.2);
+      color: var(--green); font-size: 12px; font-weight: 600;
+      padding: 6px 16px; border-radius: 20px; letter-spacing: 1px;
+      text-transform: uppercase; margin-bottom: 20px;
+    }
+    .hero h1 { font-size: 44px; font-weight: 900; letter-spacing: -2px; margin-bottom: 12px; }
+    .hero h1 span {
+      background: linear-gradient(90deg, var(--green), var(--teal));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .hero p { font-size: 15px; color: var(--muted); max-width: 500px; margin: 0 auto; line-height: 1.7; }
+
+    /* TRACK SELECTOR */
+    .track-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 14px; padding: 40px; max-width: 1000px; margin: 0 auto;
+    }
+    .track-card {
+      background: var(--card); border: 2px solid var(--border);
+      border-radius: 16px; padding: 24px 20px;
+      cursor: pointer; transition: all 0.25s; text-align: center;
+    }
+    .track-card:hover { border-color: rgba(0,230,118,0.3); transform: translateY(-2px); }
+    .track-card.selected { border-color: var(--green); background: rgba(0,230,118,0.05); }
+    .track-emoji { font-size: 36px; margin-bottom: 10px; display: block; }
+    .track-title { font-size: 15px; font-weight: 700; color: white; }
+
+    /* STATS */
+    .stats-bar {
+      display: flex; gap: 16px; justify-content: center;
+      flex-wrap: wrap; padding: 0 40px 32px;
+    }
+    .stat-pill {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 14px 24px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .stat-num { font-size: 22px; font-weight: 800; }
+    .stat-lbl { font-size: 12px; color: var(--muted); }
+
+    /* CALENDAR GRID */
+    .challenge-section { max-width: 1100px; margin: 0 auto; padding: 0 40px 60px; display: none; }
+
+    .challenge-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 32px; flex-wrap: wrap; gap: 16px;
+    }
+    .challenge-title { font-size: 24px; font-weight: 800; }
+    .challenge-title span {
+      background: linear-gradient(90deg, var(--green), var(--teal));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+
+    .btn-change {
+      padding: 10px 20px; background: transparent;
+      border: 1px solid var(--border); border-radius: 10px;
+      color: var(--muted); font-size: 13px; font-weight: 600;
+      cursor: pointer; font-family: 'Inter', sans-serif;
+    }
+    .btn-change:hover { border-color: rgba(0,230,118,0.3); color: var(--green); }
+
+    /* PROGRESS */
+    .progress-wrap { margin-bottom: 32px; }
+    .progress-labels { display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); margin-bottom: 8px; }
+    .progress-track { height: 8px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, var(--green), var(--teal)); border-radius: 4px; transition: width 0.5s; }
+
+    /* DAYS GRID */
+    .days-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 10px;
+    }
+
+    .day-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 14px; padding: 16px 12px;
+      cursor: pointer; transition: all 0.2s; position: relative;
+    }
+    .day-card:hover { border-color: rgba(0,230,118,0.2); }
+    .day-card.completed { border-color: rgba(0,230,118,0.4); background: rgba(0,230,118,0.04); }
+    .day-card.locked { opacity: 0.4; cursor: not-allowed; }
+
+    .day-num { font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+    .day-task { font-size: 12px; font-weight: 600; color: white; line-height: 1.4; margin-bottom: 8px; }
+    .day-card.completed .day-task { color: rgba(255,255,255,0.5); }
+
+    .day-check {
+      width: 24px; height: 24px; border-radius: 50%;
+      border: 2px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; transition: all 0.2s;
+      margin-top: 6px;
+    }
+    .day-card.completed .day-check { background: var(--green); border-color: var(--green); color: #0d1117; }
+
+    .day-week {
+      position: absolute; top: -8px; left: 12px;
+      font-size: 9px; font-weight: 700; padding: 2px 8px;
+      border-radius: 6px; background: rgba(0,188,212,0.15); color: #00bcd4;
+    }
+
+    /* WEEK LABELS */
+    .week-row-label {
+      grid-column: 1 / -1;
+      font-size: 11px; font-weight: 700; color: var(--teal);
+      text-transform: uppercase; letter-spacing: 1.5px;
+      padding: 8px 0 4px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 4px;
+    }
+
+    footer {
+      border-top: 1px solid var(--border); padding: 32px 40px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    footer p { font-size: 13px; color: var(--muted); }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <div class="logo-r">R</div>
+    <div class="logo-name">RiseNow</div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="resources.html">Resources</a></li>
+    <li><a href="roadmap.html">Roadmap</a></li>
+    <li><a href="quiz.html">Quiz</a></li>
+    <li><a href="challenge.html" class="active">30 Day Challenge</a></li>
+    <li><a href="interview.html">Interview Prep</a></li>
+  </ul>
+</nav>
+
+<div class="hero">
+  <div class="hero-tag">🔥 30 Day Challenge</div>
+  <h1>30 Days to <span>Job Ready</span></h1>
+  <p>One small task every day. 30 days later — you'll be a completely different person professionally.</p>
+</div>
+
+<!-- TRACK SELECTOR -->
+<div id="trackSelector">
+  <div style="text-align:center;padding:0 40px 20px;font-size:13px;color:var(--muted);">Choose your track to start the challenge</div>
+  <div class="track-grid">
+    <div class="track-card" onclick="startChallenge('da')">
+      <span class="track-emoji">📊</span>
+      <div class="track-title">Data Analytics</div>
+    </div>
+    <div class="track-card" onclick="startChallenge('wd')">
+      <span class="track-emoji">🌐</span>
+      <div class="track-title">Web Development</div>
+    </div>
+    <div class="track-card" onclick="startChallenge('dm')">
+      <span class="track-emoji">📣</span>
+      <div class="track-title">Digital Marketing</div>
+    </div>
+    <div class="track-card" onclick="startChallenge('gd')">
+      <span class="track-emoji">🎨</span>
+      <div class="track-title">Graphic Design</div>
+    </div>
+    <div class="track-card" onclick="startChallenge('gen')">
+      <span class="track-emoji">⚡</span>
+      <div class="track-title">General Career</div>
+    </div>
+  </div>
+</div>
+
+<!-- CHALLENGE SECTION -->
+<div class="challenge-section" id="challengeSection">
+  <div class="stats-bar" id="statsBar"></div>
+
+  <div class="challenge-header">
+    <div class="challenge-title" id="challengeTitle">📊 Data Analytics <span>30 Day Challenge</span></div>
+    <button class="btn-change" onclick="changeTrack()">Change Track</button>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress-labels">
+      <span id="progressLabel">0 of 30 days completed</span>
+      <span id="progressPct">0%</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill" style="width:0%"></div>
+    </div>
+  </div>
+
+  <div class="days-grid" id="daysGrid"></div>
+</div>
+
+<footer>
+  <a href="index.html" class="nav-logo">
+    <div class="logo-r">R</div>
+    <div class="logo-name">RiseNow</div>
+  </a>
+  <p>© 2026 RiseNow. Helping Strugglers Stand Again.</p>
+</footer>
+
+<script>
+const tracks = {
+  da: { name: '📊 Data Analytics', tasks: [
+    'Install Python & Jupyter Notebook', 'Complete Python basics tutorial', 'Learn variables, loops & functions',
+    'Practice 10 Python exercises on W3Schools', 'Install Pandas & explore a CSV file',
+    'Clean a messy dataset using Pandas', 'Create 3 charts using Matplotlib',
+    'Learn SQL SELECT, WHERE, ORDER BY', 'Practice SQL JOINs on W3Schools',
+    'Write 5 SQL queries on HackerRank', 'Download Power BI Desktop',
+    'Import a dataset into Power BI', 'Build your first Power BI dashboard',
+    'Learn DAX basics — SUM, COUNT, CALCULATE', 'Add slicers & filters to your dashboard',
+    'Download a Kaggle dataset', 'Do EDA on the dataset — distributions & correlations',
+    'Build a visualization story in Power BI', 'Practice 5 more SQL challenges',
+    'Learn Seaborn — create heatmap & boxplot', 'Start your capstone project',
+    'Clean and prepare capstone data', 'Build dashboard for capstone project',
+    'Write 5 key insights from your project', 'Create GitHub account & upload project',
+    'Build portfolio website (use RiseNow template)', 'Optimize LinkedIn profile',
+    'Apply to 5 Data Analyst roles today', 'Write a cover letter for your dream role',
+    '🎉 Celebrate — You are Job Ready!',
+  ]},
+  wd: { name: '🌐 Web Development', tasks: [
+    'Learn HTML basics — headings, paragraphs, links', 'Build a simple webpage with HTML',
+    'Learn CSS — colors, fonts, box model', 'Style your webpage with CSS',
+    'Learn Flexbox & build a navigation bar', 'Learn CSS Grid & build a layout',
+    'Make your page fully responsive', 'Create GitHub account & upload your page',
+    'Learn JavaScript basics — variables & functions', 'DOM manipulation — change text & colors with JS',
+    'Build a simple calculator', 'Build a to-do list app',
+    'Learn ES6 — arrow functions, template literals', 'Fetch data from a public API',
+    'Display API data on a webpage', 'Build a weather app using an API',
+    'Learn React basics — components & props', 'Build a React counter app',
+    'Learn useState hook', 'Build a React to-do app with state',
+    'Learn React Router — multi-page app', 'Connect React app to an API',
+    'Build your portfolio in React', 'Deploy portfolio to GitHub Pages or Vercel',
+    'Add 3 projects to your portfolio', 'Learn Node.js basics',
+    'Build a simple Express server', 'Optimize LinkedIn profile & GitHub',
+    'Apply to 5 Web Dev roles', '🎉 Celebrate — You are Job Ready!',
+  ]},
+  dm: { name: '📣 Digital Marketing', tasks: [
+    'Read marketing funnel & buyer journey article', 'Set up Google Analytics on a website',
+    'Learn SEO basics — what is keyword research', 'Find 10 keywords for a niche topic',
+    'Write an SEO-optimized 500-word blog post', 'Create a free Google Skillshop account',
+    'Complete Google Analytics certification', 'Set up a free Mailchimp account',
+    'Create your first email campaign', 'Learn about Facebook & Instagram Ads',
+    'Design 3 social media posts in Canva', 'Schedule posts using Buffer or Later',
+    'Research 5 competitors in a niche', 'Learn Google Ads basics',
+    'Create a mock Google Search Ad campaign', 'Write 5 different ad copies for a product',
+    'Learn about landing pages & conversion', 'Analyze a website using Neil Patel SEO Analyzer',
+    'Build a basic content calendar', 'Complete HubSpot Content Marketing certification',
+    'Create a YouTube channel optimization guide', 'Write a case study on a marketing campaign',
+    'Run a real Instagram campaign (even small)', 'Measure campaign results & write insights',
+    'Build a digital marketing portfolio PDF', 'Update LinkedIn with certifications',
+    'Write a LinkedIn post about marketing insights', 'Create your resume with marketing skills',
+    'Apply to 5 Digital Marketing roles', '🎉 Celebrate — You are Job Ready!',
+  ]},
+  gd: { name: '🎨 Graphic Design', tasks: [
+    'Learn design principles — contrast, alignment, proximity', 'Study 10 logos on Behance',
+    'Create a Canva account & explore templates', 'Design your first social media post',
+    'Create a Figma account & learn basic tools', 'Design a simple wireframe in Figma',
+    'Learn color theory — color wheel & palettes', 'Create a color palette for a fictional brand',
+    'Learn typography — font pairing basics', 'Design a poster with strong typography',
+    'Study 5 brand identities on Behance', 'Design a logo for a fictional company',
+    'Learn about visual hierarchy', 'Redesign an existing bad design you find online',
+    'Create 5 Instagram story templates', 'Design a business card in Figma',
+    'Learn about UI vs UX design', 'Create a simple app wireframe in Figma',
+    'Build a mood board for a brand project', 'Design a complete social media kit',
+    'Create a Behance account', 'Upload your first 3 projects to Behance',
+    'Design a presentation template', 'Get feedback on your work from a community',
+    'Redesign your best project based on feedback', 'Learn Photoshop basics OR Adobe Express',
+    'Create a before/after design showcase', 'Build your portfolio PDF',
+    'Apply to 5 Graphic Design roles', '🎉 Celebrate — You are Job Ready!',
+  ]},
+  gen: { name: '⚡ General Career', tasks: [
+    'Write down your top 3 career goals', 'Update your resume today',
+    'Optimize your LinkedIn headline & About', 'Add 3 skills to LinkedIn',
+    'Connect with 10 people in your target industry', 'Follow 5 companies you want to work for',
+    'Read about your target role requirements', 'List 10 companies to apply to',
+    'Apply to 3 jobs today', 'Write a strong cover letter template',
+    'Practice "Tell me about yourself" answer', 'Research common interview questions',
+    'Practice answering 5 interview questions', 'Ask someone for a LinkedIn recommendation',
+    'Create a portfolio or GitHub profile', 'Add a project to your portfolio',
+    'Reach out to 1 recruiter on LinkedIn', 'Apply to 5 more jobs today',
+    'Follow up on previous applications', 'Learn a new skill for 1 hour',
+    'Watch a career growth YouTube video', 'Join a professional community or group',
+    'Write a LinkedIn post about your journey', 'Apply to 3 more jobs',
+    'Do a mock interview with a friend', 'Research salary expectations for your role',
+    'Prepare 5 questions to ask interviewers', 'Review & update your resume again',
+    'Apply to your dream company', '🎉 Celebrate — 30 days of consistent effort!',
+  ]},
+};
+
+let currentTrack = null;
+let completed = JSON.parse(localStorage.getItem('risenow_challenge') || '{}');
+
+function startChallenge(track) {
+  currentTrack = track;
+  if (!completed[track]) completed[track] = {};
+  document.getElementById('trackSelector').style.display = 'none';
+  document.getElementById('challengeSection').style.display = 'block';
+  renderChallenge();
+}
+
+function renderChallenge() {
+  const t = tracks[currentTrack];
+  document.getElementById('challengeTitle').innerHTML = `${t.name} <span>30 Day Challenge</span>`;
+
+  const done = Object.values(completed[currentTrack]).filter(Boolean).length;
+  const pct = Math.round((done / 30) * 100);
+
+  document.getElementById('progressLabel').textContent = `${done} of 30 days completed`;
+  document.getElementById('progressPct').textContent = `${pct}%`;
+  document.getElementById('progressFill').style.width = `${pct}%`;
+
+  document.getElementById('statsBar').innerHTML = `
+    <div class="stat-pill"><span class="stat-num" style="color:#00e676">${done}</span><span class="stat-lbl">Days Done</span></div>
+    <div class="stat-pill"><span class="stat-num" style="color:#ffa500">${30 - done}</span><span class="stat-lbl">Remaining</span></div>
+    <div class="stat-pill"><span class="stat-num" style="color:#00bcd4">${pct}%</span><span class="stat-lbl">Complete</span></div>
+    <div class="stat-pill"><span class="stat-num" style="color:#a78bfa">${getStreak()}</span><span class="stat-lbl">Day Streak 🔥</span></div>
+  `;
+
+  const weeks = ['Week 1 — Foundation', 'Week 2 — Building Skills', 'Week 3 — Going Deeper', 'Week 4 — Job Ready', 'Week 5 — Final Push'];
+  let html = '';
+
+  t.tasks.forEach((task, i) => {
+    const week = Math.floor(i / 6);
+    if (i % 6 === 0) {
+      html += `<div class="week-row-label">${weeks[week] || 'Final Days'}</div>`;
+    }
+    const isDone = completed[currentTrack][i];
+    const isLocked = i > 0 && !completed[currentTrack][i - 1] && !isDone;
+    html += `
+      <div class="day-card ${isDone ? 'completed' : ''} ${isLocked ? 'locked' : ''}"
+           onclick="${isLocked ? '' : `toggleDay(${i})`}">
+        <div class="day-num">Day ${i + 1}</div>
+        <div class="day-task">${task}</div>
+        <div class="day-check">${isDone ? '✓' : ''}</div>
+      </div>
+    `;
+  });
+
+  document.getElementById('daysGrid').innerHTML = html;
+}
+
+function toggleDay(i) {
+  completed[currentTrack][i] = !completed[currentTrack][i];
+  localStorage.setItem('risenow_challenge', JSON.stringify(completed));
+  renderChallenge();
+}
+
+function getStreak() {
+  let streak = 0;
+  for (let i = 0; i < 30; i++) {
+    if (completed[currentTrack][i]) streak++;
+    else break;
+  }
+  return streak;
+}
+
+function changeTrack() {
+  document.getElementById('trackSelector').style.display = 'block';
+  document.getElementById('challengeSection').style.display = 'none';
+}
+
+// Auto-load saved track
+const savedTrack = localStorage.getItem('risenow_active_track');
+if (savedTrack && tracks[savedTrack]) startChallenge(savedTrack);
+</script>
+</body>
+</html>

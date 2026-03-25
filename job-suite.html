@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>RiseNow — Job Application Suite</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --green:#00e676;--teal:#00bcd4;
+  --bg:#0a0f0d;--card:#111814;--card2:#141f1a;
+  --border:rgba(255,255,255,0.07);
+  --text:rgba(255,255,255,0.85);
+  --muted:rgba(255,255,255,0.4);
+  --red:#ff4757;--yellow:#ffd32a;--blue:#00bcd4;
+}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+.bg-stars{position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse at 20% 50%,rgba(0,100,60,0.15) 0%,transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(0,80,80,0.1) 0%,transparent 50%);}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(10,15,13,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 48px;height:68px;display:flex;align-items:center;justify-content:space-between;}
+.nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none;}
+.logo-box{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--green),var(--teal));display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:#0a0f0d;}
+.logo-text{font-size:22px;font-weight:800;background:linear-gradient(90deg,var(--green),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.nav-links{display:flex;gap:8px;}
+.nav-link{padding:8px 16px;font-size:14px;font-weight:500;color:var(--muted);text-decoration:none;border-radius:8px;transition:color 0.2s;}
+.nav-link:hover,.nav-link.active{color:white;}
+
+/* PAGE HEADER */
+.page-top{padding:100px 48px 0;max-width:1200px;margin:0 auto;position:relative;z-index:1;}
+.badge{display:inline-flex;align-items:center;gap:8px;background:rgba(0,230,118,0.08);border:1px solid rgba(0,230,118,0.2);color:var(--green);font-size:11px;font-weight:700;padding:6px 16px;border-radius:20px;letter-spacing:2px;text-transform:uppercase;margin-bottom:20px;}
+.page-top h1{font-size:clamp(32px,4vw,50px);font-weight:900;letter-spacing:-2px;color:white;line-height:1.05;margin-bottom:10px;}
+.page-top h1 span{background:linear-gradient(135deg,var(--green),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.page-top p{font-size:15px;color:var(--muted);max-width:560px;line-height:1.7;margin-bottom:36px;}
+
+/* TABS */
+.tabs-bar{display:flex;gap:4px;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:6px;max-width:1200px;margin:0 auto 32px;position:relative;z-index:1;flex-wrap:wrap;}
+.tab-btn{flex:1;min-width:140px;padding:12px 16px;border:none;border-radius:10px;background:transparent;color:var(--muted);font-family:'Inter',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap;}
+.tab-btn:hover{color:var(--text);}
+.tab-btn.active{background:linear-gradient(135deg,rgba(0,230,118,0.15),rgba(0,188,212,0.15));color:var(--green);border:1px solid rgba(0,230,118,0.2);}
+.tab-count{background:rgba(0,230,118,0.15);color:var(--green);border-radius:10px;padding:1px 7px;font-size:11px;font-weight:700;}
+
+/* MAIN */
+.main{max-width:1200px;margin:0 auto;padding:0 48px 80px;position:relative;z-index:1;}
+.panel{display:none;}
+.panel.active{display:block;}
+
+/* ====== TRACKER ====== */
+.tracker-top{display:flex;gap:12px;margin-bottom:24px;flex-wrap:wrap;}
+.input-row{display:flex;gap:10px;flex:1;flex-wrap:wrap;}
+input.field,select.field,textarea.field{background:var(--card);border:1px solid var(--border);color:var(--text);padding:11px 16px;border-radius:10px;font-family:'Inter',sans-serif;font-size:14px;outline:none;transition:border-color 0.2s;}
+input.field:focus,select.field:focus,textarea.field:focus{border-color:rgba(0,230,118,0.4);}
+input.field::placeholder,textarea.field::placeholder{color:var(--muted);}
+select.field option{background:#111814;}
+.btn-add{padding:11px 22px;background:linear-gradient(135deg,var(--green),var(--teal));border:none;border-radius:10px;color:#0a0f0d;font-size:14px;font-weight:800;cursor:pointer;font-family:'Inter',sans-serif;white-space:nowrap;transition:opacity 0.2s;}
+.btn-add:hover{opacity:0.88;}
+
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:28px;}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px 20px;text-align:center;}
+.stat-card .num{font-size:28px;font-weight:900;background:linear-gradient(90deg,var(--green),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.stat-card .lbl{font-size:11px;color:var(--muted);margin-top:4px;font-weight:500;}
+
+.filter-bar{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.filter-chip{padding:6px 14px;font-size:12px;font-weight:600;border-radius:20px;cursor:pointer;border:1px solid var(--border);color:var(--muted);background:transparent;font-family:'Inter',sans-serif;transition:all 0.2s;}
+.filter-chip:hover,.filter-chip.active{border-color:rgba(0,230,118,0.4);color:var(--green);background:rgba(0,230,118,0.07);}
+
+.job-list{display:flex;flex-direction:column;gap:10px;}
+.job-item{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px 22px;display:flex;align-items:center;gap:16px;transition:border-color 0.2s,transform 0.15s;animation:fadeUp 0.3s ease both;}
+.job-item:hover{border-color:rgba(0,230,118,0.2);transform:translateY(-1px);}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.job-letter{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,rgba(0,230,118,0.12),rgba(0,188,212,0.12));border:1px solid rgba(0,230,118,0.15);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:var(--green);flex-shrink:0;text-transform:uppercase;}
+.job-details{flex:1;min-width:0;}
+.job-name{font-size:14px;font-weight:700;color:white;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.job-company-name{font-size:12px;color:var(--muted);margin-bottom:6px;}
+.job-note{font-size:12px;color:var(--muted);font-style:italic;}
+.status-badge{padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700;white-space:nowrap;flex-shrink:0;}
+.status-saved{background:rgba(255,255,255,0.06);color:var(--muted);}
+.status-applied{background:rgba(0,188,212,0.12);color:var(--teal);}
+.status-interview{background:rgba(255,211,42,0.12);color:var(--yellow);}
+.status-offer{background:rgba(0,230,118,0.12);color:var(--green);}
+.status-rejected{background:rgba(255,71,87,0.1);color:var(--red);}
+.job-actions{display:flex;gap:8px;flex-shrink:0;}
+.btn-status{padding:6px 12px;border-radius:8px;font-size:11px;font-weight:600;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.2s;}
+.btn-status:hover{border-color:rgba(0,230,118,0.3);color:var(--green);}
+.btn-del{padding:6px 10px;border-radius:8px;font-size:12px;border:1px solid transparent;background:transparent;color:var(--muted);cursor:pointer;transition:all 0.2s;}
+.btn-del:hover{background:rgba(255,71,87,0.1);color:var(--red);}
+.empty-state{text-align:center;padding:60px 20px;color:var(--muted);}
+.empty-state .icon{font-size:40px;margin-bottom:14px;}
+.empty-state h3{font-size:18px;font-weight:800;color:white;margin-bottom:8px;}
+
+/* ====== COVER LETTER ====== */
+.cl-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+.cl-left{display:flex;flex-direction:column;gap:14px;}
+.cl-right{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:14px;}
+.section-label{font-size:11px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:2px;margin-bottom:4px;}
+textarea.field{width:100%;resize:vertical;min-height:100px;line-height:1.6;}
+.btn-generate{width:100%;padding:13px;background:linear-gradient(135deg,var(--green),var(--teal));border:none;border-radius:11px;color:#0a0f0d;font-size:14px;font-weight:800;cursor:pointer;font-family:'Inter',sans-serif;transition:opacity 0.2s;}
+.btn-generate:hover{opacity:0.88;}
+.btn-generate:disabled{opacity:0.5;cursor:not-allowed;}
+.output-box{background:rgba(0,0,0,0.3);border:1px solid var(--border);border-radius:12px;padding:20px;font-size:13px;line-height:1.8;color:var(--text);min-height:300px;white-space:pre-wrap;word-break:break-word;overflow-y:auto;max-height:500px;}
+.output-placeholder{color:var(--muted);font-style:italic;text-align:center;padding:60px 20px;}
+.cl-actions{display:flex;gap:10px;margin-top:8px;}
+.btn-copy,.btn-clear{flex:1;padding:10px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.2s;}
+.btn-copy{background:linear-gradient(135deg,var(--green),var(--teal));border:none;color:#0a0f0d;}
+.btn-copy:hover{opacity:0.88;}
+.btn-clear{background:transparent;border:1px solid var(--border);color:var(--muted);}
+.btn-clear:hover{border-color:var(--red);color:var(--red);}
+.loading-dots{display:inline-flex;gap:5px;align-items:center;}
+.loading-dots span{width:7px;height:7px;border-radius:50%;background:var(--green);animation:dot 1.2s infinite;}
+.loading-dots span:nth-child(2){animation-delay:0.2s;}
+.loading-dots span:nth-child(3){animation-delay:0.4s;}
+@keyframes dot{0%,80%,100%{opacity:0.2;transform:scale(0.8);}40%{opacity:1;transform:scale(1);}}
+
+/* ====== RESUME TIPS ====== */
+.resume-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.tip-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;transition:border-color 0.2s,transform 0.2s;position:relative;overflow:hidden;}
+.tip-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--green),var(--teal));opacity:0;transition:opacity 0.2s;}
+.tip-card:hover{border-color:rgba(0,230,118,0.2);transform:translateY(-2px);}
+.tip-card:hover::before{opacity:1;}
+.tip-icon{font-size:28px;margin-bottom:14px;}
+.tip-title{font-size:15px;font-weight:700;color:white;margin-bottom:8px;}
+.tip-body{font-size:13px;color:var(--muted);line-height:1.7;}
+.tip-body strong{color:var(--green);}
+.ats-score{grid-column:1/-1;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;}
+.ats-score h3{font-size:16px;font-weight:700;color:white;margin-bottom:20px;}
+.ats-input{display:flex;gap:12px;margin-bottom:20px;}
+.ats-input textarea{flex:1;}
+.score-result{display:none;}
+.score-bar-wrap{margin-top:16px;}
+.score-label{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-bottom:8px;}
+.score-bar{height:8px;background:var(--border);border-radius:4px;overflow:hidden;}
+.score-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--green),var(--teal));transition:width 1s ease;}
+.score-items{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:20px;}
+.score-item{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center;}
+.score-item .val{font-size:20px;font-weight:800;color:var(--green);}
+.score-item .key{font-size:11px;color:var(--muted);margin-top:4px;}
+
+/* ====== EMAIL TEMPLATES ====== */
+.email-grid{display:grid;grid-template-columns:220px 1fr;gap:24px;}
+.email-nav{display:flex;flex-direction:column;gap:6px;}
+.email-nav-item{padding:12px 16px;border-radius:10px;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:'Inter',sans-serif;font-size:13px;font-weight:600;cursor:pointer;text-align:left;transition:all 0.2s;}
+.email-nav-item:hover{color:var(--text);}
+.email-nav-item.active{background:rgba(0,230,118,0.08);border-color:rgba(0,230,118,0.25);color:var(--green);}
+.email-content{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;}
+.email-content h3{font-size:16px;font-weight:700;color:white;margin-bottom:6px;}
+.email-content .desc{font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.6;}
+.email-fields{display:flex;flex-direction:column;gap:10px;margin-bottom:20px;}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.email-preview{background:rgba(0,0,0,0.3);border:1px solid var(--border);border-radius:12px;padding:20px;font-size:13px;line-height:1.8;color:var(--text);min-height:200px;white-space:pre-wrap;word-break:break-word;}
+.email-preview .subject-line{font-weight:700;color:var(--green);margin-bottom:12px;font-size:14px;}
+.email-copy-btn{margin-top:12px;width:100%;padding:11px;background:linear-gradient(135deg,var(--green),var(--teal));border:none;border-radius:10px;color:#0a0f0d;font-size:13px;font-weight:800;cursor:pointer;font-family:'Inter',sans-serif;transition:opacity 0.2s;}
+.email-copy-btn:hover{opacity:0.88;}
+
+@media(max-width:768px){
+  nav{padding:0 20px;}
+  .page-top,.main{padding-left:20px;padding-right:20px;}
+  .tabs-bar{margin-left:20px;margin-right:20px;}
+  .cl-grid,.resume-grid,.email-grid{grid-template-columns:1fr;}
+  .stats-row{grid-template-columns:repeat(2,1fr);}
+  .score-items{grid-template-columns:repeat(3,1fr);}
+}
+</style>
+</head>
+<body>
+<div class="bg-stars"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">
+    <div class="logo-box">R</div>
+    <div class="logo-text">RiseNow</div>
+  </a>
+  <div class="nav-links">
+    <a href="careers.html" class="nav-link">Careers</a>
+    <a href="jobs.html" class="nav-link">Jobs</a>
+    <a href="resources.html" class="nav-link">Resources</a>
+    <a href="daily-quote.html" class="nav-link">Motivation</a>
+    <a href="job-suite.html" class="nav-link active">My Suite</a>
+  </div>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-top">
+  <div class="badge">⚡ Your Personal Toolkit</div>
+  <h1>Job Application <span>Suite</span></h1>
+  <p>Track applications, generate cover letters, optimize your resume, and send the perfect follow-up — all in one place.</p>
+</div>
+
+<!-- TABS -->
+<div class="tabs-bar" style="margin:0 48px 24px;padding:6px;">
+  <button class="tab-btn active" onclick="switchTab('tracker')">📋 Job Tracker <span class="tab-count" id="tracker-count">0</span></button>
+  <button class="tab-btn" onclick="switchTab('coverletter')">✍️ Cover Letter AI</button>
+  <button class="tab-btn" onclick="switchTab('resume')">📄 Resume Tips</button>
+  <button class="tab-btn" onclick="switchTab('emails')">📧 Email Templates</button>
+</div>
+
+<div class="main">
+
+  <!-- ====== TRACKER PANEL ====== -->
+  <div class="panel active" id="panel-tracker">
+    <!-- Add job form -->
+    <div class="tracker-top">
+      <div class="input-row">
+        <input class="field" id="t-role" placeholder="Job title / Role" style="flex:2" />
+        <input class="field" id="t-company" placeholder="Company name" style="flex:2" />
+        <input class="field" id="t-link" placeholder="Job URL (optional)" style="flex:3" />
+        <select class="field" id="t-status" style="min-width:130px">
+          <option value="saved">🔖 Saved</option>
+          <option value="applied">📤 Applied</option>
+          <option value="interview">🎤 Interview</option>
+          <option value="offer">🎉 Offer</option>
+          <option value="rejected">❌ Rejected</option>
+        </select>
+      </div>
+      <button class="btn-add" onclick="addJob()">+ Add Job</button>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-card"><div class="num" id="s-total">0</div><div class="lbl">Total Tracked</div></div>
+      <div class="stat-card"><div class="num" id="s-applied" style="background:linear-gradient(90deg,var(--teal),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">0</div><div class="lbl">Applied</div></div>
+      <div class="stat-card"><div class="num" id="s-interview" style="background:linear-gradient(90deg,var(--yellow),#ff9f43);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">0</div><div class="lbl">Interviews</div></div>
+      <div class="stat-card"><div class="num" id="s-offer">0</div><div class="lbl">Offers</div></div>
+    </div>
+
+    <!-- Filter chips -->
+    <div class="filter-bar">
+      <button class="filter-chip active" onclick="filterJobs('all',this)">All</button>
+      <button class="filter-chip" onclick="filterJobs('saved',this)">🔖 Saved</button>
+      <button class="filter-chip" onclick="filterJobs('applied',this)">📤 Applied</button>
+      <button class="filter-chip" onclick="filterJobs('interview',this)">🎤 Interview</button>
+      <button class="filter-chip" onclick="filterJobs('offer',this)">🎉 Offer</button>
+      <button class="filter-chip" onclick="filterJobs('rejected',this)">❌ Rejected</button>
+    </div>
+
+    <div class="job-list" id="job-list">
+      <div class="empty-state">
+        <div class="icon">📋</div>
+        <h3>No jobs tracked yet</h3>
+        <p>Add your first job above — saved, applied, or anywhere in between.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== COVER LETTER PANEL ====== -->
+  <div class="panel" id="panel-coverletter">
+    <div class="cl-grid">
+      <div class="cl-left">
+        <div>
+          <div class="section-label">Your Info</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;">
+            <input class="field" id="cl-name" placeholder="Your full name" value="Shushant Baluni" style="width:100%"/>
+            <input class="field" id="cl-role" placeholder="Your target role" style="width:100%"/>
+          </div>
+          <input class="field" id="cl-skills" placeholder="Your key skills (e.g. Python, SQL, Data Analysis)" style="width:100%;margin-top:10px;"/>
+        </div>
+        <div>
+          <div class="section-label" style="margin-bottom:10px;">Job Details</div>
+          <input class="field" id="cl-jobtitle" placeholder="Job title you're applying for" style="width:100%;margin-bottom:10px;"/>
+          <input class="field" id="cl-company2" placeholder="Company name" style="width:100%;margin-bottom:10px;"/>
+          <textarea class="field" id="cl-jd" placeholder="Paste the job description here (the more detail, the better the letter)..." rows="6" style="width:100%"></textarea>
+        </div>
+        <div>
+          <div class="section-label" style="margin-bottom:10px;">Tone & Style</div>
+          <select class="field" id="cl-tone" style="width:100%">
+            <option value="professional">Professional & Formal</option>
+            <option value="enthusiastic">Enthusiastic & Energetic</option>
+            <option value="concise">Short & Concise</option>
+            <option value="story">Story-driven & Personal</option>
+          </select>
+        </div>
+        <button class="btn-generate" id="cl-btn" onclick="generateCoverLetter()">✨ Generate Cover Letter</button>
+      </div>
+      <div class="cl-right">
+        <div class="section-label">Generated Letter</div>
+        <div class="output-box" id="cl-output">
+          <div class="output-placeholder">Fill in your details and click Generate →<br><br>The AI will write a tailored cover letter for you in seconds.</div>
+        </div>
+        <div class="cl-actions">
+          <button class="btn-copy" onclick="copyLetter()">📋 Copy Letter</button>
+          <button class="btn-clear" onclick="clearLetter()">Clear</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== RESUME TIPS PANEL ====== -->
+  <div class="panel" id="panel-resume">
+    <div class="resume-grid">
+      <div class="tip-card"><div class="tip-icon">🎯</div><div class="tip-title">Tailor for Every Job</div><div class="tip-body">Never send a generic resume. Mirror the <strong>exact keywords</strong> from the job description — ATS systems scan for them. Spend 10 min customizing per application.</div></div>
+      <div class="tip-card"><div class="tip-icon">📊</div><div class="tip-title">Quantify Everything</div><div class="tip-body">Replace vague claims with numbers. Instead of "improved performance", write <strong>"improved dashboard load time by 40%"</strong>. Numbers stand out instantly.</div></div>
+      <div class="tip-card"><div class="tip-icon">⚡</div><div class="tip-title">Strong Action Verbs</div><div class="tip-body">Start every bullet with a power verb: <strong>Built, Developed, Analyzed, Led, Reduced, Increased, Automated, Designed</strong>. Avoid "Responsible for" or "Helped".</div></div>
+      <div class="tip-card"><div class="tip-icon">📏</div><div class="tip-title">1 Page Rule</div><div class="tip-body">Less than 3 years experience? <strong>Keep it to 1 page.</strong> Recruiters spend avg 7 seconds per resume. Make every line count — remove fluff, keep impact.</div></div>
+      <div class="tip-card"><div class="tip-icon">🔤</div><div class="tip-title">ATS-Safe Formatting</div><div class="tip-body">Use simple fonts (Calibri, Arial). <strong>No tables, graphics, or headers/footers</strong> — ATS can't read them. Use standard section names: Experience, Education, Skills.</div></div>
+      <div class="tip-card"><div class="tip-icon">🔗</div><div class="tip-title">Links That Work</div><div class="tip-body">Add <strong>GitHub, LinkedIn, and Portfolio</strong> at the top. Recruiters click these. Make sure your GitHub has pinned projects with good READMEs before you apply.</div></div>
+
+      <!-- ATS Score Checker -->
+      <div class="ats-score">
+        <h3>⚡ Quick ATS Score Checker</h3>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">Paste your resume text and job description — get an instant match score.</p>
+        <div class="ats-input">
+          <textarea class="field" id="ats-resume" placeholder="Paste your resume text here..." rows="5" style="width:100%"></textarea>
+          <textarea class="field" id="ats-jd" placeholder="Paste the job description here..." rows="5" style="width:100%"></textarea>
+        </div>
+        <button class="btn-generate" onclick="checkATS()" style="max-width:220px">Check ATS Score →</button>
+        <div class="score-result" id="score-result">
+          <div class="score-bar-wrap">
+            <div class="score-label"><span>ATS Match Score</span><span id="score-pct">0%</span></div>
+            <div class="score-bar"><div class="score-fill" id="score-fill" style="width:0%"></div></div>
+          </div>
+          <div class="score-items">
+            <div class="score-item"><div class="val" id="sc-matched">0</div><div class="key">Keywords Matched</div></div>
+            <div class="score-item"><div class="val" id="sc-missing">0</div><div class="key">Keywords Missing</div></div>
+            <div class="score-item"><div class="val" id="sc-grade">-</div><div class="key">Grade</div></div>
+          </div>
+          <div id="sc-missing-list" style="margin-top:16px;font-size:12px;color:var(--muted);line-height:1.8;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== EMAIL TEMPLATES PANEL ====== -->
+  <div class="panel" id="panel-emails">
+    <div class="email-grid">
+      <div class="email-nav">
+        <button class="email-nav-item active" onclick="loadTemplate('followup',this)">📨 Follow-up After Apply</button>
+        <button class="email-nav-item" onclick="loadTemplate('thankyou',this)">🙏 Thank You (Post Interview)</button>
+        <button class="email-nav-item" onclick="loadTemplate('status',this)">🔍 Ask Application Status</button>
+        <button class="email-nav-item" onclick="loadTemplate('referral',this)">🤝 Ask for Referral</button>
+        <button class="email-nav-item" onclick="loadTemplate('cold',this)">❄️ Cold Outreach to HR</button>
+        <button class="email-nav-item" onclick="loadTemplate('offer',this)">💰 Negotiate Offer</button>
+      </div>
+      <div class="email-content">
+        <h3 id="email-title">Follow-up After Applying</h3>
+        <div class="desc" id="email-desc">Send this 5–7 days after applying if you haven't heard back. Shows initiative without being pushy.</div>
+        <div class="email-fields">
+          <div class="field-row">
+            <input class="field" id="e-yourname" placeholder="Your name" value="Shushant Baluni"/>
+            <input class="field" id="e-hrname" placeholder="HR / Manager name (or 'Hiring Manager')"/>
+          </div>
+          <div class="field-row">
+            <input class="field" id="e-company" placeholder="Company name"/>
+            <input class="field" id="e-jobtitle" placeholder="Job title you applied for"/>
+          </div>
+          <input class="field" id="e-extra" placeholder="Extra detail (optional — e.g. interview date, offer amount)" style="width:100%"/>
+        </div>
+        <button class="btn-generate" onclick="previewEmail()" style="max-width:180px;margin-bottom:16px">Preview Email →</button>
+        <div class="email-preview" id="email-preview">Fill in your details above and click Preview →</div>
+        <button class="email-copy-btn" onclick="copyEmail()">📋 Copy Email</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<script>
+// ============================================================
+// TRACKER
+// ============================================================
+let jobs = JSON.parse(localStorage.getItem('rn_jobs') || '[]');
+let currentFilter = 'all';
+
+function saveJobs() { localStorage.setItem('rn_jobs', JSON.stringify(jobs)); }
+
+function addJob() {
+  const role    = document.getElementById('t-role').value.trim();
+  const company = document.getElementById('t-company').value.trim();
+  const link    = document.getElementById('t-link').value.trim();
+  const status  = document.getElementById('t-status').value;
+  if (!role || !company) { alert('Please enter role and company name.'); return; }
+  jobs.unshift({ id: Date.now(), role, company, link, status, date: new Date().toLocaleDateString('en-IN') });
+  saveJobs();
+  document.getElementById('t-role').value = '';
+  document.getElementById('t-company').value = '';
+  document.getElementById('t-link').value = '';
+  renderJobs();
+}
+
+function deleteJob(id) {
+  jobs = jobs.filter(j => j.id !== id);
+  saveJobs(); renderJobs();
+}
+
+function cycleStatus(id) {
+  const order = ['saved','applied','interview','offer','rejected'];
+  const j = jobs.find(x => x.id === id);
+  if (!j) return;
+  j.status = order[(order.indexOf(j.status) + 1) % order.length];
+  saveJobs(); renderJobs();
+}
+
+function filterJobs(f, el) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  renderJobs();
+}
+
+function renderJobs() {
+  const list = document.getElementById('job-list');
+  const filtered = currentFilter === 'all' ? jobs : jobs.filter(j => j.status === currentFilter);
+  
+  // stats
+  document.getElementById('s-total').textContent = jobs.length;
+  document.getElementById('s-applied').textContent = jobs.filter(j=>j.status==='applied').length;
+  document.getElementById('s-interview').textContent = jobs.filter(j=>j.status==='interview').length;
+  document.getElementById('s-offer').textContent = jobs.filter(j=>j.status==='offer').length;
+  document.getElementById('tracker-count').textContent = jobs.length;
+
+  if (!filtered.length) {
+    list.innerHTML = `<div class="empty-state"><div class="icon">📋</div><h3>${currentFilter==='all'?'No jobs tracked yet':'No jobs in this category'}</h3><p>${currentFilter==='all'?'Add your first job above.':'Change filter or add more jobs.'}</p></div>`;
+    return;
+  }
+
+  const statusLabel = { saved:'🔖 Saved', applied:'📤 Applied', interview:'🎤 Interview', offer:'🎉 Offer!', rejected:'❌ Rejected' };
+  const statusClass = { saved:'status-saved', applied:'status-applied', interview:'status-interview', offer:'status-offer', rejected:'status-rejected' };
+
+  list.innerHTML = filtered.map((j, i) => `
+    <div class="job-item" style="animation-delay:${i*0.04}s">
+      <div class="job-letter">${j.company[0]}</div>
+      <div class="job-details">
+        <div class="job-name">${j.role}</div>
+        <div class="job-company-name">${j.company} · Added ${j.date}</div>
+        ${j.link ? `<div class="job-note"><a href="${j.link}" target="_blank" style="color:var(--teal);text-decoration:none;">🔗 View Job</a></div>` : ''}
+      </div>
+      <span class="status-badge ${statusClass[j.status]}">${statusLabel[j.status]}</span>
+      <div class="job-actions">
+        <button class="btn-status" onclick="cycleStatus(${j.id})">Update →</button>
+        <button class="btn-del" onclick="deleteJob(${j.id})">🗑</button>
+      </div>
+    </div>`).join('');
+}
+
+renderJobs();
+
+// ============================================================
+// COVER LETTER AI
+// ============================================================
+async function generateCoverLetter() {
+  const name     = document.getElementById('cl-name').value.trim() || 'the applicant';
+  const role     = document.getElementById('cl-role').value.trim();
+  const skills   = document.getElementById('cl-skills').value.trim();
+  const jobtitle = document.getElementById('cl-jobtitle').value.trim();
+  const company  = document.getElementById('cl-company2').value.trim();
+  const jd       = document.getElementById('cl-jd').value.trim();
+  const tone     = document.getElementById('cl-tone').value;
+
+  if (!jobtitle || !company) { alert('Please enter job title and company name.'); return; }
+
+  const btn = document.getElementById('cl-btn');
+  const out = document.getElementById('cl-output');
+  btn.disabled = true;
+  btn.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div> Generating...';
+  out.innerHTML = '<div class="output-placeholder"><div class="loading-dots" style="justify-content:center"><span></span><span></span><span></span></div><br>Writing your letter...</div>';
+
+  const toneMap = {
+    professional: 'formal and professional',
+    enthusiastic: 'enthusiastic, energetic and passionate',
+    concise: 'concise and to-the-point (under 200 words)',
+    story: 'personal, story-driven and relatable'
+  };
+
+  const prompt = `Write a ${toneMap[tone]} cover letter for the following:
+
+Applicant: ${name}
+Target Role: ${jobtitle} at ${company}
+${role ? `Current/Previous Role: ${role}` : ''}
+${skills ? `Key Skills: ${skills}` : ''}
+${jd ? `Job Description:\n${jd}` : ''}
+
+Requirements:
+- Address it to the Hiring Manager at ${company}
+- Make it specific to the role and company
+- Highlight relevant skills naturally
+- End with a clear call to action
+- Keep it professional but human
+- Format: Greeting, 3 paragraphs, Sign-off with name
+
+Write only the letter, no extra commentary.`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    const data = await res.json();
+    const text = data.content?.map(c => c.text || '').join('') || 'Could not generate. Try again.';
+    out.textContent = text;
+  } catch(e) {
+    out.textContent = 'Error generating letter. Please try again.';
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = '✨ Generate Cover Letter';
+}
+
+function copyLetter() {
+  const text = document.getElementById('cl-output').textContent;
+  if (!text || text.includes('Fill in your details')) return;
+  navigator.clipboard.writeText(text).then(() => alert('✅ Letter copied to clipboard!'));
+}
+function clearLetter() {
+  document.getElementById('cl-output').innerHTML = '<div class="output-placeholder">Fill in your details and click Generate →</div>';
+}
+
+// ============================================================
+// ATS SCORE
+// ============================================================
+function checkATS() {
+  const resume = document.getElementById('ats-resume').value.toLowerCase();
+  const jd     = document.getElementById('ats-jd').value.toLowerCase();
+  if (!resume || !jd) { alert('Please paste both resume and job description.'); return; }
+
+  // Extract meaningful words from JD (3+ chars, ignore common words)
+  const stopwords = new Set(['the','and','for','are','with','this','that','from','have','will','you','your','our','their','they','been','into','more','can','job','work','team','role','also','about','what','when','where','which','some','such','both','each','than','then','but','not','all','any','its','was','had','has','him','her','his','she','who','its','one','may','must','good','well','need','able','make','help','etc','very','only','just','per','new']);
+
+  const jdWords = [...new Set(jd.match(/\b[a-z]{3,}\b/g) || [])].filter(w => !stopwords.has(w));
+  const matched = jdWords.filter(w => resume.includes(w));
+  const missing = jdWords.filter(w => !resume.includes(w)).slice(0, 15);
+  const pct = Math.round((matched.length / Math.max(jdWords.length, 1)) * 100);
+  const grade = pct >= 75 ? 'A' : pct >= 55 ? 'B' : pct >= 35 ? 'C' : 'D';
+
+  document.getElementById('score-result').style.display = 'block';
+  document.getElementById('score-pct').textContent = pct + '%';
+  document.getElementById('score-fill').style.width = pct + '%';
+  document.getElementById('sc-matched').textContent = matched.length;
+  document.getElementById('sc-missing').textContent = missing.length;
+  document.getElementById('sc-grade').textContent = grade;
+  document.getElementById('sc-missing-list').innerHTML = missing.length
+    ? `<strong style="color:var(--text)">Missing keywords to add:</strong><br>${missing.map(w=>`<span style="background:rgba(255,71,87,0.08);border:1px solid rgba(255,71,87,0.2);color:#ff6b7a;padding:2px 8px;border-radius:4px;margin:2px;display:inline-block">${w}</span>`).join('')}`
+    : '<strong style="color:var(--green)">Great! No major missing keywords found.</strong>';
+}
+
+// ============================================================
+// EMAIL TEMPLATES
+// ============================================================
+const templates = {
+  followup: {
+    title: 'Follow-up After Applying',
+    desc: 'Send this 5–7 days after applying if you haven\'t heard back. Shows initiative without being pushy.',
+    subject: (d) => `Following Up — ${d.jobtitle} Application`,
+    body: (d) => `Subject: Following Up — ${d.jobtitle} Application\n\nDear ${d.hrname || 'Hiring Manager'},\n\nI hope this message finds you well. I recently submitted my application for the ${d.jobtitle} position at ${d.company} and wanted to follow up to express my continued interest in the role.\n\nI'm genuinely excited about the opportunity to contribute to ${d.company} and believe my background aligns well with what you're looking for. I'd love the chance to discuss how I can add value to your team.\n\nPlease let me know if you need any additional information from my end. I look forward to hearing from you.\n\nWarm regards,\n${d.yourname}`
+  },
+  thankyou: {
+    title: 'Thank You (Post-Interview)',
+    desc: 'Send within 24 hours of your interview. This one simple email sets you apart from 90% of candidates.',
+    subject: (d) => `Thank You — ${d.jobtitle} Interview`,
+    body: (d) => `Subject: Thank You — ${d.jobtitle} Interview\n\nDear ${d.hrname || 'Hiring Manager'},\n\nThank you so much for taking the time to interview me for the ${d.jobtitle} position at ${d.company}${d.extra ? ` on ${d.extra}` : ''}. I really enjoyed our conversation and learning more about the role and team.\n\nThe discussion reinforced my enthusiasm for this opportunity, and I'm confident that my skills in [mention 1-2 relevant skills] would allow me to contribute meaningfully from day one.\n\nI look forward to the next steps in the process. Please don't hesitate to reach out if you have any further questions.\n\nWith gratitude,\n${d.yourname}`
+  },
+  status: {
+    title: 'Ask Application Status',
+    desc: 'Professional way to check where you stand — without sounding desperate or impatient.',
+    subject: (d) => `Application Status Inquiry — ${d.jobtitle}`,
+    body: (d) => `Subject: Application Status Inquiry — ${d.jobtitle}\n\nDear ${d.hrname || 'Hiring Manager'},\n\nI hope you're doing well. I applied for the ${d.jobtitle} role at ${d.company} and wanted to respectfully inquire about the status of my application.\n\nI remain very interested in the opportunity and would love to know if there are any updates or next steps I should be aware of.\n\nThank you for your time, and I look forward to hearing from you.\n\nBest regards,\n${d.yourname}`
+  },
+  referral: {
+    title: 'Ask for a Referral',
+    desc: 'Reaching out to a connection who works at your target company. Referred candidates are 4x more likely to get hired.',
+    subject: (d) => `Quick Favor — Referral for ${d.jobtitle} at ${d.company}`,
+    body: (d) => `Subject: Quick Favor — Referral for ${d.jobtitle} at ${d.company}\n\nHi ${d.hrname || '[Name]'},\n\nHope you're doing great! I noticed that ${d.company} is hiring for a ${d.jobtitle} position and I'm very interested in applying.\n\nGiven your experience there, I'd really appreciate if you could refer me or share any insights about the team/culture. I've been working on [mention relevant skill/project briefly] and feel this role is a great fit.\n\nNo pressure at all — I completely understand if it's not possible. But if you're comfortable, I'd be truly grateful.\n\nThanks so much either way!\n\n${d.yourname}`
+  },
+  cold: {
+    title: 'Cold Outreach to HR',
+    desc: 'Reaching out directly to a recruiter or HR manager on LinkedIn or email — before a job is even posted.',
+    subject: (d) => `Passionate ${d.jobtitle} — Open to Opportunities at ${d.company}`,
+    body: (d) => `Subject: Passionate ${d.jobtitle} — Open to Opportunities at ${d.company}\n\nDear ${d.hrname || 'Hiring Manager'},\n\nI hope you don't mind the direct outreach. My name is ${d.yourname} and I'm a ${d.jobtitle} with a strong background in [mention 2-3 key skills].\n\nI've been following ${d.company}'s work and am genuinely impressed by [mention something specific about the company]. I'd love to explore if there are any current or upcoming opportunities where I could contribute.\n\nI'd be happy to share my resume or have a brief call at your convenience. Thank you for your time — I truly appreciate it.\n\nBest regards,\n${d.yourname}`
+  },
+  offer: {
+    title: 'Negotiate Offer',
+    desc: 'A polite but confident way to negotiate your salary. Studies show 85% of employers expect candidates to negotiate.',
+    subject: (d) => `Re: Offer for ${d.jobtitle} — Discussion`,
+    body: (d) => `Subject: Re: Offer for ${d.jobtitle} — Discussion\n\nDear ${d.hrname || 'Hiring Manager'},\n\nThank you so much for the offer for the ${d.jobtitle} position at ${d.company}. I'm genuinely excited about this opportunity and the team.\n\nAfter careful consideration, I'd love to discuss the compensation. Based on my research and experience, I was hoping we could explore a figure closer to ${d.extra || '[your target number]'}. I believe this reflects the value I'll bring to the team.\n\nI'm fully committed to joining ${d.company} and I'm confident we can find a number that works for both of us. Would you be open to a quick call to discuss?\n\nThank you again for this opportunity.\n\nWarm regards,\n${d.yourname}`
+  }
+};
+
+let currentTemplate = 'followup';
+
+function loadTemplate(key, el) {
+  currentTemplate = key;
+  document.querySelectorAll('.email-nav-item').forEach(i => i.classList.remove('active'));
+  el.classList.add('active');
+  const t = templates[key];
+  document.getElementById('email-title').textContent = t.title;
+  document.getElementById('email-desc').textContent = t.desc;
+  document.getElementById('email-preview').textContent = 'Fill in your details above and click Preview →';
+}
+
+function previewEmail() {
+  const d = {
+    yourname: document.getElementById('e-yourname').value || 'Your Name',
+    hrname:   document.getElementById('e-hrname').value,
+    company:  document.getElementById('e-company').value || 'Company',
+    jobtitle: document.getElementById('e-jobtitle').value || 'Position',
+    extra:    document.getElementById('e-extra').value
+  };
+  document.getElementById('email-preview').textContent = templates[currentTemplate].body(d);
+}
+
+function copyEmail() {
+  const text = document.getElementById('email-preview').textContent;
+  if (text.includes('Fill in')) return;
+  navigator.clipboard.writeText(text).then(() => alert('✅ Email copied to clipboard!'));
+}
+
+// ============================================================
+// TABS
+// ============================================================
+function switchTab(tab) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + tab).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+</script>
+</body>
+</html>

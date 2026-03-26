@@ -259,6 +259,7 @@
     <li><a href="job-tracker.html" class="active">Job Tracker</a></li>
     <li><a href="index.html#contact">Contact</a></li>
   </ul>
+
 </nav>
 
 <!-- HERO -->
@@ -290,6 +291,13 @@
     <span class="stat-num" id="waitingCount" style="color:#00bcd4">0</span>
     <span class="stat-label">Waiting</span>
   </div>
+
+</div>
+
+<!-- AUTH NOTICE -->
+<div id="authNotice" style="display:none;max-width:1200px;margin:0 auto 16px;padding:0 40px;text-align:center;color:var(--muted);font-size:13px;line-height:1.5;">
+  Sign in to sync your job tracker across devices.
+  <a href="index.html" style="color:var(--green);font-weight:800;text-decoration:none;">Go to Sign In</a>
 </div>
 
 <!-- TOOLBAR -->
@@ -304,6 +312,7 @@
     <option value="Waiting">Waiting</option>
   </select>
   <button class="btn-add" onclick="openModal()">+ Add Application</button>
+
 </div>
 
 <!-- TABLE -->
@@ -326,6 +335,7 @@
     <h3>No applications yet</h3>
     <p>Click "+ Add Application" to start tracking your job search journey.</p>
   </div>
+
 </div>
 
 <!-- MODAL -->
@@ -380,18 +390,129 @@
     <div class="logo-name">RiseNow</div>
   </a>
   <p>© 2026 RiseNow. Helping Strugglers Stand Again.</p>
+
 </footer>
 
-<script>
-  let jobs = JSON.parse(localStorage.getItem('risenow_jobs') || '[]');
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+  import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-  function saveToStorage() {
-    localStorage.setItem('risenow_jobs', JSON.stringify(jobs));
+  const firebaseConfig = {
+    apiKey: "AIzaSyB2__vKiROvrPOyomY8X-pDBY8VlArDbdY",
+    authDomain: "risenow-31893.firebaseapp.com",
+    databaseURL: "https://risenow-31893-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "risenow-31893",
+    storageBucket: "risenow-31893.firebasestorage.app",
+    messagingSenderId: "230298271225",
+    appId: "1:230298271225:web:c24d7100fc8b89a268d128",
+    measurementId: "G-RC17E84XEV"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  const STORAGE_KEY = 'risenow_jobs';
+  let jobs = [];
+  let currentUser = null;
+
+  const statusMeta = {
+    Applied: { label: 'Applied', className: 'status-applied' },
+    Waiting: { label: 'Waiting for Response', className: 'status-waiting' },
+    Interview: { label: 'Interview Scheduled', className: 'status-interview' },
+    Offer: { label: 'Got Offer 🎉', className: 'status-offer' },
+    Rejected: { label: 'Rejected', className: 'status-rejected' }
+  };
+
+  function statusClass(s) {
+    return statusMeta[s]?.className || 'status-waiting';
+  }
+
+  function statusLabel(s) {
+    return statusMeta[s]?.label || s || '—';
+  }
+
+  function normalizeJob(job) {
+    if (!job) return null;
+
+    // Backward-compat for older localStorage records where status could be stored as labels.
+    let status = job.status;
+    if (status === 'Waiting for Response') status = 'Waiting';
+    if (status === 'Interview Scheduled') status = 'Interview';
+    if (status === 'Got Offer 🎉') status = 'Offer';
+
+    if (!statusMeta[status]) status = 'Applied';
+
+    // Normalize date input like YYYY-MM-DD; if ISO date contains time, keep only date part.
+    let date = job.date;
+    if (typeof date === 'string' && date.includes('T')) date = date.split('T')[0];
+
+    return {
+      id: String(job.id ?? Date.now()),
+      company: String(job.company ?? ''),
+      role: String(job.role ?? ''),
+      location: String(job.location ?? '—'),
+      date: date ? String(date) : new Date().toISOString().split('T')[0],
+      status,
+      notes: String(job.notes ?? '—')
+    };
+  }
+
+  function normalizeJobs(list) {
+    return (Array.isArray(list) ? list : []).map(normalizeJob).filter(Boolean);
+  }
+
+  function mergeJobs(a, b) {
+    // Preserve the last write for same id (guest imports override stored values).
+    const map = new Map();
+    for (const j of normalizeJobs(a)) map.set(j.id, j);
+    for (const j of normalizeJobs(b)) map.set(j.id, j);
+
+    // Newest first (id is timestamp-based from Date.now()).
+    return Array.from(map.values()).sort((x, y) => Number(y.id) - Number(x.id));
+  }
+
+  function loadFromLocalStorage() {
+    try {
+      return normalizeJobs(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'));
+    } catch {
+      return [];
+    }
+  }
+
+  function saveToLocalStorage() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(jobs));
+  }
+
+  async function loadJobsFromFirestore(uid) {
+    const ref = doc(db, 'users', uid);
+    const snap = await getDoc(ref);
+    if (!snap.exists()) return [];
+
+    const data = snap.data() || {};
+    return normalizeJobs(data.jobs);
+  }
+
+  async function persistJobs() {
+    if (currentUser) {
+      const ref = doc(db, 'users', currentUser.uid);
+      await setDoc(ref, { jobs }, { merge: true });
+      return;
+    }
+    saveToLocalStorage();
+  }
+
+  function showAuthNotice(show) {
+    const el = document.getElementById('authNotice');
+    if (!el) return;
+    el.style.display = show ? 'block' : 'none';
   }
 
   function openModal() {
     document.getElementById('modalOverlay').classList.add('open');
     document.getElementById('fDate').valueAsDate = new Date();
+    document.getElementById('fStatus').value = 'Applied';
   }
 
   function closeModal() {
@@ -400,91 +521,179 @@
     document.getElementById('fStatus').value = 'Applied';
   }
 
-  function saveJob() {
+  async function saveJob() {
     const company = document.getElementById('fCompany').value.trim();
     const role = document.getElementById('fRole').value.trim();
     if (!company || !role) { alert('Company and Role are required!'); return; }
 
-    jobs.unshift({
+    const job = normalizeJob({
       id: Date.now(),
-      company, role,
+      company,
+      role,
       location: document.getElementById('fLocation').value.trim() || '—',
       date: document.getElementById('fDate').value || new Date().toISOString().split('T')[0],
       status: document.getElementById('fStatus').value,
       notes: document.getElementById('fNotes').value.trim() || '—'
     });
 
-    saveToStorage();
+    jobs.unshift(job);
+
+    try {
+      await persistJobs();
+    } catch (e) {
+      console.error(e);
+      alert('Could not save your job. Please try again.');
+      return;
+    }
+
     renderTable();
     closeModal();
   }
 
-  function deleteJob(id) {
+  async function deleteJob(id) {
     if (!confirm('Delete this application?')) return;
-    jobs = jobs.filter(j => j.id !== id);
-    saveToStorage();
-    renderTable();
-  }
 
-  function statusClass(s) {
-    const map = { Applied:'status-applied', Interview:'status-interview', Offer:'status-offer', Rejected:'status-rejected', Waiting:'status-waiting' };
-    return map[s] || 'status-waiting';
+    const deleteId = String(id);
+    jobs = jobs.filter(j => String(j.id) !== deleteId);
+
+    try {
+      await persistJobs();
+    } catch (e) {
+      console.error(e);
+      alert('Could not delete your job. Please try again.');
+      return;
+    }
+
+    renderTable();
   }
 
   function formatDate(d) {
     if (!d) return '—';
-    const [y,m,day] = d.split('-');
+    const s = String(d).split('T')[0];
+    if (!s.includes('-')) return s;
+    const [y, m, day] = s.split('-');
     const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    return `${day} ${months[parseInt(m)-1]} ${y}`;
+    const mi = parseInt(m, 10) - 1;
+    return months[mi] ? `${day} ${months[mi]} ${y}` : s;
   }
 
   function renderTable() {
-    const q = document.getElementById('searchInput').value.toLowerCase();
+    const q = document.getElementById('searchInput').value.trim().toLowerCase();
     const sf = document.getElementById('statusFilter').value;
 
-    let filtered = jobs.filter(j => {
-      const matchQ = j.company.toLowerCase().includes(q) || j.role.toLowerCase().includes(q);
+    const filtered = jobs.filter(j => {
+      const matchQ = (j.company || '').toLowerCase().includes(q) || (j.role || '').toLowerCase().includes(q);
       const matchS = sf === 'all' || j.status === sf;
       return matchQ && matchS;
     });
 
-    // Stats
-    document.getElementById('totalCount').textContent = jobs.length;
-    document.getElementById('interviewCount').textContent = jobs.filter(j => j.status === 'Interview').length;
-    document.getElementById('offerCount').textContent = jobs.filter(j => j.status === 'Offer').length;
-    document.getElementById('rejectedCount').textContent = jobs.filter(j => j.status === 'Rejected').length;
-    document.getElementById('waitingCount').textContent = jobs.filter(j => j.status === 'Waiting' || j.status === 'Applied').length;
+    // Stats (match the filter values exactly)
+    document.getElementById('totalCount').textContent = String(jobs.length);
+    document.getElementById('interviewCount').textContent = String(jobs.filter(j => j.status === 'Interview').length);
+    document.getElementById('offerCount').textContent = String(jobs.filter(j => j.status === 'Offer').length);
+    document.getElementById('rejectedCount').textContent = String(jobs.filter(j => j.status === 'Rejected').length);
+    document.getElementById('waitingCount').textContent = String(jobs.filter(j => j.status === 'Waiting').length);
 
     const tbody = document.getElementById('jobTableBody');
     const empty = document.getElementById('emptyState');
 
+    tbody.textContent = '';
+
     if (filtered.length === 0) {
-      tbody.innerHTML = '';
       empty.style.display = 'block';
       return;
     }
 
     empty.style.display = 'none';
-    tbody.innerHTML = filtered.map(j => `
-      <tr>
-        <td>
-          <div class="company-name">${j.company}</div>
-          <div class="role-name">${j.role}</div>
-        </td>
-        <td>${j.location}</td>
-        <td>${formatDate(j.date)}</td>
-        <td><span class="status ${statusClass(j.status)}">${j.status}</span></td>
-        <td style="max-width:200px;color:var(--muted);font-size:13px;">${j.notes}</td>
-        <td><button class="btn-delete" onclick="deleteJob(${j.id})">Delete</button></td>
-      </tr>
-    `).join('');
+
+    for (const j of filtered) {
+      const tr = document.createElement('tr');
+
+      const tdCompany = document.createElement('td');
+      const divCompany = document.createElement('div');
+      divCompany.className = 'company-name';
+      divCompany.textContent = j.company || '—';
+
+      const divRole = document.createElement('div');
+      divRole.className = 'role-name';
+      divRole.textContent = j.role || '—';
+
+      tdCompany.appendChild(divCompany);
+      tdCompany.appendChild(divRole);
+
+      const tdLocation = document.createElement('td');
+      tdLocation.textContent = j.location || '—';
+
+      const tdDate = document.createElement('td');
+      tdDate.textContent = formatDate(j.date);
+
+      const tdStatus = document.createElement('td');
+      const span = document.createElement('span');
+      span.className = `status ${statusClass(j.status)}`;
+      span.textContent = statusLabel(j.status);
+      tdStatus.appendChild(span);
+
+      const tdNotes = document.createElement('td');
+      tdNotes.style.maxWidth = '200px';
+      tdNotes.style.color = 'var(--muted)';
+      tdNotes.style.fontSize = '13px';
+      tdNotes.textContent = j.notes || '—';
+
+      const tdAction = document.createElement('td');
+      const btn = document.createElement('button');
+      btn.className = 'btn-delete';
+      btn.type = 'button';
+      btn.textContent = 'Delete';
+      btn.addEventListener('click', () => deleteJob(j.id));
+      tdAction.appendChild(btn);
+
+      tr.appendChild(tdCompany);
+      tr.appendChild(tdLocation);
+      tr.appendChild(tdDate);
+      tr.appendChild(tdStatus);
+      tr.appendChild(tdNotes);
+      tr.appendChild(tdAction);
+
+      tbody.appendChild(tr);
+    }
   }
+
+  // Expose for inline HTML handlers (oninput/onchange + onclick attributes)
+  window.renderTable = renderTable;
+  window.openModal = openModal;
+  window.closeModal = closeModal;
+  window.saveJob = saveJob;
+  window.deleteJob = deleteJob;
 
   // Close modal on overlay click
   document.getElementById('modalOverlay').addEventListener('click', function(e) {
     if (e.target === this) closeModal();
   });
 
+  // Initial render + sync with auth/Firestore
+  onAuthStateChanged(auth, async (user) => {
+    currentUser = user || null;
+    showAuthNotice(!user);
+
+    if (user) {
+      const guestJobs = loadFromLocalStorage();
+      const storedJobs = await loadJobsFromFirestore(user.uid);
+      jobs = mergeJobs(storedJobs, guestJobs);
+
+      // If user had local-only jobs, import them to Firestore and clear guest storage.
+      if (guestJobs.length > 0) {
+        await setDoc(doc(db, 'users', user.uid), { jobs }, { merge: true });
+        localStorage.removeItem(STORAGE_KEY);
+      }
+    } else {
+      jobs = loadFromLocalStorage();
+    }
+
+    renderTable();
+  });
+
+  // Render something quickly before auth resolution.
+  jobs = loadFromLocalStorage();
   renderTable();
 </script>
 </body>

@@ -532,6 +532,63 @@
         userData = { paths:{}, jobs:[], createdAt: new Date().toISOString() };
         await setDoc(ref, userData);
       }
+
+      // Sync guest job-tracker data (localStorage) into Firestore once signed in.
+      // This keeps dashboard stats consistent across devices.
+      try {
+        const STORAGE_KEY = 'risenow_jobs';
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          const statusMeta = {
+            Applied: true,
+            Waiting: true,
+            Interview: true,
+            Offer: true,
+            Rejected: true
+          };
+
+          const normalizeJob = (job) => {
+            if (!job) return null;
+            let status = job.status;
+            if (status === 'Waiting for Response') status = 'Waiting';
+            if (status === 'Interview Scheduled') status = 'Interview';
+            if (status === 'Got Offer 🎉') status = 'Offer';
+            if (!statusMeta[status]) status = 'Applied';
+
+            let date = job.date;
+            if (typeof date === 'string' && date.includes('T')) date = date.split('T')[0];
+
+            return {
+              id: String(job.id ?? Date.now()),
+              company: String(job.company ?? ''),
+              role: String(job.role ?? ''),
+              location: String(job.location ?? '—'),
+              date: date ? String(date) : new Date().toISOString().split('T')[0],
+              status,
+              notes: String(job.notes ?? '—')
+            };
+          };
+
+          const normalizeJobs = (list) =>
+            (Array.isArray(list) ? list : []).map(normalizeJob).filter(Boolean);
+
+          const guestJobs = normalizeJobs(parsed);
+          if (guestJobs.length > 0) {
+            const existingJobs = normalizeJobs(userData.jobs);
+            const map = new Map();
+            for (const j of existingJobs) map.set(j.id, j);
+            for (const j of guestJobs) map.set(j.id, j);
+
+            userData.jobs = Array.from(map.values()).sort((x, y) => Number(y.id) - Number(x.id));
+            await setDoc(ref, { jobs: userData.jobs }, { merge: true });
+            localStorage.removeItem(STORAGE_KEY);
+          }
+        }
+      } catch (e) {
+        // If localStorage is unavailable or data is malformed, ignore and proceed.
+        console.error(e);
+      }
     } catch(e) { console.error(e); }
   }
 

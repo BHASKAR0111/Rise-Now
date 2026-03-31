@@ -224,10 +224,10 @@ async function sendMsg(override) {
   const t = showTyping();
   try {
     const res = await fetch('/.netlify/functions/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-api-key': API_KEY, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
-      body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1000, system: SYSTEM, messages: history })
-    });
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ system: SYSTEM, messages: history })
+      });
     const data = await res.json();
     const reply = data.content?.[0]?.text || "Oops, something went wrong. Try again!";
     t.remove();

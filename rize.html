@@ -198,7 +198,7 @@ async function sendMsg(override) {
   btn.disabled = true;
   const t = showTyping();
   try {
-    const res = await fetch('/.netlify/functions/chat', {
+    const res = await fetch('https://still-base-a97a.bhaskarbaluni10.workers.dev', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ system: SYSTEM, messages: history })
@@ -208,7 +208,7 @@ async function sendMsg(override) {
     t.remove();
     history.push({ role: 'assistant', content: reply });
     addMsg('ai', reply);
-  } catch {
+  } catch(e) {
     t.remove();
     addMsg('ai', "Couldn't connect right now. Check your internet and try again.");
   }

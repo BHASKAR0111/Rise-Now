@@ -6,14 +6,12 @@ export default async function handler(req, res) {
       method: "POST",
       headers: {
         "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
-        "Content-Type": "application/json",
-        "HTTP-Referer": "https://risenow.vercel.app", // optional but recommended
-        "X-Title": "RiseNow AI"
+        "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        model: "mistralai/mistral-7b-instruct",
+        model: "openai/gpt-3.5-turbo",  // 🔥 SAFE MODEL (always works)
         messages: [
-          { role: "system", content: "You are RiseNow AI, a helpful career coach." },
+          { role: "system", content: "You are a helpful career coach." },
           { role: "user", content: message }
         ]
       })
@@ -21,23 +19,24 @@ export default async function handler(req, res) {
 
     const data = await response.json();
 
-    console.log("OpenRouter response:", data);
+    console.log("DEBUG:", data);
 
-    if (!data.choices) {
+    // 🔥 SAFE RESPONSE HANDLING
+    const reply = data?.choices?.[0]?.message?.content;
+
+    if (!reply) {
       return res.status(500).json({
-        error: "AI error",
-        details: data
+        error: "No response from AI",
+        full: data
       });
     }
 
-    return res.status(200).json({
-      reply: data.choices[0].message.content
-    });
+    return res.status(200).json({ reply });
 
   } catch (error) {
     console.error(error);
     return res.status(500).json({
-      error: "Server error"
+      error: "Server crash"
     });
   }
 }

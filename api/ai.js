@@ -2,16 +2,18 @@ export default async function handler(req, res) {
   try {
     const { message } = req.body;
 
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`,
-        "Content-Type": "application/json"
+        "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
+        "Content-Type": "application/json",
+        "HTTP-Referer": "https://risenow.vercel.app", // optional but recommended
+        "X-Title": "RiseNow AI"
       },
       body: JSON.stringify({
-        model: "gpt-4o-mini",
+        model: "mistralai/mistral-7b-instruct",
         messages: [
-          { role: "system", content: "You are a career coach for RiseNow." },
+          { role: "system", content: "You are RiseNow AI, a helpful career coach." },
           { role: "user", content: message }
         ]
       })
@@ -19,11 +21,23 @@ export default async function handler(req, res) {
 
     const data = await response.json();
 
-    res.status(200).json({
+    console.log("OpenRouter response:", data);
+
+    if (!data.choices) {
+      return res.status(500).json({
+        error: "AI error",
+        details: data
+      });
+    }
+
+    return res.status(200).json({
       reply: data.choices[0].message.content
     });
 
   } catch (error) {
-    res.status(500).json({ error: "AI failed" });
+    console.error(error);
+    return res.status(500).json({
+      error: "Server error"
+    });
   }
 }

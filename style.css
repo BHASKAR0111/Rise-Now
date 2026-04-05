@@ -1,6 +1,6 @@
 /* ================================================
-   RISENOW — Futuristic Motivational Theme
-   Clear · Bold · Forward-looking
+   RIGEL — Futuristic Motivational Theme
+   Fixed: color bugs on cyan-bg elements
    ================================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Orbitron:wght@700;800;900&family=Inter:wght@300;400;500&display=swap');
@@ -22,6 +22,7 @@
   --border2:     rgba(255,255,255,0.07);
   --text:        rgba(255,255,255,0.90);
   --muted:       rgba(255,255,255,0.42);
+  --dark:        #04050F;
   --radius:      12px;
 }
 
@@ -107,9 +108,11 @@ nav a.brand {
   text-decoration: none !important;
 }
 
+/* ── FIX: Logo box — cyan bg, DARK text ── */
 .navbar-brand .logo-icon,
 .brand-icon,
-nav .logo-box {
+nav .logo-box,
+.logo-box {
   width: 36px !important;
   height: 36px !important;
   border-radius: 8px !important;
@@ -120,8 +123,15 @@ nav .logo-box {
   font-family: 'Orbitron', sans-serif !important;
   font-weight: 900 !important;
   font-size: 14px !important;
-  color: #04050F !important;
+  color: #04050F !important;   /* ← dark text on cyan */
   box-shadow: 0 0 20px rgba(0,194,255,0.4) !important;
+}
+
+/* Logo text stays cyan/white */
+.logo-text {
+  color: var(--blue) !important;
+  font-family: 'Orbitron', sans-serif !important;
+  font-weight: 800 !important;
 }
 
 /* Nav links */
@@ -154,20 +164,13 @@ nav .logo-box {
   background: var(--blue-glow2) !important;
 }
 
-/* ── FIX 1: Only nav rize links get blue glow — NOT buttons ── */
+/* Rigel AI nav link highlight */
 .nav-link.ai,
+.nav-link.active,
 nav .nav-links a[href*="rize"],
 .nav-item a[href*="rize"] {
   color: var(--blue) !important;
   text-shadow: 0 0 12px rgba(0,194,255,0.5) !important;
-}
-
-/* ── FIX 2: btn-rize always shows dark text, no glow ── */
-a.btn-rize,
-.btn-rize,
-.rize-banner a[href*="rize"] {
-  color: #04050F !important;
-  text-shadow: none !important;
 }
 
 .profile-btn,
@@ -229,7 +232,8 @@ section.hero,
 }
 
 .badge-dot,
-.pulse-dot {
+.pulse-dot,
+.hero-badge-dot {
   width: 6px !important;
   height: 6px !important;
   border-radius: 50% !important;
@@ -255,20 +259,17 @@ section.hero,
   text-shadow: 0 0 60px rgba(0,194,255,0.15) !important;
 }
 
-/* ── FIX 3: Blue bar bug on desktop ── */
+/* Hero h1 spans — cyan text, transparent bg */
 .hero h1 .highlight,
 .hero h1 .green,
 .hero h1 .accent,
-.hero h1 span {
-  background: transparent !important;
-  background-color: transparent !important;
-  color: var(--blue) !important;
-  text-shadow: 0 0 20px rgba(0,194,255,0.35) !important;
-}
-
+.hero h1 span,
 .hero h1 .grad {
   background: transparent !important;
   background-color: transparent !important;
+  -webkit-background-clip: unset !important;
+  background-clip: unset !important;
+  -webkit-text-fill-color: unset !important;
   display: block !important;
   color: var(--blue) !important;
   text-shadow: 0 0 20px rgba(0,194,255,0.35) !important;
@@ -287,7 +288,9 @@ section.hero,
   font-family: 'Inter', sans-serif !important;
 }
 
-/* ── BUTTONS ── */
+/* ── BUTTONS — FIX: all cyan-bg buttons get dark text ── */
+
+/* Primary button */
 .btn-primary,
 .btn-main,
 button.primary,
@@ -296,7 +299,7 @@ a.btn-primary {
   background: var(--blue) !important;
   border: none !important;
   border-radius: 8px !important;
-  color: #04050F !important;
+  color: #04050F !important;   /* ← always dark */
   font-size: 14px !important;
   font-weight: 700 !important;
   cursor: pointer !important;
@@ -332,6 +335,7 @@ a.btn-primary:hover {
   color: #04050F !important;
 }
 
+/* Secondary button */
 .btn-secondary,
 .btn-outline,
 a.btn-secondary {
@@ -360,24 +364,52 @@ a.btn-secondary:hover {
   box-shadow: 0 0 20px rgba(0,194,255,0.15) !important;
 }
 
+/* AI / rize button */
 .btn-ai,
-.chat-btn {
+.btn-rize,
+.chat-btn,
+a.btn-rize {
   padding: 10px 20px !important;
   background: var(--blue) !important;
   border: none !important;
   border-radius: 6px !important;
-  color: #04050F !important;
+  color: #04050F !important;   /* ← always dark */
   font-size: 13px !important;
   font-weight: 700 !important;
   cursor: pointer !important;
   font-family: 'Space Grotesk', sans-serif !important;
   text-decoration: none !important;
   white-space: nowrap !important;
+  display: inline-block !important;
   transition: all 0.2s !important;
   box-shadow: 0 0 16px rgba(0,194,255,0.3) !important;
+  text-shadow: none !important;
 }
 
-.btn-ai:hover { box-shadow: 0 0 28px rgba(0,194,255,0.5) !important; }
+.btn-ai:hover,
+.btn-rize:hover,
+a.btn-rize:hover {
+  box-shadow: 0 0 28px rgba(0,194,255,0.5) !important;
+  color: #04050F !important;
+}
+
+/* Email submit button */
+.btn-email-submit {
+  width: 100% !important;
+  padding: 13px !important;
+  background: var(--blue) !important;
+  border: none !important;
+  border-radius: 8px !important;
+  color: #04050F !important;   /* ← always dark */
+  font-size: 14px !important;
+  font-weight: 800 !important;
+  cursor: pointer !important;
+  font-family: 'Space Grotesk', sans-serif !important;
+  margin-top: 4px !important;
+  transition: opacity 0.2s !important;
+}
+
+.btn-email-submit:hover { opacity: 0.9 !important; }
 
 .hero-btns,
 .hero .btn-group,
@@ -407,9 +439,11 @@ a.btn-secondary:hover {
   backdrop-filter: blur(8px) !important;
 }
 
+/* ── FIX: Banner icon — cyan bg, DARK text ── */
 .ai-icon,
 .rize-icon,
-.coach-icon {
+.coach-icon,
+.rize-banner-icon {
   width: 44px !important;
   height: 44px !important;
   border-radius: 10px !important;
@@ -420,10 +454,11 @@ a.btn-secondary:hover {
   font-family: 'Orbitron', sans-serif !important;
   font-size: 10px !important;
   font-weight: 900 !important;
-  color: #04050F !important;
+  color: #04050F !important;   /* ← dark text on cyan */
   flex-shrink: 0 !important;
   letter-spacing: 1px !important;
   box-shadow: 0 0 20px rgba(0,194,255,0.35) !important;
+  text-shadow: none !important;
 }
 
 /* ── STATS ── */
@@ -478,7 +513,8 @@ section { position: relative; z-index: 1; }
 
 .section-eyebrow,
 .eyebrow,
-.section-tag {
+.section-tag,
+.section-label {
   font-size: 10px !important;
   font-weight: 600 !important;
   color: var(--blue) !important;
@@ -567,15 +603,18 @@ section h2 span {
 
 .f-card.featured,
 .feature-card.featured,
+.feature-card.rize-card,
 .card.featured {
   border-color: rgba(0,194,255,0.2) !important;
   background: linear-gradient(145deg, rgba(0,194,255,0.06), var(--card)) !important;
 }
 
-.f-card.featured::before { opacity: 1 !important; }
+.f-card.featured::before,
+.feature-card.rize-card::before { opacity: 1 !important; }
 
 .feat-badge,
-.card-badge {
+.card-badge,
+.rize-badge {
   display: inline-flex !important;
   align-items: center !important;
   gap: 5px !important;
@@ -592,10 +631,12 @@ section h2 span {
 }
 
 .f-icon,
-.card-icon { font-size: 28px !important; margin-bottom: 16px !important; display: block !important; }
+.card-icon,
+.feature-icon { font-size: 28px !important; margin-bottom: 16px !important; display: block !important; }
 
 .f-title,
-.card-title {
+.card-title,
+.feature-title {
   font-family: 'Space Grotesk', sans-serif !important;
   font-size: 16px !important;
   font-weight: 700 !important;
@@ -605,7 +646,8 @@ section h2 span {
 }
 
 .f-desc,
-.card-desc {
+.card-desc,
+.feature-desc {
   font-size: 13px !important;
   color: var(--muted) !important;
   line-height: 1.75 !important;
@@ -623,14 +665,16 @@ section h2 span {
 
 .steps { display: flex !important; flex-direction: column !important; gap: 0 !important; margin-top: 48px !important; }
 
-.step {
+.step,
+.step-row {
   display: flex !important;
   gap: 24px !important;
   padding-bottom: 36px !important;
   position: relative !important;
 }
 
-.step:not(:last-child)::after {
+.step:not(:last-child)::after,
+.step-row:not(:last-child)::after {
   content: '' !important;
   position: absolute !important;
   left: 17px; top: 40px; bottom: 0 !important;
@@ -638,6 +682,7 @@ section h2 span {
   background: linear-gradient(180deg, rgba(0,194,255,0.3), transparent) !important;
 }
 
+/* ── FIX: Step numbers — transparent bg, cyan border & text (NOT filled cyan) ── */
 .step-num {
   width: 36px !important;
   height: 36px !important;
@@ -650,7 +695,7 @@ section h2 span {
   font-family: 'Orbitron', sans-serif !important;
   font-size: 12px !important;
   font-weight: 800 !important;
-  color: var(--blue) !important;
+  color: var(--blue) !important;   /* ← cyan text on transparent bg = readable */
   flex-shrink: 0 !important;
   box-shadow: 0 0 12px rgba(0,194,255,0.2) !important;
 }
@@ -745,7 +790,8 @@ footer a:hover { color: var(--blue) !important; }
 /* ── AUTH MODAL ── */
 .modal,
 .auth-modal,
-#authModal {
+#authModal,
+.login-overlay {
   display: none;
   position: fixed !important;
   inset: 0 !important;
@@ -758,23 +804,26 @@ footer a:hover { color: var(--blue) !important; }
 
 .modal.active,
 .modal[style*="flex"],
-.auth-modal.show { display: flex !important; }
+.auth-modal.show,
+.login-overlay.open { display: flex !important; }
 
 .modal-box,
 .modal-content,
-.auth-box {
+.auth-box,
+.login-box {
   background: var(--card2) !important;
   border: 1px solid var(--border) !important;
   border-radius: 18px !important;
   padding: 40px !important;
-  max-width: 420px !important;
+  max-width: 440px !important;
   width: 90% !important;
   position: relative !important;
 }
 
 .modal-box h3,
 .modal-content h3,
-.auth-box h3 {
+.auth-box h3,
+.login-box h3 {
   font-family: 'Orbitron', sans-serif !important;
   font-size: 20px !important;
   font-weight: 800 !important;
@@ -783,7 +832,8 @@ footer a:hover { color: var(--blue) !important; }
 }
 
 .modal-close,
-.close-btn {
+.close-btn,
+.login-close {
   position: absolute !important;
   top: 16px; right: 20px !important;
   background: transparent !important;
@@ -794,12 +844,14 @@ footer a:hover { color: var(--blue) !important; }
   transition: color 0.2s !important;
 }
 
-.modal-close:hover { color: var(--blue) !important; }
+.modal-close:hover,
+.login-close:hover { color: var(--blue) !important; }
 
 /* Inputs */
 input[type="email"],
 input[type="password"],
-input[type="text"] {
+input[type="text"],
+.input-field {
   width: 100% !important;
   padding: 12px 16px !important;
   background: rgba(255,255,255,0.03) !important;
@@ -813,20 +865,19 @@ input[type="text"] {
   transition: border-color 0.2s, box-shadow 0.2s !important;
 }
 
-input:focus {
+input:focus,
+.input-field:focus {
   border-color: rgba(0,194,255,0.4) !important;
   box-shadow: 0 0 0 3px rgba(0,194,255,0.08) !important;
 }
 
-/* Social auth buttons */
-.btn-google,
-.btn-github,
-.social-btn {
+/* ── FIX: Social auth buttons — dark bg, light text (NOT overriding with var(--text) over white bg) ── */
+.btn-google {
   width: 100% !important;
   padding: 12px !important;
   border-radius: 8px !important;
   font-size: 14px !important;
-  font-weight: 500 !important;
+  font-weight: 600 !important;
   cursor: pointer !important;
   font-family: 'Space Grotesk', sans-serif !important;
   display: flex !important;
@@ -835,25 +886,127 @@ input:focus {
   gap: 10px !important;
   margin-bottom: 10px !important;
   transition: all 0.2s !important;
-  background: rgba(255,255,255,0.03) !important;
+  background: white !important;
+  border: none !important;
+  color: #111 !important;   /* ← dark text on white bg */
+}
+
+.btn-google:hover {
+  opacity: 0.9 !important;
+  background: white !important;
+  color: #111 !important;
+}
+
+.btn-github {
+  width: 100% !important;
+  padding: 12px !important;
+  border-radius: 8px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  font-family: 'Space Grotesk', sans-serif !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 10px !important;
+  margin-bottom: 10px !important;
+  transition: all 0.2s !important;
+  background: #24292e !important;
+  border: 1px solid rgba(255,255,255,0.1) !important;
+  color: white !important;   /* ← white text on dark bg */
+}
+
+.btn-github:hover {
+  opacity: 0.85 !important;
+  color: white !important;
+}
+
+.btn-guest {
+  width: 100% !important;
+  padding: 12px !important;
+  border-radius: 8px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  font-family: 'Space Grotesk', sans-serif !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 10px !important;
+  margin-bottom: 10px !important;
+  transition: all 0.2s !important;
+  background: transparent !important;
   border: 1px solid var(--border2) !important;
+  color: var(--muted) !important;
+}
+
+.btn-guest:hover {
+  border-color: rgba(0,194,255,0.3) !important;
   color: var(--text) !important;
 }
 
-.btn-google:hover,
-.btn-github:hover {
-  border-color: rgba(0,194,255,0.25) !important;
-  background: rgba(0,194,255,0.04) !important;
+/* Login tabs */
+.login-tabs {
+  display: flex !important;
+  gap: 0 !important;
+  margin-bottom: 24px !important;
+  background: rgba(255,255,255,0.04) !important;
+  border-radius: 10px !important;
+  padding: 4px !important;
 }
+
+.login-tab {
+  flex: 1 !important;
+  padding: 8px !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  color: var(--muted) !important;
+  cursor: pointer !important;
+  border-radius: 7px !important;
+  border: none !important;
+  background: transparent !important;
+  transition: all 0.2s !important;
+  font-family: 'Space Grotesk', sans-serif !important;
+}
+
+.login-tab.active {
+  background: #1e2d28 !important;
+  color: white !important;
+}
+
+/* Login misc */
+.login-or {
+  font-size: 11px !important;
+  color: var(--muted) !important;
+  margin: 16px 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+}
+
+.login-or::before,
+.login-or::after {
+  content: '' !important;
+  flex: 1 !important;
+  height: 1px !important;
+  background: var(--border2) !important;
+}
+
+.login-error { font-size: 12px !important; color: #ff4757 !important; margin-top: 8px !important; min-height: 18px !important; }
+.login-switch { font-size: 12px !important; color: var(--muted) !important; margin-top: 14px !important; }
+.login-switch a { color: var(--blue) !important; cursor: pointer !important; }
+.login-footer-note { font-size: 11px !important; color: var(--muted) !important; margin-top: 20px !important; }
 
 /* ── DROPDOWN ── */
 .dropdown-menu,
-.user-menu {
+.user-menu,
+.profile-dropdown {
   background: var(--card2) !important;
   border: 1px solid var(--border) !important;
   border-radius: 12px !important;
   padding: 8px !important;
   min-width: 200px !important;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5) !important;
 }
 
 .dropdown-item,
@@ -861,17 +1014,49 @@ input:focus {
   padding: 10px 14px !important;
   border-radius: 6px !important;
   font-size: 13px !important;
-  color: var(--text) !important;
-  display: block !important;
+  color: var(--muted) !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
   transition: all 0.15s !important;
   font-family: 'Space Grotesk', sans-serif !important;
+  cursor: pointer !important;
+  text-decoration: none !important;
 }
 
 .dropdown-item:hover,
 .user-menu a:hover {
   background: rgba(0,194,255,0.06) !important;
-  color: var(--blue) !important;
+  color: white !important;
 }
+
+.dropdown-item.danger:hover {
+  background: rgba(255,71,87,0.1) !important;
+  color: #ff4757 !important;
+}
+
+/* ── RIZE / CHAT PAGE ── */
+.agent-avatar,
+.msg-avatar {
+  background: var(--blue) !important;
+  color: #04050F !important;   /* ← dark text on cyan avatar */
+  font-weight: 900 !important;
+  text-shadow: none !important;
+}
+
+.chat-tag {
+  color: var(--blue) !important;
+  background: rgba(0,194,255,0.06) !important;
+  border: 1px solid rgba(0,194,255,0.15) !important;
+}
+
+.send-btn {
+  background: var(--blue) !important;
+  color: #04050F !important;   /* ← dark icon on cyan */
+  border: none !important;
+}
+
+.send-btn svg { stroke: #04050F !important; }
 
 /* ── INNER PAGES ── */
 .page-hero,
@@ -990,7 +1175,7 @@ label {
 .text-success { color: var(--blue) !important; }
 .bg-success { background: var(--blue) !important; }
 .btn-success { background: var(--blue) !important; border-color: var(--blue) !important; color: #04050F !important; }
-.btn-success:hover { background: var(--blue-dim) !important; border-color: var(--blue-dim) !important; }
+.btn-success:hover { background: var(--blue-dim) !important; border-color: var(--blue-dim) !important; color: #04050F !important; }
 .btn-outline-success { border-color: var(--blue) !important; color: var(--blue) !important; }
 .btn-outline-success:hover { background: var(--blue) !important; color: #04050F !important; }
 .text-primary { color: var(--blue) !important; }

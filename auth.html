@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta name="description" content="RiseNow — Helping Strugglers Stand Again. A fully responsive career guidance & motivation platform built for job seekers, career switchers, and people starting over."/>
-  <meta property="og:title" content="RiseNow — Stand Again"/>
+    <meta name="description" content="Rigel — Outgrow the Ordinary. A fully responsive career guidance & motivation platform built for job seekers, career switchers, and people starting over."/>
+  <meta property="og:title" content="Rigel — Outgrow"/>
   <meta property="og:description" content="Free career paths, daily motivation, real success stories and powerful tools — all in one platform."/>
   <meta property="og:type" content="website"/>
-  <title>Join RiseNow — Sign In / Sign Up</title>
+  <title>Join Rigel — Sign In / Sign Up</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
@@ -15,7 +15,7 @@
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --green: #00e676;
+      --blue: #00C2FF;
       --teal:  #00bcd4;
       --bg:    #0a0e13;
       --card:  #111820;
@@ -73,14 +73,14 @@
     .lp-name {
       font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800;
       background: var(--grad);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      color: var(--blue); background-clip: text;
     }
 
     .lp-content { position: relative; z-index: 1; }
     .lp-tag {
       display: inline-flex; align-items: center; gap: 8px;
       background: rgba(0,230,118,0.08); border: 1px solid rgba(0,230,118,0.2);
-      color: var(--green); font-size: 11px; font-weight: 700;
+      color: var(--blue); font-size: 11px; font-weight: 700;
       letter-spacing: 2px; text-transform: uppercase;
       padding: 6px 16px; border-radius: 20px; margin-bottom: 24px;
     }
@@ -92,7 +92,7 @@
     }
     .lp-content h1 span {
       background: var(--grad);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      color: var(--blue); background-clip: text;
     }
     .lp-content p { font-size: 15px; color: var(--muted); line-height: 1.75; margin-bottom: 36px; }
 
@@ -118,7 +118,7 @@
     .lp-stat-num {
       font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800;
       background: var(--grad);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      color: var(--blue); background-clip: text;
     }
     .lp-stat-lbl { font-size: 11px; color: var(--muted); margin-top: 3px; }
 
@@ -205,7 +205,7 @@
       cursor: pointer; transition: all .2s; text-align: center;
     }
     .cs-card:hover { border-color: rgba(0,230,118,0.25); }
-    .cs-card.chosen { border-color: var(--green); background: rgba(0,230,118,0.06); }
+    .cs-card.chosen { border-color: var(--blue); background: rgba(0,230,118,0.06); }
     .cs-card .cs-emoji { font-size: 22px; display: block; margin-bottom: 4px; }
     .cs-card .cs-name { font-size: 12px; font-weight: 700; }
 
@@ -233,11 +233,11 @@
     .auth-switch {
       text-align: center; font-size: 13px; color: var(--muted);
     }
-    .auth-switch a { color: var(--green); text-decoration: none; font-weight: 600; cursor: pointer; }
+    .auth-switch a { color: var(--blue); text-decoration: none; font-weight: 600; cursor: pointer; }
 
     .toast {
       position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(80px);
-      background: var(--green); color: #0a0e13;
+      background: var(--blue); color: #0a0e13;
       font-weight: 700; font-size: 13px; padding: 12px 24px;
       border-radius: 10px; transition: .35s; z-index: 9999; white-space: nowrap;
     }
@@ -259,7 +259,7 @@
 <div class="left-panel">
   <a href="index.html" class="lp-logo">
     <div class="lp-icon">R</div>
-    <span class="lp-name">RiseNow</span>
+    <span class="lp-name">Rigel</span>
   </a>
 
   <div class="lp-content">
@@ -318,7 +318,7 @@
     <!-- SIGN IN FORM -->
     <div class="auth-form active" id="formSignin">
       <h2>Welcome back 👋</h2>
-      <p class="sub">Sign in to your personal RiseNow dashboard.</p>
+      <p class="sub">Sign in to your personal Rigel dashboard.</p>
 
       <div>
         <label class="field-label">Email</label>
@@ -533,7 +533,7 @@
 
     const btn = document.getElementById('btnSignup');
     btn.textContent = '✅ Account Created!'; btn.disabled = true;
-    showToast('🎉 Welcome to RiseNow, ' + name.split(' ')[0] + '!');
+    showToast('🎉 Welcome to Rigel, ' + name.split(' ')[0] + '!');
     setTimeout(() => { window.location.href = 'dashboard.html'; }, 1200);
   }
 

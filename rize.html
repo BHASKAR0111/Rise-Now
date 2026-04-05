@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta name="description" content="RiseNow — Helping Strugglers Stand Again. A fully responsive career guidance & motivation platform built for job seekers, career switchers, and people starting over."/>
-  <meta property="og:title" content="RiseNow — Stand Again"/>
+    <meta name="description" content="Rigel — Outgrow the Ordinary. A fully responsive career guidance & motivation platform built for job seekers, career switchers, and people starting over."/>
+  <meta property="og:title" content="Rigel — Outgrow"/>
   <meta property="og:description" content="Free career paths, daily motivation, real success stories and powerful tools — all in one platform."/>
   <meta property="og:type" content="website"/>
-  <title>Rize — AI Career Coach · RiseNow</title>
+  <title>Rigel — AI Career Coach · Rigel</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
     *{margin:0;padding:0;box-sizing:border-box;}
     :root{
-      --green:#00e676;--teal:#00bcd4;
-      --bg:#0a0f0d;--card:#111814;
+      --blue:#00C2FF;--blue-dim:#0090CC;
+      --bg:#04050F;--card:#0A0C1E;
       --border:rgba(255,255,255,0.07);
       --text:rgba(255,255,255,0.85);
       --muted:rgba(255,255,255,0.4);
@@ -22,28 +22,28 @@
     .bg-stars{position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse at 20% 50%,rgba(0,100,60,0.15) 0%,transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(0,80,80,0.1) 0%,transparent 50%);}
     nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,15,13,0.9);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 48px;height:68px;display:flex;align-items:center;justify-content:space-between;}
     .nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none;}
-    .logo-box{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--green),var(--teal));display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:#0a0f0d;}
-    .logo-text{font-size:22px;font-weight:800;background:linear-gradient(90deg,var(--green),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    .logo-box{width:40px;height:40px;border-radius:10px;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:#04050F;}
+    .logo-text{font-size:22px;font-weight:800;background:var(--blue);color:var(--blue);}
     .nav-links{display:flex;align-items:center;gap:8px;}
     .nav-link{padding:8px 16px;font-size:14px;font-weight:500;color:var(--muted);text-decoration:none;border-radius:8px;transition:color 0.2s;}
     .nav-link:hover{color:white;}
-    .nav-link.active{color:var(--green);}
+    .nav-link.active{color:var(--blue);}
     .page{padding:100px 48px 60px;max-width:900px;margin:0 auto;position:relative;z-index:1;}
-    .page-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(0,230,118,0.08);border:1px solid rgba(0,230,118,0.2);color:var(--green);font-size:11px;font-weight:700;padding:6px 16px;border-radius:20px;letter-spacing:2px;text-transform:uppercase;margin-bottom:24px;}
-    .badge-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite;}
+    .page-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(0,230,118,0.08);border:1px solid rgba(0,230,118,0.2);color:var(--blue);font-size:11px;font-weight:700;padding:6px 16px;border-radius:20px;letter-spacing:2px;text-transform:uppercase;margin-bottom:24px;}
+    .badge-dot{width:6px;height:6px;border-radius:50%;background:var(--blue);animation:pulse 2s infinite;}
     @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
     .page-title{font-size:56px;font-weight:900;letter-spacing:-2px;line-height:1;margin-bottom:12px;color:white;}
-    .page-title .grad{background:linear-gradient(135deg,var(--green),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    .page-title .grad{background:var(--blue);color:var(--blue);}
     .page-sub{font-size:16px;color:var(--muted);margin-bottom:36px;line-height:1.7;max-width:560px;}
     .chat-wrap{background:var(--card);border:1px solid var(--border);border-radius:24px;overflow:hidden;display:flex;flex-direction:column;height:560px;position:relative;}
-    .chat-wrap::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--green),var(--teal));z-index:1;}
+    .chat-wrap::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--blue);z-index:1;}
     .chat-top{display:flex;align-items:center;gap:14px;padding:18px 24px;border-bottom:1px solid var(--border);background:rgba(255,255,255,0.02);flex-shrink:0;}
-    .rize-av{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--teal));display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#0a0f0d;flex-shrink:0;position:relative;}
+    .rize-av{width:44px;height:44px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#04050F;flex-shrink:0;position:relative;}
     .rize-av::after{content:'';position:absolute;bottom:2px;right:2px;width:10px;height:10px;background:#00e676;border-radius:50%;border:2px solid var(--card);}
     .rize-meta h3{font-size:15px;font-weight:700;color:white;}
     .rize-meta p{font-size:11px;color:var(--muted);margin-top:1px;}
     .cap-pills{margin-left:auto;display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end;}
-    .cpill{font-size:10px;font-weight:600;padding:3px 9px;border-radius:20px;background:rgba(0,230,118,0.08);border:1px solid rgba(0,230,118,0.2);color:var(--green);}
+    .cpill{font-size:10px;font-weight:600;padding:3px 9px;border-radius:20px;background:rgba(0,230,118,0.08);border:1px solid rgba(0,230,118,0.2);color:var(--blue);}
     .messages{flex:1;overflow-y:auto;padding:22px;display:flex;flex-direction:column;gap:14px;scroll-behavior:smooth;}
     .messages::-webkit-scrollbar{width:3px;}
     .messages::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.08);border-radius:2px;}
@@ -51,37 +51,37 @@
     @keyframes fadeUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
     .msg.user{flex-direction:row-reverse;}
     .msg-av{width:30px;height:30px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;margin-top:2px;}
-    .msg.ai .msg-av{background:linear-gradient(135deg,var(--green),var(--teal));color:#0a0f0d;font-weight:900;font-size:11px;}
+    .msg.ai .msg-av{background:var(--blue);color:#04050F;font-weight:900;font-size:11px;}
     .msg.user .msg-av{background:#0f2d4a;color:#7dd3fc;}
     .bubble{max-width:76%;padding:11px 15px;border-radius:14px;font-size:13.5px;line-height:1.65;font-weight:400;}
     .msg.ai .bubble{background:#161d1a;border:1px solid var(--border);border-top-left-radius:4px;color:var(--text);}
     .msg.user .bubble{background:#0f2d4a;border:1px solid rgba(56,189,248,0.15);border-top-right-radius:4px;color:#bfdbfe;}
-    .bubble strong,.bubble b{color:var(--green);font-weight:700;}
+    .bubble strong,.bubble b{color:var(--blue);font-weight:700;}
     .bubble .step{display:flex;gap:10px;padding:7px 0;border-bottom:1px solid var(--border);align-items:flex-start;}
     .bubble .step:last-child{border-bottom:none;}
-    .snum{min-width:22px;height:22px;border-radius:50%;background:rgba(0,230,118,0.1);border:1px solid rgba(0,230,118,0.25);color:var(--green);font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+    .snum{min-width:22px;height:22px;border-radius:50%;background:rgba(0,230,118,0.1);border:1px solid rgba(0,230,118,0.25);color:var(--blue);font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
     .typing{display:flex;gap:10px;align-items:flex-end;animation:fadeUp 0.25s ease forwards;opacity:0;}
     .typing-dots{background:#161d1a;border:1px solid var(--border);border-radius:14px;border-top-left-radius:4px;padding:13px 16px;display:flex;gap:5px;align-items:center;}
-    .dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 1.1s infinite;}
+    .dot{width:6px;height:6px;border-radius:50%;background:var(--blue);animation:blink 1.1s infinite;}
     .dot:nth-child(2){animation-delay:0.18s;}
     .dot:nth-child(3){animation-delay:0.36s;}
     @keyframes blink{0%,60%,100%{opacity:0.25;transform:scale(0.85);}30%{opacity:1;transform:scale(1.2);}}
     .quick{padding:0 22px 10px;display:flex;gap:7px;flex-wrap:wrap;flex-shrink:0;}
-    .qbtn{font-family:'Inter',sans-serif;font-size:11.5px;font-weight:600;padding:6px 12px;border-radius:20px;border:1px solid rgba(0,230,118,0.2);background:rgba(0,230,118,0.06);color:var(--green);cursor:pointer;transition:all 0.18s;white-space:nowrap;}
+    .qbtn{font-family:'Inter',sans-serif;font-size:11.5px;font-weight:600;padding:6px 12px;border-radius:20px;border:1px solid rgba(0,230,118,0.2);background:rgba(0,230,118,0.06);color:var(--blue);cursor:pointer;transition:all 0.18s;white-space:nowrap;}
     .qbtn:hover{background:rgba(0,230,118,0.13);border-color:rgba(0,230,118,0.4);color:white;}
     .input-row{padding:14px 18px;border-top:1px solid var(--border);display:flex;gap:10px;align-items:flex-end;background:rgba(255,255,255,0.02);flex-shrink:0;}
     .input-box{flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(0,230,118,0.18);border-radius:12px;padding:10px 14px;display:flex;align-items:flex-end;gap:8px;transition:border-color 0.2s;}
     .input-box:focus-within{border-color:rgba(0,230,118,0.4);}
     textarea{flex:1;background:transparent;border:none;outline:none;color:var(--text);font-family:'Inter',sans-serif;font-size:13.5px;font-weight:400;line-height:1.5;resize:none;max-height:90px;min-height:20px;}
     textarea::placeholder{color:var(--muted);}
-    .send-btn{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--green),var(--teal));border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.18s;box-shadow:0 4px 14px rgba(0,230,118,0.25);}
+    .send-btn{width:40px;height:40px;border-radius:10px;background:var(--blue);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.18s;box-shadow:0 4px 14px rgba(0,230,118,0.25);}
     .send-btn:hover{transform:scale(1.06);box-shadow:0 6px 20px rgba(0,230,118,0.35);}
     .send-btn:active{transform:scale(0.96);}
     .send-btn:disabled{opacity:0.3;cursor:not-allowed;transform:none;box-shadow:none;}
-    .send-btn svg{width:16px;height:16px;fill:#0a0f0d;}
+    .send-btn svg{width:16px;height:16px;fill:#04050F;}
     .caps-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:28px;}
     .cap-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;text-align:center;transition:border-color 0.25s,transform 0.25s;position:relative;overflow:hidden;}
-    .cap-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--green),var(--teal));opacity:0;transition:opacity 0.25s;}
+    .cap-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--blue);opacity:0;transition:opacity 0.25s;}
     .cap-card:hover{border-color:rgba(0,230,118,0.2);transform:translateY(-2px);}
     .cap-card:hover::before{opacity:1;}
     .cap-icon{font-size:22px;margin-bottom:8px;display:block;}
@@ -102,7 +102,7 @@
 <nav>
   <a href="index.html" class="nav-logo">
     <div class="logo-box">R</div>
-    <div class="logo-text">RiseNow</div>
+    <div class="logo-text">Rigel</div>
   </a>
   <div class="nav-links">
     <a href="careers.html" class="nav-link">Careers</a>
@@ -110,7 +110,7 @@
     <a href="daily-quote.html" class="nav-link">Motivation</a>
     <a href="jobs.html" class="nav-link">Jobs</a>
     <a href="job-suite.html" class="nav-link">My Suite</a>
-    <a href="rize.html" class="nav-link active">Rize AI</a>
+    <a href="rize.html" class="nav-link active">Rigel AI</a>
   </div>
 </nav>
 <div class="page">
@@ -119,10 +119,10 @@
   <p class="page-sub">Your free AI career coach — built for freshers, career switchers, gap year folks, and anyone starting over. India-focused. Always honest.</p>
   <div class="chat-wrap">
     <div class="chat-top">
-      <div class="rize-av">Rize</div>
+      <div class="rize-av">Rigel</div>
       <div class="rize-meta">
-        <h3>Rize</h3>
-        <p>AI Career Coach · India-focused · Powered by RiseNow</p>
+        <h3>Rigel</h3>
+        <p>AI Career Coach · India-focused · Powered by Rigel</p>
       </div>
       <div class="cap-pills">
         <span class="cpill">Career Paths</span>
@@ -133,9 +133,9 @@
     </div>
     <div class="messages" id="messages">
       <div class="msg ai">
-        <div class="msg-av">Rize</div>
+        <div class="msg-av">Rigel</div>
         <div class="bubble">
-          Hey! I'm <strong>Rize</strong> — your AI career coach on RiseNow. 👋<br><br>
+          Hey! I'm <strong>Rigel</strong> — your AI career coach on Rigel. 👋<br><br>
           Whether you just finished college, have a gap on your resume, want to switch careers, or feel totally lost — I've got you.<br><br>
           Tell me <strong>where you are right now</strong> and <strong>what you're aiming for.</strong> Let's figure it out together.
         </div>
@@ -169,7 +169,7 @@
 </div>
 <script>
 const history = [];
-const SYSTEM = `You are Rize, an AI career coach on RiseNow — a free platform helping people who are starting over, switching careers, or figuring out their next step in India.
+const SYSTEM = `You are Rize, an AI career coach on Rigel — a free platform helping people who are starting over, switching careers, or figuring out their next step in India.
 
 Personality:
 - Direct, warm, no-BS. Like a smart older sibling who's navigated the Indian job market.
@@ -245,7 +245,7 @@ function showTyping() {
   const area = document.getElementById('messages');
   const el = document.createElement('div');
   el.className = 'typing';
-  el.innerHTML = `<div class="msg-av" style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#00e676,#00bcd4);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:900;color:#0a0f0d;flex-shrink:0;">Rize</div><div class="typing-dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>`;
+  el.innerHTML = `<div class="msg-av" style="width:30px;height:30px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:900;color:#04050F;flex-shrink:0;">Rigel</div><div class="typing-dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>`;
   area.appendChild(el);
   area.scrollTop = area.scrollHeight;
   return el;

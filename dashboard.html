@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta name="description" content="RiseNow — Helping Strugglers Stand Again. A fully responsive career guidance & motivation platform built for job seekers, career switchers, and people starting over."/>
-  <meta property="og:title" content="RiseNow — Stand Again"/>
+    <meta name="description" content="Rigel — Outgrow the Ordinary. A fully responsive career guidance & motivation platform built for job seekers, career switchers, and people starting over."/>
+  <meta property="og:title" content="Rigel — Outgrow"/>
   <meta property="og:description" content="Free career paths, daily motivation, real success stories and powerful tools — all in one platform."/>
   <meta property="og:type" content="website"/>
-  <title>My Dashboard | RiseNow</title>
+  <title>My Dashboard | Rigel</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
     *{margin:0;padding:0;box-sizing:border-box;}
     :root{
-      --green:#00e676;--teal:#00bcd4;
-      --bg:#0a0f0d;--card:#111814;--card2:#161d1a;
+      --blue:#00C2FF;--blue-dim:#0090CC;
+      --bg:#04050F;--card:#0A0C1E;--card2:#161d1a;
       --border:rgba(255,255,255,0.07);
       --text:rgba(255,255,255,0.85);
       --muted:rgba(255,255,255,0.4);
@@ -29,8 +29,8 @@
       display:flex;align-items:center;justify-content:space-between;
     }
     .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
-    .logo-box{width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,var(--green),var(--teal));display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#0a0f0d;}
-    .logo-text{font-size:20px;font-weight:800;background:linear-gradient(90deg,var(--green),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    .logo-box{width:36px;height:36px;border-radius:8px;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#04050F;}
+    .logo-text{font-size:20px;font-weight:800;background:var(--blue);color:var(--blue);}
     .nav-right{display:flex;align-items:center;gap:12px;}
     .nav-link{padding:8px 14px;font-size:13px;font-weight:500;color:var(--muted);text-decoration:none;border-radius:8px;transition:color 0.2s;}
     .nav-link:hover{color:white;}
@@ -43,7 +43,7 @@
 
     /* LOADING */
     #loadingScreen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:999;flex-direction:column;gap:16px;}
-    .loader{width:40px;height:40px;border:3px solid rgba(0,230,118,0.2);border-top:3px solid var(--green);border-radius:50%;animation:spin 0.8s linear infinite;}
+    .loader{width:40px;height:40px;border:3px solid rgba(0,230,118,0.2);border-top:3px solid var(--blue);border-radius:50%;animation:spin 0.8s linear infinite;}
     @keyframes spin{to{transform:rotate(360deg);}}
     #loadingScreen p{font-size:14px;color:var(--muted);}
 
@@ -51,7 +51,7 @@
     #notLoggedIn{display:none;text-align:center;padding:120px 40px;}
     #notLoggedIn h2{font-size:28px;font-weight:800;color:white;margin-bottom:12px;}
     #notLoggedIn p{font-size:15px;color:var(--muted);margin-bottom:32px;}
-    .btn-login{padding:14px 32px;background:linear-gradient(135deg,var(--green),var(--teal));border:none;border-radius:12px;color:#0a0f0d;font-size:15px;font-weight:800;cursor:pointer;font-family:'Inter',sans-serif;}
+    .btn-login{padding:14px 32px;background:var(--blue);border:none;border-radius:12px;color:#04050F;font-size:15px;font-weight:800;cursor:pointer;font-family:'Inter',sans-serif;}
 
     /* DASHBOARD */
     #dashboardContent{display:none;}
@@ -59,7 +59,7 @@
     /* WELCOME BANNER */
     .welcome{padding:40px 40px 0;}
     .welcome h2{font-size:30px;font-weight:900;letter-spacing:-1px;color:white;margin-bottom:4px;}
-    .welcome h2 span{background:linear-gradient(90deg,var(--green),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    .welcome h2 span{background:var(--blue);color:var(--blue);}
     .welcome p{font-size:14px;color:var(--muted);}
 
     /* STATS */
@@ -78,7 +78,7 @@
     .empty-icon{font-size:48px;margin-bottom:16px;}
     .empty-state h3{font-size:18px;font-weight:700;color:white;margin-bottom:8px;}
     .empty-state p{font-size:13px;color:var(--muted);margin-bottom:24px;line-height:1.6;}
-    .btn-explore{padding:12px 28px;background:linear-gradient(135deg,var(--green),var(--teal));border:none;border-radius:10px;color:#0a0f0d;font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;text-decoration:none;display:inline-block;}
+    .btn-explore{padding:12px 28px;background:var(--blue);border:none;border-radius:10px;color:#04050F;font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;text-decoration:none;display:inline-block;}
 
     /* PATH CARD */
     .path-card{background:var(--card);border:1px solid var(--border);border-radius:16px;margin-bottom:14px;overflow:hidden;transition:border-color 0.2s;}
@@ -88,13 +88,13 @@
     .path-info{flex:1;}
     .path-title{font-size:16px;font-weight:700;color:white;margin-bottom:3px;}
     .path-sub{font-size:12px;color:var(--muted);}
-    .path-pct{font-size:22px;font-weight:900;background:linear-gradient(90deg,var(--green),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;flex-shrink:0;}
+    .path-pct{font-size:22px;font-weight:900;background:var(--blue);color:var(--blue);flex-shrink:0;}
     .path-chevron{color:var(--muted);font-size:14px;transition:transform 0.3s;flex-shrink:0;}
     .path-card.expanded .path-chevron{transform:rotate(180deg);}
 
     .path-progress{padding:0 24px 16px;}
     .prog-track{height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;}
-    .prog-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--teal));border-radius:3px;transition:width 0.5s;}
+    .prog-fill{height:100%;background:var(--blue);border-radius:3px;transition:width 0.5s;}
 
     .path-steps{display:none;border-top:1px solid var(--border);}
     .path-card.expanded .path-steps{display:block;}
@@ -105,11 +105,11 @@
     .step-item{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.04);cursor:pointer;}
     .step-item:last-child{border-bottom:none;}
     .step-cb{width:22px;height:22px;border-radius:50%;border:2px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;transition:all 0.2s;margin-top:1px;}
-    .step-item.done .step-cb{background:var(--green);border-color:var(--green);color:#0a0f0d;}
+    .step-item.done .step-cb{background:var(--blue);border-color:var(--blue);color:#04050F;}
     .step-text{flex:1;}
     .step-name{font-size:13px;font-weight:600;color:var(--text);}
     .step-item.done .step-name{color:var(--muted);text-decoration:line-through;}
-    .step-resource-link{font-size:11px;color:var(--teal);margin-top:3px;display:block;text-decoration:none;}
+    .step-resource-link{font-size:11px;color:var(--blue);margin-top:3px;display:block;text-decoration:none;}
     .step-resource-link:hover{text-decoration:underline;}
     .step-num-badge{font-size:10px;color:var(--muted);flex-shrink:0;margin-top:4px;}
 
@@ -118,7 +118,7 @@
       background:rgba(0,230,118,0.06);border:1px solid rgba(0,230,118,0.15);
       border-radius:12px;padding:16px;margin-bottom:12px;
     }
-    .next-step-label{font-size:10px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;}
+    .next-step-label{font-size:10px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;}
     .next-step-text{font-size:14px;font-weight:600;color:white;margin-bottom:4px;}
     .next-step-path{font-size:12px;color:var(--muted);}
 
@@ -135,7 +135,7 @@
 
     /* DAILY QUOTE */
     .quote-card{background:linear-gradient(135deg,rgba(0,230,118,0.08),rgba(0,188,212,0.08));border:1px solid rgba(0,230,118,0.15);border-radius:16px;padding:20px;margin-bottom:16px;}
-    .quote-card .q-label{font-size:10px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;}
+    .quote-card .q-label{font-size:10px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;}
     .quote-card .q-text{font-size:14px;font-style:italic;color:rgba(255,255,255,0.8);line-height:1.6;margin-bottom:8px;}
     .quote-card .q-author{font-size:11px;color:var(--muted);}
 
@@ -175,7 +175,7 @@
   <nav>
     <a href="index.html" class="nav-logo">
       <div class="logo-box">R</div>
-      <div class="logo-text">RiseNow</div>
+      <div class="logo-text">Rigel</div>
     </a>
     <div class="nav-right">
       <a href="careers.html" class="nav-link">Explore Careers</a>
@@ -198,11 +198,11 @@
   <!-- STATS -->
   <div class="stats-row">
     <div class="stat-card">
-      <div class="stat-num" id="statPaths" style="color:var(--green)">0</div>
+      <div class="stat-num" id="statPaths" style="color:var(--blue)">0</div>
       <div class="stat-lbl">Career Paths Saved</div>
     </div>
     <div class="stat-card">
-      <div class="stat-num" id="statSteps" style="color:var(--teal)">0</div>
+      <div class="stat-num" id="statSteps" style="color:var(--blue)">0</div>
       <div class="stat-lbl">Steps Completed</div>
     </div>
     <div class="stat-card">
@@ -643,7 +643,7 @@
             <div class="next-step-text">${career.steps[nextIdx].name}</div>
             <div class="next-step-path">${career.emoji} ${career.title} · Step ${nextIdx+1}</div>
           </div>
-          <a href="${career.steps[nextIdx].url}" target="_blank" style="display:block;padding:10px 14px;background:rgba(0,230,118,0.1);border:1px solid rgba(0,230,118,0.2);border-radius:10px;color:var(--green);font-size:13px;font-weight:600;text-decoration:none;text-align:center;">
+          <a href="${career.steps[nextIdx].url}" target="_blank" style="display:block;padding:10px 14px;background:rgba(0,230,118,0.1);border:1px solid rgba(0,230,118,0.2);border-radius:10px;color:var(--blue);font-size:13px;font-weight:600;text-decoration:none;text-align:center;">
             Start on ${career.steps[nextIdx].resource} →
           </a>
         `;

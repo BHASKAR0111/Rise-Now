@@ -247,12 +247,23 @@ section.hero,
   text-shadow: 0 0 60px rgba(0,194,255,0.15) !important;
 }
 
+/* ── FIX: Blue bar bug on desktop ── */
 .hero h1 .highlight,
 .hero h1 .green,
 .hero h1 .accent,
 .hero h1 span {
+  background: transparent !important;
+  background-color: transparent !important;
   color: var(--blue) !important;
-  text-shadow: 0 0 30px rgba(0,194,255,0.6) !important;
+  text-shadow: 0 0 20px rgba(0,194,255,0.35) !important;
+}
+
+.hero h1 .grad {
+  background: transparent !important;
+  background-color: transparent !important;
+  display: block !important;
+  color: var(--blue) !important;
+  text-shadow: 0 0 20px rgba(0,194,255,0.35) !important;
 }
 
 /* Hero sub */

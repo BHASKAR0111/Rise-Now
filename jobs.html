@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta name="description" content="RiseNow — Helping Strugglers Stand Again. A fully responsive career guidance & motivation platform built for job seekers, career switchers, and people starting over."/>
-  <meta property="og:title" content="RiseNow — Stand Again"/>
+    <meta name="description" content="Rigel — Outgrow the Ordinary. A fully responsive career guidance & motivation platform built for job seekers, career switchers, and people starting over."/>
+  <meta property="og:title" content="Rigel — Outgrow"/>
   <meta property="og:description" content="Free career paths, daily motivation, real success stories and powerful tools — all in one platform."/>
   <meta property="og:type" content="website"/>
-  <title>RiseNow — Live Job Listings</title>
+  <title>Rigel — Live Job Listings</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
     *{margin:0;padding:0;box-sizing:border-box;}
     :root{
-      --green:#00e676;--teal:#00bcd4;
-      --bg:#0a0f0d;--card:#111814;
+      --blue:#00C2FF;--blue-dim:#0090CC;
+      --bg:#04050F;--card:#0A0C1E;
       --border:rgba(255,255,255,0.07);
       --text:rgba(255,255,255,0.85);
       --muted:rgba(255,255,255,0.4);
@@ -31,12 +31,12 @@
       display:flex;align-items:center;justify-content:space-between;
     }
     .nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none;}
-    .logo-box{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--green),var(--teal));display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:#0a0f0d;}
-    .logo-text{font-size:22px;font-weight:800;background:linear-gradient(90deg,var(--green),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    .logo-box{width:40px;height:40px;border-radius:10px;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:#04050F;}
+    .logo-text{font-size:22px;font-weight:800;background:var(--blue);color:var(--blue);}
     .nav-links{display:flex;align-items:center;gap:8px;}
     .nav-link{padding:8px 16px;font-size:14px;font-weight:500;color:var(--muted);text-decoration:none;border-radius:8px;transition:color 0.2s;}
     .nav-link:hover{color:white;}
-    .nav-link.active{color:var(--green);}
+    .nav-link.active{color:var(--blue);}
 
     /* ===== PAGE HEADER ===== */
     .page-header{
@@ -45,14 +45,14 @@
       max-width:1200px;margin:0 auto;
     }
     .page-header-inner{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;}
-    .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(0,230,118,0.08);border:1px solid rgba(0,230,118,0.2);color:var(--green);font-size:11px;font-weight:700;padding:6px 16px;border-radius:20px;letter-spacing:2px;text-transform:uppercase;margin-bottom:20px;}
-    .live-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 1.5s infinite;}
+    .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(0,230,118,0.08);border:1px solid rgba(0,230,118,0.2);color:var(--blue);font-size:11px;font-weight:700;padding:6px 16px;border-radius:20px;letter-spacing:2px;text-transform:uppercase;margin-bottom:20px;}
+    .live-dot{width:6px;height:6px;border-radius:50%;background:var(--blue);animation:pulse 1.5s infinite;}
     @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
     .page-header h1{font-size:clamp(36px,5vw,56px);font-weight:900;letter-spacing:-2.5px;line-height:1.05;color:white;}
-    .page-header h1 .grad{background:linear-gradient(135deg,var(--green),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    .page-header h1 .grad{background:var(--blue);color:var(--blue);}
     .page-header p{font-size:15px;color:var(--muted);margin-top:10px;line-height:1.7;max-width:480px;}
     .total-badge{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 24px;text-align:right;white-space:nowrap;}
-    .total-badge .num{font-size:28px;font-weight:900;background:linear-gradient(90deg,var(--green),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    .total-badge .num{font-size:28px;font-weight:900;background:var(--blue);color:var(--blue);}
     .total-badge .lbl{font-size:11px;color:var(--muted);font-weight:500;margin-top:2px;}
 
     /* ===== SEARCH BAR ===== */
@@ -84,12 +84,12 @@
     .search-bar input{flex:1;min-width:180px;}
     .search-bar input::placeholder{color:var(--muted);}
     .search-bar select{min-width:150px;cursor:pointer;}
-    .search-bar select option{background:#111814;}
+    .search-bar select option{background:#0A0C1E;}
     .btn-search{
       padding:11px 28px;
-      background:linear-gradient(135deg,var(--green),var(--teal));
+      background:var(--blue);
       border:none;border-radius:10px;
-      color:#0a0f0d;font-size:14px;font-weight:800;
+      color:#04050F;font-size:14px;font-weight:800;
       cursor:pointer;font-family:'Inter',sans-serif;
       transition:opacity 0.2s,transform 0.15s;
       white-space:nowrap;
@@ -104,7 +104,7 @@
       color:var(--muted);background:transparent;
       font-family:'Inter',sans-serif;transition:all 0.2s;
     }
-    .chip:hover,.chip.active{border-color:rgba(0,230,118,0.4);color:var(--green);background:rgba(0,230,118,0.07);}
+    .chip:hover,.chip.active{border-color:rgba(0,230,118,0.4);color:var(--blue);background:rgba(0,230,118,0.07);}
 
     /* ===== MAIN LAYOUT ===== */
     .main-wrap{
@@ -134,7 +134,7 @@
     }
     .job-card::before{
       content:'';position:absolute;top:0;left:0;right:0;height:2px;
-      background:linear-gradient(90deg,var(--green),var(--teal));
+      background:var(--blue);
       opacity:0;transition:opacity 0.2s;
     }
     .job-card:hover{
@@ -153,7 +153,7 @@
       background:linear-gradient(135deg,rgba(0,230,118,0.12),rgba(0,188,212,0.12));
       border:1px solid rgba(0,230,118,0.15);
       display:flex;align-items:center;justify-content:center;
-      font-size:20px;font-weight:900;color:var(--green);
+      font-size:20px;font-weight:900;color:var(--blue);
       flex-shrink:0;text-transform:uppercase;
       font-family:'Inter',sans-serif;
     }
@@ -166,8 +166,8 @@
     }
     .job-company{
       font-size:13px;font-weight:500;
-      background:linear-gradient(90deg,var(--green),var(--teal));
-      -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+      background:var(--blue);
+      color:var(--blue);
       margin-bottom:10px;display:inline-block;
     }
     .job-tags{display:flex;gap:8px;flex-wrap:wrap;}
@@ -181,7 +181,7 @@
     .tag.salary{
       background:rgba(0,230,118,0.07);
       border-color:rgba(0,230,118,0.2);
-      color:var(--green);
+      color:var(--blue);
     }
 
     .job-right{
@@ -190,9 +190,9 @@
     }
     .btn-apply{
       padding:9px 22px;
-      background:linear-gradient(135deg,var(--green),var(--teal));
+      background:var(--blue);
       border:none;border-radius:9px;
-      color:#0a0f0d;font-size:13px;font-weight:800;
+      color:#04050F;font-size:13px;font-weight:800;
       cursor:pointer;font-family:'Inter',sans-serif;
       text-decoration:none;display:inline-flex;align-items:center;gap:6px;
       transition:opacity 0.2s,transform 0.15s;
@@ -234,7 +234,7 @@
       font-family:'Inter',sans-serif;font-size:13px;font-weight:600;
       cursor:pointer;transition:all 0.2s;
     }
-    .btn-page:hover:not(:disabled){border-color:rgba(0,230,118,0.4);color:var(--green);}
+    .btn-page:hover:not(:disabled){border-color:rgba(0,230,118,0.4);color:var(--blue);}
     .btn-page:disabled{opacity:0.3;cursor:not-allowed;}
     .page-nums{display:flex;gap:6px;}
     .page-num{
@@ -245,10 +245,10 @@
       color:var(--muted);transition:all 0.2s;
     }
     .page-num.active{
-      background:linear-gradient(135deg,var(--green),var(--teal));
-      color:#0a0f0d;border-color:transparent;
+      background:var(--blue);
+      color:#04050F;border-color:transparent;
     }
-    .page-num:hover:not(.active){border-color:rgba(0,230,118,0.3);color:var(--green);}
+    .page-num:hover:not(.active){border-color:rgba(0,230,118,0.3);color:var(--blue);}
 
     @media(max-width:768px){
       nav{padding:0 20px;}
@@ -269,7 +269,7 @@
 <nav>
   <a href="index.html" class="nav-logo">
     <div class="logo-box">R</div>
-    <div class="logo-text">RiseNow</div>
+    <div class="logo-text">Rigel</div>
   </a>
   <div class="nav-links">
     <a href="careers.html" class="nav-link">Careers</a>

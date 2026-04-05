@@ -1,159 +1,169 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta name="description" content="Rigel — Outgrow the Ordinary. A fully responsive career guidance & motivation platform built for job seekers, career switchers, and people starting over."/>
-  <meta property="og:title" content="Rigel — Outgrow"/>
-  <meta property="og:description" content="Free career paths, daily motivation, real success stories and powerful tools — all in one platform."/>
-  <meta property="og:type" content="website"/>
-  <title>Rigel — Outgrow the Ordinary</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
-  <style>
-    *{margin:0;padding:0;box-sizing:border-box;}
-    :root{
-      --blue:#00C2FF;--blue-dim:#0090CC;
-      --bg:#04050F;--card:#0A0C1E;
-      --border:rgba(255,255,255,0.07);
-      --text:rgba(255,255,255,0.85);
-      --muted:rgba(255,255,255,0.4);
-    }
-    body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content="Rigel — Outgrow the Ordinary. A fully responsive career guidance & motivation platform built for job seekers, career switchers, and people starting over."/>
+<meta property="og:title" content="Rigel — Outgrow"/>
+<meta property="og:description" content="Free career paths, daily motivation, real success stories and powerful tools — all in one platform."/>
+<meta property="og:type" content="website"/>
+<title>Rigel — Outgrow the Ordinary</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --blue:#00C2FF;--blue-dim:#0090CC;
+  --bg:#04050F;--card:#0A0C1E;
+  --border:rgba(255,255,255,0.07);
+  --text:rgba(255,255,255,0.85);
+  --muted:rgba(255,255,255,0.4);
+}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+a{color:inherit;text-decoration:none;}
+button{font-family:'Inter',sans-serif;}
 
-    .bg-stars{position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse at 20% 50%,rgba(0,100,60,0.15) 0%,transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(0,80,80,0.1) 0%,transparent 50%);}
+.bg-stars{position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse at 20% 50%,rgba(0,100,60,0.15) 0%,transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(0,80,80,0.1) 0%,transparent 50%);}
 
-    nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,15,13,0.9);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 48px;height:68px;display:flex;align-items:center;justify-content:space-between;}
-    .nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none;}
-    .logo-box{width:40px;height:40px;border-radius:10px;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:#04050F;}
-    .logo-text{font-size:22px;font-weight:800;background:none;color:#00C2FF;}
-    .nav-links{display:flex;align-items:center;gap:8px;}
-    .nav-link{padding:8px 16px;font-size:14px;font-weight:500;color:var(--muted);text-decoration:none;border-radius:8px;transition:color 0.2s;}
-    .nav-link:hover{color:white;}
-    .nav-link.highlight{color:var(--blue);}
-    .nav-link.highlight:hover{color:white;}
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,15,13,0.9);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 48px;height:68px;display:flex;align-items:center;justify-content:space-between;}
+.nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none;}
+.logo-box{width:40px;height:40px;border-radius:10px;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:#04050F !important;}
+.logo-text{font-size:22px;font-weight:800;color:#00C2FF !important;}
+.nav-links{display:flex;align-items:center;gap:8px;}
+.nav-link{padding:8px 16px;font-size:14px;font-weight:500;color:var(--muted);text-decoration:none;border-radius:8px;transition:color 0.2s;}
+.nav-link:hover{color:white;}
+.nav-link.highlight{color:var(--blue);}
+.nav-link.highlight:hover{color:white;}
+.profile-btn{width:40px;height:40px;border-radius:50%;border:2px solid var(--border);background:var(--card);cursor:pointer;overflow:hidden;display:flex;align-items:center;justify-content:center;transition:border-color 0.2s;position:relative;}
+.profile-btn:hover{border-color:var(--blue);}
+.profile-btn img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+.profile-btn .default-icon{font-size:18px;color:var(--muted);}
+.profile-dropdown{position:absolute;top:56px;right:0;background:#1a2120;border:1px solid var(--border);border-radius:14px;padding:8px;min-width:220px;z-index:200;display:none;box-shadow:0 20px 60px rgba(0,0,0,0.5);}
+.profile-dropdown.open{display:block;}
+.dropdown-user{padding:12px 14px;border-bottom:1px solid var(--border);margin-bottom:8px;}
+.dropdown-name{font-size:14px;font-weight:700;color:white;}
+.dropdown-email{font-size:11px;color:var(--muted);margin-top:2px;}
+.dropdown-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;transition:all 0.2s;text-decoration:none;}
+.dropdown-item:hover{background:rgba(255,255,255,0.05);color:white;}
+.dropdown-item.danger:hover{background:rgba(255,71,87,0.1);color:#ff4757;}
 
-    .profile-btn{width:40px;height:40px;border-radius:50%;border:2px solid var(--border);background:var(--card);cursor:pointer;overflow:hidden;display:flex;align-items:center;justify-content:center;transition:border-color 0.2s;position:relative;}
-    .profile-btn:hover{border-color:var(--blue);}
-    .profile-btn img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
-    .profile-btn .default-icon{font-size:18px;color:var(--muted);}
+/* ── HERO ── */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:100px 32px 60px;position:relative;z-index:1;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(0,194,255,0.08);border:1px solid rgba(0,194,255,0.2);color:var(--blue);font-size:11px;font-weight:700;padding:6px 16px;border-radius:20px;letter-spacing:2px;text-transform:uppercase;margin-bottom:28px;}
+.hero-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--blue);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
+.hero h1{font-size:80px;font-weight:900;letter-spacing:-4px;line-height:0.95;margin-bottom:28px;color:white;}
+.hero h1 .grad{color:#00C2FF !important;display:block;}
+.hero p{font-size:18px;color:var(--muted);max-width:520px;margin:0 auto 44px;line-height:1.7;font-weight:400;}
+.hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
 
-    .profile-dropdown{position:absolute;top:56px;right:0;background:#1a2120;border:1px solid var(--border);border-radius:14px;padding:8px;min-width:220px;z-index:200;display:none;box-shadow:0 20px 60px rgba(0,0,0,0.5);}
-    .profile-dropdown.open{display:block;}
-    .dropdown-user{padding:12px 14px;border-bottom:1px solid var(--border);margin-bottom:8px;}
-    .dropdown-name{font-size:14px;font-weight:700;color:white;}
-    .dropdown-email{font-size:11px;color:var(--muted);margin-top:2px;}
-    .dropdown-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;transition:all 0.2s;text-decoration:none;}
-    .dropdown-item:hover{background:rgba(255,255,255,0.05);color:white;}
-    .dropdown-item.danger:hover{background:rgba(255,71,87,0.1);color:#ff4757;}
+/* ── BUTTONS ── */
+.btn-primary{padding:16px 36px;background:var(--blue);border:none;border-radius:12px;color:#04050F !important;font-size:16px;font-weight:800;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:opacity 0.2s,transform 0.2s;}
+.btn-primary:hover{opacity:0.92;transform:translateY(-1px);}
+.btn-secondary{padding:16px 36px;background:transparent;border:2px solid var(--border);border-radius:12px;color:var(--text) !important;font-size:16px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:border-color 0.2s;}
+.btn-secondary:hover{border-color:rgba(0,194,255,0.4);}
 
-    .hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:100px 32px 60px;position:relative;z-index:1;}
-    .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(0,194,255,0.08);border:1px solid rgba(0,194,255,0.2);color:var(--blue);font-size:11px;font-weight:700;padding:6px 16px;border-radius:20px;letter-spacing:2px;text-transform:uppercase;margin-bottom:28px;}
-    .hero-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--blue);animation:pulse 2s infinite;}
-    @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
-    .hero h1{font-size:80px;font-weight:900;letter-spacing:-4px;line-height:0.95;margin-bottom:28px;color:white;}
-    .hero h1 .grad{background:none;color:#00C2FF;display:block;}
-    .hero p{font-size:18px;color:var(--muted);max-width:520px;margin:0 auto 44px;line-height:1.7;font-weight:400;}
-    .hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
-    .btn-primary{padding:16px 36px;background:var(--blue);border:none;border-radius:12px;color:#04050F;font-size:16px;font-weight:800;cursor:pointer;font-family:'Inter',sans-serif;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:opacity 0.2s,transform 0.2s;}
-    .btn-primary:hover{opacity:0.92;transform:translateY(-1px);}
-    .btn-secondary{padding:16px 36px;background:transparent;border:2px solid var(--border);border-radius:12px;color:var(--text);font-size:16px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:border-color 0.2s;}
-    .btn-secondary:hover{border-color:rgba(0,230,118,0.4);}
+/* ── RIGEL BANNER ── */
+.rize-banner{margin-top:48px;background:linear-gradient(135deg,rgba(0,194,255,0.06),rgba(0,194,255,0.02));border:1px solid rgba(0,194,255,0.2);border-radius:20px;padding:24px 32px;display:flex;align-items:center;justify-content:space-between;gap:20px;max-width:700px;width:100%;text-align:left;}
+.rize-banner-left{display:flex;align-items:center;gap:16px;}
+.rize-banner-icon{width:48px;height:48px;border-radius:12px;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#04050F !important;flex-shrink:0;}
+.rize-banner-text h4{font-size:15px;font-weight:700;color:white;margin-bottom:3px;}
+.rize-banner-text p{font-size:12px;color:var(--muted);}
+.btn-rize{padding:10px 20px;background:var(--blue);border:none;border-radius:10px;color:#04050F !important;font-size:13px;font-weight:800;cursor:pointer;text-decoration:none;white-space:nowrap;display:inline-block;transition:opacity 0.2s,transform 0.2s;}
+.btn-rize:hover{opacity:0.9;transform:translateY(-1px);}
 
-    /* RIZE AI HERO BANNER */
-    .rize-banner{margin-top:48px;background:linear-gradient(135deg,rgba(0,194,255,0.06));border:1px solid rgba(0,194,255,0.2);border-radius:20px;padding:24px 32px;display:flex;align-items:center;justify-content:space-between;gap:20px;max-width:700px;width:100%;text-align:left;}
-    .rize-banner-left{display:flex;align-items:center;gap:16px;}
-    .rize-banner-icon{width:48px;height:48px;border-radius:12px;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#04050F;flex-shrink:0;}
-    .rize-banner-text h4{font-size:15px;font-weight:700;color:white;margin-bottom:3px;}
-    .rize-banner-text p{font-size:12px;color:var(--muted);}
-    .btn-rize{padding:10px 20px;background:var(--blue);border:none;border-radius:10px;color:#04050F;font-size:13px;font-weight:800;cursor:pointer;font-family:'Inter',sans-serif;text-decoration:none;white-space:nowrap;transition:opacity 0.2s,transform 0.2s;}
-    .btn-rize:hover{opacity:0.9;transform:translateY(-1px);}
+/* ── STATS ── */
+.stats{display:flex;gap:0;margin-top:32px;border:1px solid var(--border);border-radius:20px;overflow:hidden;background:var(--card);max-width:700px;width:100%;}
+.stat{flex:1;padding:28px 24px;text-align:center;border-right:1px solid var(--border);}
+.stat:last-child{border-right:none;}
+.stat-num{font-size:32px;font-weight:900;color:#00C2FF !important;}
+.stat-lbl{font-size:12px;color:var(--muted);margin-top:4px;font-weight:500;}
 
-    .stats{display:flex;gap:0;margin-top:32px;border:1px solid var(--border);border-radius:20px;overflow:hidden;background:var(--card);max-width:700px;width:100%;}
-    .stat{flex:1;padding:28px 24px;text-align:center;border-right:1px solid var(--border);}
-    .stat:last-child{border-right:none;}
-    .stat-num{font-size:32px;font-weight:900;background:none;color:#00C2FF;}
-    .stat-lbl{font-size:12px;color:var(--muted);margin-top:4px;font-weight:500;}
+/* ── FEATURES ── */
+.features{padding:100px 48px;max-width:1200px;margin:0 auto;position:relative;z-index:1;}
+.section-label{font-size:11px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;text-align:center;}
+.section-title{font-size:44px;font-weight:900;letter-spacing:-2px;text-align:center;color:white;margin-bottom:60px;line-height:1.1;}
+.section-title span{color:#00C2FF !important;}
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.feature-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:32px;transition:border-color 0.25s,transform 0.25s;position:relative;overflow:hidden;text-decoration:none;display:block;color:var(--text);}
+.feature-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--blue);opacity:0;transition:opacity 0.25s;}
+.feature-card:hover{border-color:rgba(0,194,255,0.2);transform:translateY(-3px);}
+.feature-card:hover::before{opacity:1;}
+.feature-icon{font-size:36px;margin-bottom:20px;display:block;}
+.feature-title{font-size:18px;font-weight:700;color:white;margin-bottom:10px;}
+.feature-desc{font-size:13px;color:var(--muted);line-height:1.7;}
+.feature-card.rize-card{border-color:rgba(0,194,255,0.15);background:linear-gradient(135deg,rgba(0,194,255,0.05),rgba(0,194,255,0.02));}
+.feature-card.rize-card::before{opacity:1;}
+.rize-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(0,194,255,0.12);border:1px solid rgba(0,194,255,0.3);color:var(--blue);font-size:9px;font-weight:700;padding:2px 8px;border-radius:10px;letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;}
 
-    .features{padding:100px 48px;max-width:1200px;margin:0 auto;position:relative;z-index:1;}
-    .section-label{font-size:11px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;text-align:center;}
-    .section-title{font-size:44px;font-weight:900;letter-spacing:-2px;text-align:center;color:white;margin-bottom:60px;line-height:1.1;}
-    .section-title span{background:none;color:#00C2FF;}
-    .features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+/* ── HOW IT WORKS ── */
+.how{padding:80px 48px;max-width:900px;margin:0 auto;position:relative;z-index:1;}
+.steps-list{display:flex;flex-direction:column;gap:0;margin-top:48px;}
+.step-row{display:flex;gap:24px;position:relative;padding-bottom:40px;}
+.step-row:last-child{padding-bottom:0;}
+.step-row:not(:last-child)::after{content:'';position:absolute;left:19px;top:44px;bottom:0;width:2px;background:linear-gradient(180deg,rgba(0,194,255,0.3),transparent);}
+.step-num{width:40px;height:40px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;color:#04050F !important;flex-shrink:0;}
+.step-title{font-size:18px;font-weight:700;color:white;margin-bottom:6px;}
+.step-desc{font-size:14px;color:var(--muted);line-height:1.7;}
 
-    .feature-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:32px;transition:border-color 0.25s,transform 0.25s;position:relative;overflow:hidden;text-decoration:none;display:block;}
-    .feature-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--blue);opacity:0;transition:opacity 0.25s;}
-    .feature-card:hover{border-color:rgba(0,194,255,0.2);transform:translateY(-3px);}
-    .feature-card:hover::before{opacity:1;}
-    .feature-icon{font-size:36px;margin-bottom:20px;display:block;}
-    .feature-title{font-size:18px;font-weight:700;color:white;margin-bottom:10px;}
-    .feature-desc{font-size:13px;color:var(--muted);line-height:1.7;}
+/* ── CTA ── */
+.cta-section{padding:80px 48px;text-align:center;position:relative;z-index:1;}
+.cta-box{background:var(--card);border:1px solid rgba(0,194,255,0.15);border-radius:28px;padding:64px 40px;max-width:700px;margin:0 auto;position:relative;overflow:hidden;}
+.cta-box::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(0,194,255,0.08) 0%,transparent 70%);pointer-events:none;}
+.cta-box h2{font-size:40px;font-weight:900;letter-spacing:-2px;color:white;margin-bottom:14px;}
+.cta-box p{font-size:16px;color:var(--muted);margin-bottom:36px;line-height:1.7;}
 
-    /* Rize feature card special treatment */
-    .feature-card.rize-card{border-color:rgba(0,194,255,0.15);background:linear-gradient(135deg,rgba(0,194,255,0.05));}
-    .feature-card.rize-card::before{opacity:1;}
-    .rize-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(0,230,118,0.12);border:1px solid rgba(0,194,255,0.3);color:var(--blue);font-size:9px;font-weight:700;padding:2px 8px;border-radius:10px;letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;}
+/* ── FOOTER ── */
+footer{border-top:1px solid var(--border);padding:32px 48px;display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1;}
+footer p{font-size:13px;color:var(--muted);}
 
-    .how{padding:80px 48px;max-width:900px;margin:0 auto;position:relative;z-index:1;}
-    .steps-list{display:flex;flex-direction:column;gap:0;margin-top:48px;}
-    .step-row{display:flex;gap:24px;position:relative;padding-bottom:40px;}
-    .step-row:last-child{padding-bottom:0;}
-    .step-row:not(:last-child)::after{content:'';position:absolute;left:19px;top:44px;bottom:0;width:2px;background:linear-gradient(180deg,rgba(0,194,255,0.3),transparent);}
-    .step-num{width:40px;height:40px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;color:#04050F;flex-shrink:0;}
-    .step-title{font-size:18px;font-weight:700;color:white;margin-bottom:6px;}
-    .step-desc{font-size:14px;color:var(--muted);line-height:1.7;}
+/* ── LOGIN MODAL ── */
+.login-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);z-index:500;display:none;align-items:center;justify-content:center;}
+.login-overlay.open{display:flex;}
+.login-box{background:#131a17;border:1px solid var(--border);border-radius:24px;padding:40px;width:100%;max-width:440px;text-align:center;position:relative;}
+.login-box h3{font-size:26px;font-weight:900;color:white;margin-bottom:8px;}
+.login-box>p{font-size:14px;color:var(--muted);margin-bottom:28px;line-height:1.6;}
+.login-close{position:absolute;top:16px;right:16px;background:transparent;border:none;color:var(--muted);font-size:20px;cursor:pointer;padding:4px;}
+.login-close:hover{color:white;}
+.login-tabs{display:flex;gap:0;margin-bottom:24px;background:rgba(255,255,255,0.04);border-radius:10px;padding:4px;}
+.login-tab{flex:1;padding:8px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;border-radius:7px;border:none;background:transparent;transition:all 0.2s;}
+.login-tab.active{background:#1e2d28;color:white;}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+.btn-google{width:100%;padding:13px;background:white;border:none;border-radius:11px;color:#111 !important;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:opacity 0.2s;margin-bottom:10px;}
+.btn-google:hover{opacity:0.9;}
+.btn-github{width:100%;padding:13px;background:#24292e;border:1px solid rgba(255,255,255,0.1);border-radius:11px;color:white !important;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:opacity 0.2s;margin-bottom:10px;}
+.btn-github:hover{opacity:0.85;}
+.btn-guest{width:100%;padding:13px;background:transparent;border:1px solid var(--border);border-radius:11px;color:var(--muted) !important;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:all 0.2s;}
+.btn-guest:hover{border-color:rgba(0,194,255,0.3);color:var(--text) !important;}
+.login-or{font-size:11px;color:var(--muted);margin:16px 0;display:flex;align-items:center;gap:10px;}
+.login-or::before,.login-or::after{content:'';flex:1;height:1px;background:var(--border);}
+.input-field{width:100%;padding:12px 16px;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:10px;color:white;font-size:14px;margin-bottom:10px;outline:none;transition:border-color 0.2s;}
+.input-field:focus{border-color:rgba(0,194,255,0.4);}
+.input-field::placeholder{color:var(--muted);}
+.btn-email-submit{width:100%;padding:13px;background:var(--blue);border:none;border-radius:11px;color:#04050F !important;font-size:14px;font-weight:800;cursor:pointer;margin-top:4px;transition:opacity 0.2s;}
+.btn-email-submit:hover{opacity:0.9;}
+.login-error{font-size:12px;color:#ff4757;margin-top:8px;min-height:18px;}
+.login-switch{font-size:12px;color:var(--muted);margin-top:14px;}
+.login-switch a{color:var(--blue);cursor:pointer;text-decoration:none;}
+.login-footer-note{font-size:11px;color:var(--muted);margin-top:20px;}
 
-    .cta-section{padding:80px 48px;text-align:center;position:relative;z-index:1;}
-    .cta-box{background:var(--card);border:1px solid rgba(0,194,255,0.15);border-radius:28px;padding:64px 40px;max-width:700px;margin:0 auto;position:relative;overflow:hidden;}
-    .cta-box::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(0,194,255,0.08) 0%,transparent 70%);pointer-events:none;}
-    .cta-box h2{font-size:40px;font-weight:900;letter-spacing:-2px;color:white;margin-bottom:14px;}
-    .cta-box p{font-size:16px;color:var(--muted);margin-bottom:36px;line-height:1.7;}
-
-    footer{border-top:1px solid var(--border);padding:32px 48px;display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1;}
-    footer p{font-size:13px;color:var(--muted);}
-
-    /* LOGIN MODAL */
-    .login-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);z-index:500;display:none;align-items:center;justify-content:center;}
-    .login-overlay.open{display:flex;}
-    .login-box{background:#131a17;border:1px solid var(--border);border-radius:24px;padding:40px;width:100%;max-width:440px;text-align:center;position:relative;}
-    .login-box h3{font-size:26px;font-weight:900;color:white;margin-bottom:8px;}
-    .login-box > p{font-size:14px;color:var(--muted);margin-bottom:28px;line-height:1.6;}
-    .login-close{position:absolute;top:16px;right:16px;background:transparent;border:none;color:var(--muted);font-size:20px;cursor:pointer;padding:4px;}
-    .login-close:hover{color:white;}
-    .login-tabs{display:flex;gap:0;margin-bottom:24px;background:rgba(255,255,255,0.04);border-radius:10px;padding:4px;}
-    .login-tab{flex:1;padding:8px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;border-radius:7px;border:none;background:transparent;font-family:'Inter',sans-serif;transition:all 0.2s;}
-    .login-tab.active{background:#1e2d28;color:white;}
-    .tab-panel{display:none;}
-    .tab-panel.active{display:block;}
-    .btn-google{width:100%;padding:13px;background:white;border:none;border-radius:11px;color:#111;font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;justify-content:center;gap:10px;transition:opacity 0.2s;margin-bottom:10px;}
-    .btn-google:hover{opacity:0.9;}
-    .btn-github{width:100%;padding:13px;background:#24292e;border:1px solid rgba(255,255,255,0.1);border-radius:11px;color:white;font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;justify-content:center;gap:10px;transition:opacity 0.2s;margin-bottom:10px;}
-    .btn-github:hover{opacity:0.85;}
-    .btn-guest{width:100%;padding:13px;background:transparent;border:1px solid var(--border);border-radius:11px;color:var(--muted);font-size:14px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;justify-content:center;gap:10px;transition:all 0.2s;}
-    .btn-guest:hover{border-color:rgba(0,194,255,0.3);color:var(--text);}
-    .login-or{font-size:11px;color:var(--muted);margin:16px 0;display:flex;align-items:center;gap:10px;}
-    .login-or::before,.login-or::after{content:'';flex:1;height:1px;background:var(--border);}
-    .input-field{width:100%;padding:12px 16px;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:10px;color:white;font-size:14px;font-family:'Inter',sans-serif;margin-bottom:10px;outline:none;transition:border-color 0.2s;}
-    .input-field:focus{border-color:rgba(0,230,118,0.4);}
-    .input-field::placeholder{color:var(--muted);}
-    .btn-email-submit{width:100%;padding:13px;background:var(--blue);border:none;border-radius:11px;color:#04050F;font-size:14px;font-weight:800;cursor:pointer;font-family:'Inter',sans-serif;margin-top:4px;transition:opacity 0.2s;}
-    .btn-email-submit:hover{opacity:0.9;}
-    .login-error{font-size:12px;color:#ff4757;margin-top:8px;min-height:18px;}
-    .login-switch{font-size:12px;color:var(--muted);margin-top:14px;}
-    .login-switch a{color:var(--blue);cursor:pointer;text-decoration:none;}
-    .login-footer-note{font-size:11px;color:var(--muted);margin-top:20px;}
-
-    @media(max-width:768px){
-      .hero h1{font-size:48px;letter-spacing:-2px;}
-      nav{padding:0 20px;}
-      .features-grid{grid-template-columns:1fr;}
-      .stats{flex-direction:column;}
-      .stat{border-right:none;border-bottom:1px solid var(--border);}
-      .stat:last-child{border-bottom:none;}
-      .rize-banner{flex-direction:column;text-align:center;}
-      .rize-banner-left{flex-direction:column;text-align:center;}
-    }
-  </style>
-  <link rel="stylesheet" href="style.css"/>
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .hero h1{font-size:48px;letter-spacing:-2px;}
+  nav{padding:0 20px;}
+  .features-grid{grid-template-columns:1fr;}
+  .stats{flex-direction:column;}
+  .stat{border-right:none;border-bottom:1px solid var(--border);}
+  .stat:last-child{border-bottom:none;}
+  .rize-banner{flex-direction:column;text-align:center;}
+  .rize-banner-left{flex-direction:column;text-align:center;}
+  .features{padding:60px 20px;}
+  .how{padding:60px 20px;}
+  .cta-section{padding:60px 20px;}
+  footer{padding:24px 20px;flex-direction:column;gap:12px;text-align:center;}
+}
+</style>
 </head>
 <body>
 <div class="bg-stars"></div>
@@ -212,7 +222,7 @@
     <a href="#how" class="btn-secondary">How it Works</a>
   </div>
 
-  <!-- RIZE AI BANNER -->
+  <!-- RIGEL AI BANNER -->
   <div class="rize-banner">
     <div class="rize-banner-left">
       <div class="rize-banner-icon">Rigel</div>
@@ -237,15 +247,12 @@
   <div class="section-label">What We Offer</div>
   <div class="section-title">Everything You Need<br>to <span>Outgrow</span></div>
   <div class="features-grid">
-
-    <!-- Rigel AI Card — first and highlighted -->
     <a href="rize.html" class="feature-card rize-card">
       <div class="rize-badge">✦ New · AI Powered</div>
       <span class="feature-icon">🤖</span>
       <div class="feature-title">Rigel — AI Career Coach</div>
-      <div class="feature-desc">Tell Rize your situation and get a personalized career path, step-by-step roadmap, interview prep, and job strategy. India-focused. Free forever.</div>
+      <div class="feature-desc">Tell Rigel your situation and get a personalized career path, step-by-step roadmap, interview prep, and job strategy. India-focused. Free forever.</div>
     </a>
-
     <div class="feature-card"><span class="feature-icon">🧭</span><div class="feature-title">Career Explorer</div><div class="feature-desc">Browse 17+ in-demand career paths. See scope, salary, skills needed and top resources — all in one place.</div></div>
     <div class="feature-card"><span class="feature-icon">🗺️</span><div class="feature-title">Step-by-Step Roadmap</div><div class="feature-desc">Once you choose a path, get a clear roadmap. Know exactly what to learn, in what order, and where to learn it.</div></div>
     <div class="feature-card"><span class="feature-icon">📊</span><div class="feature-title">Personal Dashboard</div><div class="feature-desc">Track your progress across devices. See what's done, what's next, and how far you've come.</div></div>
@@ -274,8 +281,8 @@
     <h2>Ready to Outgrow?</h2>
     <p>Join thousands of people rebuilding their careers — one step at a time. It's completely free.</p>
     <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
-      <a href="careers.html" class="btn-primary" style="display:inline-flex;">Start Your Journey →</a>
-      <a href="rize.html" class="btn-secondary" style="display:inline-flex;">Chat with Rigel ✦</a>
+      <a href="careers.html" class="btn-primary">Start Your Journey →</a>
+      <a href="rize.html" class="btn-secondary">Chat with Rigel ✦</a>
     </div>
   </div>
 </section>
@@ -336,64 +343,64 @@
 </div>
 
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import { getAuth, signInWithPopup, GoogleAuthProvider, GithubAuthProvider, signInAnonymously, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, signInWithPopup, GoogleAuthProvider, GithubAuthProvider, signInAnonymously, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyB2__vKiROvrPOyomY8X-pDBY8VlArDbdY",
-    authDomain: "risenow-31893.firebaseapp.com",
-    databaseURL: "https://risenow-31893-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "risenow-31893",
-    storageBucket: "risenow-31893.firebasestorage.app",
-    messagingSenderId: "230298271225",
-    appId: "1:230298271225:web:c24d7100fc8b89a268d128",
-    measurementId: "G-RC17E84XEV"
-  };
+const firebaseConfig = {
+  apiKey: "AIzaSyB2__vKiROvrPOyomY8X-pDBY8VlArDbdY",
+  authDomain: "risenow-31893.firebaseapp.com",
+  databaseURL: "https://risenow-31893-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "risenow-31893",
+  storageBucket: "risenow-31893.firebasestorage.app",
+  messagingSenderId: "230298271225",
+  appId: "1:230298271225:web:c24d7100fc8b89a268d128",
+  measurementId: "G-RC17E84XEV"
+};
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const googleProvider = new GoogleAuthProvider();
-  const githubProvider = new GithubAuthProvider();
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const googleProvider = new GoogleAuthProvider();
+const githubProvider = new GithubAuthProvider();
 
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      document.getElementById('dropdownLoggedOut').style.display = 'none';
-      document.getElementById('dropdownLoggedIn').style.display = 'block';
-      const displayName = user.isAnonymous ? 'Guest User' : (user.displayName || 'User');
-      const email = user.isAnonymous ? 'Browsing as guest' : (user.email || '');
-      document.getElementById('dropdownName').textContent = displayName;
-      document.getElementById('dropdownEmail').textContent = email;
-      if (user.photoURL) {
-        document.getElementById('profileImg').src = user.photoURL;
-        document.getElementById('profileImg').style.display = 'block';
-        document.getElementById('profileIcon').style.display = 'none';
-      }
-    } else {
-      document.getElementById('dropdownLoggedOut').style.display = 'block';
-      document.getElementById('dropdownLoggedIn').style.display = 'none';
-      document.getElementById('profileImg').style.display = 'none';
-      document.getElementById('profileIcon').style.display = 'block';
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    document.getElementById('dropdownLoggedOut').style.display = 'none';
+    document.getElementById('dropdownLoggedIn').style.display = 'block';
+    const displayName = user.isAnonymous ? 'Guest User' : (user.displayName || 'User');
+    const email = user.isAnonymous ? 'Browsing as guest' : (user.email || '');
+    document.getElementById('dropdownName').textContent = displayName;
+    document.getElementById('dropdownEmail').textContent = email;
+    if (user.photoURL) {
+      document.getElementById('profileImg').src = user.photoURL;
+      document.getElementById('profileImg').style.display = 'block';
+      document.getElementById('profileIcon').style.display = 'none';
     }
-  });
+  } else {
+    document.getElementById('dropdownLoggedOut').style.display = 'block';
+    document.getElementById('dropdownLoggedIn').style.display = 'none';
+    document.getElementById('profileImg').style.display = 'none';
+    document.getElementById('profileIcon').style.display = 'block';
+  }
+});
 
-  window.signInWithGoogle = async () => { try { await signInWithPopup(auth, googleProvider); closeLogin(); window.location.href = 'dashboard.html'; } catch(e) { showError('signin','Google sign in failed. Try again.'); } };
-  window.signInWithGitHub = async () => { try { await signInWithPopup(auth, githubProvider); closeLogin(); window.location.href = 'dashboard.html'; } catch(e) { showError('signin','GitHub sign in failed. Try again.'); } };
-  window.signInAsGuest = async () => { try { await signInAnonymously(auth); closeLogin(); window.location.href = 'dashboard.html'; } catch(e) { showError('signin','Could not sign in as guest. Try again.'); } };
-  window.signInWithEmail = async () => { const email = document.getElementById('signin-email').value.trim(); const password = document.getElementById('signin-password').value; if (!email||!password){showError('signin','Please enter email and password.');return;} try { await signInWithEmailAndPassword(auth,email,password); closeLogin(); window.location.href='dashboard.html'; } catch(e){showError('signin',friendlyError(e.code));} };
-  window.registerWithEmail = async () => { const name=document.getElementById('register-name').value.trim(); const email=document.getElementById('register-email').value.trim(); const password=document.getElementById('register-password').value; if(!name||!email||!password){showError('register','Please fill all fields.');return;} if(password.length<6){showError('register','Password must be at least 6 characters.');return;} try { const cred=await createUserWithEmailAndPassword(auth,email,password); await updateProfile(cred.user,{displayName:name}); closeLogin(); window.location.href='dashboard.html'; } catch(e){showError('register',friendlyError(e.code));} };
-  window.signOutUser = async () => { await signOut(auth); document.getElementById('profileDropdown').classList.remove('open'); };
+window.signInWithGoogle = async () => { try { await signInWithPopup(auth, googleProvider); closeLogin(); window.location.href = 'dashboard.html'; } catch(e) { showError('signin','Google sign in failed. Try again.'); } };
+window.signInWithGitHub = async () => { try { await signInWithPopup(auth, githubProvider); closeLogin(); window.location.href = 'dashboard.html'; } catch(e) { showError('signin','GitHub sign in failed. Try again.'); } };
+window.signInAsGuest = async () => { try { await signInAnonymously(auth); closeLogin(); window.location.href = 'dashboard.html'; } catch(e) { showError('signin','Could not sign in as guest. Try again.'); } };
+window.signInWithEmail = async () => { const email = document.getElementById('signin-email').value.trim(); const password = document.getElementById('signin-password').value; if (!email||!password){showError('signin','Please enter email and password.');return;} try { await signInWithEmailAndPassword(auth,email,password); closeLogin(); window.location.href='dashboard.html'; } catch(e){showError('signin',friendlyError(e.code));} };
+window.registerWithEmail = async () => { const name=document.getElementById('register-name').value.trim(); const email=document.getElementById('register-email').value.trim(); const password=document.getElementById('register-password').value; if(!name||!email||!password){showError('register','Please fill all fields.');return;} if(password.length<6){showError('register','Password must be at least 6 characters.');return;} try { const cred=await createUserWithEmailAndPassword(auth,email,password); await updateProfile(cred.user,{displayName:name}); closeLogin(); window.location.href='dashboard.html'; } catch(e){showError('register',friendlyError(e.code));} };
+window.signOutUser = async () => { await signOut(auth); document.getElementById('profileDropdown').classList.remove('open'); };
 
-  function showError(panel,msg){document.getElementById(panel+'-error').textContent=msg;}
-  function friendlyError(code){const map={'auth/user-not-found':'No account found with this email.','auth/wrong-password':'Incorrect password. Try again.','auth/email-already-in-use':'This email is already registered. Sign in instead.','auth/invalid-email':'Please enter a valid email address.','auth/weak-password':'Password is too weak. Use at least 6 characters.','auth/too-many-requests':'Too many attempts. Please wait a moment.','auth/invalid-credential':'Incorrect email or password.'};return map[code]||'Something went wrong. Please try again.';}
+function showError(panel,msg){document.getElementById(panel+'-error').textContent=msg;}
+function friendlyError(code){const map={'auth/user-not-found':'No account found with this email.','auth/wrong-password':'Incorrect password. Try again.','auth/email-already-in-use':'This email is already registered. Sign in instead.','auth/invalid-email':'Please enter a valid email address.','auth/weak-password':'Password is too weak. Use at least 6 characters.','auth/too-many-requests':'Too many attempts. Please wait a moment.','auth/invalid-credential':'Incorrect email or password.'};return map[code]||'Something went wrong. Please try again.';}
 </script>
 
 <script>
-  window.toggleDropdown = () => { document.getElementById('profileDropdown').classList.toggle('open'); };
-  window.openLogin = () => { document.getElementById('profileDropdown').classList.remove('open'); document.getElementById('loginOverlay').classList.add('open'); };
-  window.closeLogin = () => { document.getElementById('loginOverlay').classList.remove('open'); };
-  window.switchTab = (tab) => { document.querySelectorAll('.login-tab').forEach((t,i)=>{ t.classList.toggle('active',(i===0&&tab==='signin')||(i===1&&tab==='register')); }); document.getElementById('panel-signin').classList.toggle('active',tab==='signin'); document.getElementById('panel-register').classList.toggle('active',tab==='register'); ['signin-error','register-error'].forEach(id=>document.getElementById(id).textContent=''); };
-  document.getElementById('loginOverlay').addEventListener('click',(e)=>{ if(e.target===document.getElementById('loginOverlay'))closeLogin(); });
-  document.addEventListener('click',(e)=>{ const btn=document.getElementById('profileBtn'); const dropdown=document.getElementById('profileDropdown'); if(!btn.contains(e.target)&&!dropdown.contains(e.target)){dropdown.classList.remove('open');} });
+window.toggleDropdown = () => { document.getElementById('profileDropdown').classList.toggle('open'); };
+window.openLogin = () => { document.getElementById('profileDropdown').classList.remove('open'); document.getElementById('loginOverlay').classList.add('open'); };
+window.closeLogin = () => { document.getElementById('loginOverlay').classList.remove('open'); };
+window.switchTab = (tab) => { document.querySelectorAll('.login-tab').forEach((t,i)=>{ t.classList.toggle('active',(i===0&&tab==='signin')||(i===1&&tab==='register')); }); document.getElementById('panel-signin').classList.toggle('active',tab==='signin'); document.getElementById('panel-register').classList.toggle('active',tab==='register'); ['signin-error','register-error'].forEach(id=>document.getElementById(id).textContent=''); };
+document.getElementById('loginOverlay').addEventListener('click',(e)=>{ if(e.target===document.getElementById('loginOverlay'))closeLogin(); });
+document.addEventListener('click',(e)=>{ const btn=document.getElementById('profileBtn'); const dropdown=document.getElementById('profileDropdown'); if(!btn.contains(e.target)&&!dropdown.contains(e.target)){dropdown.classList.remove('open');} });
 </script>
 </body>
 </html>

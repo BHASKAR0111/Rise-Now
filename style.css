@@ -9,7 +9,6 @@
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
-  /* Core palette */
   --blue:        #00C2FF;
   --blue-dim:    #0090CC;
   --blue-glow:   rgba(0,194,255,0.15);
@@ -155,11 +154,20 @@ nav .logo-box {
   background: var(--blue-glow2) !important;
 }
 
+/* ── FIX 1: Only nav rize links get blue glow — NOT buttons ── */
 .nav-link.ai,
-a[href*="rize"],
+nav .nav-links a[href*="rize"],
 .nav-item a[href*="rize"] {
   color: var(--blue) !important;
   text-shadow: 0 0 12px rgba(0,194,255,0.5) !important;
+}
+
+/* ── FIX 2: btn-rize always shows dark text, no glow ── */
+a.btn-rize,
+.btn-rize,
+.rize-banner a[href*="rize"] {
+  color: #04050F !important;
+  text-shadow: none !important;
 }
 
 .profile-btn,
@@ -247,7 +255,7 @@ section.hero,
   text-shadow: 0 0 60px rgba(0,194,255,0.15) !important;
 }
 
-/* ── FIX: Blue bar bug on desktop ── */
+/* ── FIX 3: Blue bar bug on desktop ── */
 .hero h1 .highlight,
 .hero h1 .green,
 .hero h1 .accent,
@@ -353,8 +361,7 @@ a.btn-secondary:hover {
 }
 
 .btn-ai,
-.chat-btn,
-a[href*="rize"].btn {
+.chat-btn {
   padding: 10px 20px !important;
   background: var(--blue) !important;
   border: none !important;

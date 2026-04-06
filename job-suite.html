@@ -25,7 +25,8 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 nav{position:fixed;top:0;left:0;right:0;z-index:300;background:rgba(10,15,13,0.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 40px;height:64px;display:flex;align-items:center;justify-content:space-between;}
 .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
 .logo-box{width:36px;height:36px;border-radius:9px;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#04050F;}
-.logo-text{font-size:20px;font-weight:800;background:var(--blue);color:var(--blue);}
+/* FIX 1: removed background:var(--blue) — was making text invisible */
+.logo-text{font-size:20px;font-weight:800;color:var(--blue);}
 .nav-links{display:flex;gap:4px;}
 .nav-link{padding:7px 14px;font-size:13px;font-weight:500;color:var(--muted);text-decoration:none;border-radius:8px;}
 .nav-link:hover{color:white;}
@@ -52,7 +53,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;background:rgba(10,15,13,0.9
 .live-dot{width:6px;height:6px;border-radius:50%;background:var(--blue);animation:pulse 1.5s infinite;}
 @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
 .pnl-title{font-size:26px;font-weight:900;letter-spacing:-1px;color:white;margin-bottom:5px;}
-.pnl-title span{background:var(--blue);color:var(--blue);}
+/* FIX 2: removed background:var(--blue) — was making span text invisible */
+.pnl-title span{color:var(--blue);}
 .pnl-sub{font-size:13px;color:var(--muted);margin-bottom:24px;line-height:1.6;}
 
 /* FIELDS */
@@ -80,7 +82,8 @@ textarea.field{resize:vertical;line-height:1.6;}
 
 /* STAT */
 .stat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 18px;text-align:center;}
-.stat .n{font-size:24px;font-weight:900;background:var(--blue);color:var(--blue);}
+/* FIX 3: stat .n had background:var(--blue);color:var(--blue) — removed background */
+.stat .n{font-size:24px;font-weight:900;color:var(--blue);}
 .stat .l{font-size:11px;color:var(--muted);margin-top:3px;}
 
 /* OUTPUT */
@@ -114,7 +117,8 @@ textarea.field{resize:vertical;line-height:1.6;}
 .jc-logo{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,rgba(0,230,118,.1),rgba(0,188,212,.1));border:1px solid rgba(0,230,118,.12);display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:900;color:var(--blue);flex-shrink:0;text-transform:uppercase;}
 .jc-info{flex:1;min-width:0;}
 .jc-title{font-size:14px;font-weight:700;color:white;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.jc-co{font-size:12px;font-weight:600;background:var(--blue);color:var(--blue);margin-bottom:7px;}
+/* FIX 4: jc-co had background:var(--blue);color:var(--blue) — removed background */
+.jc-co{font-size:12px;font-weight:600;color:var(--blue);margin-bottom:7px;}
 .jc-tags{display:flex;gap:6px;flex-wrap:wrap;}
 .tag{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:5px;padding:3px 8px;font-size:11px;color:var(--muted);}
 .tag.g{background:rgba(0,230,118,.07);border-color:rgba(0,230,118,.2);color:var(--blue);}
@@ -142,7 +146,8 @@ textarea.field{resize:vertical;line-height:1.6;}
 
 /* SCORE CIRCLE */
 .sc-circ{width:100px;height:100px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;border:3px solid rgba(0,230,118,.25);background:rgba(0,230,118,.04);flex-shrink:0;}
-.sc-n{font-size:24px;font-weight:900;background:var(--blue);color:var(--blue);}
+/* FIX 5: sc-n had background:var(--blue);color:var(--blue) — removed background */
+.sc-n{font-size:24px;font-weight:900;color:var(--blue);}
 .sc-l{font-size:9px;color:var(--muted);font-weight:600;}
 
 /* KEYWORD PILLS */
@@ -270,8 +275,8 @@ textarea.field{resize:vertical;line-height:1.6;}
 
   <div class="g4" style="margin-bottom:20px;">
     <div class="stat"><div class="n" id="ts-t">0</div><div class="l">Tracked</div></div>
-    <div class="stat"><div class="n" id="ts-a" style="background:linear-gradient(90deg,var(--blue),#0097a7);color:var(--blue);">0</div><div class="l">Applied</div></div>
-    <div class="stat"><div class="n" id="ts-i" style="background:linear-gradient(90deg,var(--yellow),#ff9f43);color:var(--blue);">0</div><div class="l">Interviews</div></div>
+    <div class="stat"><div class="n" id="ts-a" style="color:#00bcd4;">0</div><div class="l">Applied</div></div>
+    <div class="stat"><div class="n" id="ts-i" style="color:var(--yellow);">0</div><div class="l">Interviews</div></div>
     <div class="stat"><div class="n" id="ts-o">0</div><div class="l">Offers 🎉</div></div>
   </div>
 
@@ -397,7 +402,7 @@ textarea.field{resize:vertical;line-height:1.6;}
           </div>
           <div class="g3" style="margin-top:12px;gap:9px;">
             <div class="stat" style="padding:11px;"><div class="n" id="rv-m" style="font-size:18px;">0</div><div class="l">Matched</div></div>
-            <div class="stat" style="padding:11px;"><div class="n" id="rv-ms" style="font-size:18px;background:linear-gradient(90deg,var(--red),#ff6b7a);color:var(--blue);">0</div><div class="l">Missing</div></div>
+            <div class="stat" style="padding:11px;"><div class="n" id="rv-ms" style="font-size:18px;color:var(--red);">0</div><div class="l">Missing</div></div>
             <div class="stat" style="padding:11px;"><div class="n" id="rv-gr" style="font-size:18px;">—</div><div class="l">Grade</div></div>
           </div>
         </div>
@@ -501,7 +506,7 @@ const API_ID='2f6465b2', API_AZ='a1fe6998e38dde7e76ef856edf112b9e', PPG=10;
 let jsPage=1,jsTotal=0,tJobs=JSON.parse(localStorage.getItem('rn_t')||'[]'),tFilter='all',emailType='followup',rvMode='paste',pdfB64=null;
 
 function cpOut(id){
-  const t=$( id).innerText||$(id).textContent;
+  const t=$(id).innerText||$(id).textContent;
   if(!t||t.includes('Fill')||t.includes('Generate')||t.includes('Run analysis')) return;
   navigator.clipboard.writeText(t).then(()=>alert('✅ Copied!'));
 }

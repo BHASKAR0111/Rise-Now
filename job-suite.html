@@ -10,14 +10,15 @@
   <title>Rigel — Job Application Suite</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;}
-:root{
-  --blue:#00C2FF;--blue-dim:#0090CC;
-  --bg:#04050F;--card:#0A0C1E;
-  --border:rgba(255,255,255,0.07);
-  --text:rgba(255,255,255,0.85);
-  --muted:rgba(255,255,255,0.4);
-  --red:#ff4757;--yellow:#ffd32a;
+  /* Fix cyan-bg text visibility */
+  [style*="background:#00C2FF"] *,
+  [style*="background: #00C2FF"] *,
+  .btn-primary, a.btn-primary,
+  .btn-rize, a.btn-rize {
+    color: #04050F !important;
+    -webkit-text-fill-color: #04050F !important;
+  }
+</style>
 }
 body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
 .bg-glow{position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse at 20% 50%,rgba(0,100,60,0.15) 0%,transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(0,80,80,0.1) 0%,transparent 50%);pointer-events:none;}

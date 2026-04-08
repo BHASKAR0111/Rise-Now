@@ -9,7 +9,7 @@
   <title>Rigel Blog | Motivation & Growth</title>
 <meta name="description" content="Read motivational and career growth blogs from Rigel.">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" type="image/png" href="images/rigel_logo.png">
 
 <style>
 :root{
@@ -205,6 +205,7 @@ footer p{font-size:14px;}
 }
 </style>
   <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="footer.css"/>
 </head>
 
 <body>
@@ -220,10 +221,79 @@ footer p{font-size:14px;}
     <strong>Rigel</strong>
   </a>
   <nav>
-    <a href="index.html">Home</a>
-    <a href="about.html">About</a>
-    <a href="contact.html">Contact</a>
-  </nav>
+  <a href="index.html" class="nav-logo">
+    <img src="images/rigel_logo.png" alt="Rigel" style="width:36px;height:36px;border-radius:9px;object-fit:contain;background:#000;"/>
+    <div class="logo-text" style="color:var(--blue) !important; background:transparent !important; font-weight:800; font-size:22px;">Rigel</div>
+  </a>
+  <div class="nav-links">
+    <a href="careers.html" class="nav-link">Careers</a>
+    <a href="resources.html" class="nav-link">Resources</a>
+    
+    <!-- TOOLS DROPDOWN -->
+    <div class="nav-dropdown-wrapper" style="position:relative; display:inline-block;">
+      <div class="nav-link" style="cursor:pointer; display:flex; align-items:center; gap:4px;" onclick="document.getElementById('toolsDropdown').classList.toggle('show')">
+        Tools <span style="font-size:10px;">▼</span>
+      </div>
+      <div id="toolsDropdown" class="tools-dropdown">
+        <a href="daily-quote.html">Motivation</a>
+        <a href="jobs.html">Job Board</a>
+        <a href="job-tracker.html">Job Tracker</a>
+        <a href="interview.html">Interview Prep</a>
+        <a href="ats-scanner.html">Resume ATS Scanner</a>
+        <a href="cover-letter.html">AI Cover Letter</a>
+        <a href="market-insights.html">Market Insights</a>
+        <a href="freelance-starter.html">Make Your First ₹1000</a>
+        <a href="leaderboard.html">Community Leaderboard</a>
+      </div>
+    </div>
+    
+    <a href="rize.html" class="nav-link highlight">✦ Rigel AI</a>
+    
+    <div style="position:relative;margin-left:8px;">
+      <div class="profile-btn" id="profileBtn" onclick="toggleDropdown()">
+        <span class="default-icon" id="profileIcon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        </span>
+        <img id="profileImg" src="" alt="" style="display:none;width:100%;height:100%;border-radius:50%;object-fit:cover;position:absolute;inset:0;"/>
+      </div>
+      <div class="profile-dropdown" id="profileDropdown">
+        <div id="dropdownLoggedOut">
+          <div class="dropdown-item" onclick="openLogin()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:8px;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg> 
+            Sign In / Register
+          </div>
+        </div>
+        <div id="dropdownLoggedIn" style="display:none;">
+          <div class="dropdown-user">
+            <div class="dropdown-name" id="dropdownName">—</div>
+            <div class="dropdown-email" id="dropdownEmail">—</div>
+          </div>
+          <a href="dashboard.html" class="dropdown-item">My Dashboard</a>
+          <a href="careers.html" class="dropdown-item">Explore Careers</a>
+          <a href="job-tracker.html" class="dropdown-item">Job Tracker</a>
+          <a href="rize.html" class="dropdown-item">✦ Chat with Rigel</a>
+          <div class="dropdown-item danger" onclick="signOutUser()">Sign Out</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<style>
+/* Tools dropdown styling */
+.tools-dropdown { display:none; position:absolute; top:100%; left:50%; transform:translateX(-50%); background:var(--card); border:1px solid var(--border); border-radius:12px; padding:8px; min-width:180px; z-index:100; margin-top:16px; box-shadow:0 10px 30px rgba(0,0,0,0.5); }
+.tools-dropdown.show { display: block !important; }
+.tools-dropdown a { display:block; padding:10px 16px; color:var(--text); text-decoration:none; font-size:14px; border-radius:8px; transition:0.2s; text-align:left; }
+.tools-dropdown a:hover { background: rgba(0, 194, 255, 0.1); color: var(--blue); }
+</style>
+<script>
+document.addEventListener('click', function(e) {
+  const toolsMenu = document.getElementById('toolsDropdown');
+  if (toolsMenu && !e.target.closest('.nav-dropdown-wrapper')) {
+    toolsMenu.classList.remove('show');
+  }
+});
+</script>
 </header>
 
 <!-- Page Hero -->
@@ -272,23 +342,47 @@ footer p{font-size:14px;}
   </div>
 </section>
 
-<!-- Footer -->
-<footer>
-  <div class="footer-logo">
-    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect width="100" height="100" rx="20" fill="#111827"/>
-      <text x="50%" y="55%" text-anchor="middle" font-family="Arial" font-size="55" font-weight="bold" fill="white" dy=".3em">R</text>
-      <circle cx="75" cy="75" r="8" fill="#22c55e"/>
-    </svg>
-    <strong>Rigel</strong>
+<!-- FOOTER -->
+<footer class="global-footer">
+  <div class="footer-top">
+    <div class="footer-col">
+      <a href="index.html" class="nav-logo">
+        <img src="images/rigel_logo.png" alt="Rigel" style="width:36px;height:36px;border-radius:9px;object-fit:contain;background:#000;"/>
+        <div class="logo-text" style="color:#00C2FF !important; background:transparent !important; font-weight:800; font-size:22px;">Rigel</div>
+      </a>
+      <p>Outgrow the Ordinary. A fully responsive career guidance & motivation platform built for job seekers and career switchers.</p>
+      <div class="footer-socials">
+        <a href="#" class="social-link">in</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Product</h4>
+      <ul>
+        <li><a href="careers.html">Explore Careers</a></li>
+        <li><a href="roadmap.html">Career Roadmaps</a></li>
+        <li><a href="resources.html">Resource Library</a></li>
+        <li><a href="job-tracker.html">Job Tracker</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="index.html#stories">Success Stories</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="privacy.html">Privacy Policy</a></li>
+        <li><a href="terms.html">Terms of Service</a></li>
+      </ul>
+    </div>
   </div>
-  <p>Outgrow the Ordinary</p>
-  <div class="footer-links">
-    <a href="index.html">Home</a>
-    <a href="about.html">About</a>
-    <a href="contact.html">Contact</a>
+  <div class="footer-bottom">
+    <p>© 2026 Rigel — Outgrow the Ordinary | Built by Bhaskar </p>
   </div>
-  <p style="margin-top:20px;">&copy; 2026 Rigel. All rights reserved.</p>
 </footer>
 
 <script>
@@ -307,5 +401,6 @@ window.addEventListener('load', () => {
 });
 </script>
 
+<script type="module" src="rigel_widget.js"></script>
 </body>
 </html>

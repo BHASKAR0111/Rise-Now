@@ -36,8 +36,7 @@
     }
     .logo-name {
       font-size: 20px; font-weight: 800;
-      background: linear-gradient(90deg, var(--blue), var(--blue));
-      color: var(--blue); background-clip: text;
+      background: transparent !important; color: var(--blue) !important;
     }
     .nav-links { display: flex; gap: 28px; list-style: none; }
     .nav-links a { text-decoration: none; color: var(--muted); font-size: 14px; font-weight: 500; }
@@ -60,8 +59,7 @@
     }
     .hero h1 { font-size: 44px; font-weight: 900; letter-spacing: -2px; margin-bottom: 12px; }
     .hero h1 span {
-      background: linear-gradient(90deg, var(--blue), var(--blue));
-      color: var(--blue); background-clip: text;
+      background: transparent !important; color: var(--blue) !important;
     }
     .hero p { font-size: 15px; color: var(--muted); max-width: 500px; margin: 0 auto; line-height: 1.7; }
 
@@ -102,8 +100,7 @@
     }
     .challenge-title { font-size: 24px; font-weight: 800; }
     .challenge-title span {
-      background: linear-gradient(90deg, var(--blue), var(--blue));
-      color: var(--blue); background-clip: text;
+      background: transparent !important; color: var(--blue) !important;
     }
 
     .btn-change {
@@ -172,25 +169,88 @@
     footer p { font-size: 13px; color: var(--muted); }
   </style>
   <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="footer.css"/>
+  <link rel="icon" type="image/png" href="images/rigel_logo.png">
 </head>
 <body>
 
 <nav>
   <a href="index.html" class="nav-logo">
-    <div class="logo-r">R</div>
-    <div class="logo-name">Rigel</div>
+    <img src="images/rigel_logo.png" alt="Rigel" style="width:36px;height:36px;border-radius:9px;object-fit:contain;background:#000;"/>
+    <div class="logo-text" style="color:var(--blue) !important; background:transparent !important; font-weight:800; font-size:22px;">Rigel</div>
   </a>
-  <ul class="nav-links">
-    <li><a href="resources.html">Resources</a></li>
-    <li><a href="roadmap.html">Roadmap</a></li>
-    <li><a href="quiz.html">Quiz</a></li>
-    <li><a href="challenge.html" class="active">30 Day Challenge</a></li>
-    <li><a href="interview.html">Interview Prep</a></li>
-  </ul>
+  <div class="nav-links">
+    <a href="careers.html" class="nav-link">Careers</a>
+    <a href="resources.html" class="nav-link">Resources</a>
+    
+    <!-- TOOLS DROPDOWN -->
+    <div class="nav-dropdown-wrapper" style="position:relative; display:inline-block;">
+      <div class="nav-link" style="cursor:pointer; display:flex; align-items:center; gap:4px;" onclick="document.getElementById('toolsDropdown').classList.toggle('show')">
+        Tools <span style="font-size:10px;">▼</span>
+      </div>
+      <div id="toolsDropdown" class="tools-dropdown">
+        <a href="daily-quote.html">Motivation</a>
+        <a href="jobs.html">Job Board</a>
+        <a href="job-tracker.html">Job Tracker</a>
+        <a href="interview.html">Interview Prep</a>
+        <a href="ats-scanner.html">Resume ATS Scanner</a>
+        <a href="cover-letter.html">AI Cover Letter</a>
+        <a href="market-insights.html">Market Insights</a>
+        <a href="freelance-starter.html">Make Your First ₹1000</a>
+        <a href="leaderboard.html">Community Leaderboard</a>
+      </div>
+    </div>
+    
+    <a href="rize.html" class="nav-link highlight">✦ Rigel AI</a>
+    
+    <div style="position:relative;margin-left:8px;">
+      <div class="profile-btn" id="profileBtn" onclick="toggleDropdown()">
+        <span class="default-icon" id="profileIcon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        </span>
+        <img id="profileImg" src="" alt="" style="display:none;width:100%;height:100%;border-radius:50%;object-fit:cover;position:absolute;inset:0;"/>
+      </div>
+      <div class="profile-dropdown" id="profileDropdown">
+        <div id="dropdownLoggedOut">
+          <div class="dropdown-item" onclick="openLogin()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:8px;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg> 
+            Sign In / Register
+          </div>
+        </div>
+        <div id="dropdownLoggedIn" style="display:none;">
+          <div class="dropdown-user">
+            <div class="dropdown-name" id="dropdownName">—</div>
+            <div class="dropdown-email" id="dropdownEmail">—</div>
+          </div>
+          <a href="dashboard.html" class="dropdown-item">My Dashboard</a>
+          <a href="careers.html" class="dropdown-item">Explore Careers</a>
+          <a href="job-tracker.html" class="dropdown-item">Job Tracker</a>
+          <a href="rize.html" class="dropdown-item">✦ Chat with Rigel</a>
+          <div class="dropdown-item danger" onclick="signOutUser()">Sign Out</div>
+        </div>
+      </div>
+    </div>
+  </div>
 </nav>
 
-<div class="hero">
-  <div class="hero-tag">🔥 30 Day Challenge</div>
+<style>
+/* Tools dropdown styling */
+.tools-dropdown { display:none; position:absolute; top:100%; left:50%; transform:translateX(-50%); background:var(--card); border:1px solid var(--border); border-radius:12px; padding:8px; min-width:180px; z-index:100; margin-top:16px; box-shadow:0 10px 30px rgba(0,0,0,0.5); }
+.tools-dropdown.show { display: block !important; }
+.tools-dropdown a { display:block; padding:10px 16px; color:var(--text); text-decoration:none; font-size:14px; border-radius:8px; transition:0.2s; text-align:left; }
+.tools-dropdown a:hover { background: rgba(0, 194, 255, 0.1); color: var(--blue); }
+</style>
+<script>
+document.addEventListener('click', function(e) {
+  const toolsMenu = document.getElementById('toolsDropdown');
+  if (toolsMenu && !e.target.closest('.nav-dropdown-wrapper')) {
+    toolsMenu.classList.remove('show');
+  }
+});
+</script>
+
+<div class="hero" style="min-height: auto !important; padding-top: 140px !important; padding-bottom: 40px !important;">
+  <div class="hero-tag"> 30 Day Challenge</div>
   <h1>30 Days to <span>Job Ready</span></h1>
   <p>One small task every day. 30 days later — you'll be a completely different person professionally.</p>
 </div>
@@ -200,23 +260,23 @@
   <div style="text-align:center;padding:0 40px 20px;font-size:13px;color:var(--muted);">Choose your track to start the challenge</div>
   <div class="track-grid">
     <div class="track-card" onclick="startChallenge('da')">
-      <span class="track-emoji">📊</span>
+      <span class="track-emoji"></span>
       <div class="track-title">Data Analytics</div>
     </div>
     <div class="track-card" onclick="startChallenge('wd')">
-      <span class="track-emoji">🌐</span>
+      <span class="track-emoji"></span>
       <div class="track-title">Web Development</div>
     </div>
     <div class="track-card" onclick="startChallenge('dm')">
-      <span class="track-emoji">📣</span>
+      <span class="track-emoji"></span>
       <div class="track-title">Digital Marketing</div>
     </div>
     <div class="track-card" onclick="startChallenge('gd')">
-      <span class="track-emoji">🎨</span>
+      <span class="track-emoji"></span>
       <div class="track-title">Graphic Design</div>
     </div>
     <div class="track-card" onclick="startChallenge('gen')">
-      <span class="track-emoji">⚡</span>
+      <span class="track-emoji"></span>
       <div class="track-title">General Career</div>
     </div>
   </div>
@@ -227,7 +287,7 @@
   <div class="stats-bar" id="statsBar"></div>
 
   <div class="challenge-header">
-    <div class="challenge-title" id="challengeTitle">📊 Data Analytics <span>30 Day Challenge</span></div>
+    <div class="challenge-title" id="challengeTitle"> Data Analytics <span>30 Day Challenge</span></div>
     <button class="btn-change" onclick="changeTrack()">Change Track</button>
   </div>
 
@@ -244,17 +304,52 @@
   <div class="days-grid" id="daysGrid"></div>
 </div>
 
-<footer>
-  <a href="index.html" class="nav-logo">
-    <div class="logo-r">R</div>
-    <div class="logo-name">Rigel</div>
-  </a>
-  <p>© 2026 Rigel. Outgrow the Ordinary.</p>
+<!-- FOOTER -->
+<footer class="global-footer">
+  <div class="footer-top">
+    <div class="footer-col">
+      <a href="index.html" class="nav-logo">
+        <img src="images/rigel_logo.png" alt="Rigel" style="width:36px;height:36px;border-radius:9px;object-fit:contain;background:#000;"/>
+        <div class="logo-text" style="color:#00C2FF !important; background:transparent !important; font-weight:800; font-size:22px;">Rigel</div>
+      </a>
+      <p>Outgrow the Ordinary. A fully responsive career guidance & motivation platform built for job seekers and career switchers.</p>
+      <div class="footer-socials">
+        <a href="#" class="social-link">in</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Product</h4>
+      <ul>
+        <li><a href="careers.html">Explore Careers</a></li>
+        <li><a href="roadmap.html">Career Roadmaps</a></li>
+        <li><a href="resources.html">Resource Library</a></li>
+        <li><a href="job-tracker.html">Job Tracker</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="index.html#stories">Success Stories</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="privacy.html">Privacy Policy</a></li>
+        <li><a href="terms.html">Terms of Service</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Rigel — Outgrow the Ordinary | Built by Bhaskar </p>
+  </div>
 </footer>
 
 <script>
 const tracks = {
-  da: { name: '📊 Data Analytics', tasks: [
+  da: { name: ' Data Analytics', tasks: [
     'Install Python & Jupyter Notebook', 'Complete Python basics tutorial', 'Learn variables, loops & functions',
     'Practice 10 Python exercises on W3Schools', 'Install Pandas & explore a CSV file',
     'Clean a messy dataset using Pandas', 'Create 3 charts using Matplotlib',
@@ -269,9 +364,9 @@ const tracks = {
     'Write 5 key insights from your project', 'Create GitHub account & upload project',
     'Build portfolio website (use Rigel template)', 'Optimize LinkedIn profile',
     'Apply to 5 Data Analyst roles today', 'Write a cover letter for your dream role',
-    '🎉 Celebrate — You are Job Ready!',
+    ' Celebrate — You are Job Ready!',
   ]},
-  wd: { name: '🌐 Web Development', tasks: [
+  wd: { name: ' Web Development', tasks: [
     'Learn HTML basics — headings, paragraphs, links', 'Build a simple webpage with HTML',
     'Learn CSS — colors, fonts, box model', 'Style your webpage with CSS',
     'Learn Flexbox & build a navigation bar', 'Learn CSS Grid & build a layout',
@@ -286,9 +381,9 @@ const tracks = {
     'Build your portfolio in React', 'Deploy portfolio to GitHub Pages or Vercel',
     'Add 3 projects to your portfolio', 'Learn Node.js basics',
     'Build a simple Express server', 'Optimize LinkedIn profile & GitHub',
-    'Apply to 5 Web Dev roles', '🎉 Celebrate — You are Job Ready!',
+    'Apply to 5 Web Dev roles', ' Celebrate — You are Job Ready!',
   ]},
-  dm: { name: '📣 Digital Marketing', tasks: [
+  dm: { name: ' Digital Marketing', tasks: [
     'Read marketing funnel & buyer journey article', 'Set up Google Analytics on a website',
     'Learn SEO basics — what is keyword research', 'Find 10 keywords for a niche topic',
     'Write an SEO-optimized 500-word blog post', 'Create a free Google Skillshop account',
@@ -303,9 +398,9 @@ const tracks = {
     'Run a real Instagram campaign (even small)', 'Measure campaign results & write insights',
     'Build a digital marketing portfolio PDF', 'Update LinkedIn with certifications',
     'Write a LinkedIn post about marketing insights', 'Create your resume with marketing skills',
-    'Apply to 5 Digital Marketing roles', '🎉 Celebrate — You are Job Ready!',
+    'Apply to 5 Digital Marketing roles', ' Celebrate — You are Job Ready!',
   ]},
-  gd: { name: '🎨 Graphic Design', tasks: [
+  gd: { name: ' Graphic Design', tasks: [
     'Learn design principles — contrast, alignment, proximity', 'Study 10 logos on Behance',
     'Create a Canva account & explore templates', 'Design your first social media post',
     'Create a Figma account & learn basic tools', 'Design a simple wireframe in Figma',
@@ -320,9 +415,9 @@ const tracks = {
     'Design a presentation template', 'Get feedback on your work from a community',
     'Redesign your best project based on feedback', 'Learn Photoshop basics OR Adobe Express',
     'Create a before/after design showcase', 'Build your portfolio PDF',
-    'Apply to 5 Graphic Design roles', '🎉 Celebrate — You are Job Ready!',
+    'Apply to 5 Graphic Design roles', ' Celebrate — You are Job Ready!',
   ]},
-  gen: { name: '⚡ General Career', tasks: [
+  gen: { name: ' General Career', tasks: [
     'Write down your top 3 career goals', 'Update your resume today',
     'Optimize your LinkedIn headline & About', 'Add 3 skills to LinkedIn',
     'Connect with 10 people in your target industry', 'Follow 5 companies you want to work for',
@@ -337,7 +432,7 @@ const tracks = {
     'Write a LinkedIn post about your journey', 'Apply to 3 more jobs',
     'Do a mock interview with a friend', 'Research salary expectations for your role',
     'Prepare 5 questions to ask interviewers', 'Review & update your resume again',
-    'Apply to your dream company', '🎉 Celebrate — 30 days of consistent effort!',
+    'Apply to your dream company', ' Celebrate — 30 days of consistent effort!',
   ]},
 };
 
@@ -367,7 +462,7 @@ function renderChallenge() {
     <div class="stat-pill"><span class="stat-num" style="color:#00e676">${done}</span><span class="stat-lbl">Days Done</span></div>
     <div class="stat-pill"><span class="stat-num" style="color:#ffa500">${30 - done}</span><span class="stat-lbl">Remaining</span></div>
     <div class="stat-pill"><span class="stat-num" style="color:#00bcd4">${pct}%</span><span class="stat-lbl">Complete</span></div>
-    <div class="stat-pill"><span class="stat-num" style="color:#a78bfa">${getStreak()}</span><span class="stat-lbl">Day Streak 🔥</span></div>
+    <div class="stat-pill"><span class="stat-num" style="color:#a78bfa">${getStreak()}</span><span class="stat-lbl">Day Streak </span></div>
   `;
 
   const weeks = ['Week 1 — Foundation', 'Week 2 — Building Skills', 'Week 3 — Going Deeper', 'Week 4 — Job Ready', 'Week 5 — Final Push'];
@@ -385,7 +480,7 @@ function renderChallenge() {
            onclick="${isLocked ? '' : `toggleDay(${i})`}">
         <div class="day-num">Day ${i + 1}</div>
         <div class="day-task">${task}</div>
-        <div class="day-check">${isDone ? '✓' : ''}</div>
+        <div class="day-check">${isDone ? '' : ''}</div>
       </div>
     `;
   });
@@ -417,5 +512,6 @@ function changeTrack() {
 const savedTrack = localStorage.getItem('risenow_active_track');
 if (savedTrack && tracks[savedTrack]) startChallenge(savedTrack);
 </script>
+<script type="module" src="rigel_widget.js"></script>
 </body>
 </html>

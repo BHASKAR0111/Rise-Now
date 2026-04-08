@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Career Assessment | Rigel</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    :root {
+      --blue: #00C2FF;
+      --bg: #0d1117;
+      --card: #161b22;
+      --border: rgba(255,255,255,0.07);
+      --text: rgba(255,255,255,0.85);
+      --muted: rgba(255,255,255,0.4);
+    }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    nav {
+      position: absolute; top:0; left:0; width:100%;
+      padding: 24px 40px; display: flex;
+    }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+
+    .assessment-container {
+      width: 100%;
+      max-width: 600px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 48px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      position: absolute; top: 0; left: 0; height: 4px;
+      background: var(--blue);
+      width: 20%;
+      transition: width 0.3s ease;
+    }
+
+    .question-block {
+      display: none;
+      animation: fadeIn 0.4s ease forwards;
+    }
+    .question-block.active { display: block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .q-step { font-size: 13px; font-weight: 700; color: var(--blue); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
+    .q-title { font-size: 28px; font-weight: 800; margin-bottom: 32px; color: white; line-height: 1.3; }
+
+    .options { display: flex; flex-direction: column; gap: 16px; }
+    
+    .option-btn {
+      padding: 16px 20px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--text);
+      font-size: 15px; font-weight: 600;
+      text-align: left; cursor: pointer;
+      display: flex; align-items: center; gap: 16px;
+      transition: all 0.2s;
+    }
+    .option-btn:hover { background: rgba(0,194,255,0.05); border-color: rgba(0,194,255,0.3); }
+    .option-btn.selected { background: rgba(0,194,255,0.1); border-color: var(--blue); }
+
+    .btn-next {
+      margin-top: 40px;
+      padding: 16px 32px; width: 100%;
+      background: linear-gradient(135deg, var(--blue), var(--blue));
+      color: #0d1117; font-size: 16px; font-weight: 700;
+      border: none; border-radius: 12px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-next:disabled { opacity: 0.5; cursor: not-allowed; }
+    
+    /* Gated form styles */
+    .gate-input {
+      width: 100%; padding: 14px 16px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      border-radius: 8px; color: white;
+      font-family: inherit; font-size: 15px; margin-bottom: 16px;
+    }
+    .gate-input:focus { outline:none; border-color:var(--blue); }
+  </style>
+  <link rel="icon" type="image/png" href="images/rigel_logo.png">
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <img src="images/rigel_logo.png" alt="Rigel" style="width:36px;height:36px;border-radius:9px;object-fit:contain;background:#000;"/>
+    <div class="logo-text" style="color:var(--blue); font-weight:800; font-size:22px;">Rigel</div>
+  </a>
+</nav>
+
+<div class="assessment-container">
+  <div class="progress-bar" id="progressBar"></div>
+
+  <!-- Q1 -->
+  <div class="question-block active" id="step-1">
+    <div class="q-step">Step 1 of 5</div>
+    <div class="q-title">What best describes your current career situation?</div>
+    <div class="options">
+      <button class="option-btn" onclick="selectOption(1, 'explore')">I'm just starting out and exploring options.</button>
+      <button class="option-btn" onclick="selectOption(1, 'switch')">I'm stuck in a career I want to pivot away from.</button>
+      <button class="option-btn" onclick="selectOption(1, 'upskill')">I like my field but need to upskill for a promotion.</button>
+    </div>
+    <button class="btn-next" id="btn-1" disabled onclick="nextStep(1)">Continue</button>
+  </div>
+
+  <!-- Q2 -->
+  <div class="question-block" id="step-2">
+    <div class="q-step">Step 2 of 5</div>
+    <div class="q-title">What is your strongest natural skill or interest?</div>
+    <div class="options">
+      <button class="option-btn" onclick="selectOption(2, 'da')">Analyzing logic, numbers, and identifying patterns</button>
+      <button class="option-btn" onclick="selectOption(2, 'wd')">Building digital experiences and working with technology</button>
+      <button class="option-btn" onclick="selectOption(2, 'cm')">Communicating, persuading, and understanding human psychology</button>
+      <button class="option-btn" onclick="selectOption(2, 'pm')">Leading teams, organizing projects, and systems thinking</button>
+    </div>
+    <button class="btn-next" id="btn-2" disabled onclick="nextStep(2)">Continue</button>
+  </div>
+
+  <!-- Q3 -->
+  <div class="question-block" id="step-3">
+    <div class="q-step">Step 3 of 5</div>
+    <div class="q-title">What is your biggest blocker right now?</div>
+    <div class="options">
+      <button class="option-btn" onclick="selectOption(3, 'education')">Lack of formal relevant degree or experience</button>
+      <button class="option-btn" onclick="selectOption(3, 'gap')">Extended gap in my career history</button>
+      <button class="option-btn" onclick="selectOption(3, 'interviews')">Failing at the interview stage</button>
+      <button class="option-btn" onclick="selectOption(3, 'direction')">Lack of clear direction or mentorship</button>
+    </div>
+    <button class="btn-next" id="btn-3" disabled onclick="nextStep(3)">Continue</button>
+  </div>
+
+  <!-- Q4 -->
+  <div class="question-block" id="step-4">
+    <div class="q-step">Step 4 of 5</div>
+    <div class="q-title">What is your target starting salary?</div>
+    <div class="options">
+      <button class="option-btn" onclick="selectOption(4, 'entry')">Under ₹5 LPA (Looking to break in)</button>
+      <button class="option-btn" onclick="selectOption(4, 'mid')">₹5 - ₹12 LPA (Mid-level roles)</button>
+      <button class="option-btn" onclick="selectOption(4, 'senior')">₹12 LPA+ (Senior/Specialized roles)</button>
+    </div>
+    <button class="btn-next" id="btn-4" disabled onclick="nextStep(4)">Continue</button>
+  </div>
+
+  <!-- Q5 -->
+  <div class="question-block" id="step-5">
+    <div class="q-step">Step 5 of 5</div>
+    <div class="q-title">How much time can you commit to upskilling daily?</div>
+    <div class="options">
+      <button class="option-btn" onclick="selectOption(5, '1')">1 hour or less</button>
+      <button class="option-btn" onclick="selectOption(5, '3')">2-3 hours</button>
+      <button class="option-btn" onclick="selectOption(5, '5')">Full-time (5+ hours)</button>
+    </div>
+    <button class="btn-next" id="btn-5" disabled onclick="finishAssessment()">Build My Roadmap</button>
+  </div>
+
+  <!-- GATED RESULT -->
+  <div class="question-block" id="step-6" style="text-align:center;">
+    <div style="font-size:48px; margin-bottom:24px; color:var(--blue);">
+      <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+    </div>
+    <div class="q-title" style="margin-bottom:12px; font-size:24px;">Your personalized roadmap is ready.</div>
+    <p style="color:var(--muted); margin-bottom:32px; font-size:15px;">We've analyzed your skill constraints and selected the best path forward. Create a free account to unlock it.</p>
+    
+    <div style="text-align:left;">
+      <input type="text" class="gate-input" placeholder="Full Name" id="gateName">
+      <input type="email" class="gate-input" placeholder="Email Address" id="gateEmail">
+      <input type="password" class="gate-input" placeholder="Create Password" id="gatePass">
+    </div>
+    
+    <button class="btn-next" style="margin-top:10px;" onclick="handleGateSignup()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></svg>
+      Unlock My Dashboard
+    </button>
+    <div style="font-size:12px; color:var(--muted); margin-top:20px;">Already have an account? <a href="index.html" style="color:var(--blue);text-decoration:none;">Sign in</a></div>
+  </div>
+
+</div>
+
+<!-- Firebase integration to actually log them in if needed, but for now we simulate or use dummy auth -->
+<script>
+  const answers = { 1: null, 2: null, 3: null, 4: null, 5: null };
+
+  function selectOption(step, val) {
+    answers[step] = val;
+    const block = document.getElementById(`step-${step}`);
+    block.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+    event.currentTarget.classList.add('selected');
+    document.getElementById(`btn-${step}`).disabled = false;
+  }
+
+  function nextStep(current) {
+    document.getElementById(`step-${current}`).classList.remove('active');
+    document.getElementById(`step-${current+1}`).classList.add('active');
+    document.getElementById(`progressBar`).style.width = ((current+1) / 5 * 100) + '%';
+  }
+
+  function finishAssessment() {
+    let primary = 'da';
+    let secondary = 'pm';
+    
+    if(answers[2] === 'da') { primary = 'da'; secondary = 'excel'; }
+    if(answers[2] === 'wd') { primary = 'wb'; secondary = 'ux'; }
+    if(answers[2] === 'cm') { primary = 'dm'; secondary = 'cw'; }
+    if(answers[2] === 'pm') { primary = 'pm'; secondary = 'ba'; }
+
+    localStorage.setItem('risenow_assessment', JSON.stringify([primary, secondary]));
+    
+    // Show Gate Screen
+    document.getElementById('step-5').classList.remove('active');
+    document.getElementById('step-6').classList.add('active');
+    document.getElementById('progressBar').style.width = '100%';
+  }
+
+  function handleGateSignup() {
+    const email = document.getElementById('gateEmail').value;
+    const pass = document.getElementById('gatePass').value;
+    
+    // In a real app, this would call Firebase auth.createUserWithEmailAndPassword
+    // Here we just accept it and go to dashboard where Firebase will load
+    if (email && pass) {
+      window.location.href = 'dashboard.html';
+    } else {
+      alert("Please fill in all fields to unlock your plan.");
+    }
+  }
+</script>
+
+<script src="rigel_widget.js"></script>
+</body>
+</html>

@@ -130,26 +130,87 @@
     }
   </style>
   <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="footer.css"/>
+  <link rel="icon" type="image/png" href="images/rigel_logo.png">
 </head>
 <body>
 
 <nav>
   <a href="index.html" class="nav-logo">
-    <div class="logo-box">R</div>
-    <div class="logo-text">Rigel</div>
+    <img src="images/rigel_logo.png" alt="Rigel" style="width:36px;height:36px;border-radius:9px;object-fit:contain;background:#000;"/>
+    <div class="logo-text" style="color:var(--blue) !important; background:transparent !important; font-weight:800; font-size:22px;">Rigel</div>
   </a>
-  <div class="nav-right">
-    <a href="index.html" class="nav-link">Home</a>
-    <a href="dashboard.html" class="nav-link">My Dashboard</a>
+  <div class="nav-links">
+    <a href="careers.html" class="nav-link">Careers</a>
     <a href="resources.html" class="nav-link">Resources</a>
-    <div class="profile-btn" id="profileBtn" onclick="handleProfileClick()">
-      <span id="pIcon" style="font-size:16px;color:var(--muted);">👤</span>
-      <img id="pImg" src="" alt="" style="display:none;"/>
+    
+    <!-- TOOLS DROPDOWN -->
+    <div class="nav-dropdown-wrapper" style="position:relative; display:inline-block;">
+      <div class="nav-link" style="cursor:pointer; display:flex; align-items:center; gap:4px;" onclick="document.getElementById('toolsDropdown').classList.toggle('show')">
+        Tools <span style="font-size:10px;">▼</span>
+      </div>
+      <div id="toolsDropdown" class="tools-dropdown">
+        <a href="daily-quote.html">Motivation</a>
+        <a href="jobs.html">Job Board</a>
+        <a href="job-tracker.html">Job Tracker</a>
+        <a href="interview.html">Interview Prep</a>
+        <a href="ats-scanner.html">Resume ATS Scanner</a>
+        <a href="cover-letter.html">AI Cover Letter</a>
+        <a href="market-insights.html">Market Insights</a>
+        <a href="freelance-starter.html">Make Your First ₹1000</a>
+        <a href="leaderboard.html">Community Leaderboard</a>
+      </div>
+    </div>
+    
+    <a href="rize.html" class="nav-link highlight">✦ Rigel AI</a>
+    
+    <div style="position:relative;margin-left:8px;">
+      <div class="profile-btn" id="profileBtn" onclick="toggleDropdown()">
+        <span class="default-icon" id="profileIcon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        </span>
+        <img id="profileImg" src="" alt="" style="display:none;width:100%;height:100%;border-radius:50%;object-fit:cover;position:absolute;inset:0;"/>
+      </div>
+      <div class="profile-dropdown" id="profileDropdown">
+        <div id="dropdownLoggedOut">
+          <div class="dropdown-item" onclick="openLogin()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:8px;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg> 
+            Sign In / Register
+          </div>
+        </div>
+        <div id="dropdownLoggedIn" style="display:none;">
+          <div class="dropdown-user">
+            <div class="dropdown-name" id="dropdownName">—</div>
+            <div class="dropdown-email" id="dropdownEmail">—</div>
+          </div>
+          <a href="dashboard.html" class="dropdown-item">My Dashboard</a>
+          <a href="careers.html" class="dropdown-item">Explore Careers</a>
+          <a href="job-tracker.html" class="dropdown-item">Job Tracker</a>
+          <a href="rize.html" class="dropdown-item">✦ Chat with Rigel</a>
+          <div class="dropdown-item danger" onclick="signOutUser()">Sign Out</div>
+        </div>
+      </div>
     </div>
   </div>
 </nav>
 
-<div class="hero">
+<style>
+/* Tools dropdown styling */
+.tools-dropdown { display:none; position:absolute; top:100%; left:50%; transform:translateX(-50%); background:var(--card); border:1px solid var(--border); border-radius:12px; padding:8px; min-width:180px; z-index:100; margin-top:16px; box-shadow:0 10px 30px rgba(0,0,0,0.5); }
+.tools-dropdown.show { display: block !important; }
+.tools-dropdown a { display:block; padding:10px 16px; color:var(--text); text-decoration:none; font-size:14px; border-radius:8px; transition:0.2s; text-align:left; }
+.tools-dropdown a:hover { background: rgba(0, 194, 255, 0.1); color: var(--blue); }
+</style>
+<script>
+document.addEventListener('click', function(e) {
+  const toolsMenu = document.getElementById('toolsDropdown');
+  if (toolsMenu && !e.target.closest('.nav-dropdown-wrapper')) {
+    toolsMenu.classList.remove('show');
+  }
+});
+</script>
+
+<div class="hero" style="min-height: auto !important; padding-top: 140px !important; padding-bottom: 40px !important;">
   <div class="hero-tag">Explore All Paths</div>
   <h1>Find Your <span>Career Path</span></h1>
   <p>Browse 17 in-demand careers. Click any card to see scope, skills and resources — then save it to your dashboard.</p>
@@ -157,7 +218,7 @@
 
 <div class="toolbar">
   <div class="search-wrap">
-    <span class="s-icon">🔍</span>
+    <span class="s-icon"></span>
     <input type="text" id="searchInput" placeholder="Search careers, skills..." oninput="renderGrid()"/>
   </div>
   <div class="pills">
@@ -194,7 +255,7 @@
 <!-- LOGIN -->
 <div class="login-overlay" id="loginOverlay">
   <div class="login-box">
-    <button class="lc" onclick="closeLogin()">✕</button>
+    <button class="lc" onclick="closeLogin()"></button>
     <h3>Sign in to Save</h3>
     <p>Sign in with Google to save career paths and track your progress across all devices.</p>
     <button class="btn-google" onclick="signInWithGoogle()">
@@ -204,150 +265,7 @@
   </div>
 </div>
 
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-  import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-  const app = initializeApp({
-    apiKey:"AIzaSyB2__vKiROvrPOyomY8X-pDBY8VlArDbdY",
-    authDomain:"risenow-31893.firebaseapp.com",
-    projectId:"risenow-31893",
-    storageBucket:"risenow-31893.firebasestorage.app",
-    messagingSenderId:"230298271225",
-    appId:"1:230298271225:web:c24d7100fc8b89a268d128"
-  });
-  const auth = getAuth(app);
-  const db = getFirestore(app);
-  const provider = new GoogleAuthProvider();
-
-  let currentUser = null, userData = {paths:{}}, currentId = null, currentFilter = 'all';
-
-  const careers = [
-    {id:'da',emoji:'📊',title:'Data Analytics',category:'business',desc:'Analyze data to find patterns and insights that drive business decisions.',skills:['Python','SQL','Power BI','Excel','Pandas','Statistics','Tableau'],demand:'Very High',dc:'#00e676',salary:'₹4–14 LPA',dur:'3–4 months',scope:[{n:'97,000+',l:'Jobs'},{n:'₹8L',l:'Avg Salary'},{n:'28%',l:'Growth Rate'}],res:[{n:'Google Data Analytics',t:'Course',u:'https://coursera.org',c:'#00e676'},{n:'Kaggle Learn',t:'Free',u:'https://kaggle.com/learn',c:'#00bcd4'},{n:'StatQuest YouTube',t:'YouTube',u:'https://youtube.com/@statquest',c:'#ff4757'},{n:'W3Schools SQL',t:'Free',u:'https://w3schools.com/sql',c:'#00e676'}]},
-    {id:'ml',emoji:'🤖',title:'Machine Learning / AI',category:'tech',desc:'Build intelligent systems that learn from data and make predictions.',skills:['Python','Scikit-learn','TensorFlow','Deep Learning','NLP','Computer Vision'],demand:'Extremely High',dc:'#00e676',salary:'₹8–25 LPA',dur:'5–6 months',scope:[{n:'75,000+',l:'AI Jobs'},{n:'₹15L',l:'Avg Salary'},{n:'40%',l:'Growth Rate'}],res:[{n:'Fast.ai Deep Learning',t:'Free',u:'https://fast.ai',c:'#00e676'},{n:'Google ML Crash Course',t:'Free',u:'https://developers.google.com/machine-learning/crash-course',c:'#00bcd4'},{n:'Andrew Ng on Coursera',t:'Course',u:'https://coursera.org',c:'#ffa500'}]},
-    {id:'wd',emoji:'🌐',title:'Web Development',category:'tech',desc:'Build websites and web applications that millions of people use.',skills:['HTML','CSS','JavaScript','React','Node.js','Git','REST APIs'],demand:'High',dc:'#00e676',salary:'₹5–18 LPA',dur:'4–5 months',scope:[{n:'1.8M+',l:'Jobs Globally'},{n:'₹10L',l:'Avg Salary'},{n:'25%',l:'Growth Rate'}],res:[{n:'freeCodeCamp',t:'Free',u:'https://freecodecamp.org',c:'#00e676'},{n:'The Odin Project',t:'Free',u:'https://theodinproject.com',c:'#00bcd4'},{n:'JavaScript.info',t:'Free',u:'https://javascript.info',c:'#ffa500'}]},
-    {id:'fs',emoji:'⚡',title:'Full Stack Development',category:'tech',desc:'Master frontend and backend — build complete web apps from scratch.',skills:['React','Node.js','Express','MongoDB','SQL','Docker','Git'],demand:'Very High',dc:'#00e676',salary:'₹8–22 LPA',dur:'6–8 months',scope:[{n:'120,000+',l:'Jobs'},{n:'₹14L',l:'Avg Salary'},{n:'30%',l:'Growth Rate'}],res:[{n:'Full Stack Open (Helsinki)',t:'Free',u:'https://fullstackopen.com',c:'#00e676'},{n:'The Odin Project',t:'Free',u:'https://theodinproject.com',c:'#00bcd4'}]},
-    {id:'mob',emoji:'📱',title:'Mobile App Development',category:'tech',desc:'Build iOS and Android apps that people carry in their pockets.',skills:['Flutter','React Native','Dart','JavaScript','Firebase','APIs'],demand:'High',dc:'#00e676',salary:'₹6–20 LPA',dur:'4–5 months',scope:[{n:'60,000+',l:'Mobile Jobs'},{n:'₹12L',l:'Avg Salary'},{n:'22%',l:'Growth Rate'}],res:[{n:'Flutter Official Docs',t:'Free',u:'https://flutter.dev',c:'#00e676'},{n:'React Native Docs',t:'Free',u:'https://reactnative.dev',c:'#00bcd4'}]},
-    {id:'cyber',emoji:'🔐',title:'Cybersecurity',category:'tech',desc:'Protect systems, networks and data from hackers and threats.',skills:['Networking','Linux','Python','Ethical Hacking','Kali Linux','Cryptography'],demand:'Extremely High',dc:'#00e676',salary:'₹6–20 LPA',dur:'5–6 months',scope:[{n:'3.5M',l:'Jobs Unfilled'},{n:'₹12L',l:'Avg Salary'},{n:'35%',l:'Growth Rate'}],res:[{n:'TryHackMe',t:'Free',u:'https://tryhackme.com',c:'#00e676'},{n:'Hack The Box',t:'Free',u:'https://hackthebox.com',c:'#00bcd4'}]},
-    {id:'cloud',emoji:'☁️',title:'Cloud Computing',category:'tech',desc:'Deploy and manage apps on AWS, Azure or Google Cloud.',skills:['AWS','Azure','Docker','Kubernetes','Linux','CI/CD','Terraform'],demand:'Extremely High',dc:'#00e676',salary:'₹8–25 LPA',dur:'4–5 months',scope:[{n:'150,000+',l:'Cloud Jobs'},{n:'₹16L',l:'Avg Salary'},{n:'38%',l:'Growth Rate'}],res:[{n:'AWS Free Tier',t:'Free',u:'https://aws.amazon.com/free',c:'#ffa500'},{n:'Google Cloud Skills Boost',t:'Free',u:'https://cloudskillsboost.google',c:'#00e676'}]},
-    {id:'java',emoji:'☕',title:'Java / Backend Dev',category:'tech',desc:'Build powerful server-side apps and APIs using Java and Spring Boot.',skills:['Java','Spring Boot','SQL','REST APIs','Maven','JPA','Microservices'],demand:'High',dc:'#00e676',salary:'₹5–18 LPA',dur:'4–5 months',scope:[{n:'80,000+',l:'Java Jobs'},{n:'₹10L',l:'Avg Salary'},{n:'20%',l:'Growth Rate'}],res:[{n:'Mooc.fi Java Course',t:'Free',u:'https://java-programming.mooc.fi',c:'#00e676'},{n:'Baeldung Tutorials',t:'Free',u:'https://baeldung.com',c:'#00bcd4'}]},
-    {id:'uiux',emoji:'🎯',title:'UI/UX Design',category:'creative',desc:'Design intuitive, beautiful digital experiences that users love.',skills:['Figma','Wireframing','Prototyping','User Research','Design Systems'],demand:'High',dc:'#00e676',salary:'₹4–15 LPA',dur:'3–4 months',scope:[{n:'50,000+',l:'UX Jobs'},{n:'₹9L',l:'Avg Salary'},{n:'24%',l:'Growth Rate'}],res:[{n:'Figma Free Plan',t:'Free',u:'https://figma.com',c:'#00e676'},{n:'Google UX Certificate',t:'Course',u:'https://coursera.org',c:'#00bcd4'}]},
-    {id:'gd',emoji:'🎨',title:'Graphic Design',category:'creative',desc:'Create visual identities, marketing materials and digital art.',skills:['Figma','Canva','Photoshop','Typography','Color Theory','Branding'],demand:'Medium',dc:'#ffa500',salary:'₹3–10 LPA',dur:'2–3 months',scope:[{n:'30,000+',l:'Design Jobs'},{n:'₹6L',l:'Avg Salary'},{n:'15%',l:'Growth Rate'}],res:[{n:'Canva Design School',t:'Free',u:'https://canva.com',c:'#00e676'},{n:'Behance',t:'Free',u:'https://behance.net',c:'#00bcd4'}]},
-    {id:'ve',emoji:'🎬',title:'Video Editing',category:'creative',desc:'Edit compelling videos for YouTube, social media and films.',skills:['DaVinci Resolve','Premiere Pro','After Effects','Color Grading','Audio'],demand:'Medium',dc:'#ffa500',salary:'₹3–12 LPA',dur:'2–3 months',scope:[{n:'25,000+',l:'Video Jobs'},{n:'₹6L',l:'Avg Salary'},{n:'20%',l:'Growth Rate'}],res:[{n:'DaVinci Resolve (Free)',t:'Free',u:'https://blackmagicdesign.com',c:'#00e676'},{n:'YouTube Creator Academy',t:'Free',u:'https://youtube.com',c:'#ff4757'}]},
-    {id:'cw',emoji:'✍️',title:'Content Writing',category:'creative',desc:'Write compelling content that attracts audiences and ranks on Google.',skills:['SEO Writing','Copywriting','Research','Content Strategy','Editing'],demand:'High',dc:'#00e676',salary:'₹3–10 LPA',dur:'1–2 months',scope:[{n:'40,000+',l:'Writing Jobs'},{n:'₹5L',l:'Avg Salary'},{n:'18%',l:'Growth Rate'}],res:[{n:'Hemingway App',t:'Free',u:'https://hemingwayapp.com',c:'#00e676'},{n:'Copyblogger',t:'Free',u:'https://copyblogger.com',c:'#00bcd4'}]},
-    {id:'dm',emoji:'📣',title:'Digital Marketing',category:'marketing',desc:'Grow businesses online through SEO, paid ads, email and social media.',skills:['SEO','Google Ads','Meta Ads','Email Marketing','Analytics','Canva'],demand:'High',dc:'#00e676',salary:'₹3–12 LPA',dur:'2–3 months',scope:[{n:'55,000+',l:'Marketing Jobs'},{n:'₹7L',l:'Avg Salary'},{n:'22%',l:'Growth Rate'}],res:[{n:'Google Skillshop',t:'Free',u:'https://skillshop.google.com',c:'#00e676'},{n:'HubSpot Academy',t:'Free',u:'https://academy.hubspot.com',c:'#00bcd4'}]},
-    {id:'pm',emoji:'🧩',title:'Product Management',category:'business',desc:'Define, build and launch products bridging tech, design and business.',skills:['Product Strategy','Roadmapping','Agile','User Research','JIRA','Analytics'],demand:'Very High',dc:'#00e676',salary:'₹8–25 LPA',dur:'3–4 months',scope:[{n:'35,000+',l:'PM Jobs'},{n:'₹16L',l:'Avg Salary'},{n:'32%',l:'Growth Rate'}],res:[{n:'Product School',t:'Free',u:'https://productschool.com',c:'#00e676'},{n:"Lenny's Newsletter",t:'Free',u:'https://lennysnewsletter.com',c:'#00bcd4'}]},
-    {id:'ba',emoji:'📋',title:'Business Analysis',category:'business',desc:'Bridge business needs and tech solutions — analyze and improve processes.',skills:['Requirements Gathering','JIRA','SQL','Excel','Process Mapping','Agile'],demand:'High',dc:'#00e676',salary:'₹5–15 LPA',dur:'3–4 months',scope:[{n:'45,000+',l:'BA Jobs'},{n:'₹10L',l:'Avg Salary'},{n:'26%',l:'Growth Rate'}],res:[{n:'IIBA Study Guides',t:'Free',u:'https://iiba.org',c:'#00e676'},{n:'Lucidchart',t:'Free',u:'https://lucidchart.com',c:'#00bcd4'}]},
-    {id:'excel',emoji:'📈',title:'Excel & Power BI',category:'business',desc:'Master Excel and Power BI to analyze data and build powerful dashboards.',skills:['Excel','Power BI','DAX','Power Query','VLOOKUP','Pivot Tables'],demand:'Very High',dc:'#00e676',salary:'₹3–10 LPA',dur:'1–2 months',scope:[{n:'80,000+',l:'Jobs'},{n:'₹6L',l:'Avg Salary'},{n:'20%',l:'Growth Rate'}],res:[{n:'Microsoft Learn Power BI',t:'Free',u:'https://learn.microsoft.com/power-bi',c:'#00e676'},{n:'ExcelJet',t:'Free',u:'https://exceljet.net',c:'#00bcd4'}]},
-    {id:'ds',emoji:'📐',title:'Data Science',category:'business',desc:'Combine statistics, programming and domain knowledge to extract insights.',skills:['Python','R','Statistics','ML','SQL','Pandas','Big Data'],demand:'Very High',dc:'#00e676',salary:'₹6–20 LPA',dur:'5–6 months',scope:[{n:'90,000+',l:'DS Jobs'},{n:'₹12L',l:'Avg Salary'},{n:'33%',l:'Growth Rate'}],res:[{n:'Kaggle Learn',t:'Free',u:'https://kaggle.com/learn',c:'#00e676'},{n:'Towards Data Science',t:'Free',u:'https://towardsdatascience.com',c:'#00bcd4'}]},
-  ];
-
-  window.careers = careers;
-
-  onAuthStateChanged(auth, async (user) => {
-    currentUser = user;
-    if (user) {
-      if (user.photoURL) { document.getElementById('pImg').src=user.photoURL; document.getElementById('pImg').style.display='block'; document.getElementById('pIcon').style.display='none'; }
-      await loadData();
-    }
-    renderGrid();
-  });
-
-  async function loadData() {
-    if (!currentUser) return;
-    try {
-      const snap = await getDoc(doc(db,'users',currentUser.uid));
-      if (snap.exists()) { userData = snap.data(); if(!userData.paths) userData.paths={}; }
-    } catch(e) {}
-  }
-
-  async function saveData() {
-    if (!currentUser) return;
-    try { await setDoc(doc(db,'users',currentUser.uid), userData, {merge:true}); } catch(e) {}
-  }
-
-  window.setFilter = (cat, btn) => {
-    currentFilter = cat;
-    document.querySelectorAll('.pill').forEach(p=>p.classList.remove('active'));
-    btn.classList.add('active');
-    renderGrid();
-  };
-
-  window.renderGrid = () => {
-    const q = document.getElementById('searchInput').value.toLowerCase();
-    const filtered = careers.filter(c => {
-      const mq = !q || c.title.toLowerCase().includes(q) || c.skills.join(' ').toLowerCase().includes(q);
-      const mc = currentFilter==='all' || c.category===currentFilter;
-      return mq && mc;
-    });
-    document.getElementById('careerGrid').innerHTML = filtered.map(c => {
-      const saved = userData.paths && userData.paths[c.id]!==undefined;
-      const done = saved ? Object.values(userData.paths[c.id]||{}).filter(Boolean).length : 0;
-      const pct = Math.round((done/10)*100);
-      return `<div class="career-card ${saved?'saved':''}" onclick="openModal('${c.id}')">
-        <div class="card-top"><div class="card-emoji">${c.emoji}</div><div class="card-badges">
-          <span class="demand-badge" style="background:${c.dc}18;color:${c.dc}">${c.demand}</span>
-          ${saved?'<span class="saved-badge">✓ Saved</span>':''}
-        </div></div>
-        <div class="card-title">${c.title}</div>
-        <div class="card-desc">${c.desc}</div>
-        <div class="card-skills">${c.skills.slice(0,4).map(s=>`<span class="skill-tag">${s}</span>`).join('')}${c.skills.length>4?`<span class="skill-tag">+${c.skills.length-4}</span>`:''}</div>
-        <div class="card-bottom"><span class="card-salary">${c.salary}</span><span class="card-dur">⏱ ${c.dur}</span></div>
-        ${saved?`<div class="mini-prog"><div class="mini-prog-label"><span>${pct}%</span><span>${done}/10 steps</span></div><div class="mini-prog-track"><div class="mini-prog-fill" style="width:${pct}%"></div></div></div>`:''}
-      </div>`;
-    }).join('');
-  };
-
-  window.openModal = (id) => {
-    const c = careers.find(x=>x.id===id);
-    if (!c) return;
-    currentId = id;
-    document.getElementById('mEmoji').textContent = c.emoji;
-    document.getElementById('mTitle').textContent = c.title;
-    document.getElementById('mMeta').innerHTML = `<span class="m-tag" style="background:${c.dc}15;color:${c.dc}">${c.demand} Demand</span><span class="m-tag" style="background:rgba(0,188,212,0.1);color:#00bcd4">${c.salary}</span><span class="m-tag" style="background:rgba(255,255,255,0.05);color:var(--muted)">⏱ ${c.dur}</span>`;
-    document.getElementById('mScope').innerHTML = c.scope.map(s=>`<div class="scope-card"><div class="scope-num">${s.n}</div><div class="scope-lbl">${s.l}</div></div>`).join('');
-    document.getElementById('mSkills').innerHTML = c.skills.map(s=>`<span class="skill-chip">${s}</span>`).join('');
-    document.getElementById('mResources').innerHTML = c.res.map(r=>`<a class="res-row" href="${r.u}" target="_blank"><span class="res-type" style="background:${r.c}18;color:${r.c}">${r.t}</span><span class="res-name">${r.n}</span><span style="color:var(--muted)">→</span></a>`).join('');
-    document.getElementById('mLoginPrompt').innerHTML = !currentUser ? `<div class="login-prompt"><p>Sign in with Google to save this path and track progress on any device.</p><button class="btn-login-inline" onclick="openLogin()">Sign in with Google — Free</button></div>` : '';
-    updateBtn();
-    document.getElementById('modalOverlay').classList.add('open');
-  };
-
-  function updateBtn() {
-    const btn = document.getElementById('btnSave');
-    const saved = userData.paths && userData.paths[currentId]!==undefined;
-    if (!currentUser) { btn.textContent='Sign in to Save This Path'; btn.className='btn-save'; }
-    else if (saved) { btn.textContent='✓ Saved — Remove from Dashboard'; btn.className='btn-save unsave'; }
-    else { btn.textContent='+ Save to My Dashboard'; btn.className='btn-save'; }
-  }
-
-  window.handleSave = async () => {
-    if (!currentUser) { openLogin(); return; }
-    if (!userData.paths) userData.paths = {};
-    if (userData.paths[currentId]!==undefined) { delete userData.paths[currentId]; }
-    else { userData.paths[currentId] = {}; }
-    await saveData();
-    renderGrid();
-    const saved = userData.paths[currentId]!==undefined;
-    if (saved) {
-      const btn = document.getElementById('btnSave');
-      btn.textContent = '✓ Saved! Go to Dashboard →';
-      btn.className = 'btn-save go';
-      btn.onclick = () => window.location.href='dashboard.html';
-    } else { updateBtn(); }
-  };
-
-  window.closeModal = () => { document.getElementById('modalOverlay').classList.remove('open'); currentId=null; };
-  window.openLogin = () => document.getElementById('loginOverlay').classList.add('open');
-  window.closeLogin = () => document.getElementById('loginOverlay').classList.remove('open');
-  window.handleProfileClick = () => currentUser ? window.location.href='dashboard.html' : openLogin();
-  window.signInWithGoogle = async () => {
-    try { await signInWithPopup(auth,provider); closeLogin(); await loadData(); renderGrid(); if(currentId) updateBtn(); } catch(e) {}
-  };
-
-  document.getElementById('modalOverlay').addEventListener('click',e=>{ if(e.target===document.getElementById('modalOverlay')) closeModal(); });
-  document.getElementById('loginOverlay').addEventListener('click',e=>{ if(e.target===document.getElementById('loginOverlay')) closeLogin(); });
-</script>
+<!-- GLOBAL RIGEL ENGINE LOADED BELOW -->
+<script type="module" src="rigel_widget.js"></script>
 </body>
 </html>

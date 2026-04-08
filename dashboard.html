@@ -30,7 +30,7 @@
     }
     .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
     .logo-box{width:36px;height:36px;border-radius:8px;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#04050F;}
-    .logo-text{font-size:20px;font-weight:800;background:var(--blue);color:var(--blue);}
+    .logo-text{font-size:20px;font-weight:800;background: transparent !important; color: var(--blue) !important;}
     .nav-right{display:flex;align-items:center;gap:12px;}
     .nav-link{padding:8px 14px;font-size:13px;font-weight:500;color:var(--muted);text-decoration:none;border-radius:8px;transition:color 0.2s;}
     .nav-link:hover{color:white;}
@@ -59,7 +59,7 @@
     /* WELCOME BANNER */
     .welcome{padding:40px 40px 0;}
     .welcome h2{font-size:30px;font-weight:900;letter-spacing:-1px;color:white;margin-bottom:4px;}
-    .welcome h2 span{background:var(--blue);color:var(--blue);}
+    .welcome h2 span{background: transparent !important; color: var(--blue) !important;}
     .welcome p{font-size:14px;color:var(--muted);}
 
     /* STATS */
@@ -88,7 +88,7 @@
     .path-info{flex:1;}
     .path-title{font-size:16px;font-weight:700;color:white;margin-bottom:3px;}
     .path-sub{font-size:12px;color:var(--muted);}
-    .path-pct{font-size:22px;font-weight:900;background:var(--blue);color:var(--blue);flex-shrink:0;}
+    .path-pct{font-size:22px;font-weight:900;background: transparent !important; color: var(--blue) !important;flex-shrink:0;}
     .path-chevron{color:var(--muted);font-size:14px;transition:transform 0.3s;flex-shrink:0;}
     .path-card.expanded .path-chevron{transform:rotate(180deg);}
 
@@ -149,8 +149,11 @@
       .stats-row{gap:10px;}
       .welcome,.stats-row,.main-grid{padding-left:20px;padding-right:20px;}
     }
+    .resource-card-mini:hover { border-color: var(--blue) !important; }
   </style>
   <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="footer.css"/>
+  <link rel="icon" type="image/png" href="images/rigel_logo.png">
 </head>
 <body>
 
@@ -162,10 +165,10 @@
 
 <!-- NOT LOGGED IN -->
 <div id="notLoggedIn">
-  <div style="font-size:56px;margin-bottom:20px;">🔐</div>
+  <div style="font-size:56px;margin-bottom:20px;"></div>
   <h2>Sign in to access your Dashboard</h2>
   <p>Your progress, career paths and job tracker — all saved securely across devices.</p>
-  <button class="btn-login" onclick="window.location.href='index.html'">Go to Home & Sign In</button>
+  <button class="btn-login" onclick="window.location.href='index.html?login=true'">Go to Home & Sign In</button>
 </div>
 
 <!-- DASHBOARD -->
@@ -173,53 +176,147 @@
 
   <!-- NAV -->
   <nav>
-    <a href="index.html" class="nav-logo">
-      <div class="logo-box">R</div>
-      <div class="logo-text">Rigel</div>
-    </a>
-    <div class="nav-right">
-      <a href="careers.html" class="nav-link">Explore Careers</a>
-      <a href="job-tracker.html" class="nav-link">Job Tracker</a>
-      <a href="interview.html" class="nav-link">Interview Prep</a>
-      <div class="profile-mini" id="profileMini">
-        <img id="userPhoto" src="" alt=""/>
-        <span class="profile-mini-name" id="userName">User</span>
+  <a href="index.html" class="nav-logo">
+    <img src="images/rigel_logo.png" alt="Rigel" style="width:36px;height:36px;border-radius:9px;object-fit:contain;background:#000;"/>
+    <div class="logo-text" style="color:var(--blue) !important; background:transparent !important; font-weight:800; font-size:22px;">Rigel</div>
+  </a>
+  <div class="nav-links">
+    <a href="careers.html" class="nav-link">Careers</a>
+    <a href="resources.html" class="nav-link">Resources</a>
+    
+    <!-- TOOLS DROPDOWN -->
+    <div class="nav-dropdown-wrapper" style="position:relative; display:inline-block;">
+      <div class="nav-link" style="cursor:pointer; display:flex; align-items:center; gap:4px;" onclick="document.getElementById('toolsDropdown').classList.toggle('show')">
+        Tools <span style="font-size:10px;">▼</span>
       </div>
-      <button class="btn-signout" onclick="signOutUser()">Sign Out</button>
+      <div id="toolsDropdown" class="tools-dropdown">
+        <a href="daily-quote.html">Motivation</a>
+        <a href="jobs.html">Job Board</a>
+        <a href="job-tracker.html">Job Tracker</a>
+        <a href="interview.html">Interview Prep</a>
+        <a href="ats-scanner.html">Resume ATS Scanner</a>
+        <a href="cover-letter.html">AI Cover Letter</a>
+        <a href="market-insights.html">Market Insights</a>
+        <a href="freelance-starter.html">Make Your First ₹1000</a>
+        <a href="leaderboard.html">Community Leaderboard</a>
+      </div>
     </div>
-  </nav>
+    
+    <a href="rize.html" class="nav-link highlight">✦ Rigel AI</a>
+    
+    <div style="position:relative;margin-left:8px;">
+      <div class="profile-btn" id="profileBtn" onclick="toggleDropdown()">
+        <span class="default-icon" id="profileIcon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        </span>
+        <img id="profileImg" src="" alt="" style="display:none;width:100%;height:100%;border-radius:50%;object-fit:cover;position:absolute;inset:0;"/>
+      </div>
+      <div class="profile-dropdown" id="profileDropdown">
+        <div id="dropdownLoggedOut">
+          <div class="dropdown-item" onclick="openLogin()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:8px;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg> 
+            Sign In / Register
+          </div>
+        </div>
+        <div id="dropdownLoggedIn" style="display:none;">
+          <div class="dropdown-user">
+            <div class="dropdown-name" id="dropdownName">—</div>
+            <div class="dropdown-email" id="dropdownEmail">—</div>
+          </div>
+          <a href="dashboard.html" class="dropdown-item">My Dashboard</a>
+          <a href="careers.html" class="dropdown-item">Explore Careers</a>
+          <a href="job-tracker.html" class="dropdown-item">Job Tracker</a>
+          <a href="rize.html" class="dropdown-item">✦ Chat with Rigel</a>
+          <div class="dropdown-item danger" onclick="signOutUser()">Sign Out</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<style>
+/* Tools dropdown styling */
+.tools-dropdown { display:none; position:absolute; top:100%; left:50%; transform:translateX(-50%); background:var(--card); border:1px solid var(--border); border-radius:12px; padding:8px; min-width:180px; z-index:100; margin-top:16px; box-shadow:0 10px 30px rgba(0,0,0,0.5); }
+.tools-dropdown.show { display: block !important; }
+.tools-dropdown a { display:block; padding:10px 16px; color:var(--text); text-decoration:none; font-size:14px; border-radius:8px; transition:0.2s; text-align:left; }
+.tools-dropdown a:hover { background: rgba(0, 194, 255, 0.1); color: var(--blue); }
+</style>
+<script>
+document.addEventListener('click', function(e) {
+  const toolsMenu = document.getElementById('toolsDropdown');
+  if (toolsMenu && !e.target.closest('.nav-dropdown-wrapper')) {
+    toolsMenu.classList.remove('show');
+  }
+});
+</script>
 
   <!-- WELCOME -->
   <div class="welcome">
-    <h2>Welcome back, <span id="welcomeName">Champ</span> 👋</h2>
+    <h2>Welcome back, <span id="welcomeName">Champ</span> </h2>
     <p id="welcomeSub">Here's where you left off.</p>
   </div>
 
   <!-- STATS -->
   <div class="stats-row">
-    <div class="stat-card">
+    <a href="careers.html" class="stat-card" style="text-decoration:none; display:block; cursor:pointer;">
       <div class="stat-num" id="statPaths" style="color:var(--blue)">0</div>
       <div class="stat-lbl">Career Paths Saved</div>
-    </div>
-    <div class="stat-card">
+    </a>
+    <a href="#pathsList" class="stat-card" style="text-decoration:none; display:block; cursor:pointer;">
       <div class="stat-num" id="statSteps" style="color:var(--blue)">0</div>
       <div class="stat-lbl">Steps Completed</div>
-    </div>
-    <div class="stat-card">
+    </a>
+    <a href="resources.html" class="stat-card" style="text-decoration:none; display:block; cursor:pointer;">
       <div class="stat-num" id="statAvg" style="color:#a78bfa">0%</div>
       <div class="stat-lbl">Avg Progress</div>
-    </div>
-    <div class="stat-card">
+    </a>
+    <a href="job-tracker.html" class="stat-card" style="text-decoration:none; display:block; cursor:pointer;">
       <div class="stat-num" id="statJobs" style="color:#ffa500">0</div>
       <div class="stat-lbl">Jobs Applied</div>
-    </div>
+    </a>
   </div>
 
   <!-- MAIN GRID -->
   <div class="main-grid">
 
-    <!-- LEFT: CAREER PATHS -->
-    <div>
+    <!-- LEFT: MAIN COLUMN -->
+    <div class="left-col" style="display: flex; flex-direction: column; min-width:0;">
+      <!-- DAILY MISSION -->
+      <div id="dailyMissionContainer" style="display:none; background:linear-gradient(135deg, rgba(0,194,255,0.05), rgba(0,0,0,0)); border:1px solid rgba(0,194,255,0.3); border-radius:16px; padding:24px; margin-bottom:40px;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+          <div>
+            <div style="font-size:12px; font-weight:800; color:var(--blue); text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">Daily 15-Minute Mission</div>
+            <div style="font-size:24px; font-weight:700; color:white; margin-bottom:6px;" id="missionTitle">Watch: Video Concept Basics</div>
+            <div style="font-size:14px; color:var(--muted); margin-bottom:20px;" id="missionPath">Path: Video Editing · Step 1</div>
+            <div style="display:flex; gap:12px; align-items:center;">
+              <a href="#" target="_blank" id="missionLink" style="display:inline-block; padding:12px 24px; background:var(--blue); color:#000; font-weight:700; text-decoration:none; border-radius:8px; transition:transform 0.2s;" onclick="if(window.addXP) window.addXP(10, 'Started Daily Mission')">Start Mission →</a>
+              <span style="font-size:12px; color:var(--muted); font-weight:600;">+10 XP</span>
+            </div>
+          </div>
+          <div style="font-size:48px;">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+          </div>
+        </div>
+      </div>
+
+      
+      <!-- HEATMAP (Phase 3) -->
+      <div class="section-title">Consistency Tracker</div>
+      <div class="heatmap-card" style="background:var(--card); border:1px solid var(--border); border-radius:12px; padding:20px; margin-bottom:40px; overflow-x:auto;">
+        <div class="heatmap-grid" id="heatmapGrid" style="display:grid; grid-template-rows:repeat(7, 16px); grid-auto-flow:column; gap:4px;"></div>
+        <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--muted); margin-top:12px;">
+          <span>Last 140 Days</span>
+          <span style="display:flex; gap:4px; align-items:center;">Less <div style="width:10px;height:10px;background:rgba(255,255,255,0.05);border-radius:2px;"></div><div style="width:10px;height:10px;background:rgba(0,194,255,0.3);border-radius:2px;"></div><div style="width:10px;height:10px;background:rgba(0,194,255,0.6);border-radius:2px;"></div><div style="width:10px;height:10px;background:rgba(0,194,255,1);border-radius:2px;"></div> More</span>
+        </div>
+      </div>
+
+      <!-- SAVED RESOURCES (Phase 2) -->
+      <div class="section-title">Saved Resources</div>
+      <div id="savedResourcesList" style="display:flex; gap:16px; overflow-x:auto; padding-bottom:12px; margin-bottom:40px;">
+        <div style="color:var(--muted); font-size:14px;">No resources saved yet. <a href="resources.html" style="color:var(--blue);">Browse resources</a></div>
+      </div>
+
+      <!-- CAREER PATHS -->
       <div class="section-title">My Career Paths</div>
       <div id="pathsList"></div>
     </div>
@@ -227,11 +324,7 @@
     <!-- RIGHT: SIDEBAR -->
     <div class="sidebar">
 
-      <!-- NEXT STEP -->
-      <div class="sidebar-card" id="nextStepCard" style="display:none;">
-        <h4>Next Step</h4>
-        <div id="nextStepContent"></div>
-      </div>
+
 
       <!-- DAILY QUOTE -->
       <div class="quote-card">
@@ -244,23 +337,23 @@
       <div class="sidebar-card">
         <h4>Quick Links</h4>
         <a href="careers.html" class="quick-link">
-          <div class="quick-link-icon">🧭</div>
+          <div class="quick-link-icon"></div>
           <div class="quick-link-text">Explore More Careers</div>
         </a>
         <a href="job-tracker.html" class="quick-link">
-          <div class="quick-link-icon">📋</div>
+          <div class="quick-link-icon"></div>
           <div class="quick-link-text">Job Tracker</div>
         </a>
         <a href="interview.html" class="quick-link">
-          <div class="quick-link-icon">🎤</div>
+          <div class="quick-link-icon"></div>
           <div class="quick-link-text">Interview Prep</div>
         </a>
         <a href="resources.html" class="quick-link">
-          <div class="quick-link-icon">📚</div>
+          <div class="quick-link-icon"></div>
           <div class="quick-link-text">Resource Library</div>
         </a>
         <a href="daily-quote.html" class="quick-link">
-          <div class="quick-link-icon">💫</div>
+          <div class="quick-link-icon"></div>
           <div class="quick-link-text">Daily Motivation</div>
         </a>
       </div>
@@ -269,471 +362,7 @@
   </div>
 </div>
 
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-  import { getFirestore, doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyB2__vKiROvrPOyomY8X-pDBY8VlArDbdY",
-    authDomain: "risenow-31893.firebaseapp.com",
-    databaseURL: "https://risenow-31893-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "risenow-31893",
-    storageBucket: "risenow-31893.firebasestorage.app",
-    messagingSenderId: "230298271225",
-    appId: "1:230298271225:web:c24d7100fc8b89a268d128",
-    measurementId: "G-RC17E84XEV"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
-
-  // CAREER DATA (same as careers.html)
-  const careerData = {
-    da: { emoji:'📊', title:'Data Analytics', steps:[
-      {name:'Learn Python Basics',resource:'W3Schools Python',url:'https://w3schools.com/python'},
-      {name:'Excel & Google Sheets',resource:'YouTube Tutorial',url:'https://youtube.com'},
-      {name:'Statistics Fundamentals',resource:'Khan Academy',url:'https://khanacademy.org'},
-      {name:'Pandas & NumPy',resource:'Kaggle Learn',url:'https://kaggle.com/learn'},
-      {name:'SQL Fundamentals',resource:'W3Schools SQL',url:'https://w3schools.com/sql'},
-      {name:'Data Visualization',resource:'Google Colab',url:'https://colab.research.google.com'},
-      {name:'Power BI Basics',resource:'Microsoft Learn',url:'https://learn.microsoft.com'},
-      {name:'Advanced SQL',resource:'HackerRank',url:'https://hackerrank.com/domains/sql'},
-      {name:'Machine Learning Basics',resource:'StatQuest YouTube',url:'https://youtube.com/@statquest'},
-      {name:'Build Portfolio & Apply',resource:'GitHub',url:'https://github.com'},
-    ]},
-    ml: { emoji:'🤖', title:'Machine Learning / AI', steps:[
-      {name:'Python & Math Basics',resource:'W3Schools',url:'https://w3schools.com/python'},
-      {name:'Supervised Learning',resource:'Google ML Crash Course',url:'https://developers.google.com/machine-learning/crash-course'},
-      {name:'Unsupervised Learning',resource:'Scikit-learn Docs',url:'https://scikit-learn.org'},
-      {name:'Neural Networks',resource:'Fast.ai',url:'https://fast.ai'},
-      {name:'Deep Learning',resource:'Fast.ai',url:'https://fast.ai'},
-      {name:'NLP Basics',resource:'Hugging Face',url:'https://huggingface.co'},
-      {name:'Computer Vision',resource:'OpenCV Docs',url:'https://opencv.org'},
-      {name:'Model Deployment',resource:'Streamlit',url:'https://streamlit.io'},
-      {name:'Kaggle Competition',resource:'Kaggle',url:'https://kaggle.com'},
-      {name:'Build AI Project Portfolio',resource:'GitHub',url:'https://github.com'},
-    ]},
-    wd: { emoji:'🌐', title:'Web Development', steps:[
-      {name:'HTML Basics',resource:'freeCodeCamp',url:'https://freecodecamp.org'},
-      {name:'CSS & Flexbox',resource:'CSS Tricks',url:'https://css-tricks.com'},
-      {name:'Responsive Design',resource:'freeCodeCamp',url:'https://freecodecamp.org'},
-      {name:'JavaScript Basics',resource:'JavaScript.info',url:'https://javascript.info'},
-      {name:'DOM Manipulation',resource:'MDN Docs',url:'https://developer.mozilla.org'},
-      {name:'ES6+ Features',resource:'JavaScript.info',url:'https://javascript.info'},
-      {name:'React Basics',resource:'React Docs',url:'https://react.dev'},
-      {name:'React Projects',resource:'YouTube',url:'https://youtube.com'},
-      {name:'Node.js & APIs',resource:'The Odin Project',url:'https://theodinproject.com'},
-      {name:'Deploy & Portfolio',resource:'GitHub Pages',url:'https://pages.github.com'},
-    ]},
-    fs: { emoji:'⚡', title:'Full Stack Development', steps:[
-      {name:'HTML/CSS/JS',resource:'freeCodeCamp',url:'https://freecodecamp.org'},
-      {name:'React Frontend',resource:'React Docs',url:'https://react.dev'},
-      {name:'Node.js Backend',resource:'The Odin Project',url:'https://theodinproject.com'},
-      {name:'Express & APIs',resource:'Express Docs',url:'https://expressjs.com'},
-      {name:'MongoDB Database',resource:'MongoDB University',url:'https://university.mongodb.com'},
-      {name:'Authentication & JWT',resource:'YouTube',url:'https://youtube.com'},
-      {name:'Full Stack Project',resource:'GitHub',url:'https://github.com'},
-      {name:'Docker Basics',resource:'Docker Docs',url:'https://docs.docker.com'},
-      {name:'Deploy to Cloud',resource:'Vercel',url:'https://vercel.com'},
-      {name:'Portfolio & Apply',resource:'LinkedIn',url:'https://linkedin.com'},
-    ]},
-    mob: { emoji:'📱', title:'Mobile App Development', steps:[
-      {name:'Choose Flutter or React Native',resource:'Flutter vs RN Guide',url:'https://flutter.dev'},
-      {name:'Language Basics',resource:'Flutter Docs',url:'https://flutter.dev'},
-      {name:'UI Components',resource:'Flutter Widget Catalog',url:'https://flutter.dev/docs/development/ui/widgets'},
-      {name:'Navigation & Routing',resource:'Flutter Docs',url:'https://flutter.dev'},
-      {name:'State Management',resource:'Provider Docs',url:'https://pub.dev/packages/provider'},
-      {name:'APIs & Firebase',resource:'Firebase Docs',url:'https://firebase.google.com'},
-      {name:'Build First App',resource:'YouTube',url:'https://youtube.com'},
-      {name:'Testing',resource:'Flutter Test Docs',url:'https://flutter.dev/docs/testing'},
-      {name:'Publish to Store',resource:'Google Play Console',url:'https://play.google.com/console'},
-      {name:'Portfolio & Apply',resource:'LinkedIn',url:'https://linkedin.com'},
-    ]},
-    cyber: { emoji:'🔐', title:'Cybersecurity', steps:[
-      {name:'Networking Basics',resource:'CompTIA Network+',url:'https://comptia.org'},
-      {name:'Linux Fundamentals',resource:'TryHackMe',url:'https://tryhackme.com'},
-      {name:'Python Scripting',resource:'Automate the Boring Stuff',url:'https://automatetheboringstuff.com'},
-      {name:'Web Security Basics',resource:'OWASP',url:'https://owasp.org'},
-      {name:'Network Security',resource:'TryHackMe',url:'https://tryhackme.com'},
-      {name:'Ethical Hacking Intro',resource:'Hack The Box',url:'https://hackthebox.com'},
-      {name:'TryHackMe Rooms',resource:'TryHackMe',url:'https://tryhackme.com'},
-      {name:'CTF Challenges',resource:'PicoCTF',url:'https://picoctf.org'},
-      {name:'CompTIA Security+',resource:'CompTIA',url:'https://comptia.org'},
-      {name:'Build Lab & Portfolio',resource:'GitHub',url:'https://github.com'},
-    ]},
-    cloud: { emoji:'☁️', title:'Cloud Computing', steps:[
-      {name:'Cloud Concepts Basics',resource:'AWS Training',url:'https://aws.amazon.com/training'},
-      {name:'Linux Fundamentals',resource:'Linux Foundation',url:'https://training.linuxfoundation.org'},
-      {name:'AWS Core Services',resource:'AWS Free Tier',url:'https://aws.amazon.com/free'},
-      {name:'Storage & Databases',resource:'AWS Docs',url:'https://docs.aws.amazon.com'},
-      {name:'Networking in Cloud',resource:'AWS VPC Guide',url:'https://aws.amazon.com/vpc'},
-      {name:'Docker Containers',resource:'Docker Docs',url:'https://docs.docker.com'},
-      {name:'Kubernetes Basics',resource:'Kubernetes Docs',url:'https://kubernetes.io/docs'},
-      {name:'CI/CD Pipelines',resource:'GitHub Actions',url:'https://github.com/features/actions'},
-      {name:'AWS Certification',resource:'AWS Certified Cloud Practitioner',url:'https://aws.amazon.com/certification'},
-      {name:'Build Cloud Project',resource:'GitHub',url:'https://github.com'},
-    ]},
-    java: { emoji:'☕', title:'Java / Backend Dev', steps:[
-      {name:'Java Basics',resource:'Mooc.fi Java',url:'https://java-programming.mooc.fi'},
-      {name:'OOP Concepts',resource:'Baeldung',url:'https://baeldung.com'},
-      {name:'Data Structures',resource:'LeetCode',url:'https://leetcode.com'},
-      {name:'Collections & Generics',resource:'Baeldung',url:'https://baeldung.com'},
-      {name:'Spring Boot Intro',resource:'Spring.io',url:'https://spring.io'},
-      {name:'REST API Development',resource:'Spring Boot Docs',url:'https://spring.io/guides'},
-      {name:'Database & JPA',resource:'Baeldung JPA Guide',url:'https://baeldung.com/jpa-tutorial'},
-      {name:'Authentication & JWT',resource:'YouTube',url:'https://youtube.com'},
-      {name:'Microservices Basics',resource:'Spring Cloud',url:'https://spring.io/projects/spring-cloud'},
-      {name:'Build & Deploy Project',resource:'GitHub',url:'https://github.com'},
-    ]},
-    uiux: { emoji:'🎯', title:'UI/UX Design', steps:[
-      {name:'Design Principles',resource:'YouTube',url:'https://youtube.com'},
-      {name:'User Research Basics',resource:'Google UX Certificate',url:'https://coursera.org'},
-      {name:'Wireframing',resource:'Figma',url:'https://figma.com'},
-      {name:'Figma Fundamentals',resource:'Figma Academy',url:'https://figma.com'},
-      {name:'Prototyping',resource:'Figma',url:'https://figma.com'},
-      {name:'Design Systems',resource:'Material Design',url:'https://m3.material.io'},
-      {name:'Usability Testing',resource:'UX Tweak',url:'https://uxtweak.com'},
-      {name:'Portfolio Case Study 1',resource:'Behance',url:'https://behance.net'},
-      {name:'Portfolio Case Study 2',resource:'Behance',url:'https://behance.net'},
-      {name:'Apply for UX Roles',resource:'LinkedIn',url:'https://linkedin.com'},
-    ]},
-    gd: { emoji:'🎨', title:'Graphic Design', steps:[
-      {name:'Design Principles',resource:'YouTube',url:'https://youtube.com'},
-      {name:'Color Theory',resource:'Adobe Color',url:'https://color.adobe.com'},
-      {name:'Typography',resource:'Google Fonts',url:'https://fonts.google.com'},
-      {name:'Canva Mastery',resource:'Canva Design School',url:'https://canva.com'},
-      {name:'Figma Basics',resource:'Figma',url:'https://figma.com'},
-      {name:'Logo Design',resource:'YouTube',url:'https://youtube.com'},
-      {name:'Brand Identity Project',resource:'Behance',url:'https://behance.net'},
-      {name:'Social Media Kit',resource:'Canva',url:'https://canva.com'},
-      {name:'Behance Portfolio',resource:'Behance',url:'https://behance.net'},
-      {name:'Start Freelancing or Apply',resource:'Fiverr',url:'https://fiverr.com'},
-    ]},
-    ve: { emoji:'🎬', title:'Video Editing', steps:[
-      {name:'Video Concepts & Terminology',resource:'YouTube',url:'https://youtube.com'},
-      {name:'DaVinci Resolve Basics',resource:'DaVinci Resolve',url:'https://blackmagicdesign.com'},
-      {name:'Cut & Trim Footage',resource:'YouTube Tutorials',url:'https://youtube.com'},
-      {name:'Transitions & Effects',resource:'YouTube Tutorials',url:'https://youtube.com'},
-      {name:'Color Grading Basics',resource:'DaVinci Resolve Guide',url:'https://blackmagicdesign.com'},
-      {name:'Audio Mixing',resource:'YouTube',url:'https://youtube.com'},
-      {name:'Motion Graphics Intro',resource:'After Effects Basics',url:'https://youtube.com'},
-      {name:'Edit a Short Film',resource:'YouTube',url:'https://youtube.com'},
-      {name:'YouTube Reel Project',resource:'YouTube Studio',url:'https://studio.youtube.com'},
-      {name:'Portfolio & Freelancing',resource:'Fiverr',url:'https://fiverr.com'},
-    ]},
-    cw: { emoji:'✍️', title:'Content Writing', steps:[
-      {name:'Writing Fundamentals',resource:'Hemingway App',url:'https://hemingwayapp.com'},
-      {name:'Grammar & Style',resource:'Grammarly',url:'https://grammarly.com'},
-      {name:'SEO Basics',resource:'Neil Patel Blog',url:'https://neilpatel.com'},
-      {name:'Keyword Research',resource:'Ubersuggest',url:'https://neilpatel.com/ubersuggest'},
-      {name:'Write First Blog Post',resource:'Medium',url:'https://medium.com'},
-      {name:'Headlines & Hooks',resource:'Copyblogger',url:'https://copyblogger.com'},
-      {name:'Long-form Content',resource:'HubSpot Blog',url:'https://blog.hubspot.com'},
-      {name:'Copywriting Basics',resource:'Copyhackers',url:'https://copyhackers.com'},
-      {name:'Portfolio of 5 Articles',resource:'Medium',url:'https://medium.com'},
-      {name:'Apply or Freelance',resource:'Upwork',url:'https://upwork.com'},
-    ]},
-    dm: { emoji:'📣', title:'Digital Marketing', steps:[
-      {name:'Marketing Fundamentals',resource:'HubSpot Academy',url:'https://academy.hubspot.com'},
-      {name:'Google Analytics',resource:'Google Skillshop',url:'https://skillshop.google.com'},
-      {name:'SEO Basics',resource:'Neil Patel',url:'https://neilpatel.com'},
-      {name:'Content Marketing',resource:'HubSpot',url:'https://hubspot.com'},
-      {name:'Email Campaigns',resource:'Mailchimp',url:'https://mailchimp.com'},
-      {name:'Google Ads',resource:'Google Skillshop',url:'https://skillshop.google.com'},
-      {name:'Meta Ads',resource:'Meta Blueprint',url:'https://www.facebook.com/business/learn'},
-      {name:'Social Media Strategy',resource:'Buffer Blog',url:'https://buffer.com/resources'},
-      {name:'Campaign Case Study',resource:'LinkedIn',url:'https://linkedin.com'},
-      {name:'Get Certified & Apply',resource:'Coursera',url:'https://coursera.org'},
-    ]},
-    pm: { emoji:'🧩', title:'Product Management', steps:[
-      {name:'Product Thinking Basics',resource:'Product School',url:'https://productschool.com'},
-      {name:'User Research & Personas',resource:'Nielsen Norman Group',url:'https://nngroup.com'},
-      {name:'Problem Discovery',resource:'Reforge Blog',url:'https://reforge.com'},
-      {name:'Writing PRDs',resource:"Lenny's Newsletter",url:'https://lennysnewsletter.com'},
-      {name:'Agile & Scrum',resource:'Atlassian',url:'https://atlassian.com/agile'},
-      {name:'Roadmap Prioritization',resource:'Product School',url:'https://productschool.com'},
-      {name:'Metrics & KPIs',resource:'Mixpanel Blog',url:'https://mixpanel.com/blog'},
-      {name:'A/B Testing Basics',resource:'Optimizely',url:'https://optimizely.com'},
-      {name:'Build Mock PRD',resource:'Notion',url:'https://notion.so'},
-      {name:'PM Interview Prep',resource:'Exponent',url:'https://tryexponent.com'},
-    ]},
-    ba: { emoji:'📋', title:'Business Analysis', steps:[
-      {name:'BA Role & Responsibilities',resource:'IIBA',url:'https://iiba.org'},
-      {name:'Requirements Gathering',resource:'Coursera',url:'https://coursera.org'},
-      {name:'Use Cases & User Stories',resource:'Atlassian',url:'https://atlassian.com'},
-      {name:'Process Mapping',resource:'Lucidchart',url:'https://lucidchart.com'},
-      {name:'JIRA Basics',resource:'Atlassian',url:'https://atlassian.com/software/jira'},
-      {name:'SQL for BAs',resource:'W3Schools',url:'https://w3schools.com/sql'},
-      {name:'Excel for Analysis',resource:'ExcelJet',url:'https://exceljet.net'},
-      {name:'Stakeholder Communication',resource:'YouTube',url:'https://youtube.com'},
-      {name:'CBAP Basics',resource:'IIBA',url:'https://iiba.org'},
-      {name:'Portfolio & Apply',resource:'LinkedIn',url:'https://linkedin.com'},
-    ]},
-    excel: { emoji:'📈', title:'Excel & Power BI', steps:[
-      {name:'Excel Basics',resource:'ExcelJet',url:'https://exceljet.net'},
-      {name:'Formulas & Functions',resource:'ExcelJet',url:'https://exceljet.net'},
-      {name:'VLOOKUP & INDEX MATCH',resource:'ExcelJet',url:'https://exceljet.net'},
-      {name:'Pivot Tables',resource:'YouTube',url:'https://youtube.com'},
-      {name:'Excel Charts & Dashboards',resource:'YouTube',url:'https://youtube.com'},
-      {name:'Power BI Intro',resource:'Microsoft Learn',url:'https://learn.microsoft.com/power-bi'},
-      {name:'Import & Transform Data',resource:'Power Query Docs',url:'https://learn.microsoft.com'},
-      {name:'DAX Basics',resource:'DAX Formatter',url:'https://daxformatter.com'},
-      {name:'Build Power BI Dashboard',resource:'YouTube',url:'https://youtube.com'},
-      {name:'Portfolio Project',resource:'GitHub',url:'https://github.com'},
-    ]},
-  };
-
-  const quotes = [
-    {text:'The comeback is always stronger than the setback.',author:'Unknown'},
-    {text:"You don't have to be great to start, but you have to start to be great.",author:'Zig Ziglar'},
-    {text:'Opportunities don\'t happen. You create them.',author:'Chris Grosser'},
-    {text:'It always seems impossible until it\'s done.',author:'Nelson Mandela'},
-    {text:'One day or day one. You decide.',author:'Unknown'},
-    {text:'Rejection is redirection.',author:'Unknown'},
-    {text:'Hard times never last, but hard people do.',author:'Robert H. Schuller'},
-    {text:'Every day is a second chance.',author:'Unknown'},
-  ];
-
-  let currentUser = null;
-  let userData = { paths:{}, jobs:[] };
-
-  // Daily quote
-  const today = new Date().toDateString();
-  const qi = today.split('').reduce((a,c)=>a+c.charCodeAt(0),0) % quotes.length;
-  document.getElementById('dailyQuoteText').textContent = `"${quotes[qi].text}"`;
-  document.getElementById('dailyQuoteAuthor').textContent = `— ${quotes[qi].author}`;
-
-  onAuthStateChanged(auth, async (user) => {
-    document.getElementById('loadingScreen').style.display = 'none';
-    if (!user) {
-      document.getElementById('notLoggedIn').style.display = 'block';
-      return;
-    }
-    currentUser = user;
-    document.getElementById('dashboardContent').style.display = 'block';
-
-    // Set user info
-    document.getElementById('welcomeName').textContent = user.displayName?.split(' ')[0] || 'Champ';
-    document.getElementById('userName').textContent = user.displayName || 'User';
-    if (user.photoURL) document.getElementById('userPhoto').src = user.photoURL;
-
-    // Load user data from Firestore
-    await loadUserData();
-    renderDashboard();
-  });
-
-  async function loadUserData() {
-    try {
-      const ref = doc(db, 'users', currentUser.uid);
-      const snap = await getDoc(ref);
-      if (snap.exists()) {
-        userData = snap.data();
-        if (!userData.paths) userData.paths = {};
-        if (!userData.jobs) userData.jobs = [];
-      } else {
-        // First time user — create doc
-        userData = { paths:{}, jobs:[], createdAt: new Date().toISOString() };
-        await setDoc(ref, userData);
-      }
-
-      // Sync guest job-tracker data (localStorage) into Firestore once signed in.
-      // This keeps dashboard stats consistent across devices.
-      try {
-        const STORAGE_KEY = 'risenow_jobs';
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if (raw) {
-          const parsed = JSON.parse(raw);
-          const statusMeta = {
-            Applied: true,
-            Waiting: true,
-            Interview: true,
-            Offer: true,
-            Rejected: true
-          };
-
-          const normalizeJob = (job) => {
-            if (!job) return null;
-            let status = job.status;
-            if (status === 'Waiting for Response') status = 'Waiting';
-            if (status === 'Interview Scheduled') status = 'Interview';
-            if (status === 'Got Offer 🎉') status = 'Offer';
-            if (!statusMeta[status]) status = 'Applied';
-
-            let date = job.date;
-            if (typeof date === 'string' && date.includes('T')) date = date.split('T')[0];
-
-            return {
-              id: String(job.id ?? Date.now()),
-              company: String(job.company ?? ''),
-              role: String(job.role ?? ''),
-              location: String(job.location ?? '—'),
-              date: date ? String(date) : new Date().toISOString().split('T')[0],
-              status,
-              notes: String(job.notes ?? '—')
-            };
-          };
-
-          const normalizeJobs = (list) =>
-            (Array.isArray(list) ? list : []).map(normalizeJob).filter(Boolean);
-
-          const guestJobs = normalizeJobs(parsed);
-          if (guestJobs.length > 0) {
-            const existingJobs = normalizeJobs(userData.jobs);
-            const map = new Map();
-            for (const j of existingJobs) map.set(j.id, j);
-            for (const j of guestJobs) map.set(j.id, j);
-
-            userData.jobs = Array.from(map.values()).sort((x, y) => Number(y.id) - Number(x.id));
-            await setDoc(ref, { jobs: userData.jobs }, { merge: true });
-            localStorage.removeItem(STORAGE_KEY);
-          }
-        }
-      } catch (e) {
-        // If localStorage is unavailable or data is malformed, ignore and proceed.
-        console.error(e);
-      }
-    } catch(e) { console.error(e); }
-  }
-
-  async function saveUserData() {
-    try {
-      const ref = doc(db, 'users', currentUser.uid);
-      await setDoc(ref, userData, { merge:true });
-    } catch(e) { console.error(e); }
-  }
-
-  function renderDashboard() {
-    const savedPaths = Object.keys(userData.paths || {});
-    const jobs = userData.jobs || [];
-
-    // Stats
-    let totalSteps = 0, doneSteps = 0;
-    savedPaths.forEach(pid => {
-      const career = careerData[pid];
-      if (!career) return;
-      totalSteps += career.steps.length;
-      const progress = userData.paths[pid] || {};
-      doneSteps += Object.values(progress).filter(Boolean).length;
-    });
-
-    document.getElementById('statPaths').textContent = savedPaths.length;
-    document.getElementById('statSteps').textContent = doneSteps;
-    document.getElementById('statAvg').textContent = savedPaths.length ? `${Math.round((doneSteps/totalSteps)*100)}%` : '0%';
-    document.getElementById('statJobs').textContent = jobs.length;
-
-    // Welcome sub
-    const hour = new Date().getHours();
-    const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
-    document.getElementById('welcomeSub').textContent = `${greeting}! ${doneSteps > 0 ? `You've completed ${doneSteps} step${doneSteps>1?'s':''} so far. Keep going!` : "Let's start your journey today."}`;
-
-    // Next step
-    let nextStepFound = false;
-    for (const pid of savedPaths) {
-      const career = careerData[pid];
-      if (!career) continue;
-      const progress = userData.paths[pid] || {};
-      const nextIdx = career.steps.findIndex((_, i) => !progress[i]);
-      if (nextIdx !== -1) {
-        document.getElementById('nextStepCard').style.display = 'block';
-        document.getElementById('nextStepContent').innerHTML = `
-          <div class="next-step-highlight">
-            <div class="next-step-label">Up Next</div>
-            <div class="next-step-text">${career.steps[nextIdx].name}</div>
-            <div class="next-step-path">${career.emoji} ${career.title} · Step ${nextIdx+1}</div>
-          </div>
-          <a href="${career.steps[nextIdx].url}" target="_blank" style="display:block;padding:10px 14px;background:rgba(0,230,118,0.1);border:1px solid rgba(0,230,118,0.2);border-radius:10px;color:var(--blue);font-size:13px;font-weight:600;text-decoration:none;text-align:center;">
-            Start on ${career.steps[nextIdx].resource} →
-          </a>
-        `;
-        nextStepFound = true;
-        break;
-      }
-    }
-    if (!nextStepFound) document.getElementById('nextStepCard').style.display = 'none';
-
-    // Paths list
-    const list = document.getElementById('pathsList');
-    if (savedPaths.length === 0) {
-      list.innerHTML = `
-        <div class="empty-state">
-          <div class="empty-icon">🧭</div>
-          <h3>No career paths saved yet</h3>
-          <p>Browse career options, explore scope and skills, then save a path to start tracking your progress here.</p>
-          <a href="careers.html" class="btn-explore">Explore Career Options →</a>
-        </div>
-      `;
-      return;
-    }
-
-    list.innerHTML = savedPaths.map(pid => {
-      const career = careerData[pid];
-      if (!career) return '';
-      const progress = userData.paths[pid] || {};
-      const done = Object.values(progress).filter(Boolean).length;
-      const pct = Math.round((done / career.steps.length) * 100);
-      return `
-        <div class="path-card" id="card-${pid}">
-          <div class="path-header" onclick="toggleCard('${pid}')">
-            <div class="path-emoji">${career.emoji}</div>
-            <div class="path-info">
-              <div class="path-title">${career.title}</div>
-              <div class="path-sub">${done} of ${career.steps.length} steps completed</div>
-            </div>
-            <div class="path-pct">${pct}%</div>
-            <div class="path-chevron">▾</div>
-          </div>
-          <div class="path-progress">
-            <div class="prog-track"><div class="prog-fill" style="width:${pct}%"></div></div>
-          </div>
-          <div class="path-steps">
-            <div class="steps-inner">
-              ${career.steps.map((step, i) => {
-                const isDone = progress[i];
-                return `
-                  <div class="step-item ${isDone?'done':''}" onclick="toggleStep('${pid}',${i})">
-                    <div class="step-cb">${isDone?'✓':''}</div>
-                    <div class="step-text">
-                      <div class="step-name">${step.name}</div>
-                      <a class="step-resource-link" href="${step.url}" target="_blank" onclick="event.stopPropagation()">
-                        Learn on ${step.resource} →
-                      </a>
-                    </div>
-                    <div class="step-num-badge">${i+1}</div>
-                  </div>
-                `;
-              }).join('')}
-            </div>
-            <button class="btn-remove-path" onclick="removePath('${pid}')">Remove this path</button>
-          </div>
-        </div>
-      `;
-    }).join('');
-  }
-
-  window.toggleCard = (pid) => {
-    document.getElementById(`card-${pid}`).classList.toggle('expanded');
-  };
-
-  window.toggleStep = async (pid, idx) => {
-    if (!userData.paths[pid]) userData.paths[pid] = {};
-    userData.paths[pid][idx] = !userData.paths[pid][idx];
-    await saveUserData();
-    renderDashboard();
-  };
-
-  window.removePath = async (pid) => {
-    if (!confirm('Remove this career path from your dashboard?')) return;
-    delete userData.paths[pid];
-    await saveUserData();
-    renderDashboard();
-  };
-
-  window.signOutUser = async () => {
-    await signOut(auth);
-    window.location.href = 'index.html';
-  };
-</script>
+<!-- GLOBAL RIGEL ENGINE LOADED BELOW -->
+<script type="module" src="rigel_widget.js"></script>
 </body>
 </html>

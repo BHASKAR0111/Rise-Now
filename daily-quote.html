@@ -7,7 +7,7 @@
   <meta property="og:title" content="Rigel — Outgrow"/>
   <meta property="og:description" content="Free career paths, daily motivation, real success stories and powerful tools — all in one platform."/>
   <meta property="og:type" content="website"/>
-  <title>Daily Quote | Rigel</title>
+  <title>Daily Motivation | Rigel</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
 
@@ -48,8 +48,7 @@
     }
     .logo-name {
       font-size: 20px; font-weight: 800;
-      background: linear-gradient(90deg, var(--blue), var(--blue));
-      color: var(--blue); background-clip: text;
+      background: transparent !important; color: var(--blue) !important;
     }
     .nav-links { display: flex; gap: 32px; list-style: none; }
     .nav-links a { text-decoration: none; color: var(--muted); font-size: 14px; font-weight: 500; }
@@ -230,99 +229,196 @@
     footer p { font-size: 13px; color: var(--muted); }
   </style>
   <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="footer.css"/>
+  <link rel="icon" type="image/png" href="images/rigel_logo.png">
 </head>
 <body>
 
 <!-- NAV -->
 <nav>
   <a href="index.html" class="nav-logo">
-    <div class="logo-r">R</div>
-    <div class="logo-name">Rigel</div>
+    <img src="images/rigel_logo.png" alt="Rigel" style="width:36px;height:36px;border-radius:9px;object-fit:contain;background:#000;"/>
+    <div class="logo-text" style="color:var(--blue) !important; background:transparent !important; font-weight:800; font-size:22px;">Rigel</div>
   </a>
-  <ul class="nav-links">
-    <li><a href="index.html#about">About</a></li>
-    <li><a href="resources.html">Resources</a></li>
-    <li><a href="job-tracker.html">Job Tracker</a></li>
-    <li><a href="daily-quote.html" class="active">Daily Quote</a></li>
-    <li><a href="index.html#contact">Contact</a></li>
-  </ul>
+  <div class="nav-links">
+    <a href="careers.html" class="nav-link">Careers</a>
+    <a href="resources.html" class="nav-link">Resources</a>
+    
+    <!-- TOOLS DROPDOWN -->
+    <div class="nav-dropdown-wrapper" style="position:relative; display:inline-block;">
+      <div class="nav-link" style="cursor:pointer; display:flex; align-items:center; gap:4px;" onclick="document.getElementById('toolsDropdown').classList.toggle('show')">
+        Tools <span style="font-size:10px;">▼</span>
+      </div>
+      <div id="toolsDropdown" class="tools-dropdown">
+        <a href="daily-quote.html">Motivation</a>
+        <a href="jobs.html">Job Board</a>
+        <a href="job-tracker.html">Job Tracker</a>
+        <a href="interview.html">Interview Prep</a>
+        <a href="ats-scanner.html">Resume ATS Scanner</a>
+        <a href="cover-letter.html">AI Cover Letter</a>
+        <a href="market-insights.html">Market Insights</a>
+        <a href="freelance-starter.html">Make Your First ₹1000</a>
+        <a href="leaderboard.html">Community Leaderboard</a>
+      </div>
+    </div>
+    
+    <a href="rize.html" class="nav-link highlight">✦ Rigel AI</a>
+    
+    <div style="position:relative;margin-left:8px;">
+      <div class="profile-btn" id="profileBtn" onclick="toggleDropdown()">
+        <span class="default-icon" id="profileIcon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        </span>
+        <img id="profileImg" src="" alt="" style="display:none;width:100%;height:100%;border-radius:50%;object-fit:cover;position:absolute;inset:0;"/>
+      </div>
+      <div class="profile-dropdown" id="profileDropdown">
+        <div id="dropdownLoggedOut">
+          <div class="dropdown-item" onclick="openLogin()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:8px;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg> 
+            Sign In / Register
+          </div>
+        </div>
+        <div id="dropdownLoggedIn" style="display:none;">
+          <div class="dropdown-user">
+            <div class="dropdown-name" id="dropdownName">—</div>
+            <div class="dropdown-email" id="dropdownEmail">—</div>
+          </div>
+          <a href="dashboard.html" class="dropdown-item">My Dashboard</a>
+          <a href="careers.html" class="dropdown-item">Explore Careers</a>
+          <a href="job-tracker.html" class="dropdown-item">Job Tracker</a>
+          <a href="rize.html" class="dropdown-item">✦ Chat with Rigel</a>
+          <div class="dropdown-item danger" onclick="signOutUser()">Sign Out</div>
+        </div>
+      </div>
+    </div>
+  </div>
 </nav>
+
+<style>
+/* Tools dropdown styling */
+.tools-dropdown { display:none; position:absolute; top:100%; left:50%; transform:translateX(-50%); background:var(--card); border:1px solid var(--border); border-radius:12px; padding:8px; min-width:180px; z-index:100; margin-top:16px; box-shadow:0 10px 30px rgba(0,0,0,0.5); }
+.tools-dropdown.show { display: block !important; }
+.tools-dropdown a { display:block; padding:10px 16px; color:var(--text); text-decoration:none; font-size:14px; border-radius:8px; transition:0.2s; text-align:left; }
+.tools-dropdown a:hover { background: rgba(0, 194, 255, 0.1); color: var(--blue); }
+</style>
+<script>
+document.addEventListener('click', function(e) {
+  const toolsMenu = document.getElementById('toolsDropdown');
+  if (toolsMenu && !e.target.closest('.nav-dropdown-wrapper')) {
+    toolsMenu.classList.remove('show');
+  }
+});
+</script>
 
 <!-- QUOTE SECTION -->
 <div class="quote-section">
   <div class="glow"></div>
 
-  <div class="date-badge" id="dateBadge">✨ Today's Quote</div>
+  <div class="date-badge" id="dateBadge"> Today's Quote</div>
 
   <div class="quote-card">
-    <span class="quote-icon" id="quoteIcon">💫</span>
+    <span class="quote-icon" id="quoteIcon"></span>
     <div class="quote-text" id="quoteText">Loading your quote...</div>
     <div class="quote-author" id="quoteAuthor">—</div>
     <div class="quote-category" id="quoteCategory">Motivation</div>
     <div class="quote-actions">
-      <button class="btn-new" onclick="newQuote()">✨ New Quote</button>
-      <button class="btn-copy" onclick="copyQuote()">📋 Copy</button>
-      <button class="btn-share" onclick="shareQuote()">🔗 Share</button>
+      <button class="btn-new" onclick="newQuote()"> New Quote</button>
+      <button class="btn-copy" onclick="copyQuote()"> Copy</button>
+      <button class="btn-share" onclick="shareQuote()"> Share</button>
     </div>
   </div>
 
   <!-- CATEGORY FILTERS -->
   <div class="cat-filters">
     <button class="cat-btn active" onclick="filterCat('all', this)">All</button>
-    <button class="cat-btn" onclick="filterCat('motivation', this)">💪 Motivation</button>
-    <button class="cat-btn" onclick="filterCat('career', this)">💼 Career</button>
-    <button class="cat-btn" onclick="filterCat('resilience', this)">🔥 Resilience</button>
-    <button class="cat-btn" onclick="filterCat('growth', this)">🌱 Growth</button>
+    <button class="cat-btn" onclick="filterCat('motivation', this)"> Motivation</button>
+    <button class="cat-btn" onclick="filterCat('career', this)"> Career</button>
+    <button class="cat-btn" onclick="filterCat('resilience', this)"> Resilience</button>
+    <button class="cat-btn" onclick="filterCat('growth', this)"> Growth</button>
   </div>
 </div>
 
 <!-- HISTORY -->
 <div class="history-section">
-  <div class="history-title">📖 Recently Shown</div>
+  <div class="history-title"> Recently Shown</div>
   <div class="history-grid" id="historyGrid"></div>
 </div>
 
 <!-- FOOTER -->
-<footer>
-  <a href="index.html" class="nav-logo">
-    <div class="logo-r">R</div>
-    <div class="logo-name">Rigel</div>
-  </a>
-  <p>© 2026 Rigel. Outgrow the Ordinary.</p>
+<footer class="global-footer">
+  <div class="footer-top">
+    <div class="footer-col">
+      <a href="index.html" class="nav-logo">
+        <img src="images/rigel_logo.png" alt="Rigel" style="width:36px;height:36px;border-radius:9px;object-fit:contain;background:#000;"/>
+        <div class="logo-text" style="color:#00C2FF !important; background:transparent !important; font-weight:800; font-size:22px;">Rigel</div>
+      </a>
+      <p>Outgrow the Ordinary. A fully responsive career guidance & motivation platform built for job seekers and career switchers.</p>
+      <div class="footer-socials">
+        <a href="#" class="social-link">in</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Product</h4>
+      <ul>
+        <li><a href="careers.html">Explore Careers</a></li>
+        <li><a href="roadmap.html">Career Roadmaps</a></li>
+        <li><a href="resources.html">Resource Library</a></li>
+        <li><a href="job-tracker.html">Job Tracker</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="index.html#stories">Success Stories</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="privacy.html">Privacy Policy</a></li>
+        <li><a href="terms.html">Terms of Service</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Rigel — Outgrow the Ordinary | Built by Bhaskar </p>
+  </div>
 </footer>
 
 <script>
   const quotes = [
-    { text: "The comeback is always stronger than the setback.", author: "Unknown", category: "resilience", icon: "🔥" },
-    { text: "You don't have to be great to start, but you have to start to be great.", author: "Zig Ziglar", category: "motivation", icon: "🚀" },
-    { text: "Opportunities don't happen. You create them.", author: "Chris Grosser", category: "career", icon: "💼" },
-    { text: "It always seems impossible until it's done.", author: "Nelson Mandela", category: "resilience", icon: "💪" },
-    { text: "The secret of getting ahead is getting started.", author: "Mark Twain", category: "motivation", icon: "⚡" },
+    { text: "The comeback is always stronger than the setback.", author: "Unknown", category: "resilience", icon: "" },
+    { text: "You don't have to be great to start, but you have to start to be great.", author: "Zig Ziglar", category: "motivation", icon: "" },
+    { text: "Opportunities don't happen. You create them.", author: "Chris Grosser", category: "career", icon: "" },
+    { text: "It always seems impossible until it's done.", author: "Nelson Mandela", category: "resilience", icon: "" },
+    { text: "The secret of getting ahead is getting started.", author: "Mark Twain", category: "motivation", icon: "" },
     { text: "Don't watch the clock; do what it does. Keep going.", author: "Sam Levenson", category: "motivation", icon: "⏰" },
-    { text: "Believe you can and you're halfway there.", author: "Theodore Roosevelt", category: "motivation", icon: "✨" },
-    { text: "Your only limit is your mind.", author: "Unknown", category: "growth", icon: "🧠" },
-    { text: "Fall seven times, stand up eight.", author: "Japanese Proverb", category: "resilience", icon: "🔥" },
-    { text: "Success is not final, failure is not fatal: it is the courage to continue that counts.", author: "Winston Churchill", category: "resilience", icon: "💡" },
-    { text: "The harder you work for something, the greater you'll feel when you achieve it.", author: "Unknown", category: "motivation", icon: "🏆" },
-    { text: "Dream it. Wish it. Do it.", author: "Unknown", category: "motivation", icon: "🌟" },
-    { text: "Great things never come from comfort zones.", author: "Unknown", category: "growth", icon: "🌱" },
-    { text: "Push yourself, because no one else is going to do it for you.", author: "Unknown", category: "motivation", icon: "💪" },
-    { text: "Sometimes later becomes never. Do it now.", author: "Unknown", category: "career", icon: "⚡" },
-    { text: "Hard times never last, but hard people do.", author: "Robert H. Schuller", category: "resilience", icon: "🔥" },
-    { text: "The only way to do great work is to love what you do.", author: "Steve Jobs", category: "career", icon: "❤️" },
-    { text: "You are braver than you believe, stronger than you seem.", author: "A.A. Milne", category: "motivation", icon: "🦁" },
-    { text: "Act as if what you do makes a difference. It does.", author: "William James", category: "growth", icon: "🌍" },
-    { text: "Start where you are. Use what you have. Do what you can.", author: "Arthur Ashe", category: "career", icon: "🎯" },
-    { text: "The expert in anything was once a beginner.", author: "Helen Hayes", category: "growth", icon: "🌱" },
-    { text: "Don't stop when you're tired. Stop when you're done.", author: "Unknown", category: "motivation", icon: "💪" },
-    { text: "Difficult roads often lead to beautiful destinations.", author: "Unknown", category: "resilience", icon: "🛤️" },
-    { text: "Every day is a second chance.", author: "Unknown", category: "motivation", icon: "🌅" },
-    { text: "What you get by achieving your goals is not as important as what you become.", author: "Thoreau", category: "growth", icon: "✨" },
-    { text: "Rejection is redirection.", author: "Unknown", category: "career", icon: "🔄" },
-    { text: "One day or day one. You decide.", author: "Unknown", category: "motivation", icon: "📅" },
-    { text: "Your future is created by what you do today, not tomorrow.", author: "Robert Kiyosaki", category: "growth", icon: "🌱" },
+    { text: "Believe you can and you're halfway there.", author: "Theodore Roosevelt", category: "motivation", icon: "" },
+    { text: "Your only limit is your mind.", author: "Unknown", category: "growth", icon: "" },
+    { text: "Fall seven times, stand up eight.", author: "Japanese Proverb", category: "resilience", icon: "" },
+    { text: "Success is not final, failure is not fatal: it is the courage to continue that counts.", author: "Winston Churchill", category: "resilience", icon: "" },
+    { text: "The harder you work for something, the greater you'll feel when you achieve it.", author: "Unknown", category: "motivation", icon: "" },
+    { text: "Dream it. Wish it. Do it.", author: "Unknown", category: "motivation", icon: "" },
+    { text: "Great things never come from comfort zones.", author: "Unknown", category: "growth", icon: "" },
+    { text: "Push yourself, because no one else is going to do it for you.", author: "Unknown", category: "motivation", icon: "" },
+    { text: "Sometimes later becomes never. Do it now.", author: "Unknown", category: "career", icon: "" },
+    { text: "Hard times never last, but hard people do.", author: "Robert H. Schuller", category: "resilience", icon: "" },
+    { text: "The only way to do great work is to love what you do.", author: "Steve Jobs", category: "career", icon: "️" },
+    { text: "You are braver than you believe, stronger than you seem.", author: "A.A. Milne", category: "motivation", icon: "" },
+    { text: "Act as if what you do makes a difference. It does.", author: "William James", category: "growth", icon: "" },
+    { text: "Start where you are. Use what you have. Do what you can.", author: "Arthur Ashe", category: "career", icon: "" },
+    { text: "The expert in anything was once a beginner.", author: "Helen Hayes", category: "growth", icon: "" },
+    { text: "Don't stop when you're tired. Stop when you're done.", author: "Unknown", category: "motivation", icon: "" },
+    { text: "Difficult roads often lead to beautiful destinations.", author: "Unknown", category: "resilience", icon: "️" },
+    { text: "Every day is a second chance.", author: "Unknown", category: "motivation", icon: "" },
+    { text: "What you get by achieving your goals is not as important as what you become.", author: "Thoreau", category: "growth", icon: "" },
+    { text: "Rejection is redirection.", author: "Unknown", category: "career", icon: "" },
+    { text: "One day or day one. You decide.", author: "Unknown", category: "motivation", icon: "" },
+    { text: "Your future is created by what you do today, not tomorrow.", author: "Robert Kiyosaki", category: "growth", icon: "" },
     { text: "Keep going. Everything you need will come to you at the perfect time.", author: "Unknown", category: "resilience", icon: "⏳" },
-    { text: "The best time to plant a tree was 20 years ago. The second best time is now.", author: "Chinese Proverb", category: "growth", icon: "🌳" },
+    { text: "The best time to plant a tree was 20 years ago. The second best time is now.", author: "Chinese Proverb", category: "growth", icon: "" },
   ];
 
   let currentCategory = 'all';
@@ -374,14 +470,14 @@
     const text = `"${currentQuote.text}" — ${currentQuote.author}`;
     navigator.clipboard.writeText(text).then(() => {
       const btn = document.querySelector('.btn-copy');
-      btn.textContent = '✅ Copied!';
-      setTimeout(() => btn.textContent = '📋 Copy', 2000);
+      btn.textContent = ' Copied!';
+      setTimeout(() => btn.textContent = ' Copy', 2000);
     });
   }
 
   function shareQuote() {
     if (!currentQuote) return;
-    const text = `"${currentQuote.text}" — ${currentQuote.author}\n\nvia Rigel 🚀`;
+    const text = `"${currentQuote.text}" — ${currentQuote.author}\n\nvia Rigel `;
     if (navigator.share) {
       navigator.share({ title: 'Daily Quote | Rigel', text });
     } else {
@@ -407,11 +503,12 @@
     const now = new Date();
     const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
     const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    document.getElementById('dateBadge').textContent = `✨ ${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+    document.getElementById('dateBadge').textContent = ` ${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
   }
 
   setDate();
   showQuote(getDailyQuote());
 </script>
+<script type="module" src="rigel_widget.js"></script>
 </body>
 </html>

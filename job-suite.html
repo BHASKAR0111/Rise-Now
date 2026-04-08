@@ -82,7 +82,7 @@ textarea.field{resize:vertical;line-height:1.6;}
 
 /* STAT */
 .stat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 18px;text-align:center;}
-/* FIX 3: stat .n had background:var(--blue);color:var(--blue) — removed background */
+/* FIX 3: stat .n had background: transparent !important; color: var(--blue) !important;— removed background */
 .stat .n{font-size:24px;font-weight:900;color:var(--blue);}
 .stat .l{font-size:11px;color:var(--muted);margin-top:3px;}
 
@@ -117,7 +117,7 @@ textarea.field{resize:vertical;line-height:1.6;}
 .jc-logo{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,rgba(0,230,118,.1),rgba(0,188,212,.1));border:1px solid rgba(0,230,118,.12);display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:900;color:var(--blue);flex-shrink:0;text-transform:uppercase;}
 .jc-info{flex:1;min-width:0;}
 .jc-title{font-size:14px;font-weight:700;color:white;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-/* FIX 4: jc-co had background:var(--blue);color:var(--blue) — removed background */
+/* FIX 4: jc-co had background: transparent !important; color: var(--blue) !important;— removed background */
 .jc-co{font-size:12px;font-weight:600;color:var(--blue);margin-bottom:7px;}
 .jc-tags{display:flex;gap:6px;flex-wrap:wrap;}
 .tag{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:5px;padding:3px 8px;font-size:11px;color:var(--muted);}
@@ -146,7 +146,7 @@ textarea.field{resize:vertical;line-height:1.6;}
 
 /* SCORE CIRCLE */
 .sc-circ{width:100px;height:100px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;border:3px solid rgba(0,230,118,.25);background:rgba(0,230,118,.04);flex-shrink:0;}
-/* FIX 5: sc-n had background:var(--blue);color:var(--blue) — removed background */
+/* FIX 5: sc-n had background: transparent !important; color: var(--blue) !important;— removed background */
 .sc-n{font-size:24px;font-weight:900;color:var(--blue);}
 .sc-l{font-size:9px;color:var(--muted);font-weight:600;}
 
@@ -168,39 +168,102 @@ textarea.field{resize:vertical;line-height:1.6;}
 }
 </style>
   <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="footer.css"/>
+  <link rel="icon" type="image/png" href="images/rigel_logo.png">
 </head>
 <body>
 <div class="bg-glow"></div>
 
 <nav>
   <a href="index.html" class="nav-logo">
-    <div class="logo-box">R</div>
-    <div class="logo-text">Rigel</div>
+    <img src="images/rigel_logo.png" alt="Rigel" style="width:36px;height:36px;border-radius:9px;object-fit:contain;background:#000;"/>
+    <div class="logo-text" style="color:var(--blue) !important; background:transparent !important; font-weight:800; font-size:22px;">Rigel</div>
   </a>
   <div class="nav-links">
     <a href="careers.html" class="nav-link">Careers</a>
-    <a href="jobs.html" class="nav-link">Jobs</a>
     <a href="resources.html" class="nav-link">Resources</a>
-    <a href="daily-quote.html" class="nav-link">Motivation</a>
-    <a href="job-suite.html" class="nav-link active">My Suite</a>
+    
+    <!-- TOOLS DROPDOWN -->
+    <div class="nav-dropdown-wrapper" style="position:relative; display:inline-block;">
+      <div class="nav-link" style="cursor:pointer; display:flex; align-items:center; gap:4px;" onclick="document.getElementById('toolsDropdown').classList.toggle('show')">
+        Tools <span style="font-size:10px;">▼</span>
+      </div>
+      <div id="toolsDropdown" class="tools-dropdown">
+        <a href="daily-quote.html">Motivation</a>
+        <a href="jobs.html">Job Board</a>
+        <a href="job-tracker.html">Job Tracker</a>
+        <a href="interview.html">Interview Prep</a>
+        <a href="ats-scanner.html">Resume ATS Scanner</a>
+        <a href="cover-letter.html">AI Cover Letter</a>
+        <a href="market-insights.html">Market Insights</a>
+        <a href="freelance-starter.html">Make Your First ₹1000</a>
+        <a href="leaderboard.html">Community Leaderboard</a>
+      </div>
+    </div>
+    
+    <a href="rize.html" class="nav-link highlight">✦ Rigel AI</a>
+    
+    <div style="position:relative;margin-left:8px;">
+      <div class="profile-btn" id="profileBtn" onclick="toggleDropdown()">
+        <span class="default-icon" id="profileIcon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        </span>
+        <img id="profileImg" src="" alt="" style="display:none;width:100%;height:100%;border-radius:50%;object-fit:cover;position:absolute;inset:0;"/>
+      </div>
+      <div class="profile-dropdown" id="profileDropdown">
+        <div id="dropdownLoggedOut">
+          <div class="dropdown-item" onclick="openLogin()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:8px;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg> 
+            Sign In / Register
+          </div>
+        </div>
+        <div id="dropdownLoggedIn" style="display:none;">
+          <div class="dropdown-user">
+            <div class="dropdown-name" id="dropdownName">—</div>
+            <div class="dropdown-email" id="dropdownEmail">—</div>
+          </div>
+          <a href="dashboard.html" class="dropdown-item">My Dashboard</a>
+          <a href="careers.html" class="dropdown-item">Explore Careers</a>
+          <a href="job-tracker.html" class="dropdown-item">Job Tracker</a>
+          <a href="rize.html" class="dropdown-item">✦ Chat with Rigel</a>
+          <div class="dropdown-item danger" onclick="signOutUser()">Sign Out</div>
+        </div>
+      </div>
+    </div>
   </div>
 </nav>
+
+<style>
+/* Tools dropdown styling */
+.tools-dropdown { display:none; position:absolute; top:100%; left:50%; transform:translateX(-50%); background:var(--card); border:1px solid var(--border); border-radius:12px; padding:8px; min-width:180px; z-index:100; margin-top:16px; box-shadow:0 10px 30px rgba(0,0,0,0.5); }
+.tools-dropdown.show { display: block !important; }
+.tools-dropdown a { display:block; padding:10px 16px; color:var(--text); text-decoration:none; font-size:14px; border-radius:8px; transition:0.2s; text-align:left; }
+.tools-dropdown a:hover { background: rgba(0, 194, 255, 0.1); color: var(--blue); }
+</style>
+<script>
+document.addEventListener('click', function(e) {
+  const toolsMenu = document.getElementById('toolsDropdown');
+  if (toolsMenu && !e.target.closest('.nav-dropdown-wrapper')) {
+    toolsMenu.classList.remove('show');
+  }
+});
+</script>
 
 <div class="app-wrap">
 
 <!-- SIDEBAR -->
 <div class="sidebar">
   <div class="sb-label">Job Search</div>
-  <button class="sb-btn active" onclick="show('search',this)">🔍 Search Jobs</button>
-  <button class="sb-btn" onclick="show('tracker',this)">📋 Tracker <span class="sb-count" id="sc-n">0</span></button>
+  <button class="sb-btn active" onclick="show('search',this)"> Search Jobs</button>
+  <button class="sb-btn" onclick="show('tracker',this)"> Tracker <span class="sb-count" id="sc-n">0</span></button>
 
   <div class="sb-label">AI Tools</div>
-  <button class="sb-btn" onclick="show('cl',this)">✍️ Cover Letter</button>
-  <button class="sb-btn" onclick="show('rv',this)">📄 Resume Optimizer</button>
-  <button class="sb-btn" onclick="show('em',this)">📧 Email Generator</button>
+  <button class="sb-btn" onclick="show('cl',this)">️ Cover Letter</button>
+  <button class="sb-btn" onclick="show('rv',this)"> Resume Optimizer</button>
+  <button class="sb-btn" onclick="show('em',this)"> Email Generator</button>
 
   <div class="sb-label">Settings</div>
-  <button class="sb-btn" onclick="show('pf',this)">👤 My Profile</button>
+  <button class="sb-btn" onclick="show('pf',this)"> My Profile</button>
 </div>
 
 <!-- CONTENT -->
@@ -214,9 +277,9 @@ textarea.field{resize:vertical;line-height:1.6;}
 
   <div class="card" style="margin-bottom:18px;">
     <div style="display:flex;gap:9px;flex-wrap:wrap;">
-      <input class="field" id="js-q" placeholder="🔍 Role, skill, keyword..." style="flex:3;min-width:150px;" value="Data Analyst"/>
+      <input class="field" id="js-q" placeholder=" Role, skill, keyword..." style="flex:3;min-width:150px;" value="Data Analyst"/>
       <select class="field" id="js-l" style="min-width:130px;flex:1;">
-        <option value="">📍 All India</option>
+        <option value=""> All India</option>
         <option value="delhi">Delhi</option>
         <option value="bangalore">Bangalore</option>
         <option value="mumbai">Mumbai</option>
@@ -263,11 +326,11 @@ textarea.field{resize:vertical;line-height:1.6;}
       <input class="field" id="ti-c" placeholder="Company" style="flex:2;min-width:130px;"/>
       <input class="field" id="ti-l" placeholder="Job URL (optional)" style="flex:3;min-width:150px;"/>
       <select class="field" id="ti-s" style="min-width:125px;">
-        <option value="saved">🔖 Saved</option>
-        <option value="applied">📤 Applied</option>
-        <option value="interview">🎤 Interview</option>
-        <option value="offer">🎉 Offer</option>
-        <option value="rejected">❌ Rejected</option>
+        <option value="saved"> Saved</option>
+        <option value="applied"> Applied</option>
+        <option value="interview"> Interview</option>
+        <option value="offer"> Offer</option>
+        <option value="rejected"> Rejected</option>
       </select>
     </div>
     <button class="btn-p" onclick="addTJob()">+ Add Job</button>
@@ -277,16 +340,16 @@ textarea.field{resize:vertical;line-height:1.6;}
     <div class="stat"><div class="n" id="ts-t">0</div><div class="l">Tracked</div></div>
     <div class="stat"><div class="n" id="ts-a" style="color:#00bcd4;">0</div><div class="l">Applied</div></div>
     <div class="stat"><div class="n" id="ts-i" style="color:var(--yellow);">0</div><div class="l">Interviews</div></div>
-    <div class="stat"><div class="n" id="ts-o">0</div><div class="l">Offers 🎉</div></div>
+    <div class="stat"><div class="n" id="ts-o">0</div><div class="l">Offers </div></div>
   </div>
 
   <div class="chips">
     <button class="chip on" onclick="fTracker('all',this)">All</button>
-    <button class="chip" onclick="fTracker('saved',this)">🔖 Saved</button>
-    <button class="chip" onclick="fTracker('applied',this)">📤 Applied</button>
-    <button class="chip" onclick="fTracker('interview',this)">🎤 Interview</button>
-    <button class="chip" onclick="fTracker('offer',this)">🎉 Offer</button>
-    <button class="chip" onclick="fTracker('rejected',this)">❌ Rejected</button>
+    <button class="chip" onclick="fTracker('saved',this)"> Saved</button>
+    <button class="chip" onclick="fTracker('applied',this)"> Applied</button>
+    <button class="chip" onclick="fTracker('interview',this)"> Interview</button>
+    <button class="chip" onclick="fTracker('offer',this)"> Offer</button>
+    <button class="chip" onclick="fTracker('rejected',this)"> Rejected</button>
   </div>
 
   <div id="t-list" style="display:flex;flex-direction:column;gap:8px;"></div>
@@ -325,7 +388,7 @@ textarea.field{resize:vertical;line-height:1.6;}
           <option value="story">Story-driven & Personal</option>
         </select>
       </div>
-      <button class="btn-p" id="cl-btn" onclick="genCL()" style="width:100%;justify-content:center;">✨ Generate Cover Letter</button>
+      <button class="btn-p" id="cl-btn" onclick="genCL()" style="width:100%;justify-content:center;"> Generate Cover Letter</button>
     </div>
 
     <div style="display:flex;flex-direction:column;gap:10px;">
@@ -333,7 +396,7 @@ textarea.field{resize:vertical;line-height:1.6;}
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
           <div class="fl">Generated Letter</div>
           <div style="display:flex;gap:7px;">
-            <button class="btn-o" onclick="cpOut('cl-out')" style="padding:5px 12px;font-size:11px;">📋 Copy</button>
+            <button class="btn-o" onclick="cpOut('cl-out')" style="padding:5px 12px;font-size:11px;"> Copy</button>
             <button class="btn-o" onclick="clOut('cl-out')" style="padding:5px 12px;font-size:11px;">Clear</button>
           </div>
         </div>
@@ -349,8 +412,8 @@ textarea.field{resize:vertical;line-height:1.6;}
   <div class="pnl-sub">Paste text or upload PDF. Get ATS score, missing keywords, and specific AI rewrites.</div>
 
   <div style="display:flex;gap:9px;margin-bottom:18px;">
-    <button class="btn-p" id="m-paste" onclick="setMode('paste')" style="font-size:12px;">📝 Paste Text</button>
-    <button class="btn-o" id="m-upload" onclick="setMode('upload')" style="font-size:12px;">📎 Upload PDF</button>
+    <button class="btn-p" id="m-paste" onclick="setMode('paste')" style="font-size:12px;"> Paste Text</button>
+    <button class="btn-o" id="m-upload" onclick="setMode('upload')" style="font-size:12px;"> Upload PDF</button>
   </div>
 
   <div id="rv-paste">
@@ -371,7 +434,7 @@ textarea.field{resize:vertical;line-height:1.6;}
       <div>
         <div class="fl" style="margin-bottom:6px;">Upload Resume PDF</div>
         <div class="uz" id="uz" onclick="document.getElementById('pdf-in').click()">
-          <div class="ui">📄</div>
+          <div class="ui"></div>
           <p><strong>Click to upload</strong> or drag & drop PDF</p>
           <p style="font-size:11px;margin-top:5px;">PDF only · Max 5MB</p>
         </div>
@@ -386,7 +449,7 @@ textarea.field{resize:vertical;line-height:1.6;}
   </div>
 
   <div style="display:flex;gap:10px;margin-bottom:24px;flex-wrap:wrap;">
-    <button class="btn-p" id="rv-btn" onclick="doAnalyze()">🔍 Analyze & Optimize</button>
+    <button class="btn-p" id="rv-btn" onclick="doAnalyze()"> Analyze & Optimize</button>
     <button class="btn-o" onclick="clrRv()">Clear Results</button>
   </div>
 
@@ -411,19 +474,19 @@ textarea.field{resize:vertical;line-height:1.6;}
 
     <div class="g2" style="margin-bottom:16px;">
       <div class="card">
-        <div class="fl" style="margin-bottom:10px;">✅ Keywords Found</div>
+        <div class="fl" style="margin-bottom:10px;"> Keywords Found</div>
         <div id="rv-fk">—</div>
       </div>
       <div class="card">
-        <div class="fl" style="margin-bottom:10px;">❌ Missing Keywords — Add These!</div>
+        <div class="fl" style="margin-bottom:10px;"> Missing Keywords — Add These!</div>
         <div id="rv-mk">—</div>
       </div>
     </div>
 
     <div class="card">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-        <div class="fl">🤖 AI Improvement Suggestions</div>
-        <button class="btn-o" onclick="cpOut('rv-ai')" style="padding:5px 12px;font-size:11px;">📋 Copy</button>
+        <div class="fl"> AI Improvement Suggestions</div>
+        <button class="btn-o" onclick="cpOut('rv-ai')" style="padding:5px 12px;font-size:11px;"> Copy</button>
       </div>
       <div class="out-box" id="rv-ai" style="min-height:180px;"><div class="out-empty">Run analysis first...</div></div>
     </div>
@@ -440,13 +503,13 @@ textarea.field{resize:vertical;line-height:1.6;}
       <div class="card">
         <div class="fl" style="margin-bottom:10px;">Email Type</div>
         <div style="display:flex;flex-direction:column;gap:5px;">
-          <button class="sb-btn active" style="width:100%;border-radius:9px;" onclick="selEmail(this,'followup')">📨 Follow-up After Applying</button>
-          <button class="sb-btn" style="width:100%;border-radius:9px;" onclick="selEmail(this,'thankyou')">🙏 Thank You (Post Interview)</button>
-          <button class="sb-btn" style="width:100%;border-radius:9px;" onclick="selEmail(this,'status')">🔍 Check Application Status</button>
-          <button class="sb-btn" style="width:100%;border-radius:9px;" onclick="selEmail(this,'referral')">🤝 Ask for Referral</button>
-          <button class="sb-btn" style="width:100%;border-radius:9px;" onclick="selEmail(this,'cold')">❄️ Cold Outreach to HR</button>
-          <button class="sb-btn" style="width:100%;border-radius:9px;" onclick="selEmail(this,'negotiate')">💰 Negotiate Offer</button>
-          <button class="sb-btn" style="width:100%;border-radius:9px;" onclick="selEmail(this,'decline')">🚫 Decline Offer Politely</button>
+          <button class="sb-btn active" style="width:100%;border-radius:9px;" onclick="selEmail(this,'followup')"> Follow-up After Applying</button>
+          <button class="sb-btn" style="width:100%;border-radius:9px;" onclick="selEmail(this,'thankyou')"> Thank You (Post Interview)</button>
+          <button class="sb-btn" style="width:100%;border-radius:9px;" onclick="selEmail(this,'status')"> Check Application Status</button>
+          <button class="sb-btn" style="width:100%;border-radius:9px;" onclick="selEmail(this,'referral')"> Ask for Referral</button>
+          <button class="sb-btn" style="width:100%;border-radius:9px;" onclick="selEmail(this,'cold')">️ Cold Outreach to HR</button>
+          <button class="sb-btn" style="width:100%;border-radius:9px;" onclick="selEmail(this,'negotiate')"> Negotiate Offer</button>
+          <button class="sb-btn" style="width:100%;border-radius:9px;" onclick="selEmail(this,'decline')"> Decline Offer Politely</button>
         </div>
       </div>
       <div class="card">
@@ -459,7 +522,7 @@ textarea.field{resize:vertical;line-height:1.6;}
           <input class="field" id="em-ex" placeholder="Extra: interview date, offer amount, etc." style="width:100%;"/>
         </div>
       </div>
-      <button class="btn-p" id="em-btn" onclick="genEmail()" style="width:100%;justify-content:center;">✨ Generate Email</button>
+      <button class="btn-p" id="em-btn" onclick="genEmail()" style="width:100%;justify-content:center;"> Generate Email</button>
     </div>
 
     <div style="display:flex;flex-direction:column;gap:10px;">
@@ -469,7 +532,7 @@ textarea.field{resize:vertical;line-height:1.6;}
             <div class="fl" id="em-tl">Follow-up Email</div>
             <div style="font-size:11px;color:var(--muted);margin-top:2px;" id="em-td">Send 5–7 days after applying if no response.</div>
           </div>
-          <button class="btn-o" onclick="cpOut('em-out')" style="padding:5px 12px;font-size:11px;">📋 Copy</button>
+          <button class="btn-o" onclick="cpOut('em-out')" style="padding:5px 12px;font-size:11px;"> Copy</button>
         </div>
         <div class="out-box" id="em-out" style="flex:1;min-height:480px;"><div class="out-empty">Select email type + fill details →<br><br>AI writes a perfect email instantly.</div></div>
       </div>
@@ -490,8 +553,8 @@ textarea.field{resize:vertical;line-height:1.6;}
       <div><div class="fl" style="margin-bottom:5px;">Key Skills</div><textarea class="field" id="pf-sk" style="width:100%;" rows="3" placeholder="Python, SQL, Power BI, Data Analysis, Machine Learning..."></textarea></div>
       <div><div class="fl" style="margin-bottom:5px;">Experience Summary</div><textarea class="field" id="pf-ex" style="width:100%;" rows="3" placeholder="MCA from Graphic Era Hill University 2025, Intern at MedTourEasy..."></textarea></div>
       <div><div class="fl" style="margin-bottom:5px;">LinkedIn / GitHub / Portfolio</div><input class="field" id="pf-lk" style="width:100%;" placeholder="linkedin.com/in/... | github.com/..."/></div>
-      <button class="btn-p" onclick="savePF()" style="align-self:flex-start;">💾 Save Profile</button>
-      <div id="pf-msg" style="font-size:12px;color:var(--blue);display:none;">✅ Saved! AI tools will auto-fill your details.</div>
+      <button class="btn-p" onclick="savePF()" style="align-self:flex-start;"> Save Profile</button>
+      <div id="pf-msg" style="font-size:12px;color:var(--blue);display:none;"> Saved! AI tools will auto-fill your details.</div>
     </div>
   </div>
 </div>
@@ -508,7 +571,7 @@ let jsPage=1,jsTotal=0,tJobs=JSON.parse(localStorage.getItem('rn_t')||'[]'),tFil
 function cpOut(id){
   const t=$(id).innerText||$(id).textContent;
   if(!t||t.includes('Fill')||t.includes('Generate')||t.includes('Run analysis')) return;
-  navigator.clipboard.writeText(t).then(()=>alert('✅ Copied!'));
+  navigator.clipboard.writeText(t).then(()=>alert(' Copied!'));
 }
 function clOut(id){ $(id).innerHTML='<div class="out-empty">Your letter will appear here...</div>'; }
 
@@ -590,14 +653,14 @@ async function doSearch(pg=1){
     $('js-next').disabled=pg>=Math.ceil(jsTotal/PPG);
     $('js-pg').textContent=`Page ${pg} of ${Math.min(Math.ceil(jsTotal/PPG),50)}`;
   }catch(e){
-    $('js-res').innerHTML=`<div class="card" style="text-align:center;padding:36px;color:var(--muted)"><div style="font-size:28px;margin-bottom:10px">⚠️</div><div style="color:white;font-weight:700;margin-bottom:5px">Could not load jobs</div><div style="font-size:12px">${e.message}</div></div>`;
+    $('js-res').innerHTML=`<div class="card" style="text-align:center;padding:36px;color:var(--muted)"><div style="font-size:28px;margin-bottom:10px">️</div><div style="color:white;font-weight:700;margin-bottom:5px">Could not load jobs</div><div style="font-size:12px">${e.message}</div></div>`;
     $('js-info').textContent='Error';
   }
 }
 
 function renderJobs(jobs){
   if(!jobs.length){
-    $('js-res').innerHTML=`<div class="card" style="text-align:center;padding:36px;color:var(--muted)"><div style="font-size:28px;margin-bottom:10px">🔍</div><div style="color:white;font-weight:700;">No jobs found</div></div>`;
+    $('js-res').innerHTML=`<div class="card" style="text-align:center;padding:36px;color:var(--muted)"><div style="font-size:28px;margin-bottom:10px"></div><div style="color:white;font-weight:700;">No jobs found</div></div>`;
     return;
   }
   $('js-res').innerHTML=jobs.map((j,i)=>{
@@ -611,18 +674,18 @@ function renderJobs(jobs){
         <div class="jc-title" title="${j.title}">${j.title}</div>
         <div class="jc-co">${j.company?.display_name||'Company'}</div>
         <div class="jc-tags">
-          <span class="tag">📍 ${j.location?.display_name||'India'}</span>
-          ${ct?`<span class="tag">💼 ${ct}</span>`:''}
-          ${sal?`<span class="tag g">💰 ${sal}</span>`:''}
+          <span class="tag"> ${j.location?.display_name||'India'}</span>
+          ${ct?`<span class="tag"> ${ct}</span>`:''}
+          ${sal?`<span class="tag g"> ${sal}</span>`:''}
         </div>
       </div>
       <div class="jc-right">
         <div style="display:flex;gap:7px;">
-          <button class="btn-o" style="padding:6px 11px;font-size:11px;" onclick='saveJob(${jd})'>🔖 Save</button>
+          <button class="btn-o" style="padding:6px 11px;font-size:11px;" onclick='saveJob(${jd})'> Save</button>
           <a class="btn-p" href="${j.redirect_url}" target="_blank" rel="noopener" style="padding:7px 14px;font-size:12px;text-decoration:none;">Apply →</a>
         </div>
         <div style="display:flex;gap:7px;align-items:center;">
-          <button class="btn-o" style="padding:4px 9px;font-size:11px;" onclick='prefillCL(${jd})'>✍️ Cover Letter</button>
+          <button class="btn-o" style="padding:4px 9px;font-size:11px;" onclick='prefillCL(${jd})'>️ Cover Letter</button>
           <span class="jc-age">${tAgo(j.created)}</span>
         </div>
       </div>
@@ -647,7 +710,7 @@ function saveJob(job){
   tJobs.unshift({id:Date.now(),role:job.title,company:job.company,link:'',status:'saved',date:new Date().toLocaleDateString('en-IN')});
   localStorage.setItem('rn_t',JSON.stringify(tJobs));
   updTStats();
-  alert(`✅ "${job.title}" saved to Tracker!`);
+  alert(` "${job.title}" saved to Tracker!`);
 }
 function prefillCL(job){
   $('cl-jt').value=job.title;
@@ -698,10 +761,10 @@ function fTracker(f,el){
 function renderTracker(){
   updTStats();
   const fl=tFilter==='all'?tJobs:tJobs.filter(j=>j.status===tFilter);
-  const sl={saved:'🔖 Saved',applied:'📤 Applied',interview:'🎤 Interview',offer:'🎉 Offer',rejected:'❌ Rejected'};
+  const sl={saved:' Saved',applied:' Applied',interview:' Interview',offer:' Offer',rejected:' Rejected'};
   const sc={saved:'ss',applied:'sa',interview:'si',offer:'so',rejected:'sr'};
   if(!fl.length){
-    $('t-list').innerHTML=`<div class="card" style="text-align:center;padding:36px;color:var(--muted)"><div style="font-size:28px;margin-bottom:10px">📋</div><div style="color:white;font-weight:700;">${tFilter==='all'?'No jobs tracked yet':'Nothing in this category'}</div></div>`;
+    $('t-list').innerHTML=`<div class="card" style="text-align:center;padding:36px;color:var(--muted)"><div style="font-size:28px;margin-bottom:10px"></div><div style="color:white;font-weight:700;">${tFilter==='all'?'No jobs tracked yet':'Nothing in this category'}</div></div>`;
     return;
   }
   $('t-list').innerHTML=fl.map((j,i)=>`
@@ -714,7 +777,7 @@ function renderTracker(){
       <span class="sb ${sc[j.status]}">${sl[j.status]}</span>
       <div style="display:flex;gap:6px;align-items:center;">
         <button class="btn-o" onclick="cycleS(${j.id})" style="padding:5px 10px;font-size:11px;">Update →</button>
-        <button class="btn-del" onclick="delTJob(${j.id})">🗑</button>
+        <button class="btn-del" onclick="delTJob(${j.id})"></button>
       </div>
     </div>`).join('');
 }
@@ -741,7 +804,7 @@ async function genCL(){
     const d=await r.json();
     $('cl-out').textContent=d.content?.map(c=>c.text||'').join('')||'Could not generate. Try again.';
   }catch(e){ $('cl-out').textContent='Error: '+e.message; }
-  btn.disabled=false; btn.innerHTML='✨ Generate Cover Letter';
+  btn.disabled=false; btn.innerHTML=' Generate Cover Letter';
 }
 
 // ====== RESUME OPTIMIZER ======
@@ -760,7 +823,7 @@ function handlePDF(e){
   if(!f) return;
   if(f.size>5*1024*1024){alert('Max 5MB.');return;}
   const r=new FileReader();
-  r.onload=ev=>{pdfB64=ev.target.result.split(',')[1];$('pdf-nm').style.display='block';$('pdf-nm').textContent='📄 '+f.name+' ready!';};
+  r.onload=ev=>{pdfB64=ev.target.result.split(',')[1];$('pdf-nm').style.display='block';$('pdf-nm').textContent=' '+f.name+' ready!';};
   r.readAsDataURL(f);
 }
 const uz=$('uz');
@@ -797,7 +860,7 @@ async function doAnalyze(){
     $('rv-ms').textContent=miss.length;
     $('rv-gr').textContent=gr;
     $('rv-fk').innerHTML=matched.slice(0,28).map(w=>`<span class="kw-f">${w}</span>`).join('')||'<span style="color:var(--muted);font-size:12px">None found</span>';
-    $('rv-mk').innerHTML=miss.map(w=>`<span class="kw-m">${w}</span>`).join('')||'<span style="color:var(--blue);font-size:12px">✅ No major gaps!</span>';
+    $('rv-mk').innerHTML=miss.map(w=>`<span class="kw-m">${w}</span>`).join('')||'<span style="color:var(--blue);font-size:12px"> No major gaps!</span>';
   } else {
     $('rv-res').style.display='block';
     $('rv-sn').textContent='AI'; $('rv-pl').textContent='See below';
@@ -829,7 +892,7 @@ async function doAnalyze(){
     $('rv-ai').textContent=d.content?.map(c=>c.text||'').join('')||'Could not analyze. Try again.';
     $('rv-res').style.display='block';
   }catch(e){$('rv-ai').textContent='Error: '+e.message;}
-  btn.disabled=false; btn.innerHTML='🔍 Analyze & Optimize';
+  btn.disabled=false; btn.innerHTML=' Analyze & Optimize';
 }
 
 // ====== EMAIL GENERATOR ======
@@ -873,8 +936,9 @@ async function genEmail(){
     const d=await r.json();
     $('em-out').textContent=d.content?.map(c=>c.text||'').join('')||'Could not generate. Try again.';
   }catch(e){$('em-out').textContent='Error: '+e.message;}
-  btn.disabled=false; btn.innerHTML='✨ Generate Email';
+  btn.disabled=false; btn.innerHTML=' Generate Email';
 }
 </script>
+<script type="module" src="rigel_widget.js"></script>
 </body>
 </html>

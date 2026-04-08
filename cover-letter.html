@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AI Cover Letter | Rigel</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --blue: #00C2FF;
+      --bg: #0d1117;
+      --card: #161b22;
+      --border: rgba(255,255,255,0.07);
+      --text: rgba(255,255,255,0.85);
+      --muted: rgba(255,255,255,0.4);
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding-top: 100px;
+    }
+    .hero { text-align:center; padding: 60px 20px; }
+    .hero h1 { font-size:42px; font-weight:800; margin-bottom:16px; color:white; }
+    .hero p { color:var(--muted); font-size:16px; max-width:600px; margin:0 auto; line-height:1.6; }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 40px 60px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+    }
+
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+    }
+    .panel-title { font-size:18px; font-weight:700; color:white; margin-bottom:24px; border-bottom:1px solid var(--border); padding-bottom:16px; }
+
+    .form-group { margin-bottom:20px; }
+    .form-label { display:block; font-size:13px; font-weight:600; color:var(--muted); margin-bottom:8px; text-transform:uppercase; letter-spacing:1px; }
+    .form-input { 
+      width: 100%; padding: 12px 16px; 
+      background: rgba(255,255,255,0.03); 
+      border: 1px solid var(--border); 
+      border-radius: 8px; color: white; 
+      font-family: inherit; font-size: 15px; 
+      transition: border 0.2s;
+    }
+    .form-input:focus { outline:none; border-color:var(--blue); background:rgba(0,194,255,0.03); }
+    textarea.form-input { min-height:120px; resize:vertical; }
+
+    .btn-generate {
+      width: 100%; padding: 16px;
+      background: var(--blue);
+      color: #0d1117; font-weight: 700; font-size: 16px;
+      border: none; border-radius: 8px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-generate:hover { filter: brightness(1.1); }
+
+    .result-tabs { display:flex; gap:10px; margin-bottom:20px; }
+    .result-tab { padding:8px 16px; background:transparent; border:1px solid var(--border); border-radius:8px; color:var(--muted); font-size:13px; font-weight:600; cursor:pointer; }
+    .result-tab.active { background:rgba(0,194,255,0.1); border-color:rgba(0,194,255,0.3); color:var(--blue); }
+
+    .result-box {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 24px;
+      font-size: 14px;
+      line-height: 1.8;
+      color: var(--text);
+      white-space: pre-wrap;
+      min-height: 300px;
+    }
+
+    .btn-copy {
+      margin-top: 16px; padding: 10px 20px;
+      background: transparent; border: 1px solid var(--border);
+      border-radius: 8px; color: white; font-weight: 600; font-size: 13px;
+      cursor: pointer; transition: 0.2s;
+    }
+    .btn-copy:hover { border-color: rgba(0,230,118,0.5); color:#00e676; }
+
+    @media(max-width: 768px) {
+      .container { grid-template-columns: 1fr; }
+    }
+  </style>
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="footer.css"/>
+  <link rel="icon" type="image/png" href="images/rigel_logo.png">
+</head>
+<body>
+
+  <!-- Nav bar will be injected by update_nav.py but I will paste it directly -->
+  <nav>
+  <a href="index.html" class="nav-logo">
+    <img src="images/rigel_logo.png" alt="Rigel" style="width:36px;height:36px;border-radius:9px;object-fit:contain;background:#000;"/>
+    <div class="logo-text" style="color:var(--blue) !important; background:transparent !important; font-weight:800; font-size:22px;">Rigel</div>
+  </a>
+  <div class="nav-links">
+    <a href="careers.html" class="nav-link">Careers</a>
+    <a href="resources.html" class="nav-link">Resources</a>
+    
+    <!-- TOOLS DROPDOWN -->
+    <div class="nav-dropdown-wrapper" style="position:relative; display:inline-block;">
+      <div class="nav-link" style="cursor:pointer; display:flex; align-items:center; gap:4px;" onclick="document.getElementById('toolsDropdown').classList.toggle('show')">
+        Tools <span style="font-size:10px;">▼</span>
+      </div>
+      <div id="toolsDropdown" class="tools-dropdown">
+        <a href="daily-quote.html">Motivation</a>
+        <a href="jobs.html">Job Board</a>
+        <a href="job-tracker.html">Job Tracker</a>
+        <a href="interview.html">Interview Prep</a>
+        <a href="ats-scanner.html">Resume ATS Scanner</a>
+        <a href="cover-letter.html">AI Cover Letter</a>
+        <a href="market-insights.html">Market Insights</a>
+        <a href="freelance-starter.html">Make Your First ₹1000</a>
+        <a href="leaderboard.html">Community Leaderboard</a>
+      </div>
+    </div>
+    
+    <a href="rize.html" class="nav-link highlight">✦ Rigel AI</a>
+    
+    <div style="position:relative;margin-left:8px;">
+      <div class="profile-btn" id="profileBtn" onclick="toggleDropdown()">
+        <span class="default-icon" id="profileIcon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        </span>
+        <img id="profileImg" src="" alt="" style="display:none;width:100%;height:100%;border-radius:50%;object-fit:cover;position:absolute;inset:0;"/>
+      </div>
+      <div class="profile-dropdown" id="profileDropdown">
+        <div id="dropdownLoggedOut">
+          <div class="dropdown-item" onclick="openLogin()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:8px;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg> 
+            Sign In / Register
+          </div>
+        </div>
+        <div id="dropdownLoggedIn" style="display:none;">
+          <div class="dropdown-user">
+            <div class="dropdown-name" id="dropdownName">—</div>
+            <div class="dropdown-email" id="dropdownEmail">—</div>
+          </div>
+          <a href="dashboard.html" class="dropdown-item">My Dashboard</a>
+          <a href="careers.html" class="dropdown-item">Explore Careers</a>
+          <a href="job-tracker.html" class="dropdown-item">Job Tracker</a>
+          <a href="rize.html" class="dropdown-item">✦ Chat with Rigel</a>
+          <div class="dropdown-item danger" onclick="signOutUser()">Sign Out</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<style>
+/* Tools dropdown styling */
+.tools-dropdown { display:none; position:absolute; top:100%; left:50%; transform:translateX(-50%); background:var(--card); border:1px solid var(--border); border-radius:12px; padding:8px; min-width:180px; z-index:100; margin-top:16px; box-shadow:0 10px 30px rgba(0,0,0,0.5); }
+.tools-dropdown.show { display: block !important; }
+.tools-dropdown a { display:block; padding:10px 16px; color:var(--text); text-decoration:none; font-size:14px; border-radius:8px; transition:0.2s; text-align:left; }
+.tools-dropdown a:hover { background: rgba(0, 194, 255, 0.1); color: var(--blue); }
+</style>
+<script>
+document.addEventListener('click', function(e) {
+  const toolsMenu = document.getElementById('toolsDropdown');
+  if (toolsMenu && !e.target.closest('.nav-dropdown-wrapper')) {
+    toolsMenu.classList.remove('show');
+  }
+});
+</script>
+
+  <section class="hero" style="min-height: auto !important; padding-top: 140px !important; padding-bottom: 40px !important;">
+    <h1>Cover Letter & Cold Email AI</h1>
+    <p>Generate highly professional, personalized cover letters and networking emails in seconds. Just tell us your role and skills.</p>
+  </section>
+
+  <div class="container">
+    
+    <!-- Inputs -->
+    <div class="panel">
+      <div class="panel-title">Provide Context</div>
+      
+      <div class="form-group">
+        <label class="form-label">Target Role</label>
+        <input type="text" id="roleInput" class="form-input" placeholder="e.g. Data Analyst, UX Designer">
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Target Company & Hiring Manager</label>
+        <input type="text" id="companyInput" class="form-input" placeholder="e.g. Google, Hiring Manager John">
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Your Top 2-3 Skills or Achievements</label>
+        <textarea id="skillsInput" class="form-input" placeholder="e.g. Expert in Python and SQL. Built a churn dashboard analyzing 50k records."></textarea>
+      </div>
+
+      <button class="btn-generate" onclick="generateTemplates()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+        Generate Templates
+      </button>
+    </div>
+
+    <!-- Results -->
+    <div class="panel">
+      <div class="panel-title">Generated Templates</div>
+      
+      <div class="result-tabs">
+        <button class="result-tab active" onclick="showTab('cover', this)">Cover Letter</button>
+        <button class="result-tab" onclick="showTab('linkedin', this)">LinkedIn Connect</button>
+        <button class="result-tab" onclick="showTab('cold', this)">Cold Email</button>
+      </div>
+
+      <div class="result-box" id="resultContent">Your generated templates will appear here.</div>
+      
+      <button class="btn-copy" onclick="copyResult()">Copy to Clipboard</button>
+      <span id="copySuccess" style="color:#00e676; font-size:12px; margin-left:12px; opacity:0; transition:0.3s;">Copied!</span>
+    </div>
+
+  </div>
+
+  <script type="module" src="rigel_widget.js"></script>
+  <script>
+    let templates = {
+      cover: "Your cover letter will appear here.",
+      linkedin: "Your LinkedIn message will appear here.",
+      cold: "Your cold email will appear here."
+    };
+    let currentTab = 'cover';
+
+    function generateTemplates() {
+      const role = document.getElementById('roleInput').value || '[Target Role]';
+      const company = document.getElementById('companyInput').value || '[Target Company]';
+      const skills = document.getElementById('skillsInput').value || '[Your specific skills and achievements]';
+
+      // Simulate API generation time
+      document.getElementById('resultContent').innerText = "Generating AI templates...";
+      
+      if(window.addXP) window.addXP(5, 'Used AI Template Generator');
+
+      setTimeout(() => {
+        templates.cover = `Dear Hiring Manager,\n\nI am writing to express my strong interest in the ${role} position at ${company}. \n\nAs someone passionate about delivering impact, I have developed expertise in:\n${skills}\n\nI admire ${company}'s recent initiatives and believe my background makes me a strong cultural and technical fit for your team. I would welcome the opportunity to discuss how my skills align with your goals.\n\nThank you for your time and consideration.\n\nBest regards,\n[Your Name]`;
+        
+        templates.linkedin = `Hi [Name],\n\nI've been following ${company}'s recent work and am truly inspired by the team's approach. I am currently exploring ${role} opportunities and given my background in:\n${skills}\n\nI would love to connect and follow your journey! \n\nBest,\n[Your Name]`;
+        
+        templates.cold = `Subject: Inquiry: ${role} position / [Your Name]\n\nHi [Name],\n\nI hope this email finds you well.\n\nI am reaching out because I am very interested in bringing my expertise to ${company} as a ${role}. \n\nBriefly, I specialize in:\n${skills}\n\nI have attached my resume for your review. Would you be open to a brief 10-minute chat next week to discuss potential synergies?\n\nBest,\n[Your Name]\n[Link to Portfolio/LinkedIn]`;
+
+        document.getElementById('resultContent').innerText = templates[currentTab];
+      }, 800);
+    }
+
+    function showTab(type, btn) {
+      document.querySelectorAll('.result-tab').forEach(t => t.classList.remove('active'));
+      btn.classList.add('active');
+      currentTab = type;
+      document.getElementById('resultContent').innerText = templates[type];
+    }
+
+    function copyResult() {
+      navigator.clipboard.writeText(templates[currentTab]);
+      document.getElementById('copySuccess').style.opacity = 1;
+      setTimeout(() => document.getElementById('copySuccess').style.opacity = 0, 2000);
+      if(window.addXP) window.addXP(2, 'Copied template');
+    }
+    
+    // Tools dropdown fix
+    document.addEventListener('click', function(e) {
+      const toolsMenu = document.getElementById('toolsDropdown');
+      if (toolsMenu && !e.target.closest('.nav-dropdown-wrapper')) {
+        toolsMenu.classList.remove('show');
+      }
+    });
+  </script>
+</body>
+</html>

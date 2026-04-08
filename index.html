@@ -164,6 +164,8 @@ footer p{font-size:13px;color:var(--muted);}
   footer{padding:24px 20px;flex-direction:column;gap:12px;text-align:center;}
 }
 </style>
+  <link rel="stylesheet" href="footer.css"/>
+  <link rel="icon" type="image/png" href="images/rigel_logo.png">
 </head>
 <body>
 <div class="bg-stars"></div>
@@ -171,36 +173,55 @@ footer p{font-size:13px;color:var(--muted);}
 <!-- NAV -->
 <nav>
   <a href="index.html" class="nav-logo">
-  
-  <img src="images/rigel_logo.png" 
-     alt="Rigel" 
-     style="width:36px;height:36px;border-radius:9px;object-fit:contain;background:#000;"/>
-  <div class="logo-text">Rigel</div>
+    <img src="images/rigel_logo.png" alt="Rigel" style="width:36px;height:36px;border-radius:9px;object-fit:contain;background:#000;"/>
+    <div class="logo-text" style="color:var(--blue) !important; background:transparent !important; font-weight:800; font-size:22px;">Rigel</div>
   </a>
   <div class="nav-links">
     <a href="careers.html" class="nav-link">Careers</a>
     <a href="resources.html" class="nav-link">Resources</a>
-    <a href="daily-quote.html" class="nav-link">Motivation</a>
-    <a href="jobs.html" class="nav-link">Jobs</a>
-    <a href="job-suite.html" class="nav-link">My Suite</a>
+    
+    <!-- TOOLS DROPDOWN -->
+    <div class="nav-dropdown-wrapper" style="position:relative; display:inline-block;">
+      <div class="nav-link" style="cursor:pointer; display:flex; align-items:center; gap:4px;" onclick="document.getElementById('toolsDropdown').classList.toggle('show')">
+        Tools <span style="font-size:10px;">▼</span>
+      </div>
+      <div id="toolsDropdown" class="tools-dropdown">
+        <a href="daily-quote.html">Motivation</a>
+        <a href="jobs.html">Job Board</a>
+        <a href="job-tracker.html">Job Tracker</a>
+        <a href="interview.html">Interview Prep</a>
+        <a href="ats-scanner.html">Resume ATS Scanner</a>
+        <a href="cover-letter.html">AI Cover Letter</a>
+        <a href="market-insights.html">Market Insights</a>
+        <a href="freelance-starter.html">Make Your First ₹1000</a>
+        <a href="leaderboard.html">Community Leaderboard</a>
+      </div>
+    </div>
+    
     <a href="rize.html" class="nav-link highlight">✦ Rigel AI</a>
+    
     <div style="position:relative;margin-left:8px;">
       <div class="profile-btn" id="profileBtn" onclick="toggleDropdown()">
-        <span class="default-icon" id="profileIcon">👤</span>
+        <span class="default-icon" id="profileIcon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        </span>
         <img id="profileImg" src="" alt="" style="display:none;width:100%;height:100%;border-radius:50%;object-fit:cover;position:absolute;inset:0;"/>
       </div>
       <div class="profile-dropdown" id="profileDropdown">
         <div id="dropdownLoggedOut">
-          <div class="dropdown-item" onclick="openLogin()">🔐 Sign In / Register</div>
+          <div class="dropdown-item" onclick="openLogin()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:8px;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg> 
+            Sign In / Register
+          </div>
         </div>
         <div id="dropdownLoggedIn" style="display:none;">
           <div class="dropdown-user">
             <div class="dropdown-name" id="dropdownName">—</div>
             <div class="dropdown-email" id="dropdownEmail">—</div>
           </div>
-          <a href="dashboard.html" class="dropdown-item">📊 My Dashboard</a>
-          <a href="careers.html" class="dropdown-item">🧭 Explore Careers</a>
-          <a href="job-tracker.html" class="dropdown-item">📋 Job Tracker</a>
+          <a href="dashboard.html" class="dropdown-item">My Dashboard</a>
+          <a href="careers.html" class="dropdown-item">Explore Careers</a>
+          <a href="job-tracker.html" class="dropdown-item">Job Tracker</a>
           <a href="rize.html" class="dropdown-item">✦ Chat with Rigel</a>
           <div class="dropdown-item danger" onclick="signOutUser()">Sign Out</div>
         </div>
@@ -208,6 +229,22 @@ footer p{font-size:13px;color:var(--muted);}
     </div>
   </div>
 </nav>
+
+<style>
+/* Tools dropdown styling */
+.tools-dropdown { display:none; position:absolute; top:100%; left:50%; transform:translateX(-50%); background:var(--card); border:1px solid var(--border); border-radius:12px; padding:8px; min-width:180px; z-index:100; margin-top:16px; box-shadow:0 10px 30px rgba(0,0,0,0.5); }
+.tools-dropdown.show { display: block !important; }
+.tools-dropdown a { display:block; padding:10px 16px; color:var(--text); text-decoration:none; font-size:14px; border-radius:8px; transition:0.2s; text-align:left; }
+.tools-dropdown a:hover { background: rgba(0, 194, 255, 0.1); color: var(--blue); }
+</style>
+<script>
+document.addEventListener('click', function(e) {
+  const toolsMenu = document.getElementById('toolsDropdown');
+  if (toolsMenu && !e.target.closest('.nav-dropdown-wrapper')) {
+    toolsMenu.classList.remove('show');
+  }
+});
+</script>
 
 <!-- HERO -->
 <section class="hero">
@@ -221,21 +258,18 @@ footer p{font-size:13px;color:var(--muted);}
   </h1>
   <p>Free career paths, daily motivation, real success stories and powerful tools — all in one platform. Built for people who are starting over.</p>
   <div class="hero-btns">
-    <a href="careers.html" class="btn-primary">Explore Career Options →</a>
-    <a href="#how" class="btn-secondary">How it Works</a>
+    <a href="assessment.html" class="btn-primary" style="background:var(--blue);color:#0d1117;box-shadow:0 0 20px rgba(0,194,255,0.4);">Take Onboarding Quiz →</a>
+    <a href="careers.html" class="btn-secondary">Explore Career Options</a>
+  </div>
+  
+  <div style="margin-top:24px;">
+    <a href="restart.html" style="color:#ff4757; font-size:14px; font-weight:700; text-decoration:none; display:inline-flex; align-items:center; gap:8px; padding:10px 20px; background:rgba(255,71,87,0.1); border:1px solid rgba(255,71,87,0.3); border-radius:12px; transition:all 0.2s; letter-spacing:0.5px;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 2v6h6M21.5 22v-6h-6M22 11.5A10 10 0 0 0 3.2 7.2L2.5 8M2 12.5a10 10 0 0 0 18.8 4.2l.7-.8"/></svg>
+      I am totally lost. Restart me.
+    </a>
   </div>
 
-  <!-- RIGEL AI BANNER -->
-  <div class="rize-banner">
-    <div class="rize-banner-left">
-      <div class="rize-banner-icon">Rigel</div>
-      <div class="rize-banner-text">
-        <h4>✦ Meet Rigel — Your AI Career Coach</h4>
-        <p>Get a personalized roadmap, interview prep & job strategy. Free, India-focused, always on.</p>
-      </div>
-    </div>
-    <a href="rize.html" class="btn-rize">Chat with Rigel →</a>
-  </div>
+
 
   <div class="stats">
     <div class="stat"><div class="stat-num">17+</div><div class="stat-lbl">Career Paths</div></div>
@@ -251,17 +285,17 @@ footer p{font-size:13px;color:var(--muted);}
   <div class="section-title">Everything You Need<br>to <span>Outgrow</span></div>
   <div class="features-grid">
     <a href="rize.html" class="feature-card rize-card">
-      <div class="rize-badge">✦ New · AI Powered</div>
-      <span class="feature-icon">🤖</span>
+      <div class="rize-badge"> New · AI Powered</div>
+      <span class="feature-icon"></span>
       <div class="feature-title">Rigel — AI Career Coach</div>
       <div class="feature-desc">Tell Rigel your situation and get a personalized career path, step-by-step roadmap, interview prep, and job strategy. India-focused. Free forever.</div>
     </a>
-    <div class="feature-card"><span class="feature-icon">🧭</span><div class="feature-title">Career Explorer</div><div class="feature-desc">Browse 17+ in-demand career paths. See scope, salary, skills needed and top resources — all in one place.</div></div>
-    <div class="feature-card"><span class="feature-icon">🗺️</span><div class="feature-title">Step-by-Step Roadmap</div><div class="feature-desc">Once you choose a path, get a clear roadmap. Know exactly what to learn, in what order, and where to learn it.</div></div>
-    <div class="feature-card"><span class="feature-icon">📊</span><div class="feature-title">Personal Dashboard</div><div class="feature-desc">Track your progress across devices. See what's done, what's next, and how far you've come.</div></div>
-    <div class="feature-card"><span class="feature-icon">📋</span><div class="feature-title">Job Tracker</div><div class="feature-desc">Track every application — company, role, status. Never lose track of where you applied and what happened.</div></div>
-    <div class="feature-card"><span class="feature-icon">🎤</span><div class="feature-title">Interview Prep</div><div class="feature-desc">Most asked interview questions with model answers. Practice until you walk into every interview confident.</div></div>
-    <div class="feature-card"><span class="feature-icon">💫</span><div class="feature-title">Daily Motivation</div><div class="feature-desc">A fresh quote every day. Real stories of people who fell and rose again. Because mindset matters as much as skill.</div></div>
+    <a href="careers.html" class="feature-card" style="text-decoration:none;"><span class="feature-icon"></span><div class="feature-title">Career Explorer</div><div class="feature-desc">Browse 17+ in-demand career paths. See scope, salary, skills needed and top resources — all in one place.</div></a>
+    <a href="roadmap.html" class="feature-card" style="text-decoration:none;"><span class="feature-icon">️</span><div class="feature-title">Step-by-Step Roadmap</div><div class="feature-desc">Once you choose a path, get a clear roadmap. Know exactly what to learn, in what order, and where to learn it.</div></a>
+    <a href="dashboard.html" class="feature-card" style="text-decoration:none;"><span class="feature-icon"></span><div class="feature-title">Personal Dashboard</div><div class="feature-desc">Track your progress across devices. See what's done, what's next, and how far you've come.</div></a>
+    <a href="job-tracker.html" class="feature-card" style="text-decoration:none;"><span class="feature-icon"></span><div class="feature-title">Job Tracker</div><div class="feature-desc">Track every application — company, role, status. Never lose track of where you applied and what happened.</div></a>
+    <a href="interview.html" class="feature-card" style="text-decoration:none;"><span class="feature-icon"></span><div class="feature-title">Interview Prep</div><div class="feature-desc">Most asked interview questions with model answers. Practice until you walk into every interview confident.</div></a>
+    <a href="daily-quote.html" class="feature-card" style="text-decoration:none;"><span class="feature-icon"></span><div class="feature-title">Daily Motivation</div><div class="feature-desc">A fresh quote every day. Real stories of people who fell and rose again. Because mindset matters as much as skill.</div></a>
   </div>
 </section>
 
@@ -285,24 +319,58 @@ footer p{font-size:13px;color:var(--muted);}
     <p>Join thousands of people rebuilding their careers — one step at a time. It's completely free.</p>
     <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
       <a href="careers.html" class="btn-primary">Start Your Journey →</a>
-      <a href="rize.html" class="btn-secondary">Chat with Rigel ✦</a>
+      <a href="rize.html" class="btn-secondary">Chat with Rigel </a>
     </div>
   </div>
 </section>
 
 <!-- FOOTER -->
-<footer>
-  <a href="index.html" class="nav-logo">
-    <div class="logo-box">R</div>
-    <div class="logo-text">Rigel</div>
-  </a>
-  <p>© 2026 Rigel — Outgrow the Ordinary</p>
+<footer class="global-footer">
+  <div class="footer-top">
+    <div class="footer-col">
+      <a href="index.html" class="nav-logo">
+        <img src="images/rigel_logo.png" alt="Rigel" style="width:36px;height:36px;border-radius:9px;object-fit:contain;background:#000;"/>
+        <div class="logo-text" style="color:#00C2FF !important; background:transparent !important; font-weight:800; font-size:22px;">Rigel</div>
+      </a>
+      <p>Outgrow the Ordinary. A fully responsive career guidance & motivation platform built for job seekers and career switchers.</p>
+      <div class="footer-socials">
+        <a href="#" class="social-link">in</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Product</h4>
+      <ul>
+        <li><a href="careers.html">Explore Careers</a></li>
+        <li><a href="roadmap.html">Career Roadmaps</a></li>
+        <li><a href="resources.html">Resource Library</a></li>
+        <li><a href="job-tracker.html">Job Tracker</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="index.html#stories">Success Stories</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="privacy.html">Privacy Policy</a></li>
+        <li><a href="terms.html">Terms of Service</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Rigel — Outgrow the Ordinary | Built by Bhaskar </p>
+  </div>
 </footer>
 
 <!-- LOGIN MODAL -->
 <div class="login-overlay" id="loginOverlay">
   <div class="login-box">
-    <button class="login-close" onclick="closeLogin()">✕</button>
+    <button class="login-close" onclick="closeLogin()"></button>
     <h3>Welcome to Rigel</h3>
     <p>Sign in to save your progress across devices.</p>
     <div class="login-tabs">
@@ -317,7 +385,7 @@ footer p{font-size:13px;color:var(--muted);}
         <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
         Continue with GitHub
       </button>
-      <button class="btn-guest" onclick="signInAsGuest()">👤 Continue as Guest</button>
+      <button class="btn-guest" onclick="signInAsGuest()"> Continue as Guest</button>
       <div class="login-or">or sign in with email</div>
       <input class="input-field" type="email" id="signin-email" placeholder="Email address"/>
       <input class="input-field" type="password" id="signin-password" placeholder="Password"/>
@@ -345,65 +413,31 @@ footer p{font-size:13px;color:var(--muted);}
   </div>
 </div>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAuth, signInWithPopup, GoogleAuthProvider, GithubAuthProvider, signInAnonymously, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyB2__vKiROvrPOyomY8X-pDBY8VlArDbdY",
-  authDomain: "risenow-31893.firebaseapp.com",
-  databaseURL: "https://risenow-31893-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "risenow-31893",
-  storageBucket: "risenow-31893.firebasestorage.app",
-  messagingSenderId: "230298271225",
-  appId: "1:230298271225:web:c24d7100fc8b89a268d128",
-  measurementId: "G-RC17E84XEV"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const googleProvider = new GoogleAuthProvider();
-const githubProvider = new GithubAuthProvider();
-
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    document.getElementById('dropdownLoggedOut').style.display = 'none';
-    document.getElementById('dropdownLoggedIn').style.display = 'block';
-    const displayName = user.isAnonymous ? 'Guest User' : (user.displayName || 'User');
-    const email = user.isAnonymous ? 'Browsing as guest' : (user.email || '');
-    document.getElementById('dropdownName').textContent = displayName;
-    document.getElementById('dropdownEmail').textContent = email;
-    if (user.photoURL) {
-      document.getElementById('profileImg').src = user.photoURL;
-      document.getElementById('profileImg').style.display = 'block';
-      document.getElementById('profileIcon').style.display = 'none';
-    }
-  } else {
-    document.getElementById('dropdownLoggedOut').style.display = 'block';
-    document.getElementById('dropdownLoggedIn').style.display = 'none';
-    document.getElementById('profileImg').style.display = 'none';
-    document.getElementById('profileIcon').style.display = 'block';
-  }
-});
-
-window.signInWithGoogle = async () => { try { await signInWithPopup(auth, googleProvider); closeLogin(); window.location.href = 'dashboard.html'; } catch(e) { showError('signin','Google sign in failed. Try again.'); } };
-window.signInWithGitHub = async () => { try { await signInWithPopup(auth, githubProvider); closeLogin(); window.location.href = 'dashboard.html'; } catch(e) { showError('signin','GitHub sign in failed. Try again.'); } };
-window.signInAsGuest = async () => { try { await signInAnonymously(auth); closeLogin(); window.location.href = 'dashboard.html'; } catch(e) { showError('signin','Could not sign in as guest. Try again.'); } };
-window.signInWithEmail = async () => { const email = document.getElementById('signin-email').value.trim(); const password = document.getElementById('signin-password').value; if (!email||!password){showError('signin','Please enter email and password.');return;} try { await signInWithEmailAndPassword(auth,email,password); closeLogin(); window.location.href='dashboard.html'; } catch(e){showError('signin',friendlyError(e.code));} };
-window.registerWithEmail = async () => { const name=document.getElementById('register-name').value.trim(); const email=document.getElementById('register-email').value.trim(); const password=document.getElementById('register-password').value; if(!name||!email||!password){showError('register','Please fill all fields.');return;} if(password.length<6){showError('register','Password must be at least 6 characters.');return;} try { const cred=await createUserWithEmailAndPassword(auth,email,password); await updateProfile(cred.user,{displayName:name}); closeLogin(); window.location.href='dashboard.html'; } catch(e){showError('register',friendlyError(e.code));} };
-window.signOutUser = async () => { await signOut(auth); document.getElementById('profileDropdown').classList.remove('open'); };
-
-function showError(panel,msg){document.getElementById(panel+'-error').textContent=msg;}
-function friendlyError(code){const map={'auth/user-not-found':'No account found with this email.','auth/wrong-password':'Incorrect password. Try again.','auth/email-already-in-use':'This email is already registered. Sign in instead.','auth/invalid-email':'Please enter a valid email address.','auth/weak-password':'Password is too weak. Use at least 6 characters.','auth/too-many-requests':'Too many attempts. Please wait a moment.','auth/invalid-credential':'Incorrect email or password.'};return map[code]||'Something went wrong. Please try again.';}
+<!-- REDUNDANT FIREBASE SCRIPT REMOVED - NOW HANDLED BY rigel_widget.js -->
+<script>
+  // UI Helpers moved to rigel_widget.js or kept if specific
+  window.closeLogin = () => { document.getElementById('loginOverlay').classList.remove('open'); };
+  window.switchTab = (tab) => { 
+    document.querySelectorAll('.login-tab').forEach((t,i)=>{ t.classList.toggle('active',(i===0&&tab==='signin')||(i===1&&tab==='register')); }); 
+    document.getElementById('panel-signin').classList.toggle('active',tab==='signin'); 
+    document.getElementById('panel-register').classList.toggle('active',tab==='register'); 
+    ['signin-error','register-error'].forEach(id=>document.getElementById(id).textContent=''); 
+  };
 </script>
 
 <script>
 window.toggleDropdown = () => { document.getElementById('profileDropdown').classList.toggle('open'); };
-window.openLogin = () => { document.getElementById('profileDropdown').classList.remove('open'); document.getElementById('loginOverlay').classList.add('open'); };
 window.closeLogin = () => { document.getElementById('loginOverlay').classList.remove('open'); };
 window.switchTab = (tab) => { document.querySelectorAll('.login-tab').forEach((t,i)=>{ t.classList.toggle('active',(i===0&&tab==='signin')||(i===1&&tab==='register')); }); document.getElementById('panel-signin').classList.toggle('active',tab==='signin'); document.getElementById('panel-register').classList.toggle('active',tab==='register'); ['signin-error','register-error'].forEach(id=>document.getElementById(id).textContent=''); };
 document.getElementById('loginOverlay').addEventListener('click',(e)=>{ if(e.target===document.getElementById('loginOverlay'))closeLogin(); });
 document.addEventListener('click',(e)=>{ const btn=document.getElementById('profileBtn'); const dropdown=document.getElementById('profileDropdown'); if(!btn.contains(e.target)&&!dropdown.contains(e.target)){dropdown.classList.remove('open');} });
+
+document.addEventListener('DOMContentLoaded', () => {
+  if(window.location.search.includes('login=true')) {
+    setTimeout(() => { if(window.openLogin) window.openLogin(); }, 300);
+  }
+});
 </script>
+<script type="module" src="rigel_widget.js"></script>
 </body>
 </html>

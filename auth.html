@@ -8,7 +8,7 @@
   <meta property="og:description" content="Free career paths, daily motivation, real success stories and powerful tools — all in one platform."/>
   <meta property="og:type" content="website"/>
   <title>Join Rigel — Sign In / Sign Up</title>
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="icon" type="image/png" href="images/rigel_logo.png">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
 
@@ -252,6 +252,7 @@
     }
   </style>
   <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="footer.css"/>
 </head>
 <body>
 
@@ -263,33 +264,33 @@
   </a>
 
   <div class="lp-content">
-    <div class="lp-tag">🌱 Personal Dashboard</div>
+    <div class="lp-tag"> Personal Dashboard</div>
     <h1>Your comeback<br>starts with a<br><span>free account</span></h1>
     <p>Get a personalized dashboard — track your habits, follow your roadmap, prep for interviews, and build the career you deserve. All free.</p>
     <div class="lp-features">
       <div class="lp-feat">
-        <div class="lp-feat-icon">🗺️</div>
+        <div class="lp-feat-icon">️</div>
         <div>
           <h4>Personalized Career Roadmap</h4>
           <p>Pick your path — we build the step-by-step plan for you</p>
         </div>
       </div>
       <div class="lp-feat">
-        <div class="lp-feat-icon">🔥</div>
+        <div class="lp-feat-icon"></div>
         <div>
           <h4>Habit Tracker with Streak Counter</h4>
           <p>Daily habits that compound into career breakthroughs</p>
         </div>
       </div>
       <div class="lp-feat">
-        <div class="lp-feat-icon">📊</div>
+        <div class="lp-feat-icon"></div>
         <div>
           <h4>Progress Dashboard</h4>
           <p>See your 30-day challenge progress, jobs tracked &amp; more</p>
         </div>
       </div>
       <div class="lp-feat">
-        <div class="lp-feat-icon">📚</div>
+        <div class="lp-feat-icon"></div>
         <div>
           <h4>Curated Resources for Your Path</h4>
           <p>Only the resources relevant to your chosen career</p>
@@ -317,13 +318,13 @@
 
     <!-- SIGN IN FORM -->
     <div class="auth-form active" id="formSignin">
-      <h2>Welcome back 👋</h2>
+      <h2>Welcome back </h2>
       <p class="sub">Sign in to your personal Rigel dashboard.</p>
 
       <div>
         <label class="field-label">Email</label>
         <div class="field-wrap">
-          <span class="f-icon">📧</span>
+          <span class="f-icon"></span>
           <input class="f-input" type="email" id="siEmail" placeholder="you@example.com" autocomplete="email">
         </div>
         <div class="field-err" id="siEmailErr">Please enter a valid email.</div>
@@ -332,7 +333,7 @@
       <div>
         <label class="field-label">Password</label>
         <div class="field-wrap">
-          <span class="f-icon">🔒</span>
+          <span class="f-icon"></span>
           <input class="f-input" type="password" id="siPass" placeholder="Your password" autocomplete="current-password">
         </div>
         <div class="field-err" id="siPassErr">Password must be at least 6 characters.</div>
@@ -348,14 +349,14 @@
 
     <!-- SIGN UP FORM -->
     <div class="auth-form" id="formSignup">
-      <h2>Create your account 🚀</h2>
+      <h2>Create your account </h2>
       <p class="sub">Join thousands of people rebuilding their careers for free.</p>
 
       <!-- Avatar upload -->
       <div>
         <label class="field-label">Profile Photo</label>
         <div class="avatar-upload" onclick="document.getElementById('avatarInput').click()">
-          <div class="avatar-preview" id="avatarPreview">🙂</div>
+          <div class="avatar-preview" id="avatarPreview"></div>
           <div class="avatar-text">
             <h4>Upload your photo</h4>
             <p>Click to choose · JPG, PNG or GIF · optional</p>
@@ -367,7 +368,7 @@
       <div>
         <label class="field-label">Full Name</label>
         <div class="field-wrap">
-          <span class="f-icon">👤</span>
+          <span class="f-icon"></span>
           <input class="f-input" type="text" id="suName" placeholder="Bhaskar Baluni" autocomplete="name">
         </div>
         <div class="field-err" id="suNameErr">Please enter your name.</div>
@@ -376,7 +377,7 @@
       <div>
         <label class="field-label">Email</label>
         <div class="field-wrap">
-          <span class="f-icon">📧</span>
+          <span class="f-icon"></span>
           <input class="f-input" type="email" id="suEmail" placeholder="you@example.com" autocomplete="email">
         </div>
         <div class="field-err" id="suEmailErr">Please enter a valid email.</div>
@@ -385,7 +386,7 @@
       <div>
         <label class="field-label">Password</label>
         <div class="field-wrap">
-          <span class="f-icon">🔒</span>
+          <span class="f-icon"></span>
           <input class="f-input" type="password" id="suPass" placeholder="Minimum 6 characters" autocomplete="new-password">
         </div>
         <div class="field-err" id="suPassErr">Password must be at least 6 characters.</div>
@@ -396,19 +397,19 @@
         <label class="field-label">Choose Your Career Path</label>
         <div class="career-select-grid" id="careerGrid">
           <div class="cs-card" onclick="selectCareer('da',this)">
-            <span class="cs-emoji">📊</span>
+            <span class="cs-emoji"></span>
             <span class="cs-name">Data Analytics</span>
           </div>
           <div class="cs-card" onclick="selectCareer('wd',this)">
-            <span class="cs-emoji">💻</span>
+            <span class="cs-emoji"></span>
             <span class="cs-name">Web Development</span>
           </div>
           <div class="cs-card" onclick="selectCareer('dm',this)">
-            <span class="cs-emoji">📣</span>
+            <span class="cs-emoji"></span>
             <span class="cs-name">Digital Marketing</span>
           </div>
           <div class="cs-card" onclick="selectCareer('gd',this)">
-            <span class="cs-emoji">🎨</span>
+            <span class="cs-emoji"></span>
             <span class="cs-name">Graphic Design</span>
           </div>
         </div>
@@ -515,7 +516,7 @@
     }
 
     const careerMap = { da:'Data Analytics', wd:'Web Development', dm:'Digital Marketing', gd:'Graphic Design' };
-    const emojiMap  = { da:'📊', wd:'💻', dm:'📣', gd:'🎨' };
+    const emojiMap  = { da:'', wd:'', dm:'', gd:'' };
 
     const user = {
       id: Date.now().toString(),
@@ -532,8 +533,8 @@
     setSession(user);
 
     const btn = document.getElementById('btnSignup');
-    btn.textContent = '✅ Account Created!'; btn.disabled = true;
-    showToast('🎉 Welcome to Rigel, ' + name.split(' ')[0] + '!');
+    btn.textContent = ' Account Created!'; btn.disabled = true;
+    showToast(' Welcome to Rigel, ' + name.split(' ')[0] + '!');
     setTimeout(() => { window.location.href = 'dashboard.html'; }, 1200);
   }
 
@@ -551,11 +552,11 @@
 
     const user = getUsers().find(u => u.email === email && u.pass === pass);
     if (!user) {
-      showToast('❌ Invalid email or password.', true); return;
+      showToast(' Invalid email or password.', true); return;
     }
 
     setSession(user);
-    showToast('👋 Welcome back, ' + user.name.split(' ')[0] + '!');
+    showToast(' Welcome back, ' + user.name.split(' ')[0] + '!');
     setTimeout(() => { window.location.href = 'dashboard.html'; }, 1000);
   }
 
@@ -570,5 +571,6 @@
   // ── Already logged in? ─────────────────────
   if (localStorage.getItem('rn_session')) window.location.href = 'dashboard.html';
 </script>
+<script type="module" src="rigel_widget.js"></script>
 </body>
 </html>

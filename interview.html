@@ -251,10 +251,10 @@ document.addEventListener('click', function(e) {
       
       <div id="fc-interactive-area">
         <div style="font-size:13px; font-weight:700; color:#00e676; text-transform:uppercase; margin-bottom:12px; letter-spacing:1px; display:flex; gap:8px; align-items:center;">⚡ Rigel AI Simulator</div>
-        <textarea id="fc-user-answer" class="ai-textarea" placeholder="Type exactly how you would answer this in an interview..."></textarea>
-        <button id="fc-submit-ai" class="btn-submit-ai" onclick="submitToAI()">Submit Answer for AI Review</button>
-        <div id="fc-ai-loading" class="ai-loading">Rigel AI is analyzing your answer...</div>
-        <div id="fc-ai-feedback" class="ai-feedback-box"></div>
+        <textarea id="fc-user-answer" class="ai-textarea" placeholder="Type exactly how you would answer this in an interview..." style="width:100%; min-height:120px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:16px; color:white; font-family:'Inter',sans-serif; font-size:14px; margin-bottom:12px; outline:none; transition:border-color 0.2s; resize:vertical;"></textarea>
+        <button id="fc-submit-ai" onclick="submitToAI()" style="padding:13px 28px; background:linear-gradient(135deg, #00C2FF, #0090CC); color:#000; border:none; border-radius:12px; font-weight:800; cursor:pointer; font-size:14px; transition:transform 0.2s; display:inline-block; box-shadow: 0 4px 15px rgba(0,194,255,0.3);">Submit Answer for AI Review</button>
+        <div id="fc-ai-loading" style="display:none; color:#00C2FF; font-size:13px; font-weight:700; margin-top:16px; letter-spacing:0.5px; animation: pulse 1.5s infinite;">✨ Rigel AI is analyzing your answer...</div>
+        <div id="fc-ai-feedback" class="ai-feedback-box" style="display:none; background:rgba(0,194,255,0.05); border:1px solid rgba(0,194,255,0.2); border-radius:16px; padding:28px; margin:24px 0; color:white; line-height:1.8; font-size:14px; text-align:left; backdrop-filter:blur(8px); box-shadow: inset 0 0 20px rgba(0,194,255,0.05);"></div>
       </div>
       
       <div id="fc-answer-area" style="display:none; flex-direction:column; flex:1;">
@@ -269,8 +269,8 @@ document.addEventListener('click', function(e) {
             <button onclick="nextCard('Good')" style="padding:10px 24px; background:rgba(255,165,0,0.1); border:1px solid rgba(255,165,0,0.3); color:#ffa500; border-radius:8px; cursor:pointer; font-weight:600;">Good</button>
             <button onclick="nextCard('Easy')" style="padding:10px 24px; background:rgba(0,230,118,0.1); border:1px solid rgba(0,230,118,0.3); color:#00e676; border-radius:8px; cursor:pointer; font-weight:600;">Nailed It</button>
           </div>
-          <div class="next-wrapper" style="margin-top:20px;">
-            <button onclick="nextCard('Good')" class="btn-next-only">Skip / Next Question ⏭</button>
+          <div class="next-wrapper" style="margin-top:24px;">
+            <button onclick="nextCard('Good')" style="background:transparent; border:none; color:rgba(255,255,255,0.4); font-size:13px; font-weight:600; cursor:pointer; text-decoration:underline;">Skip / Next Question ⏭</button>
           </div>
         </div>
       </div>

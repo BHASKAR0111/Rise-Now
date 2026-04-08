@@ -163,6 +163,25 @@
   <p>Loading your dashboard...</p>
 </div>
 
+<script>
+  // Safety timeout to detect if modules are blocked by the browser (file:// access)
+  setTimeout(() => {
+    const loaderText = document.querySelector('#loadingScreen p');
+    if (loaderText && loaderText.innerText.includes('Loading')) {
+      loaderText.innerHTML = `
+        <div style="color:#00C2FF; font-weight:800; margin-bottom:10px; font-size:18px;">Environment Check</div>
+        <div style="font-size:13px; line-height:1.6; color:rgba(255,255,255,0.7); max-width:300px; margin:0 auto;">
+          Authentication engine is taking too long to respond. 
+          <br><br>
+          If you are opening this file directly (file://), your browser may be blocking the scripts. 
+          <br><br>
+          <b>Please use Live Server in VS Code or a local HTTP server.</b>
+        </div>
+      `;
+    }
+  }, 6000);
+</script>
+
 <!-- NOT LOGGED IN -->
 <div id="notLoggedIn">
   <div style="font-size:56px;margin-bottom:20px;"></div>
@@ -362,7 +381,121 @@ document.addEventListener('click', function(e) {
   </div>
 </div>
 
-<!-- GLOBAL RIGEL ENGINE LOADED BELOW -->
-<script type="module" src="rigel_widget.js"></script>
+<script>
+  window.toggleDropdown = () => document.getElementById('profileDropdown')?.classList.toggle('open');
+  window.openLogin = () => window.location.href = 'index.html?login=true';
+  window.signOutUser = () => { if(window.rigelAuth) { import('https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js').then(m=>m.signOut(window.rigelAuth)).then(()=>location.reload()); } };
+
+  document.addEventListener('click', (e) => {
+    const btn = document.getElementById('profileBtn');
+    const dropdown = document.getElementById('profileDropdown');
+    if (btn && dropdown && !btn.contains(e.target) && !dropdown.contains(e.target)) {
+      dropdown.classList.remove('open');
+    }
+  });
+</script>
+
+<!-- FIREBASE COMPAT (Works over file://) -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script src="rigel_widget.js"></script>
+
+<script>
+  const loading = document.getElementById('loadingScreen');
+  const content = document.getElementById('dashboardContent');
+  const notLoggedIn = document.getElementById('notLoggedIn');
+
+  // Initialization starts once Firebase is ready
+  document.addEventListener('DOMContentLoaded', () => {
+    const interval = setInterval(() => {
+        if (window.firebase && window.rigelAuth) {
+            clearInterval(interval);
+            initDashboard();
+        }
+    }, 100);
+  });
+
+  function initDashboard() {
+    window.rigelAuth.onAuthStateChanged(async (user) => {
+      if (user) {
+        loading.style.display = 'flex';
+        notLoggedIn.style.display = 'none';
+        content.style.display = 'none';
+        
+        try {
+          await loadUserData(user);
+          loading.style.display = 'none';
+          content.style.display = 'block';
+        } catch (e) {
+          console.error("Error loading dashboard:", e);
+          loading.style.display = 'none';
+          content.style.display = 'block'; 
+        }
+      } else {
+        loading.style.display = 'none';
+        content.style.display = 'none';
+        notLoggedIn.style.display = 'block';
+      }
+    });
+  }
+
+  async function loadUserData(user) {
+    const name = user.displayName || user.email?.split('@')[0] || 'Champ';
+    document.getElementById('welcomeName').innerText = name;
+
+    const userRef = doc(window.rigelDb, "users", user.uid);
+    const snap = await getDoc(userRef);
+    
+    if (snap.exists()) {
+      const data = snap.data();
+      document.getElementById('statPaths').innerText = (data.savedPaths || []).length;
+      document.getElementById('statSteps').innerText = data.stepsCompleted || 0;
+      document.getElementById('statJobs').innerText = data.jobsApplied || 0;
+      
+      const totalSteps = Object.values(data.pathProgress || {}).reduce((a, b) => a + b, 0);
+      const avg = (data.savedPaths || []).length > 0 ? Math.round(totalSteps / data.savedPaths.length) : 0;
+      document.getElementById('statAvg').innerText = avg + '%';
+      
+      renderPaths(data.savedPaths || [], data.pathProgress || {}, data.completedSteps || {});
+    } else {
+      renderPaths([], {}, {});
+    }
+  }
+
+  function renderPaths(paths, progress, completed) {
+    const list = document.getElementById('pathsList');
+    if (paths.length === 0) {
+      list.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-icon">🚀</div>
+          <h3>Start your journey</h3>
+          <p>You haven't saved any career paths yet. Explore our roadmap library to begin.</p>
+          <a href="careers.html" class="btn-explore">Explore Careers</a>
+        </div>
+      `;
+      return;
+    }
+
+    list.innerHTML = paths.map(pathId => {
+      const pct = progress[pathId] || 0;
+      return `
+        <div class="path-card">
+          <div class="path-header" onclick="this.parentElement.classList.toggle('expanded')">
+            <div class="path-info">
+              <div class="path-title">${pathId.replace('-', ' ')}</div>
+              <div class="path-sub">Career Roadmap</div>
+            </div>
+            <div class="path-pct">${pct}%</div>
+            <div class="path-chevron">▼</div>
+          </div>
+          <div class="path-progress">
+            <div class="prog-track"><div class="prog-fill" style="width:${pct}%"></div></div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+</script>
 </body>
 </html>

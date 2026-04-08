@@ -107,15 +107,6 @@
     .btn-close-modal{padding:14px 20px;background:transparent;border:1px solid var(--border);border-radius:12px;color:var(--muted);font-size:14px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;}
 
     /* LOGIN */
-    .login-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.9);backdrop-filter:blur(8px);z-index:500;display:none;align-items:center;justify-content:center;}
-    .login-overlay.open{display:flex;}
-    .login-box{background:#131a17;border:1px solid var(--border);border-radius:24px;padding:44px 40px;width:100%;max-width:400px;text-align:center;position:relative;}
-    .login-box h3{font-size:24px;font-weight:900;color:white;margin-bottom:8px;}
-    .login-box p{font-size:14px;color:var(--muted);margin-bottom:32px;line-height:1.6;}
-    .btn-google{width:100%;padding:14px;background:white;border:none;border-radius:12px;color:#111 !important;font-size:15px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;justify-content:center;gap:12px;}
-    .btn-google img{width:20px;}
-    .lc{position:absolute;top:16px;right:16px;background:transparent;border:none;color:var(--muted);font-size:20px;cursor:pointer;}
-    .lc:hover{color:white;}
 
     /* RESPONSIVE */
     @media(max-width:768px){
@@ -252,20 +243,10 @@ document.addEventListener('click', function(e) {
   </div>
 </div>
 
-<!-- LOGIN -->
-<div class="login-overlay" id="loginOverlay">
-  <div class="login-box">
-    <button class="lc" onclick="closeLogin()"></button>
-    <h3>Sign in to Save</h3>
-    <p>Sign in with Google to save career paths and track your progress across all devices.</p>
-    <button class="btn-google" onclick="signInWithGoogle()">
-      <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="G"/>
-      Continue with Google
-    </button>
-  </div>
-</div>
-
-<!-- GLOBAL RIGEL ENGINE LOADED BELOW -->
-<script type="module" src="rigel_widget.js"></script>
+<!-- FIREBASE COMPAT -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script src="rigel_widget.js"></script>
 </body>
 </html>

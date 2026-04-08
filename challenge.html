@@ -512,6 +512,10 @@ function changeTrack() {
 const savedTrack = localStorage.getItem('risenow_active_track');
 if (savedTrack && tracks[savedTrack]) startChallenge(savedTrack);
 </script>
-<script type="module" src="rigel_widget.js"></script>
+<!-- FIREBASE COMPAT -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script src="rigel_widget.js"></script>
 </body>
 </html>

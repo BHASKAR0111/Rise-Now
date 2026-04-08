@@ -367,77 +367,11 @@ document.addEventListener('click', function(e) {
   </div>
 </footer>
 
-<!-- LOGIN MODAL -->
-<div class="login-overlay" id="loginOverlay">
-  <div class="login-box">
-    <button class="login-close" onclick="closeLogin()"></button>
-    <h3>Welcome to Rigel</h3>
-    <p>Sign in to save your progress across devices.</p>
-    <div class="login-tabs">
-      <button class="login-tab active" onclick="switchTab('signin')">Sign In</button>
-      <button class="login-tab" onclick="switchTab('register')">Register</button>
-    </div>
-    <div class="tab-panel active" id="panel-signin">
-      <button class="btn-google" onclick="signInWithGoogle()">
-        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="20" alt="Google"/>Continue with Google
-      </button>
-      <button class="btn-github" onclick="signInWithGitHub()">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
-        Continue with GitHub
-      </button>
-      <button class="btn-guest" onclick="signInAsGuest()"> Continue as Guest</button>
-      <div class="login-or">or sign in with email</div>
-      <input class="input-field" type="email" id="signin-email" placeholder="Email address"/>
-      <input class="input-field" type="password" id="signin-password" placeholder="Password"/>
-      <div class="login-error" id="signin-error"></div>
-      <button class="btn-email-submit" onclick="signInWithEmail()">Sign In</button>
-      <div class="login-switch">Don't have an account? <a onclick="switchTab('register')">Register here</a></div>
-    </div>
-    <div class="tab-panel" id="panel-register">
-      <button class="btn-google" onclick="signInWithGoogle()">
-        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="20" alt="Google"/>Sign up with Google
-      </button>
-      <button class="btn-github" onclick="signInWithGitHub()">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
-        Sign up with GitHub
-      </button>
-      <div class="login-or">or register with email</div>
-      <input class="input-field" type="text" id="register-name" placeholder="Your full name"/>
-      <input class="input-field" type="email" id="register-email" placeholder="Email address"/>
-      <input class="input-field" type="password" id="register-password" placeholder="Password (min 6 characters)"/>
-      <div class="login-error" id="register-error"></div>
-      <button class="btn-email-submit" onclick="registerWithEmail()">Create Account</button>
-      <div class="login-switch">Already have an account? <a onclick="switchTab('signin')">Sign in</a></div>
-    </div>
-    <div class="login-footer-note">Free forever. No credit card needed.</div>
-  </div>
-</div>
 
-<!-- REDUNDANT FIREBASE SCRIPT REMOVED - NOW HANDLED BY rigel_widget.js -->
-<script>
-  // UI Helpers moved to rigel_widget.js or kept if specific
-  window.closeLogin = () => { document.getElementById('loginOverlay').classList.remove('open'); };
-  window.switchTab = (tab) => { 
-    document.querySelectorAll('.login-tab').forEach((t,i)=>{ t.classList.toggle('active',(i===0&&tab==='signin')||(i===1&&tab==='register')); }); 
-    document.getElementById('panel-signin').classList.toggle('active',tab==='signin'); 
-    document.getElementById('panel-register').classList.toggle('active',tab==='register'); 
-    ['signin-error','register-error'].forEach(id=>document.getElementById(id).textContent=''); 
-  };
-</script>
-
-<script>
-window.toggleDropdown = () => { document.getElementById('profileDropdown').classList.toggle('open'); };
-window.closeLogin = () => { document.getElementById('loginOverlay').classList.remove('open'); };
-window.switchTab = (tab) => { document.querySelectorAll('.login-tab').forEach((t,i)=>{ t.classList.toggle('active',(i===0&&tab==='signin')||(i===1&&tab==='register')); }); document.getElementById('panel-signin').classList.toggle('active',tab==='signin'); document.getElementById('panel-register').classList.toggle('active',tab==='register'); ['signin-error','register-error'].forEach(id=>document.getElementById(id).textContent=''); };
-document.getElementById('loginOverlay').addEventListener('click',(e)=>{ if(e.target===document.getElementById('loginOverlay'))closeLogin(); });
-document.addEventListener('click',(e)=>{ const btn=document.getElementById('profileBtn'); const dropdown=document.getElementById('profileDropdown'); if(!btn.contains(e.target)&&!dropdown.contains(e.target)){dropdown.classList.remove('open');} });
-
-document.addEventListener('DOMContentLoaded', () => {
-  if(window.location.search.includes('login=true')) {
-    setTimeout(() => { if(window.openLogin) window.openLogin(); }, 300);
-  }
-});
-</script>
-<script type="module" src="rigel_widget.js"></script>
+<!-- FIREBASE COMPAT -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script src="rigel_widget.js"></script>
 </body>
 </html>

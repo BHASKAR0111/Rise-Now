@@ -121,6 +121,16 @@
       display: flex; align-items: center; justify-content: space-between;
     }
     footer p { font-size: 13px; color: var(--muted); }
+
+    /* AI SIMULATOR UI POLISH */
+    .ai-textarea { width:100%; min-height:120px; background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:12px; padding:16px; color:white; font-family:'Inter',sans-serif; font-size:14px; margin-bottom:12px; outline:none; transition:border-color 0.2s; resize:vertical; }
+    .ai-textarea:focus { border-color:var(--blue); }
+    .btn-submit-ai { padding:12px 24px; background:linear-gradient(135deg, var(--blue), #0090CC); color:#000; border:none; border-radius:10px; font-weight:700; cursor:pointer; font-size:14px; transition:transform 0.2s; }
+    .btn-submit-ai:hover { transform:translateY(-2px); }
+    .ai-loading { display:none; color:var(--blue); font-size:13px; font-weight:600; margin-top:12px; }
+    .ai-feedback-box { display:none; background:rgba(0,194,255,0.05); border:1px solid rgba(0,194,255,0.2); border-radius:14px; padding:24px; margin:20px 0; color:var(--text); line-height:1.7; font-size:14px; text-align:left; backdrop-filter:blur(4px); }
+    .btn-next-only { background:transparent; border:none; color:var(--muted); font-size:13px; font-weight:600; cursor:pointer; text-decoration:underline; transition:color 0.2s; }
+    .btn-next-only:hover { color:var(--blue); }
   </style>
   <link rel="stylesheet" href="style.css"/>
   <link rel="stylesheet" href="footer.css"/>
@@ -247,7 +257,7 @@ document.addEventListener('click', function(e) {
         <div id="fc-ai-feedback" class="ai-feedback-box"></div>
       </div>
       
-      <div id="fc-answer-area" style="display:none; flex:1;">
+      <div id="fc-answer-area" style="display:none; flex-direction:column; flex:1;">
         <div style="font-size:13px; font-weight:700; color:var(--blue); text-transform:uppercase; margin-bottom:12px; letter-spacing:1px;">Model Guide</div>
         <div style="font-size:15px; color:var(--text); line-height:1.7; margin-bottom:24px; padding:20px; background:rgba(255,255,255,0.02); border-radius:12px; border:1px solid var(--border);" id="fc-answer"></div>
         <div class="qa-tip" id="fc-tip" style="margin-bottom:40px;"></div>

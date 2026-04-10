@@ -131,10 +131,36 @@
     .ai-feedback-box { display:none; background:rgba(0,194,255,0.05); border:1px solid rgba(0,194,255,0.2); border-radius:14px; padding:24px; margin:20px 0; color:var(--text); line-height:1.7; font-size:14px; text-align:left; backdrop-filter:blur(4px); }
     .btn-next-only { background:transparent; border:none; color:var(--muted); font-size:13px; font-weight:600; cursor:pointer; text-decoration:underline; transition:color 0.2s; }
     .btn-next-only:hover { color:var(--blue); }
+    
+    @keyframes pulsing {
+      0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 71, 87, 0.4); }
+      70% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(255, 71, 87, 0); }
+      100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 71, 87, 0); }
+    }
+    .pulsing { animation: pulsing 1.5s infinite; }
+    .mic-btn { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); display: inline-flex; align-items: center; justify-content: center; vertical-align: middle; }
+    .mic-btn:hover { background: rgba(0, 194, 255, 0.3) !important; transform: translateY(-2px); }
+    .ai-textarea:focus { border-color: var(--blue); box-shadow: 0 0 15px rgba(0, 194, 255, 0.1); }
+    
+    .mode-selection { display: flex; gap: 16px; margin: 24px 0; justify-content: center; }
+    .mode-card { 
+      flex: 1; padding: 20px; border-radius: 12px; border: 1px solid var(--border); 
+      background: rgba(255,255,255,0.02); cursor: pointer; transition: all 0.3s ease;
+      text-align: center; display: flex; flex-direction: column; gap: 8px;
+    }
+    .mode-card:hover { border-color: var(--blue); background: rgba(0, 194, 255, 0.05); transform: translateY(-3px); }
+    .mode-card.active { border-color: var(--blue); background: rgba(0, 194, 255, 0.1); box-shadow: 0 0 20px rgba(0, 194, 255, 0.1); }
+    .mode-card i { font-size: 24px; margin-bottom: 4px; display: block; }
+    .mode-card h4 { font-size: 14px; font-weight: 700; color: white; }
+    .mode-card p { font-size: 11px; color: var(--muted); }
   </style>
   <link rel="stylesheet" href="style.css"/>
   <link rel="stylesheet" href="footer.css"/>
   <link rel="icon" type="image/png" href="images/rigel_logo.png">
+  <!-- Voice integration scripts -->
+  <script src="config.js"></script>
+  <script src="voice.js"></script>
+
 </head>
 <body>
 
@@ -232,16 +258,37 @@ document.addEventListener('click', function(e) {
 
 <!-- FLASHCARD SYSTEM -->
 <div class="flashcard-container" style="max-width:800px; margin:0 auto; padding:0 40px 60px;">
-  <div id="flashcard-ui" style="background:var(--card); border:1px solid var(--border); border-radius:16px; padding:40px; text-align:center; min-height:400px; display:flex; flex-direction:column; justify-content:center;">
+    <div class="voice-toggle" style="display:flex; justify-content:flex-end; margin-bottom:12px;">
+      <label style="color:var(--muted); font-size:13px; cursor:pointer; display:flex; align-items:center;">
+        <input type="checkbox" id="voiceModeToggle" style="margin-right:8px; width:16px; height:16px; cursor:pointer;" /> 
+        <span style="font-weight:600;">Enable Voice Mode (Beta)</span>
+      </label>
+    </div>
+    <div id="flashcard-ui" style="background:var(--card); border:1px solid var(--border); border-radius:16px; padding:40px; text-align:center; min-height:400px; display:flex; flex-direction:column; justify-content:center;">
     
     <div id="fc-start-screen">
-      <div style="font-size:48px; margin-bottom:20px;"></div>
-      <h2 style="font-size:24px; margin-bottom:12px;" id="fc-title">Select a category to start</h2>
-      <p style="color:var(--muted); margin-bottom:30px;">Practice with interactive flashcards and space repetition.</p>
-      <button onclick="startSession()" style="padding:14px 32px; background:linear-gradient(135deg, var(--blue), var(--blue)); color:#000; border:none; border-radius:12px; font-weight:700; font-size:16px; cursor:pointer;" id="fc-start-btn" disabled>Start Practice Session</button>
+      <div style="font-size:32px; margin-bottom:12px;">🎯</div>
+      <h2 style="font-size:24px; margin-bottom:8px;" id="fc-title">Interview Simulator</h2>
+      <p style="color:var(--muted); margin-bottom:24px;">Practice with interactive flashcards and real-time AI feedback.</p>
+      
+      <div class="mode-selection">
+        <div class="mode-card active" id="mode-classic" onclick="selectMode('classic')">
+          <div>📝</div>
+          <h4>Classic Practice</h4>
+          <p>Read & Type answers at your own pace</p>
+        </div>
+        <div class="mode-card" id="mode-voice" onclick="selectMode('voice')">
+          <div>🎙️</div>
+          <h4>Talk to Rigel</h4>
+          <p>Real-time AI Voice Simulation (Beta)</p>
+        </div>
+      </div>
+
+      <button onclick="startSession()" style="padding:14px 40px; background:linear-gradient(135deg, var(--blue), var(--blue)); color:#000; border:none; border-radius:12px; font-weight:800; font-size:16px; cursor:pointer; box-shadow: 0 4px 15px rgba(0,194,255,0.2);" id="fc-start-btn" disabled>Start Practice Session</button>
     </div>
 
-    <div id="fc-card-screen" style="display:none; text-align:left; height:100%; display:none; flex-direction:column;">
+    <div id="fc-card-screen" style="display:none; text-align:left; height:100%; flex-direction:column;">
+
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; padding-bottom:16px; border-bottom:1px solid var(--border);">
         <span style="font-size:12px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:1px;" id="fc-progress">Question 1/5</span>
         <span id="fc-difficulty" class="diff-badge" style="font-size:10px;">Medium</span>
@@ -251,8 +298,13 @@ document.addEventListener('click', function(e) {
       
       <div id="fc-interactive-area">
         <div style="font-size:13px; font-weight:700; color:#00e676; text-transform:uppercase; margin-bottom:12px; letter-spacing:1px; display:flex; gap:8px; align-items:center;">⚡ Rigel AI Simulator</div>
-        <textarea id="fc-user-answer" class="ai-textarea" placeholder="Type exactly how you would answer this in an interview..." style="width:100%; min-height:120px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:16px; color:white; font-family:'Inter',sans-serif; font-size:14px; margin-bottom:12px; outline:none; transition:border-color 0.2s; resize:vertical;"></textarea>
-        <button id="fc-submit-ai" onclick="submitToAI()" style="padding:13px 28px; background:linear-gradient(135deg, #00C2FF, #0090CC); color:#000; border:none; border-radius:12px; font-weight:800; cursor:pointer; font-size:14px; transition:transform 0.2s; display:inline-block; box-shadow: 0 4px 15px rgba(0,194,255,0.3);">Submit Answer for AI Review</button>
+        <textarea id="fc-user-answer" class="ai-textarea" placeholder="Type exactly how you would answer this in an interview..." style="width:100%; min-height:120px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:16px; color:white; font-family:'Inter',sans-serif; font-size:14px; margin-bottom:16px; outline:none; transition:border-color 0.2s; resize:vertical;"></textarea>
+        <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
+          <button id="fc-submit-ai" onclick="submitToAI()" style="padding:13px 28px; background:linear-gradient(135deg, #00C2FF, #0090CC); color:#000; border:none; border-radius:12px; font-weight:800; cursor:pointer; font-size:14px; transition:transform 0.2s; display:inline-block; box-shadow: 0 4px 15px rgba(0,194,255,0.3);">Submit Answer for AI Review</button>
+          <button id="micBtn" class="mic-btn" style="background:rgba(0,194,255,0.15); border:1px solid rgba(0,194,255,0.2); border-radius:12px; width:48px; height:48px; cursor:pointer;" title="Click to speak (Voice Mode)">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20" style="color:var(--blue);"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
+          </button>
+        </div>
         <div id="fc-ai-loading" style="display:none; color:#00C2FF; font-size:13px; font-weight:700; margin-top:16px; letter-spacing:0.5px; animation: pulse 1.5s infinite;">✨ Rigel AI is analyzing your answer...</div>
         <div id="fc-ai-feedback" class="ai-feedback-box" style="display:none; background:rgba(0,194,255,0.05); border:1px solid rgba(0,194,255,0.2); border-radius:16px; padding:28px; margin:24px 0; color:white; line-height:1.8; font-size:14px; text-align:left; backdrop-filter:blur(8px); box-shadow: inset 0 0 20px rgba(0,194,255,0.05);"></div>
       </div>
@@ -350,13 +402,15 @@ document.addEventListener('click', function(e) {
 
 
 <script>
+
+
   const fcData = {"hr": {"title": "HR & Behavioral Questions", "questions": [{"q": "Tell me about yourself.", "interactive": true, "a": "<strong>Model Template:</strong><br/> \"I have a background in [Your Field] and recently graduated/upskilled via [Your Education]. I specialize in [Skill 1] and [Skill 2]. I've built projects like [Your Project]. I'm passionate about creating real impact, and I'm now looking for a full-time role where I can contribute and grow.\"", "tip": "💡 Tip: Keep it under 90 seconds. End with why you want THIS role at THIS company.", "diff": "Easy"}, {"q": "What is your greatest weakness?", "interactive": true, "a": "<strong>Model Template:</strong><br/> \"I sometimes spend too much time trying to get every detail perfect before presenting results. I've been working on this by setting time limits and sharing work-in-progress earlier to get feedback. It's helped me move faster without sacrificing quality.\"", "tip": "💡 Tip: Pick a real weakness, then show what you're doing to improve it.", "diff": "Medium"}, {"q": "Where do you see yourself in 5 years?", "a": "<strong>Model Template:</strong><br/> \"In 5 years, I see myself as a senior [Your Role] or lead — someone who not only delivers work but helps shape strategy. I want to grow technically with [Future Skill] and also develop skills in leadership.\"", "tip": "💡 Tip: Always connect your future goals to what the company does.", "diff": "Easy"}, {"q": "Why should we hire you?", "interactive": true, "a": "<strong>Model Template:</strong><br/> \"I bring a combination of strong technical skills — [Skill 1, Skill 2] — and real project experience. I've already built end-to-end projects like [Your Project] and can hit the ground running. I'm also a fast learner who adapts quickly, and I'm genuinely passionate about [Your Field].\"", "tip": "💡 Tip: Use specific numbers and project examples — it makes you memorable.", "diff": "Medium"}, {"q": "Tell me about a time you failed and what you learned.", "interactive": false, "a": "<strong>Model Template:</strong><br/> \"During a project, I underestimated the time needed for [Specific Task] and missed our initial deadline. I learned to always do a quick audit before committing to timelines. Since then, I buffer 20-30% extra time for preparation, which has made my estimates much more accurate.\"", "tip": "💡 Tip: End with what you learned and how you changed. Never end on the failure itself.", "diff": "Hard"}]}, "da": {"title": "Data Analytics Questions", "questions": [{"q": "What is the difference between a KPI and a metric?", "a": "<p>A <strong style=\"color:white\">metric</strong> is any measurable value (page views, clicks, revenue). A <strong style=\"color:white\">KPI (Key Performance Indicator)</strong> is a metric that is directly tied to a business goal or objective.</p>\n        <p>Example: \"Revenue\" is a metric. \"Monthly Revenue Growth of 10%\" is a KPI.</p>\n        <div class=\"qa-tip\">💡 Tip: All KPIs are metrics but not all metrics are KPIs.", "tip": "💡 Tip: All KPIs are metrics but not all metrics are KPIs.", "diff": "Easy"}, {"q": "What steps do you follow when starting a new data analysis project?", "a": "<p><strong style=\"color:white\">The standard approach:</strong></p>\n        <p>1. <strong style=\"color:white\">Define the problem</strong> — what question are we answering?<br>\n        2. <strong style=\"color:white\">Collect data</strong> — identify sources and gather raw data<br>\n        3. <strong style=\"color:white\">Clean data</strong> — handle nulls, duplicates, outliers<br>\n        4. <strong style=\"color:white\">Explore (EDA)</strong> — distributions, correlations, patterns<br>\n        5. <strong style=\"color:white\">Analyze</strong> — apply statistics or models<br>\n        6. <strong style=\"color:white\">Visualize & Present</strong> — dashboards, charts, storytelling</p>\n        <div class=\"qa-tip\">💡 Tip: Mention a real project where you followed this process.", "tip": "💡 Tip: Mention a real project where you followed this process.", "diff": "Medium"}, {"q": "What is the difference between correlation and causation?", "a": "<p><strong style=\"color:white\">Correlation</strong> means two variables move together — when one goes up, the other tends to go up (or down).</p>\n        <p><strong style=\"color:white\">Causation</strong> means one variable directly causes the change in another.</p>\n        <p>Example: Ice cream sales and drowning rates are correlated (both increase in summer) — but ice cream doesn't cause drowning. The real cause is hot weather.</p>\n        <div class=\"qa-tip\">💡 Tip: \"Correlation does not imply causation\" — this is a classic analyst interview point.", "tip": "💡 Tip: \"Correlation does not imply causation\" — this is a classic analyst interview point.", "diff": "Medium"}, {"q": "How do you handle missing data?", "a": "<p>Common strategies depending on context:</p>\n        <p>• <strong style=\"color:white\">Delete rows</strong> — if missing data is less than 5% and random<br>\n        • <strong style=\"color:white\">Mean/Median imputation</strong> — fill with average (for numerical)<br>\n        • <strong style=\"color:white\">Mode imputation</strong> — fill with most common value (for categorical)<br>\n        • <strong style=\"color:white\">Forward/Backward fill</strong> — for time series data<br>\n        • <strong style=\"color:white\">Flag as \"Unknown\"</strong> — keep it as a separate category</p>\n        <div class=\"qa-tip\">💡 Tip: Always explain WHY you chose a specific method — context matters.", "tip": "💡 Tip: Always explain WHY you chose a specific method — context matters.", "diff": "Medium"}, {"q": "Explain what an outlier is and how you would handle it.", "a": "<p>An <strong style=\"color:white\">outlier</strong> is a data point that is significantly different from other observations. It can be detected using Z-score, IQR method, or box plots.</p>\n        <p>How to handle: Remove if it's a data entry error. Keep if it's a genuine extreme value. Cap/floor using winsorization. Use robust models that handle outliers well (e.g. median instead of mean).</p>\n        <div class=\"qa-tip\">💡 Tip: Say \"it depends on the context and cause of the outlier\" — shows analytical maturity.", "tip": "💡 Tip: Say \"it depends on the context and cause of the outlier\" — shows analytical maturity.", "diff": "Hard"}]}, "sql": {"title": "SQL Interview Questions", "questions": [{"q": "What is the difference between WHERE and HAVING?", "a": "<p><strong style=\"color:white\">WHERE</strong> filters rows BEFORE grouping. <strong style=\"color:white\">HAVING</strong> filters groups AFTER the GROUP BY clause.</p>\n        <p>Example: <code style=\"color:#00e676;background:rgba(0,230,118,0.08);padding:2px 6px;border-radius:4px;\">WHERE salary > 50000</code> — filters individual rows.<br>\n        <code style=\"color:#00e676;background:rgba(0,230,118,0.08);padding:2px 6px;border-radius:4px;\">HAVING COUNT(*) > 5</code> — filters groups with more than 5 records.</p>\n        <div class=\"qa-tip\">💡 Tip: WHERE cannot be used with aggregate functions — HAVING can.", "tip": "💡 Tip: WHERE cannot be used with aggregate functions — HAVING can.", "diff": "Easy"}, {"q": "What are the different types of JOINs in SQL?", "a": "<p>• <strong style=\"color:white\">INNER JOIN</strong> — returns only matching rows from both tables<br>\n        • <strong style=\"color:white\">LEFT JOIN</strong> — all rows from left table + matching from right<br>\n        • <strong style=\"color:white\">RIGHT JOIN</strong> — all rows from right table + matching from left<br>\n        • <strong style=\"color:white\">FULL OUTER JOIN</strong> — all rows from both tables<br>\n        • <strong style=\"color:white\">CROSS JOIN</strong> — cartesian product of both tables<br>\n        • <strong style=\"color:white\">SELF JOIN</strong> — joining a table with itself</p>\n        <div class=\"qa-tip\">💡 Tip: INNER JOIN is most commonly used in interviews. Know LEFT JOIN well too.", "tip": "💡 Tip: INNER JOIN is most commonly used in interviews. Know LEFT JOIN well too.", "diff": "Medium"}, {"q": "What is the difference between DELETE, TRUNCATE, and DROP?", "a": "<p>• <strong style=\"color:white\">DELETE</strong> — removes specific rows, can be rolled back, slow for large tables<br>\n        • <strong style=\"color:white\">TRUNCATE</strong> — removes all rows, faster, cannot be rolled back easily<br>\n        • <strong style=\"color:white\">DROP</strong> — removes the entire table including structure</p>\n        <div class=\"qa-tip\">💡 Tip: DELETE is DML, TRUNCATE is DDL, DROP is DDL — interviewers love this distinction.", "tip": "💡 Tip: DELETE is DML, TRUNCATE is DDL, DROP is DDL — interviewers love this distinction.", "diff": "Medium"}, {"q": "What are Window Functions? Give an example.", "a": "<p>Window functions perform calculations across a set of rows related to the current row, without collapsing the result like GROUP BY.</p>\n        <p>Common window functions: <code style=\"color:#00e676;background:rgba(0,230,118,0.08);padding:2px 6px;border-radius:4px;\">ROW_NUMBER()</code>, <code style=\"color:#00e676;background:rgba(0,230,118,0.08);padding:2px 6px;border-radius:4px;\">RANK()</code>, <code style=\"color:#00e676;background:rgba(0,230,118,0.08);padding:2px 6px;border-radius:4px;\">DENSE_RANK()</code>, <code style=\"color:#00e676;background:rgba(0,230,118,0.08);padding:2px 6px;border-radius:4px;\">LAG()</code>, <code style=\"color:#00e676;background:rgba(0,230,118,0.08);padding:2px 6px;border-radius:4px;\">LEAD()</code>, <code style=\"color:#00e676;background:rgba(0,230,118,0.08);padding:2px 6px;border-radius:4px;\">SUM() OVER()</code></p>\n        <p>Example: <code style=\"color:#00e676;background:rgba(0,230,118,0.08);padding:2px 6px;border-radius:4px;\">SELECT name, salary, RANK() OVER (ORDER BY salary DESC) as rank FROM employees</code></p>\n        <div class=\"qa-tip\">💡 Tip: Window functions are a senior-level topic — knowing this sets you apart.", "tip": "💡 Tip: Window functions are a senior-level topic — knowing this sets you apart.", "diff": "Hard"}]}, "py": {"title": "Python Interview Questions", "questions": [{"q": "What is the difference between a list and a tuple in Python?", "a": "<p>• <strong style=\"color:white\">List</strong> — mutable (can be changed), uses square brackets <code style=\"color:#00e676;background:rgba(0,230,118,0.08);padding:2px 6px;border-radius:4px;\">[]</code>, slower<br>\n        • <strong style=\"color:white\">Tuple</strong> — immutable (cannot be changed), uses parentheses <code style=\"color:#00e676;background:rgba(0,230,118,0.08);padding:2px 6px;border-radius:4px;\">()</code>, faster</p>\n        <p>Use tuples when data should not change (e.g. coordinates). Use lists when data will change.</p>\n        <div class=\"qa-tip\">💡 Tip: Tuples are hashable and can be used as dictionary keys — lists cannot.", "tip": "💡 Tip: Tuples are hashable and can be used as dictionary keys — lists cannot.", "diff": "Easy"}, {"q": "What are Python decorators?", "a": "<p>A decorator is a function that takes another function as input and extends or modifies its behavior without changing its source code.</p>\n        <p>Example: <code style=\"color:#00e676;background:rgba(0,230,118,0.08);padding:2px 6px;border-radius:4px;\">@login_required</code> in web frameworks — checks if user is logged in before running a function.</p>\n        <div class=\"qa-tip\">💡 Tip: Decorators follow the @wrapper syntax. Common ones: @staticmethod, @classmethod, @property.", "tip": "💡 Tip: Decorators follow the @wrapper syntax. Common ones: @staticmethod, @classmethod, @property.", "diff": "Hard"}, {"q": "How do you handle missing values in Pandas?", "a": "<p>Common Pandas methods for missing values:</p>\n        <p>• <code style=\"color:#00e676;background:rgba(0,230,118,0.08);padding:2px 6px;border-radius:4px;\">df.isnull().sum()</code> — check missing values<br>\n        • <code style=\"color:#00e676;background:rgba(0,230,118,0.08);padding:2px 6px;border-radius:4px;\">df.dropna()</code> — drop rows with missing values<br>\n        • <code style=\"color:#00e676;background:rgba(0,230,118,0.08);padding:2px 6px;border-radius:4px;\">df.fillna(value)</code> — fill with a specific value<br>\n        • <code style=\"color:#00e676;background:rgba(0,230,118,0.08);padding:2px 6px;border-radius:4px;\">df.fillna(df.mean())</code> — fill with mean</p>\n        <div class=\"qa-tip\">💡 Tip: Always explain why you chose a specific strategy — shows analytical thinking.", "tip": "💡 Tip: Always explain why you chose a specific strategy — shows analytical thinking.", "diff": "Medium"}]}, "wd": {"title": "Web Development Questions", "questions": [{"q": "What is the difference between CSS Flexbox and Grid?", "a": "<p>• <strong style=\"color:white\">Flexbox</strong> — one-dimensional layout (row OR column). Best for aligning items in a single direction.</p>\n        <p>• <strong style=\"color:white\">Grid</strong> — two-dimensional layout (rows AND columns). Best for complex page layouts.</p>\n        <p>Use Flexbox for navigation bars, buttons, small components. Use Grid for full page layouts.</p>\n        <div class=\"qa-tip\">💡 Tip: They work great together — Grid for layout, Flexbox for components inside.", "tip": "💡 Tip: They work great together — Grid for layout, Flexbox for components inside.", "diff": "Medium"}, {"q": "What is the difference between == and === in JavaScript?", "a": "<p>• <strong style=\"color:white\">==</strong> (loose equality) — compares values after type conversion. <code style=\"color:#00e676;background:rgba(0,230,118,0.08);padding:2px 6px;border-radius:4px;\">5 == \"5\"</code> is <strong style=\"color:#00e676\">true</strong></p>\n        <p>• <strong style=\"color:white\">===</strong> (strict equality) — compares both value AND type. <code style=\"color:#00e676;background:rgba(0,230,118,0.08);padding:2px 6px;border-radius:4px;\">5 === \"5\"</code> is <strong style=\"color:#ff4757\">false</strong></p>\n        <div class=\"qa-tip\">💡 Tip: Always use === in real code — it avoids unexpected type coercion bugs.", "tip": "💡 Tip: Always use === in real code — it avoids unexpected type coercion bugs.", "diff": "Easy"}, {"q": "What is the difference between var, let, and const in JavaScript?", "a": "<p>• <strong style=\"color:white\">var</strong> — function-scoped, can be re-declared, hoisted (old way, avoid)<br>\n        • <strong style=\"color:white\">let</strong> — block-scoped, can be reassigned, not re-declared<br>\n        • <strong style=\"color:white\">const</strong> — block-scoped, cannot be reassigned after declaration</p>\n        <div class=\"qa-tip\">💡 Tip: Use const by default, use let when you need to reassign. Never use var in modern JS.", "tip": "💡 Tip: Use const by default, use let when you need to reassign. Never use var in modern JS.", "diff": "Medium"}]}};
   let activeQuestions = [];
   let currentIndex = 0;
   let scores = { Easy: 0, Good: 0, Hard: 0 };
   let currentGroup = '';
 
-  function showTab(tabId, btn) {
+  window.showTab = function(tabId, btn) {
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
     btn.classList.add('active');
     
@@ -367,11 +421,16 @@ document.addEventListener('click', function(e) {
     document.getElementById('fc-card-screen').style.display = 'none';
     document.getElementById('fc-end-screen').style.display = 'none';
     
-    document.getElementById('fc-title').innerText = data ? data.title + ' Practice' : 'Select a category';
     document.getElementById('fc-start-btn').disabled = !data;
-  }
+  };
 
-  function startSession() {
+  window.selectMode = function(mode) {
+    document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('active'));
+    document.getElementById('mode-' + mode).classList.add('active');
+    document.getElementById('voiceModeToggle').checked = (mode === 'voice');
+  };
+
+  window.startSession = function() {
     activeQuestions = [...fcData[currentGroup].questions];
     // Shuffle
     activeQuestions.sort(() => Math.random() - 0.5);
@@ -426,18 +485,30 @@ document.addEventListener('click', function(e) {
       document.getElementById('fc-reveal-btn').innerText = "Show Guide / Next Step";
       document.getElementById('fc-reveal-btn').style.display = 'block';
     }
+
+    // Voice feedback: Speak question
+    if (document.getElementById('voiceModeToggle').checked && window.speak) {
+      window.speak(q.q);
+    }
   }
 
-  function revealAnswer() {
+  // Expose to window for voice.js
+  window.submitToAI = submitToAI;
+
+  window.revealAnswer = function() {
     document.getElementById('fc-answer-area').style.display = 'flex';
     document.getElementById('fc-reveal-btn').style.display = 'none';
     document.getElementById('fc-interactive-area').style.display = 'none';
-  }
+  };
 
-  // AI Pipeline setup
-  const ANTHROPIC_API_KEY = "YOUR_API_KEY_HERE"; // In production, never expose this frontend.
-
+  // Gemini AI Pipeline - using config from window.GEMINI_CONFIG
   async function submitToAI() {
+    const config = window.GEMINI_CONFIG || {};
+    const GEMINI_API_KEY = config.GEMINI_API_KEY || "";
+    const GEMINI_MODEL = config.GEMINI_MODEL || "gemini-1.5-flash-latest";
+    const USE_PROXY = config.USE_PROXY || false;
+    const PROXY_URL = config.PROXY_URL || "/.netlify/functions/ai";
+
     const userAnswer = document.getElementById('fc-user-answer').value.trim();
     if (!userAnswer) return;
 
@@ -452,7 +523,10 @@ document.addEventListener('click', function(e) {
     Question: "${currentQ.q}"
     User's Answer: "${userAnswer}"
 
-    Analyze the answer. Provide brief, supportive, and direct feedback.
+    Analyze the answer. Provide brief, supportive, and direct feedback. 
+    Focus on helping them sound professional yet authentic. 
+    Use a mix of Hindi and English (Hinglish) where it feels natural and encouraging (for the feedback part), but keep the professional rewrite in clear English.
+    
     1. What they did well.
     2. What they missed or how it can be improved.
     3. Provide an example of a stronger, professional rewrite for this answer.
@@ -460,41 +534,57 @@ document.addEventListener('click', function(e) {
     Use HTML formatting (like <strong> for bold, <br/> for newlines, and bullet points) to format your response so it looks nice on a dark theme website. Keep it encouraging!`;
 
     try {
-      const response = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-api-key": ANTHROPIC_API_KEY,
-          "anthropic-version": "2023-06-01",
-          "anthropic-dangerous-direct-browser-access": "true"
-        },
-        body: JSON.stringify({
-          model: "claude-haiku-4-5-20251001",
-          max_tokens: 600,
-          messages: [{ role: "user", content: prompt }]
-        })
-      });
+      let feedback = "";
 
-      if (!response.ok) throw new Error("API call failed.");
-      
-      const data = await response.json();
-      const feedback = data.content[0].text;
+      if (USE_PROXY) {
+        console.log("Using Rigel Secure Proxy...");
+        const response = await fetch(PROXY_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ prompt, model: GEMINI_MODEL })
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || "Proxy failed");
+        feedback = data.reply;
+      } else {
+        console.log("Using direct Gemini call (Dev Mode)...");
+        if (!GEMINI_API_KEY) throw new Error("API Key missing in config.js");
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`;
+        const response = await fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: { temperature: 0.7, maxOutputTokens: 800 }
+          })
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error?.message || "Gemini failed");
+        feedback = data.candidates?.[0]?.content?.parts?.[0]?.text || "No feedback received.";
+      }
       
       document.getElementById('fc-ai-loading').style.display = 'none';
       document.getElementById('fc-ai-feedback').innerHTML = feedback;
       document.getElementById('fc-ai-feedback').style.display = 'block';
       
+      // Voice feedback if enabled
+      if (document.getElementById('voiceModeToggle').checked && window.speak) {
+        window.speak(feedback);
+      }
+
       // Auto-reveal the standard guide at the bottom too
       document.getElementById('fc-answer-area').style.display = 'flex';
       document.getElementById('fc-reveal-btn').style.display = 'none';
+      document.getElementById('fc-interactive-area').style.display = 'none';
       
       // Trigger global Rigel Confetti/Dopamine if it's a good effort
       if(window.triggerConfetti) window.triggerConfetti();
 
     } catch (err) {
+      console.error("AI Error:", err);
       document.getElementById('fc-ai-loading').style.display = 'none';
       document.getElementById('fc-submit-ai').style.display = 'inline-block';
-      alert("Rigel AI failed to connect. Ensure your API key is active.");
+      alert("Rigel AI Error: " + err.message + "\n\nTip: On local files, set USE_PROXY: false in config.js and add your key. In production, ensure GEMINI_API_KEY is set in Netlify environment variables.");
     }
   }
 
@@ -513,9 +603,9 @@ document.addEventListener('click', function(e) {
     document.getElementById('fc-score-hard').innerText = scores.Hard;
   }
 
-  function resetSession() {
-    startSession();
-  }
+  window.resetSession = function() {
+    window.startSession();
+  };
 
   // Auto-init first tab
   document.addEventListener('DOMContentLoaded', () => {

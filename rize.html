@@ -341,5 +341,114 @@ document.addEventListener('click', function(e) {
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 <script src="rigel_widget.js"></script>
+<script src="config.js"></script>
+
+<script>
+  const chatMessages = document.getElementById('chatMessages');
+  const chatInput = document.getElementById('chatInput');
+  const sendBtn = document.getElementById('sendBtn');
+
+  function autoResize(el) {
+    el.style.height = 'auto';
+    el.style.height = el.scrollHeight + 'px';
+  }
+
+  function handleKey(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  }
+
+  function appendMessage(role, text) {
+    const msgDiv = document.createElement('div');
+    msgDiv.className = `msg ${role}`;
+    
+    msgDiv.innerHTML = `
+      <div class="msg-avatar ${role === 'user' ? 'user-av' : ''}">${role === 'user' ? 'U' : 'R'}</div>
+      <div class="msg-bubble ${role === 'bot' ? 'bot' : 'user'}">${text}</div>
+    `;
+    
+    chatMessages.appendChild(msgDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+
+  function showTyping() {
+    const typing = document.createElement('div');
+    typing.id = 'typingIndicator';
+    typing.className = 'msg';
+    typing.innerHTML = `
+      <div class="msg-avatar">R</div>
+      <div class="typing-dots"><span></span><span></span><span></span></div>
+    `;
+    chatMessages.appendChild(typing);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+
+  function removeTyping() {
+    const typing = document.getElementById('typingIndicator');
+    if (typing) typing.remove();
+  }
+
+  async function sendMessage() {
+    const text = chatInput.value.trim();
+    if (!text) return;
+
+    chatInput.value = '';
+    autoResize(chatInput);
+    appendMessage('user', text);
+    showTyping();
+
+    const config = window.GEMINI_CONFIG || {};
+    const USE_PROXY = config.USE_PROXY || false;
+    const PROXY_URL = config.PROXY_URL || "/.netlify/functions/ai";
+    const GEMINI_API_KEY = config.GEMINI_API_KEY || "";
+    const GEMINI_MODEL = config.GEMINI_MODEL || "gemini-1.5-flash-latest";
+
+    const prompt = `You are Rigel, an expert AI Career Coach for the Indian job market.
+    User current situation: ${text}
+    Provide honest, direct, and supportive advice. Use Hinglish where natural. Format with HTML.`;
+
+    try {
+      let reply = "";
+      if (USE_PROXY) {
+        const response = await fetch(PROXY_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ prompt, model: GEMINI_MODEL })
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || "AI Error");
+        reply = data.reply;
+      } else {
+        if (!GEMINI_API_KEY) throw new Error("API Key missing in config.js");
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`;
+        const response = await fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: { temperature: 0.7, maxOutputTokens: 1000 }
+          })
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error?.message || "Gemini failed");
+        reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "No response received.";
+      }
+
+      removeTyping();
+      appendMessage('bot', reply);
+    } catch (err) {
+      console.error(err);
+      removeTyping();
+      appendMessage('bot', `<strong>Error:</strong> ${err.message}. <br/>Check Console for details.`);
+    }
+  }
+
+  function sendQuick(text) {
+    chatInput.value = text;
+    sendMessage();
+  }
+</script>
 </body>
 </html>

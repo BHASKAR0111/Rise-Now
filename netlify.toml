@@ -1,3 +1,7 @@
 [build]
   publish = "."
-  functions = "functions"
+  command = "echo skipping build"
+
+[functions]
+  directory = "functions"
+  node_bundler = "esbuild"

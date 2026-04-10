@@ -6,15 +6,16 @@ exports.handler = async (event) => {
   try {
     const { prompt, model } = JSON.parse(event.body);
     const API_KEY = process.env.GEMINI_API_KEY;
-    const GEMINI_MODEL = model || "gemini-pro";
+    const GEMINI_MODEL = model || "gemini-1.5-flash";
 
     if (!API_KEY) {
       return { 
         statusCode: 500, 
-        body: JSON.stringify({ error: "API Key not configured in environment variables." }) 
+        body: JSON.stringify({ error: "DEBUG: API Key is missing in Netlify Env Vars." }) 
       };
     }
 
+    // Try v1beta as it's most common for Flash
     const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${API_KEY}`;
     
     const response = await fetch(url, {
@@ -29,9 +30,12 @@ exports.handler = async (event) => {
     const data = await response.json();
 
     if (!response.ok) {
+      console.error("Google API Raw Error:", JSON.stringify(data));
       return {
         statusCode: response.status,
-        body: JSON.stringify({ error: data.error?.message || "Gemini API failed" })
+        body: JSON.stringify({ 
+          error: `Google rejected the request. Status: ${response.status}. Reason: ${data.error?.message || "Unknown"}. Code: ${data.error?.status || "None"}` 
+        })
       };
     }
 
@@ -39,9 +43,7 @@ exports.handler = async (event) => {
 
     return {
       statusCode: 200,
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ reply })
     };
 
@@ -49,7 +51,7 @@ exports.handler = async (event) => {
     console.error("AI Function Error:", error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: "Internal Server Error" })
+      body: JSON.stringify({ error: "DEBUG: Server Crash - " + error.message })
     };
   }
 };

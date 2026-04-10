@@ -354,6 +354,8 @@ document.addEventListener('click', function(e) {
   const chatInput = document.getElementById('chatInput');
   const sendBtn = document.getElementById('sendBtn');
 
+  let chatHistory = []; // Global conversation memory
+
   function autoResize(el) {
     el.style.height = 'auto';
     el.style.height = el.scrollHeight + 'px';
@@ -411,20 +413,13 @@ document.addEventListener('click', function(e) {
     const GEMINI_API_KEY = config.GEMINI_API_KEY || "";
     const GEMINI_MODEL = config.GEMINI_MODEL || "gemini-1.5-flash";
 
-    const prompt = text;
-
-    function useSuggestion(text) {
-      document.getElementById('chatInput').value = text;
-      sendMessage();
-    }
-
     try {
       let reply = "";
       if (USE_PROXY) {
         const response = await fetch(PROXY_URL, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ prompt, model: GEMINI_MODEL })
+          body: JSON.stringify({ prompt: text, history: chatHistory, model: GEMINI_MODEL })
         });
         const data = await response.json();
         if (!response.ok) throw new Error(data.error || "AI Error");
@@ -436,7 +431,7 @@ document.addEventListener('click', function(e) {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            contents: [{ parts: [{ text: prompt }] }],
+            contents: [{ parts: [{ text: text }] }],
             generationConfig: { temperature: 0.7, maxOutputTokens: 1000 }
           })
         });
@@ -447,6 +442,11 @@ document.addEventListener('click', function(e) {
 
       removeTyping();
       appendMessage('bot', reply);
+      
+      // Update Memory
+      chatHistory.push({ role: 'user', text: text });
+      chatHistory.push({ role: 'bot', text: reply });
+      if (chatHistory.length > 10) chatHistory = chatHistory.slice(-10);
     } catch (err) {
       console.error(err);
       removeTyping();

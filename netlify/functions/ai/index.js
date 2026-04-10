@@ -4,7 +4,7 @@ exports.handler = async (event) => {
   }
 
   try {
-    const { prompt, model } = JSON.parse(event.body);
+    const { prompt } = JSON.parse(event.body);
     const API_KEY = process.env.GEMINI_API_KEY;
     const GEMINI_MODEL = "gemini-1.5-flash";
 
@@ -15,11 +15,15 @@ exports.handler = async (event) => {
       };
     }
 
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${API_KEY}`;
+    // Using Header-based auth instead of URL query param
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
     
     const response = await fetch(url, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+        "Content-Type": "application/json",
+        "x-goog-api-key": API_KEY
+      },
       body: JSON.stringify({
         contents: [{ parts: [{ text: prompt }] }]
       })

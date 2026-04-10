@@ -11,13 +11,12 @@ export default async function handler(req, res) {
       return res.status(200).json({ reply: "ERROR: API KEY MISSING." });
     }
 
-    // ⭐ The "Final 5" - Every stable free model we can try!
+    // ⭐ Standard models with proper headers
     const modelsToTry = [
-      "meta-llama/llama-3-8b-instruct:free",
-      "google/gemini-flash-1.5:free",
-      "mistralai/mistral-7b-instruct:free",
-      "qwen/qwen-2.5-72b-instruct:free",
-      "google/gemini-2.0-flash-exp:free"
+      "google/gemini-flash-1.5",
+      "meta-llama/llama-3-8b-instruct",
+      "mistralai/mistral-7b-instruct",
+      "google/gemini-2.0-flash-exp"
     ];
 
     let lastError = "";
@@ -28,7 +27,9 @@ export default async function handler(req, res) {
           method: "POST",
           headers: {
             "Authorization": `Bearer ${API_KEY}`,
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "HTTP-Referer": "https://risel-ai.vercel.app",
+            "X-Title": "Risel AI Portal"
           },
           body: JSON.stringify({
             model: model,
@@ -41,8 +42,7 @@ export default async function handler(req, res) {
         if (response.ok && data.choices?.[0]?.message?.content) {
           return res.status(200).json({ reply: data.choices[0].message.content, model_used: model });
         } else {
-          lastError = `${model}: ${data.error?.message || "Unknown"}`;
-          console.log(`Failed: ${lastError}`);
+          lastError = `${model}: ${data.error?.message || "Unknown Error"}`;
           continue;
         }
       } catch (err) {
@@ -52,7 +52,7 @@ export default async function handler(req, res) {
     }
 
     return res.status(200).json({ 
-      reply: `⚠️ ALL ENDPOINTS FAILED. This usually means your OpenRouter account needs EMAIL VERIFICATION. Please check your email. Last error: ${lastError}` 
+      reply: `⚠️ ALL ENDPOINTS FAILED. Please ensure your OpenRouter email is verified. Error: ${lastError}` 
     });
 
   } catch (error) {

@@ -11,23 +11,26 @@ export default async function handler(req, res) {
       return res.status(200).json({ reply: "ERROR: API KEY MISSING." });
     }
 
-    // 🏗️ ARCHITECTURE: Intent Detection & Memory-Augmented Prompting
-    const systemPrompt = `You are Risel, an Agentic AI Career Coach. 
-INTERNAL WORKFLOW:
-1. INTENT DETECTION: First, identify if the user wants a Roadmap, Interview Prep, Jobs, or general Career Advice.
-2. MEMORY UPDATE: Use the provided conversation history to maintain context.
-3. PROMPT BUILDER: Based on intent and memory, construct a professional but warm response.
+    // 🏗️ ARCHITECTURE: Educator & Mentor Focused Agent
+    const systemPrompt = `You are Risel, an AI Career Mentor & Educational Coach. 
+Your goal is not just to chat, but to TEACH and BUILD SKILLS.
+
+MONETIZATION HOOK:
+- Always try to transition from general advice to a "4-Week Structured Skill Sprint".
+- Mention that as a Pro Mentor, you can provide day-by-day tasks, curated resources, and placement-ready projects.
 
 RULES:
 - NO EMOJIS.
-- MIRROR user language exactly (English/Hindi/Hinglish).
-- NO translations in brackets.
-- ASK only ONE question at a time.
-- If user is vague, make a smart assumption.
-- Once intent is clear, stop digging and start helping.
-- BE CONVERSATIONAL AND DIRECT.`;
+- MIRROR user language (English/Hindi/Hinglish).
+- Be a "Smart Friend" who pushes the user to learn.
+- Once the user shows interest in a skill, offer to build a "Full 4-Week Sprint".
+- Limit responses to actionable steps.
 
-    // Constructing the full message payload including history (Memory Update)
+FLOW:
+1. Greet + Identify Skill Gap.
+2. Provide a 1-week "Trial" roadmap for free.
+3. Encourage upgrading to get the "Full 4-Week Placement-Ready Sprint".`;
+
     const messages = [
       { role: "system", content: systemPrompt },
       ...history.slice(-6).map(msg => ({ 
@@ -43,8 +46,6 @@ RULES:
       "mistralai/mistral-7b-instruct"
     ];
 
-    let lastError = "";
-
     for (const model of modelsToTry) {
       try {
         const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
@@ -53,29 +54,19 @@ RULES:
             "Authorization": `Bearer ${API_KEY}`,
             "Content-Type": "application/json",
             "HTTP-Referer": "https://risel-ai.vercel.app",
-            "X-Title": "Risel AI Agent"
+            "X-Title": "Risel AI Mentor"
           },
-          body: JSON.stringify({
-            model: model,
-            messages: messages
-          })
+          body: JSON.stringify({ model, messages })
         });
 
         const data = await response.json();
-
         if (response.ok && data.choices?.[0]?.message?.content) {
           return res.status(200).json({ reply: data.choices[0].message.content });
-        } else {
-          lastError = data.error?.message || "Unknown error";
-          continue;
         }
-      } catch (err) {
-        lastError = err.message;
-        continue;
-      }
+      } catch (err) { continue; }
     }
 
-    return res.status(200).json({ reply: "⚠️ AI is busy. Please try again." });
+    return res.status(200).json({ reply: "⚠️ AI-Mentor is busy. Try again." });
 
   } catch (error) {
     return res.status(200).json({ reply: "CRASH: " + error.message });

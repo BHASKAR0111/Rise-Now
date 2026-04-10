@@ -1,494 +1,1376 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>✦ Risel AI — Career Coach</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
-<style>
-*{margin:0;padding:0;box-sizing:border-box;}
-:root{
-  --blue:#00C2FF;
-  --bg:#04050F;
-  --card:#0A0C1E;
-  --card2:#0f1422;
-  --border:rgba(255,255,255,0.07);
-  --text:rgba(255,255,255,0.85);
-  --muted:rgba(255,255,255,0.4);
-}
-body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
-a{color:inherit;text-decoration:none;}
-button{font-family:'Inter',sans-serif;}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>✦ Risel AI — Career Coach</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-/* BG */
-.bg-glow{position:fixed;inset:0;z-index:0;pointer-events:none;
-  background:
-    radial-gradient(ellipse at 15% 40%, rgba(0,100,60,0.18) 0%, transparent 55%),
-    radial-gradient(ellipse at 85% 15%, rgba(0,80,100,0.12) 0%, transparent 50%);
-}
+    :root {
+      --blue: #00C2FF;
+      --bg: #04050F;
+      --card: #0A0C1E;
+      --card2: #0f1422;
+      --border: rgba(255, 255, 255, 0.07);
+      --text: rgba(255, 255, 255, 0.85);
+      --muted: rgba(255, 255, 255, 0.4);
+    }
 
-/* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(4,5,15,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 48px;height:68px;display:flex;align-items:center;justify-content:space-between;}
-.nav-logo{display:flex;align-items:center;gap:12px;}
-.logo-box{width:40px;height:40px;border-radius:10px;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:#04050F !important;}
-.logo-text{font-size:22px;font-weight:800;color:#00C2FF !important;}
-.nav-links{display:flex;align-items:center;gap:8px;}
-.nav-link{padding:8px 16px;font-size:14px;font-weight:500;color:var(--muted);text-decoration:none;border-radius:8px;transition:color 0.2s;}
-.nav-link:hover{color:white;}
-.nav-link.active{color:var(--blue);}
-.profile-btn{width:40px;height:40px;border-radius:50%;border:2px solid var(--border);background:var(--card);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:border-color 0.2s;position:relative;margin-left:8px;}
-.profile-btn:hover{border-color:var(--blue);}
-.profile-btn .default-icon{font-size:18px;color:var(--muted);}
-.profile-dropdown{position:absolute;top:56px;right:0;background:#1a2120;border:1px solid var(--border);border-radius:14px;padding:8px;min-width:220px;z-index:200;display:none;box-shadow:0 20px 60px rgba(0,0,0,0.5);}
-.profile-dropdown.open{display:block;}
-.dropdown-user{padding:12px 14px;border-bottom:1px solid var(--border);margin-bottom:8px;}
-.dropdown-name{font-size:14px;font-weight:700;color:white;}
-.dropdown-email{font-size:11px;color:var(--muted);margin-top:2px;}
-.dropdown-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;transition:all 0.2s;text-decoration:none;}
-.dropdown-item:hover{background:rgba(255,255,255,0.05);color:white;}
-.dropdown-item.danger:hover{background:rgba(255,71,87,0.1);color:#ff4757;}
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
 
-/* PAGE LAYOUT */
-.page{display:grid;grid-template-columns:1fr 420px;gap:0;min-height:100vh;padding-top:68px;position:relative;z-index:1;}
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
 
-/* LEFT HERO */
-.left-panel{padding:60px 56px 40px;display:flex;flex-direction:column;justify-content:flex-start;}
-.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(0,194,255,0.08);border:1px solid rgba(0,194,255,0.2);color:var(--blue) !important;font-size:11px;font-weight:700;padding:6px 16px;border-radius:20px;letter-spacing:2px;text-transform:uppercase;margin-bottom:28px;width:fit-content;}
-.hero-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--blue);animation:pulse 2s infinite;}
-@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
-.hero-title{font-size:72px;font-weight:900;letter-spacing:-4px;line-height:0.92;color:white;margin-bottom:22px;}
-.hero-title .grad{color:#00C2FF !important;}
-.hero-sub{font-size:16px;color:var(--muted);max-width:480px;line-height:1.75;margin-bottom:40px;}
+    button {
+      font-family: 'Inter', sans-serif;
+    }
 
-/* QUICK ACTIONS */
-.quick-title{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:14px;}
-.quick-chips{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:44px;}
-.chip{padding:9px 16px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:20px;font-size:13px;font-weight:500;color:var(--text);cursor:pointer;transition:all 0.2s;white-space:nowrap;}
-.chip:hover{background:rgba(0,194,255,0.08);border-color:rgba(0,194,255,0.3);color:white;}
+    /* BG */
+    .bg-glow {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse at 15% 40%, rgba(0, 100, 60, 0.18) 0%, transparent 55%),
+        radial-gradient(ellipse at 85% 15%, rgba(0, 80, 100, 0.12) 0%, transparent 50%);
+    }
 
-/* CAPABILITIES */
-.caps-title{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:16px;}
-.caps-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.cap-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px 18px;display:flex;align-items:center;gap:12px;transition:border-color 0.2s;}
-.cap-card:hover{border-color:rgba(0,194,255,0.2);}
-.cap-icon{font-size:22px;}
-.cap-label{font-size:13px;font-weight:600;color:var(--text);}
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(4, 5, 15, 0.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 48px;
+      height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
 
-/* RIGHT CHAT */
-.right-panel{background:rgba(8,10,20,0.8);border-left:1px solid var(--border);display:flex;flex-direction:column;height:calc(100vh - 68px);position:sticky;top:68px;}
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
 
-/* CHAT HEADER */
-.chat-header{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
-.chat-agent{display:flex;align-items:center;gap:12px;}
-.agent-avatar{width:44px;height:44px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#04050F !important;flex-shrink:0;position:relative;}
-.agent-dot{position:absolute;bottom:1px;right:1px;width:10px;height:10px;border-radius:50%;background:#00e676;border:2px solid #08090A;}
-.agent-name{font-size:15px;font-weight:700;color:white;}
-.agent-sub{font-size:11px;color:var(--muted);margin-top:1px;}
-.chat-tags{display:flex;gap:6px;}
-.chat-tag{padding:4px 10px;background:rgba(0,194,255,0.06);border:1px solid rgba(0,194,255,0.15);border-radius:20px;font-size:10px;font-weight:700;color:var(--blue) !important;letter-spacing:0.5px;}
+    .logo-box {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: var(--blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 900;
+      color: #04050F !important;
+    }
 
-/* MESSAGES */
-.chat-messages{flex:1;overflow-y:auto;padding:24px 20px;display:flex;flex-direction:column;gap:16px;scroll-behavior:smooth;}
-.chat-messages::-webkit-scrollbar{width:4px;}
-.chat-messages::-webkit-scrollbar-track{background:transparent;}
-.chat-messages::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:4px;}
+    .logo-text {
+      font-size: 22px;
+      font-weight: 800;
+      color: #00C2FF !important;
+    }
 
-.msg{display:flex;gap:10px;align-items:flex-start;}
-.msg.user{flex-direction:row-reverse;}
-.msg-avatar{width:34px;height:34px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:#04050F !important;flex-shrink:0;}
-.msg-avatar.user-av{background:rgba(255,255,255,0.1);font-size:16px;}
-.msg-bubble{max-width:85%;padding:14px 16px;border-radius:16px;font-size:14px;line-height:1.65;}
-.msg-bubble.bot{background:#141c2a;border:1px solid var(--border);color:var(--text);border-radius:4px 16px 16px 16px;}
-.msg-bubble.user{background:var(--blue);color:#04050F !important;border-radius:16px 4px 16px 16px;font-weight:500;}
-.msg-bubble a{color:var(--blue);text-decoration:underline;}
-.msg-bubble.bot a{color:var(--blue);}
-.msg-bubble strong{color:white;font-weight:700;}
-.msg-bubble.user strong{color:#04050F !important;}
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
 
-/* TYPING */
-.typing-indicator{display:flex;gap:10px;align-items:center;padding:4px 0;}
-.typing-dots{display:flex;gap:4px;padding:12px 16px;background:#141c2a;border:1px solid var(--border);border-radius:4px 16px 16px 16px;}
-.typing-dots span{width:6px;height:6px;border-radius:50%;background:var(--muted);animation:bounce 1.2s infinite;}
-.typing-dots span:nth-child(2){animation-delay:0.2s;}
-.typing-dots span:nth-child(3){animation-delay:0.4s;}
-@keyframes bounce{0%,60%,100%{transform:translateY(0);}30%{transform:translateY(-6px);}}
+    .nav-link {
+      padding: 8px 16px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--muted);
+      text-decoration: none;
+      border-radius: 8px;
+      transition: color 0.2s;
+    }
 
-/* CHAT INPUT */
-.chat-input-area{padding:16px 20px;border-top:1px solid var(--border);flex-shrink:0;}
-.chat-input-wrap{display:flex;gap:10px;align-items:flex-end;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:14px;padding:10px 14px;transition:border-color 0.2s;}
-.chat-input-wrap:focus-within{border-color:rgba(0,194,255,0.3);}
-.chat-input{flex:1;background:transparent;border:none;outline:none;color:white;font-size:14px;font-family:'Inter',sans-serif;resize:none;max-height:120px;line-height:1.5;}
-.chat-input::placeholder{color:var(--muted);}
-.send-btn{width:36px;height:36px;border-radius:10px;background:var(--blue);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:opacity 0.2s,transform 0.2s;color:#04050F !important;}
-.send-btn:hover{opacity:0.9;transform:scale(1.05);}
-.send-btn:disabled{opacity:0.4;cursor:not-allowed;transform:none;}
-.send-btn svg{stroke:#04050F;}
-.chat-hint{font-size:11px;color:var(--muted);text-align:center;margin-top:10px;}
+    .nav-link:hover {
+      color: white;
+    }
 
-/* LOGIN MODAL */
-.login-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);z-index:500;display:none;align-items:center;justify-content:center;}
-.login-overlay.open{display:flex;}
-.login-box{background:#131a17;border:1px solid var(--border);border-radius:24px;padding:40px;width:100%;max-width:440px;text-align:center;position:relative;}
-.login-box h3{font-size:26px;font-weight:900;color:white;margin-bottom:8px;}
-.login-box>p{font-size:14px;color:var(--muted);margin-bottom:28px;line-height:1.6;}
-.login-close{position:absolute;top:16px;right:16px;background:transparent;border:none;color:var(--muted);font-size:20px;cursor:pointer;padding:4px;}
-.login-close:hover{color:white;}
-.login-tabs{display:flex;gap:0;margin-bottom:24px;background:rgba(255,255,255,0.04);border-radius:10px;padding:4px;}
-.login-tab{flex:1;padding:8px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;border-radius:7px;border:none;background:transparent;transition:all 0.2s;}
-.login-tab.active{background:#1e2d28;color:white;}
-.tab-panel{display:none;}
-.tab-panel.active{display:block;}
-.btn-google{width:100%;padding:13px;background:white;border:none;border-radius:11px;color:#111 !important;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:opacity 0.2s;margin-bottom:10px;}
-.btn-google:hover{opacity:0.9;}
-.btn-github{width:100%;padding:13px;background:#24292e;border:1px solid rgba(255,255,255,0.1);border-radius:11px;color:white !important;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:opacity 0.2s;margin-bottom:10px;}
-.btn-github:hover{opacity:0.85;}
-.btn-guest{width:100%;padding:13px;background:transparent;border:1px solid var(--border);border-radius:11px;color:var(--muted) !important;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:all 0.2s;}
-.btn-guest:hover{border-color:rgba(0,194,255,0.3);color:var(--text) !important;}
-.login-or{font-size:11px;color:var(--muted);margin:16px 0;display:flex;align-items:center;gap:10px;}
-.login-or::before,.login-or::after{content:'';flex:1;height:1px;background:var(--border);}
-.input-field{width:100%;padding:12px 16px;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:10px;color:white;font-size:14px;font-family:'Inter',sans-serif;margin-bottom:10px;outline:none;transition:border-color 0.2s;}
-.input-field:focus{border-color:rgba(0,194,255,0.4);}
-.input-field::placeholder{color:var(--muted);}
-.btn-email-submit{width:100%;padding:13px;background:var(--blue);border:none;border-radius:11px;color:#04050F !important;font-size:14px;font-weight:800;cursor:pointer;margin-top:4px;transition:opacity 0.2s;}
-.btn-email-submit:hover{opacity:0.9;}
-.login-error{font-size:12px;color:#ff4757;margin-top:8px;min-height:18px;}
-.login-switch{font-size:12px;color:var(--muted);margin-top:14px;}
-.login-switch a{color:var(--blue);cursor:pointer;}
-.login-footer-note{font-size:11px;color:var(--muted);margin-top:20px;}
+    .nav-link.active {
+      color: var(--blue);
+    }
 
-/* RESPONSIVE */
-@media(max-width:900px){
-  .page{grid-template-columns:1fr;grid-template-rows:auto 1fr;}
-  .left-panel{padding:40px 24px 24px;}
-  .hero-title{font-size:48px;letter-spacing:-2px;}
-  .caps-grid{grid-template-columns:1fr 1fr;}
-  .right-panel{position:fixed;bottom:0;left:0;right:0;top:auto;height:60vh;border-left:none;border-top:1px solid var(--border);z-index:50;}
-  nav{padding:0 20px;}
-  .chat-tags{display:none;}
-}
-.agent-avatar img,.msg-avatar img{width:100%;height:100%;border-radius:50%;object-fit:cover;}.suggestion-wrap{display:flex;gap:10px;margin-top:15px;flex-wrap:wrap;}.suggestion-btn{background:rgba(0,184,212,0.1);border:1px solid rgba(0,184,212,0.3);color:#00e5ff;padding:8px 16px;border-radius:20px;font-size:13px;cursor:pointer;transition:0.3s;font-family:inherit;}.suggestion-btn:hover{background:rgba(0,184,212,0.2);transform:translateY(-2px);}</style>
+    .profile-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      background: var(--card);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.2s;
+      position: relative;
+      margin-left: 8px;
+    }
 
-  <link rel="stylesheet" href="footer.css"/>
+    .profile-btn:hover {
+      border-color: var(--blue);
+    }
+
+    .profile-btn .default-icon {
+      font-size: 18px;
+      color: var(--muted);
+    }
+
+    .profile-dropdown {
+      position: absolute;
+      top: 56px;
+      right: 0;
+      background: #1a2120;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 8px;
+      min-width: 220px;
+      z-index: 200;
+      display: none;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    }
+
+    .profile-dropdown.open {
+      display: block;
+    }
+
+    .dropdown-user {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 8px;
+    }
+
+    .dropdown-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: white;
+    }
+
+    .dropdown-email {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .dropdown-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+
+    .dropdown-item:hover {
+      background: rgba(255, 255, 255, 0.05);
+      color: white;
+    }
+
+    .dropdown-item.danger:hover {
+      background: rgba(255, 71, 87, 0.1);
+      color: #ff4757;
+    }
+
+    /* PAGE LAYOUT */
+    .page {
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 0;
+      min-height: 100vh;
+      padding-top: 68px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* LEFT HERO */
+    .left-panel {
+      padding: 60px 56px 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 194, 255, 0.08);
+      border: 1px solid rgba(0, 194, 255, 0.2);
+      color: var(--blue) !important;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 6px 16px;
+      border-radius: 20px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+      width: fit-content;
+    }
+
+    .hero-badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--blue);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.3;
+      }
+    }
+
+    .hero-title {
+      font-size: 72px;
+      font-weight: 900;
+      letter-spacing: -4px;
+      line-height: 0.92;
+      color: white;
+      margin-bottom: 22px;
+    }
+
+    .hero-title .grad {
+      color: #00C2FF !important;
+    }
+
+    .hero-sub {
+      font-size: 16px;
+      color: var(--muted);
+      max-width: 480px;
+      line-height: 1.75;
+      margin-bottom: 40px;
+    }
+
+    /* QUICK ACTIONS */
+    .quick-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 14px;
+    }
+
+    .quick-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 44px;
+    }
+
+    .chip {
+      padding: 9px 16px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .chip:hover {
+      background: rgba(0, 194, 255, 0.08);
+      border-color: rgba(0, 194, 255, 0.3);
+      color: white;
+    }
+
+    /* CAPABILITIES */
+    .caps-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 16px;
+    }
+
+    .caps-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .cap-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: border-color 0.2s;
+    }
+
+    .cap-card:hover {
+      border-color: rgba(0, 194, 255, 0.2);
+    }
+
+    .cap-icon {
+      font-size: 22px;
+    }
+
+    .cap-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    /* RIGHT CHAT */
+    .right-panel {
+      background: rgba(8, 10, 20, 0.8);
+      border-left: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      height: calc(100vh - 68px);
+      position: sticky;
+      top: 68px;
+    }
+
+    /* CHAT HEADER */
+    .chat-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+
+    .chat-agent {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .agent-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 900;
+      color: #04050F !important;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .agent-dot {
+      position: absolute;
+      bottom: 1px;
+      right: 1px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #00e676;
+      border: 2px solid #08090A;
+    }
+
+    .agent-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: white;
+    }
+
+    .agent-sub {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 1px;
+    }
+
+    .chat-tags {
+      display: flex;
+      gap: 6px;
+    }
+
+    .chat-tag {
+      padding: 4px 10px;
+      background: rgba(0, 194, 255, 0.06);
+      border: 1px solid rgba(0, 194, 255, 0.15);
+      border-radius: 20px;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--blue) !important;
+      letter-spacing: 0.5px;
+    }
+
+    /* MESSAGES */
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      scroll-behavior: smooth;
+    }
+
+    .chat-messages::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .chat-messages::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .chat-messages::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+    }
+
+    .msg {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .msg.user {
+      flex-direction: row-reverse;
+    }
+
+    .msg-avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 900;
+      color: #04050F !important;
+      flex-shrink: 0;
+    }
+
+    .msg-avatar.user-av {
+      background: rgba(255, 255, 255, 0.1);
+      font-size: 16px;
+    }
+
+    .msg-bubble {
+      max-width: 85%;
+      padding: 14px 16px;
+      border-radius: 16px;
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .msg-bubble.bot {
+      background: #141c2a;
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 4px 16px 16px 16px;
+    }
+
+    .msg-bubble.user {
+      background: var(--blue);
+      color: #04050F !important;
+      border-radius: 16px 4px 16px 16px;
+      font-weight: 500;
+    }
+
+    .msg-bubble a {
+      color: var(--blue);
+      text-decoration: underline;
+    }
+
+    .msg-bubble.bot a {
+      color: var(--blue);
+    }
+
+    .msg-bubble strong {
+      color: white;
+      font-weight: 700;
+    }
+
+    .msg-bubble.user strong {
+      color: #04050F !important;
+    }
+
+    /* TYPING */
+    .typing-indicator {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      padding: 4px 0;
+    }
+
+    .typing-dots {
+      display: flex;
+      gap: 4px;
+      padding: 12px 16px;
+      background: #141c2a;
+      border: 1px solid var(--border);
+      border-radius: 4px 16px 16px 16px;
+    }
+
+    .typing-dots span {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--muted);
+      animation: bounce 1.2s infinite;
+    }
+
+    .typing-dots span:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .typing-dots span:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes bounce {
+
+      0%,
+      60%,
+      100% {
+        transform: translateY(0);
+      }
+
+      30% {
+        transform: translateY(-6px);
+      }
+    }
+
+    /* CHAT INPUT */
+    .chat-input-area {
+      padding: 16px 20px;
+      border-top: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .chat-input-wrap {
+      display: flex;
+      gap: 10px;
+      align-items: flex-end;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 10px 14px;
+      transition: border-color 0.2s;
+    }
+
+    .chat-input-wrap:focus-within {
+      border-color: rgba(0, 194, 255, 0.3);
+    }
+
+    .chat-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: white;
+      font-size: 14px;
+      font-family: 'Inter', sans-serif;
+      resize: none;
+      max-height: 120px;
+      line-height: 1.5;
+    }
+
+    .chat-input::placeholder {
+      color: var(--muted);
+    }
+
+    .send-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: var(--blue);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: opacity 0.2s, transform 0.2s;
+      color: #04050F !important;
+    }
+
+    .send-btn:hover {
+      opacity: 0.9;
+      transform: scale(1.05);
+    }
+
+    .send-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .send-btn svg {
+      stroke: #04050F;
+    }
+
+    .chat-hint {
+      font-size: 11px;
+      color: var(--muted);
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .paywall-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.95);backdrop-filter:blur(10px);z-index:10000;display:none;align-items:center;justify-content:center;padding:20px;}
+    .paywall-box{background:#131a17;border:1px solid #00e5ff33;border-radius:28px;padding:40px;width:100%;max-width:420px;text-align:center;box-shadow:0 0 40px rgba(0,229,255,0.1);}
+    .paywall-box h2{font-size:28px;font-weight:900;color:white;margin-bottom:12px;}
+    .paywall-box p{color:var(--muted);font-size:14px;margin-bottom:24px;line-height:1.5;}
+    .price-tag{font-size:44px;font-weight:900;color:#00e5ff;margin-bottom:24px;}
+    .price-tag span{font-size:16px;color:var(--muted);font-weight:400;}
+    .pro-features{text-align:left;margin-bottom:24px;display:inline-block;}
+    .pro-features div{margin:8px 0;font-size:13px;display:flex;align-items:center;gap:10px;color:white;}
+    .btn-upgrade{width:100%;padding:16px;background:#00e5ff;border:none;border-radius:14px;color:black;font-weight:800;font-size:16px;cursor:pointer;transition:0.3s;}
+    .btn-upgrade:hover{transform:translateY(-2px);box-shadow:0 5px 15px rgba(0,229,255,0.4);}
+    
+    /* LOGIN MODAL */
+    .login-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      z-index: 500;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .login-overlay.open {
+      display: flex;
+    }
+
+    .login-box {
+      background: #131a17;
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 40px;
+      width: 100%;
+      max-width: 440px;
+      text-align: center;
+      position: relative;
+    }
+
+    .login-box h3 {
+      font-size: 26px;
+      font-weight: 900;
+      color: white;
+      margin-bottom: 8px;
+    }
+
+    .login-box>p {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+
+    .login-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      font-size: 20px;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    .login-close:hover {
+      color: white;
+    }
+
+    .login-tabs {
+      display: flex;
+      gap: 0;
+      margin-bottom: 24px;
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 10px;
+      padding: 4px;
+    }
+
+    .login-tab {
+      flex: 1;
+      padding: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      border-radius: 7px;
+      border: none;
+      background: transparent;
+      transition: all 0.2s;
+    }
+
+    .login-tab.active {
+      background: #1e2d28;
+      color: white;
+    }
+
+    .tab-panel {
+      display: none;
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    .btn-google {
+      width: 100%;
+      padding: 13px;
+      background: white;
+      border: none;
+      border-radius: 11px;
+      color: #111 !important;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: opacity 0.2s;
+      margin-bottom: 10px;
+    }
+
+    .btn-google:hover {
+      opacity: 0.9;
+    }
+
+    .btn-github {
+      width: 100%;
+      padding: 13px;
+      background: #24292e;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 11px;
+      color: white !important;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: opacity 0.2s;
+      margin-bottom: 10px;
+    }
+
+    .btn-github:hover {
+      opacity: 0.85;
+    }
+
+    .btn-guest {
+      width: 100%;
+      padding: 13px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      color: var(--muted) !important;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: all 0.2s;
+    }
+
+    .btn-guest:hover {
+      border-color: rgba(0, 194, 255, 0.3);
+      color: var(--text) !important;
+    }
+
+    .login-or {
+      font-size: 11px;
+      color: var(--muted);
+      margin: 16px 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .login-or::before,
+    .login-or::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 12px 16px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: white;
+      font-size: 14px;
+      font-family: 'Inter', sans-serif;
+      margin-bottom: 10px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .input-field:focus {
+      border-color: rgba(0, 194, 255, 0.4);
+    }
+
+    .input-field::placeholder {
+      color: var(--muted);
+    }
+
+    .btn-email-submit {
+      width: 100%;
+      padding: 13px;
+      background: var(--blue);
+      border: none;
+      border-radius: 11px;
+      color: #04050F !important;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      margin-top: 4px;
+      transition: opacity 0.2s;
+    }
+
+    .btn-email-submit:hover {
+      opacity: 0.9;
+    }
+
+    .login-error {
+      font-size: 12px;
+      color: #ff4757;
+      margin-top: 8px;
+      min-height: 18px;
+    }
+
+    .login-switch {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 14px;
+    }
+
+    .login-switch a {
+      color: var(--blue);
+      cursor: pointer;
+    }
+
+    .login-footer-note {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 20px;
+    }
+
+    /* RESPONSIVE */
+    @media(max-width:900px) {
+      .page {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
+      }
+
+      .left-panel {
+        padding: 40px 24px 24px;
+      }
+
+      .hero-title {
+        font-size: 48px;
+        letter-spacing: -2px;
+      }
+
+      .caps-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .right-panel {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        top: auto;
+        height: 60vh;
+        border-left: none;
+        border-top: 1px solid var(--border);
+        z-index: 50;
+      }
+
+      nav {
+        padding: 0 20px;
+      }
+
+      .chat-tags {
+        display: none;
+      }
+    }
+
+    .agent-avatar img,
+    .msg-avatar img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .suggestion-wrap {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+      flex-wrap: wrap;
+    }
+
+    .suggestion-btn {
+      background: rgba(0, 184, 212, 0.1);
+      border: 1px solid rgba(0, 184, 212, 0.3);
+      color: #00e5ff;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: 0.3s;
+      font-family: inherit;
+    }
+
+    .suggestion-btn:hover {
+      background: rgba(0, 184, 212, 0.2);
+      transform: translateY(-2px);
+    }
+  </style>
+
+  <link rel="stylesheet" href="footer.css" />
   <link rel="icon" type="image/png" href="images/risel_logo.png">
 </head>
+
 <body>
-<div class="bg-glow"></div>
+  <div class="bg-glow"></div>
 
-<!-- NAV -->
-<nav>
-  <a href="index.html" class="nav-logo">
-    <img src="images/risel_logo.png" alt="Risel" style="width:36px;height:36px;border-radius:9px;object-fit:contain;background:#000;"/>
-    <div class="logo-text" style="color:var(--blue) !important; background:transparent !important; font-weight:800; font-size:22px;">Risel</div>
-  </a>
-  <div class="nav-links">
-    <a href="careers.html" class="nav-link">Careers</a>
-    <a href="resources.html" class="nav-link">Resources</a>
-    
-    <!-- TOOLS DROPDOWN -->
-    <div class="nav-dropdown-wrapper" style="position:relative; display:inline-block;">
-      <div class="nav-link" style="cursor:pointer; display:flex; align-items:center; gap:4px;" onclick="document.getElementById('toolsDropdown').classList.toggle('show')">
-        Tools <span style="font-size:10px;">▼</span>
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="nav-logo">
+      <img src="images/risel_logo.png" alt="Risel"
+        style="width:36px;height:36px;border-radius:9px;object-fit:contain;background:#000;" />
+      <div class="logo-text"
+        style="color:var(--blue) !important; background:transparent !important; font-weight:800; font-size:22px;">Risel
       </div>
-      <div id="toolsDropdown" class="tools-dropdown">
-        <a href="daily-quote.html">Motivation</a>
-        <a href="jobs.html">Job Board</a>
-        <a href="job-tracker.html">Job Tracker</a>
-        <a href="interview.html">Interview Prep</a>
-        <a href="ats-scanner.html">Resume ATS Scanner</a>
-        <a href="cover-letter.html">AI Cover Letter</a>
-        <a href="market-insights.html">Market Insights</a>
-        <a href="freelance-starter.html">Make Your First ₹1000</a>
-        <a href="leaderboard.html">Community Leaderboard</a>
+    </a>
+    <div class="nav-links">
+      <a href="careers.html" class="nav-link">Careers</a>
+      <a href="resources.html" class="nav-link">Resources</a>
+
+      <!-- TOOLS DROPDOWN -->
+      <div class="nav-dropdown-wrapper" style="position:relative; display:inline-block;">
+        <div class="nav-link" style="cursor:pointer; display:flex; align-items:center; gap:4px;"
+          onclick="document.getElementById('toolsDropdown').classList.toggle('show')">
+          Tools <span style="font-size:10px;">▼</span>
+        </div>
+        <div id="toolsDropdown" class="tools-dropdown">
+          <a href="daily-quote.html">Motivation</a>
+          <a href="jobs.html">Job Board</a>
+          <a href="job-tracker.html">Job Tracker</a>
+          <a href="interview.html">Interview Prep</a>
+          <a href="ats-scanner.html">Resume ATS Scanner</a>
+          <a href="cover-letter.html">AI Cover Letter</a>
+          <a href="market-insights.html">Market Insights</a>
+          <a href="freelance-starter.html">Make Your First ₹1000</a>
+          <a href="leaderboard.html">Community Leaderboard</a>
+        </div>
       </div>
-    </div>
-    
-    <a href="rize.html" class="nav-link highlight">✦ Risel AI</a>
-    
-    <div style="position:relative;margin-left:8px;">
-      <div class="profile-btn" id="profileBtn" onclick="toggleDropdown()">
-        <span class="default-icon" id="profileIcon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-        </span>
-        <img id="profileImg" src="" alt="" style="display:none;width:100%;height:100%;border-radius:50%;object-fit:cover;position:absolute;inset:0;"/>
-      </div>
-      <div class="profile-dropdown" id="profileDropdown">
-        <div id="dropdownLoggedOut">
-          <div class="dropdown-item" onclick="openLogin()">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:8px;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg> 
-            Sign In / Register
+
+      <a href="rize.html" class="nav-link highlight">✦ Risel AI</a>
+
+      <div style="position:relative;margin-left:8px;">
+        <div class="profile-btn" id="profileBtn" onclick="toggleDropdown()">
+          <span class="default-icon" id="profileIcon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+          </span>
+          <img id="profileImg" src="" alt=""
+            style="display:none;width:100%;height:100%;border-radius:50%;object-fit:cover;position:absolute;inset:0;" />
+        </div>
+        <div class="profile-dropdown" id="profileDropdown">
+          <div id="dropdownLoggedOut">
+            <div class="dropdown-item" onclick="openLogin()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                style="margin-right:8px;">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+              Sign In / Register
+            </div>
           </div>
-        </div>
-        <div id="dropdownLoggedIn" style="display:none;">
-          <div class="dropdown-user">
-            <div class="dropdown-name" id="dropdownName">—</div>
-            <div class="dropdown-email" id="dropdownEmail">—</div>
-          </div>
-          <a href="dashboard.html" class="dropdown-item">My Dashboard</a>
-          <a href="careers.html" class="dropdown-item">Explore Careers</a>
-          <a href="job-tracker.html" class="dropdown-item">Job Tracker</a>
-          <a href="rize.html" class="dropdown-item">✦ Chat with Risel</a>
-          <div class="dropdown-item danger" onclick="signOutUser()">Sign Out</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</nav>
-
-<style>
-/* Tools dropdown styling */
-.tools-dropdown { display:none; position:absolute; top:100%; left:50%; transform:translateX(-50%); background:var(--card); border:1px solid var(--border); border-radius:12px; padding:8px; min-width:180px; z-index:100; margin-top:16px; box-shadow:0 10px 30px rgba(0,0,0,0.5); }
-.tools-dropdown.show { display: block !important; }
-.tools-dropdown a { display:block; padding:10px 16px; color:var(--text); text-decoration:none; font-size:14px; border-radius:8px; transition:0.2s; text-align:left; }
-.tools-dropdown a:hover { background: rgba(0, 194, 255, 0.1); color: var(--blue); }
-</style>
-<script>
-document.addEventListener('click', function(e) {
-  const toolsMenu = document.getElementById('toolsDropdown');
-  if (toolsMenu && !e.target.closest('.nav-dropdown-wrapper')) {
-    toolsMenu.classList.remove('show');
-  }
-});
-</script>
-
-<!-- MAIN PAGE -->
-<div class="page">
-
-  <!-- LEFT PANEL -->
-  <div class="left-panel">
-    <div class="hero-badge">
-      <div class="hero-badge-dot"></div>
-      AI Career Coach
-    </div>
-    <h1 class="hero-title">Meet <span class="grad">Risel.</span></h1>
-    <p class="hero-sub">Your free AI career coach — built for freshers, career switchers, gap year folks, and anyone starting over. India-focused. Always honest.</p>
-
-    <div class="quick-title">Quick Start</div>
-    <div class="quick-chips">
-      <div class="chip" onclick="sendQuick(' Just finished college, help me find a career path')"> Just finished college</div>
-      <div class="chip" onclick="sendQuick(' I have a gap in my resume, what should I do?')"> Returning after a gap</div>
-      <div class="chip" onclick="sendQuick(' I want to switch careers, guide me')"> Want to switch careers</div>
-      <div class="chip" onclick="sendQuick(' Help me with interview prep')"> Interview prep help</div>
-      <div class="chip" onclick="sendQuick('️ Build me a step-by-step career roadmap')">️ Build me a roadmap</div>
-      <div class="chip" onclick="sendQuick(' What are the best careers for 2025 in India?')"> Best careers for 2025</div>
-    </div>
-
-    <div class="caps-title">What Risel Can Do</div>
-    <div class="caps-grid">
-      <div class="cap-card"><span class="cap-icon"></span><span class="cap-label">Career Paths</span></div>
-      <div class="cap-card"><span class="cap-icon">️</span><span class="cap-label">Roadmaps</span></div>
-      <div class="cap-card"><span class="cap-icon"></span><span class="cap-label">Resume & Gap Advice</span></div>
-      <div class="cap-card"><span class="cap-icon"></span><span class="cap-label">Interview Prep</span></div>
-      <div class="cap-card"><span class="cap-icon"></span><span class="cap-label">Job Strategy</span></div>
-      <div class="cap-card"><span class="cap-icon"></span><span class="cap-label">Motivation & Mindset</span></div>
-    </div>
-  </div>
-
-  <!-- RIGHT CHAT PANEL -->
-  <div class="right-panel">
-    <div class="chat-header">
-      <div class="chat-agent">
-        <div class="agent-avatar">
-          <img src="risel_profile_face_1775824071866.png" alt="Risel">
-          <div class="agent-dot"></div>
-        </div>
-        <div>
-          <div class="agent-name">Risel</div>
-          <div class="agent-sub">AI Career Coach</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="chat-messages" id="chatMessages">
-      <div class="msg">
-        <div class="msg-avatar">
-          <img src="risel_profile_face_1775824071866.png" alt="R">
-        </div>
-        <div class="msg-bubble bot">
-          Hey! I'm <strong>Risel</strong> — your AI career coach. <br><br>
-          Tell me <strong>where you are right now</strong> and <strong>what you're aiming for.</strong> Let's figure it out together.
-          
-          <div class="suggestion-wrap">
-            <button class="suggestion-btn" onclick="useSuggestion('I want to start an Interview Prep')">Start Interview Prep</button>
-            <button class="suggestion-btn" onclick="useSuggestion('I need a Career Roadmap')">Get a Roadmap</button>
+          <div id="dropdownLoggedIn" style="display:none;">
+            <div class="dropdown-user">
+              <div class="dropdown-name" id="dropdownName">—</div>
+              <div class="dropdown-email" id="dropdownEmail">—</div>
+            </div>
+            <a href="dashboard.html" class="dropdown-item">My Dashboard</a>
+            <a href="careers.html" class="dropdown-item">Explore Careers</a>
+            <a href="job-tracker.html" class="dropdown-item">Job Tracker</a>
+            <a href="rize.html" class="dropdown-item">✦ Chat with Risel</a>
+            <div class="dropdown-item danger" onclick="signOutUser()">Sign Out</div>
           </div>
         </div>
       </div>
     </div>
+  </nav>
 
-    <div class="chat-input-area">
-      <div class="chat-input-wrap">
-        <textarea
-          id="chatInput"
-          class="chat-input"
-          placeholder="Message Risel..."
-          rows="1"
-          onkeydown="handleKey(event)"
-          oninput="autoResize(this)"
-        ></textarea>
-        <button class="send-btn" id="sendBtn" onclick="sendMessage()">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="22" y1="2" x2="11" y2="13"></line>
-            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-          </svg>
-        </button>
-      </div>
-      <div class="chat-hint">Risel AI</div>
-    </div>
-  </div>
-</div>
-
-<!-- FIREBASE COMPAT -->
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-<script src="risel_widget.js"></script>
-<script src="config.js"></script>
-
-<script>
-  function useSuggestion(text) {
-    document.getElementById('chatInput').value = text;
-    sendMessage();
-  }
-
-  const chatMessages = document.getElementById('chatMessages');
-  const chatInput = document.getElementById('chatInput');
-  const sendBtn = document.getElementById('sendBtn');
-
-  // --- PERSISTENT BACKEND (Load History) ---
-  firebase.auth().onAuthStateChanged(async (user) => {
-    if (user) {
-      console.log("[RISEL] Loading persistent memory...");
-      try {
-        const doc = await window.riselDb.collection('chats').doc(user.uid).get();
-        if (doc.exists) {
-          const data = doc.data();
-          if (data.messages && data.messages.length > 0) {
-            chatHistory = data.messages.map(m => ({ role: m.role, text: m.text }));
-            // Clear box and render history
-            chatMessages.innerHTML = "";
-            chatHistory.forEach(m => appendMessage(m.role, m.text));
-          }
-        }
-      } catch (e) { console.error("History Load Fail:", e); }
+  <style>
+    /* Tools dropdown styling */
+    .tools-dropdown {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 8px;
+      min-width: 180px;
+      z-index: 100;
+      margin-top: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     }
-  });
 
-  let chatHistory = []; // Global conversation memory
+    .tools-dropdown.show {
+      display: block !important;
+    }
 
-  function autoResize(el) {
-    el.style.height = 'auto';
-    el.style.height = el.scrollHeight + 'px';
-  }
+    .tools-dropdown a {
+      display: block;
+      padding: 10px 16px;
+      color: var(--text);
+      text-decoration: none;
+      font-size: 14px;
+      border-radius: 8px;
+      transition: 0.2s;
+      text-align: left;
+    }
 
-  function handleKey(e) {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
+    .tools-dropdown a:hover {
+      background: rgba(0, 194, 255, 0.1);
+      color: var(--blue);
+    }
+  </style>
+  <script>
+    document.addEventListener('click', function (e) {
+      const toolsMenu = document.getElementById('toolsDropdown');
+      if (toolsMenu && !e.target.closest('.nav-dropdown-wrapper')) {
+        toolsMenu.classList.remove('show');
+      }
+    });
+  </script>
+
+  <!-- MAIN PAGE -->
+    </div>
+  </div>
+
+  <!-- PAYWALL MODAL -->
+  <div id="paywallOverlay" class="paywall-overlay">
+    <div class="paywall-box">
+      <h2>Unlock Your Career Sprint</h2>
+      <p>Master skills in 4 weeks with structured tasks and get Placement-Ready.</p>
+      <div class="price-tag">₹499<span>/course</span></div>
+      <div class="pro-features">
+        <div>✅ Full 4-Week Structured Roadmap</div>
+        <div>✅ Curated Courses & Resources</div>
+        <div>✅ AI Mock Interview Performance Reports</div>
+      </div>
+      <button class="btn-upgrade" onclick="startUpgrade()">Start My 4-Week Sprint</button>
+      <button onclick="document.getElementById('paywallOverlay').style.display='none'" style="background:transparent;border:none;color:var(--muted);margin-top:15px;cursor:pointer;font-size:12px;">I'll talk more first</button>
+    </div>
+  </div>
+
+  <div class="page">
+
+    <!-- LEFT PANEL -->
+    <div class="left-panel">
+      <div class="hero-badge">
+        <div class="hero-badge-dot"></div>
+        AI Career Coach
+      </div>
+      <h1 class="hero-title">Meet <span class="grad">Risel.</span></h1>
+      <p class="hero-sub">Your free AI career coach — built for freshers, career switchers, gap year folks, and anyone
+        starting over. India-focused. Always honest.</p>
+
+      <div class="quick-title">Quick Start</div>
+      <div class="quick-chips">
+        <div class="chip" onclick="sendQuick(' Just finished college, help me find a career path')"> Just finished
+          college</div>
+        <div class="chip" onclick="sendQuick(' I have a gap in my resume, what should I do?')"> Returning after a gap
+        </div>
+        <div class="chip" onclick="sendQuick(' I want to switch careers, guide me')"> Want to switch careers</div>
+        <div class="chip" onclick="sendQuick(' Help me with interview prep')"> Interview prep help</div>
+        <div class="chip" onclick="sendQuick('️ Build me a step-by-step career roadmap')">️ Build me a roadmap</div>
+        <div class="chip" onclick="sendQuick(' What are the best careers for 2025 in India?')"> Best careers for 2025
+        </div>
+      </div>
+
+      <div class="caps-title">What Risel Can Do</div>
+      <div class="caps-grid">
+        <div class="cap-card"><span class="cap-icon"></span><span class="cap-label">Career Paths</span></div>
+        <div class="cap-card"><span class="cap-icon">️</span><span class="cap-label">Roadmaps</span></div>
+        <div class="cap-card"><span class="cap-icon"></span><span class="cap-label">Resume & Gap Advice</span></div>
+        <div class="cap-card"><span class="cap-icon"></span><span class="cap-label">Interview Prep</span></div>
+        <div class="cap-card"><span class="cap-icon"></span><span class="cap-label">Job Strategy</span></div>
+        <div class="cap-card"><span class="cap-icon"></span><span class="cap-label">Motivation & Mindset</span></div>
+      </div>
+    </div>
+
+    <!-- RIGHT CHAT PANEL -->
+    <div class="right-panel">
+      <div class="chat-header">
+        <div class="chat-agent">
+          <div class="agent-avatar">
+            <img src="risel_profile_face_1775824071866.png" alt="Risel">
+            <div class="agent-dot"></div>
+          </div>
+          <div>
+            <div class="agent-name">Risel</div>
+            <div class="agent-sub">AI Career Coach</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="chat-messages" id="chatMessages">
+        <div class="msg">
+          <div class="msg-avatar">
+            <img src="risel_profile_face_1775824071866.png" alt="R">
+          </div>
+          <div class="msg-bubble bot">
+            Hey! I'm <strong>Risel</strong> — your AI career coach. <br><br>
+            Tell me <strong>where you are right now</strong> and <strong>what you're aiming for.</strong> Let's figure
+            it out together.
+
+            <div class="suggestion-wrap">
+              <button class="suggestion-btn" onclick="useSuggestion('I want to start an Interview Prep')">Start
+                Interview Prep</button>
+              <button class="suggestion-btn" onclick="useSuggestion('I need a Career Roadmap')">Get a Roadmap</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="chat-input-area">
+        <div class="chat-input-wrap">
+          <textarea id="chatInput" class="chat-input" placeholder="Message Risel..." rows="1"
+            onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+          <button class="send-btn" id="sendBtn" onclick="sendMessage()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round"
+              stroke-linejoin="round">
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+          </button>
+        </div>
+        <div class="chat-hint">Risel AI</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FIREBASE COMPAT -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  <script src="risel_widget.js"></script>
+  <script src="config.js"></script>
+
+  <script>
+    function useSuggestion(text) {
+      document.getElementById('chatInput').value = text;
       sendMessage();
     }
-  }
 
-  function appendMessage(role, text) {
-    const msgDiv = document.createElement('div');
-    msgDiv.className = `msg ${role}`;
-    
-    msgDiv.innerHTML = `
+    const chatMessages = document.getElementById('chatMessages');
+    const chatInput = document.getElementById('chatInput');
+    const sendBtn = document.getElementById('sendBtn');
+
+    // --- PERSISTENT BACKEND (Load History) ---
+    firebase.auth().onAuthStateChanged(async (user) => {
+      if (user) {
+        console.log("[RISEL] Loading persistent memory...");
+        try {
+          const doc = await window.riselDb.collection('chats').doc(user.uid).get();
+          if (doc.exists) {
+            const data = doc.data();
+            if (data.messages && data.messages.length > 0) {
+              chatHistory = data.messages.map(m => ({ role: m.role, text: m.text }));
+              // Clear box and render history
+              chatMessages.innerHTML = "";
+              chatHistory.forEach(m => appendMessage(m.role, m.text));
+            }
+          }
+        } catch (e) { console.error("History Load Fail:", e); }
+      }
+    });
+
+    let chatHistory = []; // Global conversation memory
+
+    function autoResize(el) {
+      el.style.height = 'auto';
+      el.style.height = el.scrollHeight + 'px';
+    }
+
+    function handleKey(e) {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    }
+
+    function appendMessage(role, text) {
+      const msgDiv = document.createElement('div');
+      msgDiv.className = `msg ${role}`;
+
+      msgDiv.innerHTML = `
       <div class="msg-avatar ${role === 'user' ? 'user-av' : ''}">${role === 'user' ? 'U' : 'R'}</div>
       <div class="msg-bubble ${role === 'bot' ? 'bot' : 'user'}">${text}</div>
     `;
-    
-    chatMessages.appendChild(msgDiv);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-  }
 
-  function showTyping() {
-    const typing = document.createElement('div');
-    typing.id = 'typingIndicator';
-    typing.className = 'msg';
-    typing.innerHTML = `
+      chatMessages.appendChild(msgDiv);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function showTyping() {
+      const typing = document.createElement('div');
+      typing.id = 'typingIndicator';
+      typing.className = 'msg';
+      typing.innerHTML = `
       <div class="msg-avatar">R</div>
       <div class="typing-dots"><span></span><span></span><span></span></div>
     `;
-    chatMessages.appendChild(typing);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-  }
-
-  function removeTyping() {
-    const typing = document.getElementById('typingIndicator');
-    if (typing) typing.remove();
-  }
-
-  async function sendMessage() {
-    const text = chatInput.value.trim();
-    if (!text) return;
-
-    chatInput.value = '';
-    autoResize(chatInput);
-    appendMessage('user', text);
-    showTyping();
-
-    const config = window.GEMINI_CONFIG || {};
-    const USE_PROXY = config.USE_PROXY || false;
-    const PROXY_URL = config.PROXY_URL || "/api/ai";
-    const GEMINI_API_KEY = config.GEMINI_API_KEY || "";
-    const GEMINI_MODEL = config.GEMINI_MODEL || "gemini-1.5-flash";
-
-    try {
-      let reply = "";
-      if (USE_PROXY) {
-        const response = await fetch(PROXY_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ prompt: text, history: chatHistory, model: GEMINI_MODEL })
-        });
-        const data = await response.json();
-        if (!response.ok) throw new Error(data.error || "AI Error");
-        reply = data.reply;
-      } else {
-        if (!GEMINI_API_KEY) throw new Error("API Key missing in config.js");
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`;
-        const response = await fetch(url, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            contents: [{ parts: [{ text: text }] }],
-            generationConfig: { temperature: 0.7, maxOutputTokens: 1000 }
-          })
-        });
-        const data = await response.json();
-        if (!response.ok) throw new Error(data.error?.message || "Gemini failed");
-        reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "No response received.";
-      }
-
-      removeTyping();
-      appendMessage('bot', reply);
-      
-      // Update Local Memory
-      chatHistory.push({ role: 'user', text: text });
-      chatHistory.push({ role: 'bot', text: reply });
-      if (chatHistory.length > 10) chatHistory = chatHistory.slice(-10);
-
-      // --- PERMANENT BACKEND (Firestore) ---
-      if (window.riselUser) {
-        const userId = window.riselUser.uid;
-        const chatRef = window.riselDb.collection('chats').doc(userId);
-        chatRef.set({
-          messages: firebase.firestore.FieldValue.arrayUnion(
-            { role: 'user', text: text, time: Date.now() },
-            { role: 'bot', text: reply, time: Date.now() }
-          )
-        }, { merge: true }).catch(e => console.error("DB Save Fail:", e));
-      }
-    } catch (err) {
-      console.error(err);
-      removeTyping();
-      appendMessage('bot', `<strong>Error:</strong> ${err.message}. <br/>Check Console for details.`);
+      chatMessages.appendChild(typing);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
     }
-  }
 
-  function sendQuick(text) {
-    chatInput.value = text;
-    sendMessage();
-  }
-</script>
+    function removeTyping() {
+      const typing = document.getElementById('typingIndicator');
+      if (typing) typing.remove();
+    }
+
+    async function sendMessage() {
+      const text = chatInput.value.trim();
+      if (!text) return;
+
+      chatInput.value = '';
+      autoResize(chatInput);
+
+      // --- EDUCATIONAL PAYWALL (Limit Free Context) ---
+      const userMsgs = chatHistory.filter(m => m.role === 'user').length;
+      if (userMsgs >= 5 && !window.isPro) {
+        document.getElementById('paywallOverlay').style.display = 'flex';
+        return;
+      }
+
+      appendMessage('user', text);
+      showTyping();
+
+      const config = window.GEMINI_CONFIG || {};
+      const USE_PROXY = config.USE_PROXY || false;
+      const PROXY_URL = config.PROXY_URL || "/api/ai";
+      const GEMINI_API_KEY = config.GEMINI_API_KEY || "";
+      const GEMINI_MODEL = config.GEMINI_MODEL || "gemini-1.5-flash";
+
+      try {
+        let reply = "";
+        if (USE_PROXY) {
+          const response = await fetch(PROXY_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ prompt: text, history: chatHistory, model: GEMINI_MODEL })
+          });
+          const data = await response.json();
+          if (!response.ok) throw new Error(data.error || "AI Error");
+          reply = data.reply;
+        } else {
+          if (!GEMINI_API_KEY) throw new Error("API Key missing in config.js");
+          const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`;
+          const response = await fetch(url, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              contents: [{ parts: [{ text: text }] }],
+              generationConfig: { temperature: 0.7, maxOutputTokens: 1000 }
+            })
+          });
+          const data = await response.json();
+          if (!response.ok) throw new Error(data.error?.message || "Gemini failed");
+          reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "No response received.";
+        }
+
+        removeTyping();
+        appendMessage('bot', reply);
+
+        // Update Local Memory
+        chatHistory.push({ role: 'user', text: text });
+        chatHistory.push({ role: 'bot', text: reply });
+        if (chatHistory.length > 10) chatHistory = chatHistory.slice(-10);
+
+        // --- PERMANENT BACKEND (Firestore) ---
+        if (window.riselUser) {
+          const userId = window.riselUser.uid;
+          const chatRef = window.riselDb.collection('chats').doc(userId);
+          chatRef.set({
+            messages: firebase.firestore.FieldValue.arrayUnion(
+              { role: 'user', text: text, time: Date.now() },
+              { role: 'bot', text: reply, time: Date.now() }
+            )
+          }, { merge: true }).catch(e => console.error("DB Save Fail:", e));
+        }
+      } catch (err) {
+        console.error(err);
+        removeTyping();
+        appendMessage('bot', `<strong>Error:</strong> ${err.message}. <br/>Check Console for details.`);
+      }
+    }
+
+    function sendQuick(text) {
+      chatInput.value = text;
+      sendMessage();
+    }
+  </script>
 </body>
+
 </html>

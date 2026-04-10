@@ -405,9 +405,7 @@ document.addEventListener('click', function(e) {
     const GEMINI_API_KEY = config.GEMINI_API_KEY || "";
     const GEMINI_MODEL = config.GEMINI_MODEL || "gemini-1.5-flash";
 
-    const prompt = `You are Risel, an expert AI Career Coach for the Indian job market.
-    User current situation: ${text}
-    Provide honest, direct, and supportive advice. Use Hinglish where natural. Format with HTML.`;
+    const prompt = text;
 
     try {
       let reply = "";

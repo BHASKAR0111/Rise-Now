@@ -1,42 +1,35 @@
 export default async function handler(req, res) {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method Not Allowed' });
+  }
+
   try {
-    const { message } = req.body;
+    const { prompt } = req.body;
+    const API_KEY = process.env.OPENROUTER_API_KEY;
+
+    if (!API_KEY) {
+      return res.status(500).json({ error: "OPENROUTER_API_KEY is missing in Vercel settings." });
+    }
 
     const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
+        "Authorization": `Bearer ${API_KEY}`,
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        model: "openai/gpt-3.5-turbo",  // 🔥 SAFE MODEL (always works)
-        messages: [
-          { role: "system", content: "You are a helpful career coach." },
-          { role: "user", content: message }
-        ]
+        model: "google/gemini-2.0-flash-exp:free",
+        messages: [{ role: "user", content: prompt }]
       })
     });
 
     const data = await response.json();
-
-    console.log("DEBUG:", data);
-
-    // 🔥 SAFE RESPONSE HANDLING
-    const reply = data?.choices?.[0]?.message?.content;
-
-    if (!reply) {
-      return res.status(500).json({
-        error: "No response from AI",
-        full: data
-      });
-    }
+    const reply = data.choices?.[0]?.message?.content || "No response received.";
 
     return res.status(200).json({ reply });
 
   } catch (error) {
     console.error(error);
-    return res.status(500).json({
-      error: "Server crash"
-    });
+    return res.status(500).json({ error: "Server error: " + error.message });
   }
 }

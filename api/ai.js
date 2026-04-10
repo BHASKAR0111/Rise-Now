@@ -8,32 +8,49 @@ export default async function handler(req, res) {
     const API_KEY = process.env.OPENROUTER_API_KEY;
 
     if (!API_KEY) {
-      return res.status(200).json({ reply: "ERROR: OPENROUTER_API_KEY is missing from Vercel settings." });
+      return res.status(200).json({ reply: "ERROR: API KEY MISSING." });
     }
 
-    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${API_KEY}`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        model: "google/gemini-2.0-flash-exp:free",
-        messages: [{ role: "user", content: prompt }]
-      })
+    const modelsToTry = [
+      "google/gemini-flash-1.5:free",
+      "google/gemini-2.0-flash-exp:free",
+      "mistralai/mistral-7b-instruct:free"
+    ];
+
+    let lastError = "";
+
+    for (const model of modelsToTry) {
+      try {
+        const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${API_KEY}`,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            model: model,
+            messages: [{ role: "user", content: prompt }]
+          })
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.choices?.[0]?.message?.content) {
+          return res.status(200).json({ reply: data.choices[0].message.content, model_used: model });
+        } else {
+          lastError = data.error?.message || "Unknown error";
+          console.log(`Model ${model} failed: ${lastError}`);
+          continue; // Try next model
+        }
+      } catch (err) {
+        lastError = err.message;
+        continue;
+      }
+    }
+
+    return res.status(200).json({ 
+      reply: `⚠️ ALL MODELS FAILED. Last Error: ${lastError}. Please check your OpenRouter dashboard credits/status.` 
     });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      // Put the error message directly into the reply bubble so we can read it!
-      return res.status(200).json({ 
-        reply: `⚠️ OPENROUTER ERROR: ${data.error?.message || "Unknown Error"}. Please check your OpenRouter dashboard.` 
-      });
-    }
-
-    const reply = data.choices?.[0]?.message?.content || "No response received.";
-    return res.status(200).json({ reply });
 
   } catch (error) {
     return res.status(200).json({ reply: "CRASH: " + error.message });

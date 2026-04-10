@@ -905,8 +905,8 @@
     /* RESPONSIVE OPTIMIZATION */
     @media (max-width: 900px) {
       .nav-links { display: none !important; }
-      .nav-actions { display: flex !important; }
-      nav { padding: 0 16px; justify-content: space-between; height: 62px; }
+      .nav-auth-root { display: block !important; position: relative; }
+      nav { padding: 0 16px !important; justify-content: space-between !important; height: 62px; }
       .page { grid-template-columns: 1fr; padding-top: 62px; }
       .left-panel { padding: 32px 20px; text-align: center; }
       .hero-title { font-size: 34px !important; line-height: 1.1; letter-spacing: -1px; margin-bottom: 20px; }
@@ -1001,8 +1001,7 @@
 
     </div>
     
-    <div class="nav-actions" style="display:flex; align-items:center;">
-       <div id="authContainer" style="position:relative;margin-left:8px;">
+    <div id="authContainer" class="nav-auth-root">
         <div class="profile-btn" id="profileBtn" onclick="toggleDropdown()">
           <span class="default-icon" id="profileIcon">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -1038,7 +1037,6 @@
           </div>
         </div>
       </div>
-    </div>
   </nav>
 
   <style>

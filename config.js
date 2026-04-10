@@ -6,7 +6,7 @@ window.GEMINI_CONFIG = {
   
   // Local/Dev fallback (Manual Key - DO NOT LEAK)
   GEMINI_API_KEY: "", 
-  GEMINI_MODEL: "gemini-1.5-flash", 
+  GEMINI_MODEL: "gemini-pro", 
   
   // PREMIUM VOICE: User Selection (Jessica)
   ELEVENLABS_API_KEY: "", 

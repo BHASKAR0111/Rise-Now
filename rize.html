@@ -354,6 +354,25 @@ document.addEventListener('click', function(e) {
   const chatInput = document.getElementById('chatInput');
   const sendBtn = document.getElementById('sendBtn');
 
+  // --- PERSISTENT BACKEND (Load History) ---
+  firebase.auth().onAuthStateChanged(async (user) => {
+    if (user) {
+      console.log("[RISEL] Loading persistent memory...");
+      try {
+        const doc = await window.riselDb.collection('chats').doc(user.uid).get();
+        if (doc.exists) {
+          const data = doc.data();
+          if (data.messages && data.messages.length > 0) {
+            chatHistory = data.messages.map(m => ({ role: m.role, text: m.text }));
+            // Clear box and render history
+            chatMessages.innerHTML = "";
+            chatHistory.forEach(m => appendMessage(m.role, m.text));
+          }
+        }
+      } catch (e) { console.error("History Load Fail:", e); }
+    }
+  });
+
   let chatHistory = []; // Global conversation memory
 
   function autoResize(el) {
@@ -443,10 +462,22 @@ document.addEventListener('click', function(e) {
       removeTyping();
       appendMessage('bot', reply);
       
-      // Update Memory
+      // Update Local Memory
       chatHistory.push({ role: 'user', text: text });
       chatHistory.push({ role: 'bot', text: reply });
       if (chatHistory.length > 10) chatHistory = chatHistory.slice(-10);
+
+      // --- PERMANENT BACKEND (Firestore) ---
+      if (window.riselUser) {
+        const userId = window.riselUser.uid;
+        const chatRef = window.riselDb.collection('chats').doc(userId);
+        chatRef.set({
+          messages: firebase.firestore.FieldValue.arrayUnion(
+            { role: 'user', text: text, time: Date.now() },
+            { role: 'bot', text: reply, time: Date.now() }
+          )
+        }, { merge: true }).catch(e => console.error("DB Save Fail:", e));
+      }
     } catch (err) {
       console.error(err);
       removeTyping();

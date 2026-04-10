@@ -11,12 +11,10 @@ export default async function handler(req, res) {
       return res.status(200).json({ reply: "ERROR: API KEY MISSING." });
     }
 
-    // ⭐ PUTTING GEMINI BACK AT THE TOP - It's much smarter for Hinglish
     const modelsToTry = [
       "google/gemini-flash-1.5",
       "google/gemini-2.0-flash-exp",
-      "meta-llama/llama-3.1-8b-instruct",
-      "mistralai/mistral-7b-instruct"
+      "meta-llama/llama-3.1-8b-instruct"
     ];
 
     let lastError = "";
@@ -34,7 +32,10 @@ export default async function handler(req, res) {
           body: JSON.stringify({
             model: model,
             messages: [
-              { role: "system", content: "You are Risel, a highly professional AI Career Coach for India. Speak in a mix of Hindi and English (Hinglish) that sounds natural and helpful. Use clean HTML for formatting. Avoid slang like 'bhai' unless the user is very casual." },
+              { 
+                role: "system", 
+                content: "You are Risel, a top-tier Indian Career Coach. Speak in natural Hinglish. NEVER provide English translations in parentheses or brackets (like 'Namaste (Hello)'). Just talk like a human. Professional yet friendly. Format with HTML. Keep it direct and helpful." 
+              },
               { role: "user", content: prompt }
             ]
           })
@@ -54,9 +55,7 @@ export default async function handler(req, res) {
       }
     }
 
-    return res.status(200).json({ 
-      reply: `⚠️ ALL ENDPOINTS FAILED. Please wait 1 minute. Error: ${lastError}` 
-    });
+    return res.status(200).json({ reply: "⚠️ Connection error. Please try again." });
 
   } catch (error) {
     return res.status(200).json({ reply: "CRASH: " + error.message });

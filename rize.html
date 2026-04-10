@@ -905,6 +905,7 @@
     /* RESPONSIVE OPTIMIZATION */
     @media (max-width: 900px) {
       .nav-links { display: none !important; }
+      .nav-actions { display: flex !important; }
       nav { padding: 0 16px; justify-content: space-between; height: 62px; }
       .page { grid-template-columns: 1fr; padding-top: 62px; }
       .left-panel { padding: 32px 20px; text-align: center; }
@@ -998,7 +999,10 @@
 
       <a href="rize.html" class="nav-link highlight">✦ Risel AI</a>
 
-      <div style="position:relative;margin-left:8px;">
+    </div>
+    
+    <div class="nav-actions" style="display:flex; align-items:center;">
+       <div id="authContainer" style="position:relative;margin-left:8px;">
         <div class="profile-btn" id="profileBtn" onclick="toggleDropdown()">
           <span class="default-icon" id="profileIcon">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"

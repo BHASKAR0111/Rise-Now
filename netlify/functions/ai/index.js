@@ -15,7 +15,7 @@ exports.handler = async (event) => {
       };
     }
 
-    const url = `https://generativelanguage.googleapis.com/v1/models/${GEMINI_MODEL}:generateContent?key=${API_KEY}`;
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${API_KEY}`;
     
     const response = await fetch(url, {
       method: "POST",

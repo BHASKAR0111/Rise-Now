@@ -8,10 +8,9 @@ export default async function handler(req, res) {
     const API_KEY = process.env.OPENROUTER_API_KEY;
 
     if (!API_KEY) {
-      return res.status(500).json({ error: "OPENROUTER_API_KEY MISSING" });
+      return res.status(200).json({ reply: "ERROR: OPENROUTER_API_KEY is missing from Vercel settings." });
     }
 
-    // ⭐ Mistral 7B - Most reliable free model on OpenRouter
     const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -19,7 +18,7 @@ export default async function handler(req, res) {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        model: "mistralai/mistral-7b-instruct:free",
+        model: "google/gemini-2.0-flash-exp:free",
         messages: [{ role: "user", content: prompt }]
       })
     });
@@ -27,9 +26,9 @@ export default async function handler(req, res) {
     const data = await response.json();
 
     if (!response.ok) {
-      return res.status(response.status).json({ 
-        error: "AI Engine Error", 
-        detail: data.error?.message || "Unknown error" 
+      // Put the error message directly into the reply bubble so we can read it!
+      return res.status(200).json({ 
+        reply: `⚠️ OPENROUTER ERROR: ${data.error?.message || "Unknown Error"}. Please check your OpenRouter dashboard.` 
       });
     }
 
@@ -37,6 +36,6 @@ export default async function handler(req, res) {
     return res.status(200).json({ reply });
 
   } catch (error) {
-    return res.status(500).json({ error: "Server error: " + error.message });
+    return res.status(200).json({ reply: "CRASH: " + error.message });
   }
 }

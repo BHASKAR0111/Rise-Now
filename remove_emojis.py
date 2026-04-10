@@ -16,7 +16,7 @@ for file in html_files:
     with open(file, 'r', encoding='utf-8') as f:
         content = f.read()
     
-    # We will keep the Rigel star '✦' because it's not a color emoji, it's a sleek symbol.
+    # We will keep the Risel star '✦' because it's not a color emoji, it's a sleek symbol.
     # The regex above usually targets pictographs and emoticons. Let's check it.
     
     new_content = emoji_pattern.sub('', content)

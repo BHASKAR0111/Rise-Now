@@ -1,5 +1,5 @@
 /* ================================================
-   RIGEL — Futuristic Motivational Theme
+   RISEL — Futuristic Motivational Theme
    Fixed: color bugs on cyan-bg elements
    ================================================ */
 
@@ -164,7 +164,7 @@ nav .logo-box,
   background: var(--blue-glow2) !important;
 }
 
-/* Rigel AI nav link highlight */
+/* Risel AI nav link highlight */
 .nav-link.ai,
 .nav-link.active,
 nav .nav-links a[href*="rize"],

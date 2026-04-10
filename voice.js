@@ -1,5 +1,5 @@
 /**
- * voice.js - Premium AI Voice Integration for Rigel
+ * voice.js - Premium AI Voice Integration for Risel
  * Supports ElevenLabs (Neural AI) for realistic voices
  * Fallback to Web Speech API if API key is missing
  */
@@ -68,7 +68,7 @@
 
     // TRY ELEVENLABS (High-Fidelity AI)
     if (EL_KEY && EL_KEY.length > 10) {
-      console.log("Rigel is calling ElevenLabs for premium audio...");
+      console.log("Risel is calling ElevenLabs for premium audio...");
       try {
         const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`, {
           method: "POST",

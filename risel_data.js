@@ -1,5 +1,5 @@
-// Centralized Data for Rigel Platform
-window.rigelData = {
+// Centralized Data for Risel Platform
+window.riselData = {
   careers: {
     da: { emoji: '📊', title: 'Data Analytics', steps: [
       {name: 'Learn Python Basics', resource: 'W3Schools Python', url: 'https://w3schools.com/python'},

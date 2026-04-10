@@ -1,6 +1,6 @@
 /**
- * RIGEL ENGINE (v4.0 - Global Fix)
- * The universal backend engine for Rigel SaaS.
+ * RISEL ENGINE (v4.0 - Global Fix)
+ * The universal backend engine for Risel SaaS.
  * This version uses a flattened architecture to bypass caching and scope issues.
  */
 
@@ -27,12 +27,12 @@ if (window.location.protocol === 'file:') {
     auth.setPersistence(firebase.auth.Auth.Persistence.SESSION).catch(e => {});
 }
 
-window.rigelAuth = auth;
-window.rigelDb = db;
+window.riselAuth = auth;
+window.riselDb = db;
 
 // --- STATE SYNC ---
 auth.onAuthStateChanged(async (user) => {
-    window.rigelUser = user;
+    window.riselUser = user;
     const name = user ? (user.displayName || user.email?.split('@')[0] || 'User') : 'Sign In';
     const email = user ? (user.email || 'Guest Session') : '';
     const photo = user ? user.photoURL : '';
@@ -64,7 +64,7 @@ auth.onAuthStateChanged(async (user) => {
 
 // --- UTILITIES ---
 window.showError = (panel, message) => {
-    console.error(`[RIGEL] Auth Error State: ${message}`);
+    console.error(`[RISEL] Auth Error State: ${message}`);
     const id = panel === 'signin' ? 'signin-error' : 'register-error';
     const el = document.getElementById(id);
     if (el) {
@@ -150,7 +150,7 @@ window.injectLoginModal = () => {
         <div id="loginOverlay" style="position:fixed; inset:0; background:rgba(0,0,0,0.85); backdrop-filter:blur(8px); z-index:99999; display:none; align-items:center; justify-content:center; font-family:'Inter',sans-serif;">
             <div style="background:#131a17; border:1px solid rgba(255,255,255,0.07); border-radius:24px; padding:40px; width:100%; max-width:440px; text-align:center; position:relative; animation:fadeUp 0.3s ease-out;">
                 <button onclick="closeLogin()" style="position:absolute; top:20px; right:20px; background:transparent; border:none; color:rgba(255,255,255,0.4); font-size:24px; cursor:pointer;">&times;</button>
-                <h3 style="color:white; font-size:26px; font-weight:900; margin-bottom:8px;">Welcome to Rigel</h3>
+                <h3 style="color:white; font-size:26px; font-weight:900; margin-bottom:8px;">Welcome to Risel</h3>
                 <p style="color:rgba(255,255,255,0.4); font-size:14px; margin-bottom:28px;">Sign in to save your progress.</p>
                 <div style="display:flex; background:rgba(255,255,255,0.04); border-radius:12px; padding:4px; margin-bottom:24px;">
                     <button id="tab-signin-btn" onclick="switchTab('signin')" style="flex:1; padding:12px; border:none; border-radius:10px; background:#1e2d28; color:white; font-weight:600; cursor:pointer;">Sign In</button>

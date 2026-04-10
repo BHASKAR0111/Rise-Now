@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Restart Mode | Rigel</title>
+  <title>Restart Mode | Risel</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
     
@@ -120,7 +120,7 @@
     @keyframes spin { 100% { transform: rotate(360deg); } }
 
   </style>
-  <link rel="icon" type="image/png" href="images/rigel_logo.png">
+  <link rel="icon" type="image/png" href="images/risel_logo.png">
 </head>
 <body>
 
@@ -163,7 +163,7 @@
 
   </div>
 
-  <script src="rigel_widget.js"></script>
+  <script src="risel_widget.js"></script>
   <script>
     function nextQ(current) {
       const el = document.getElementById('q' + current);
@@ -204,7 +204,7 @@
         if(window.addXP) window.addXP(100, 'Initiated Restart Protocol');
         
         // Save the special flag
-        localStorage.setItem('rigelRestartMode', 'true');
+        localStorage.setItem('riselRestartMode', 'true');
 
         setTimeout(() => {
           window.location.href = 'dashboard.html';

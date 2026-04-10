@@ -2,8 +2,8 @@ import glob
 import re
 
 LOGO_HTML = '''<a href="index.html" class="nav-logo">
-  <img src="images/rigel_logo.png" alt="Rigel" style="width:36px;height:36px;border-radius:9px;object-fit:contain;background:#000;"/>
-  <div class="logo-text" style="color:#00C2FF !important; background:transparent !important; font-weight:800; font-size:22px;">Rigel</div>
+  <img src="images/risel_logo.png" alt="Risel" style="width:36px;height:36px;border-radius:9px;object-fit:contain;background:#000;"/>
+  <div class="logo-text" style="color:#00C2FF !important; background:transparent !important; font-weight:800; font-size:22px;">Risel</div>
 </a>'''
 
 html_files = glob.glob('*.html') + ['style.css']

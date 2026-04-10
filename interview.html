@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta name="description" content="Rigel — Outgrow the Ordinary. A fully responsive career guidance & motivation platform built for job seekers, career switchers, and people starting over."/>
-  <meta property="og:title" content="Rigel — Outgrow"/>
+    <meta name="description" content="Risel — Outgrow the Ordinary. A fully responsive career guidance & motivation platform built for job seekers, career switchers, and people starting over."/>
+  <meta property="og:title" content="Risel — Outgrow"/>
   <meta property="og:description" content="Free career paths, daily motivation, real success stories and powerful tools — all in one platform."/>
   <meta property="og:type" content="website"/>
-  <title>Interview Q&A bank | Rigel</title>
+  <title>Interview Q&A bank | Risel</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -156,7 +156,7 @@
   </style>
   <link rel="stylesheet" href="style.css"/>
   <link rel="stylesheet" href="footer.css"/>
-  <link rel="icon" type="image/png" href="images/rigel_logo.png">
+  <link rel="icon" type="image/png" href="images/risel_logo.png">
   <!-- Voice integration scripts -->
   <script src="config.js"></script>
   <script src="voice.js"></script>
@@ -166,8 +166,8 @@
 
 <nav>
   <a href="index.html" class="nav-logo">
-    <img src="images/rigel_logo.png" alt="Rigel" style="width:36px;height:36px;border-radius:9px;object-fit:contain;background:#000;"/>
-    <div class="logo-text" style="color:var(--blue) !important; background:transparent !important; font-weight:800; font-size:22px;">Rigel</div>
+    <img src="images/risel_logo.png" alt="Risel" style="width:36px;height:36px;border-radius:9px;object-fit:contain;background:#000;"/>
+    <div class="logo-text" style="color:var(--blue) !important; background:transparent !important; font-weight:800; font-size:22px;">Risel</div>
   </a>
   <div class="nav-links">
     <a href="careers.html" class="nav-link">Careers</a>
@@ -191,7 +191,7 @@
       </div>
     </div>
     
-    <a href="rize.html" class="nav-link highlight">✦ Rigel AI</a>
+    <a href="rize.html" class="nav-link highlight">✦ Risel AI</a>
     
     <div style="position:relative;margin-left:8px;">
       <div class="profile-btn" id="profileBtn" onclick="toggleDropdown()">
@@ -215,7 +215,7 @@
           <a href="dashboard.html" class="dropdown-item">My Dashboard</a>
           <a href="careers.html" class="dropdown-item">Explore Careers</a>
           <a href="job-tracker.html" class="dropdown-item">Job Tracker</a>
-          <a href="rize.html" class="dropdown-item">✦ Chat with Rigel</a>
+          <a href="rize.html" class="dropdown-item">✦ Chat with Risel</a>
           <div class="dropdown-item danger" onclick="signOutUser()">Sign Out</div>
         </div>
       </div>
@@ -279,7 +279,7 @@ document.addEventListener('click', function(e) {
         </div>
         <div class="mode-card" id="mode-voice" onclick="selectMode('voice')">
           <div>🎙️</div>
-          <h4>Talk to Rigel</h4>
+          <h4>Talk to Risel</h4>
           <p>Real-time AI Voice Simulation (Beta)</p>
         </div>
       </div>
@@ -297,7 +297,7 @@ document.addEventListener('click', function(e) {
       <div style="font-size:20px; font-weight:600; line-height:1.5; margin-bottom:40px;" id="fc-question"></div>
       
       <div id="fc-interactive-area">
-        <div style="font-size:13px; font-weight:700; color:#00e676; text-transform:uppercase; margin-bottom:12px; letter-spacing:1px; display:flex; gap:8px; align-items:center;">⚡ Rigel AI Simulator</div>
+        <div style="font-size:13px; font-weight:700; color:#00e676; text-transform:uppercase; margin-bottom:12px; letter-spacing:1px; display:flex; gap:8px; align-items:center;">⚡ Risel AI Simulator</div>
         <textarea id="fc-user-answer" class="ai-textarea" placeholder="Type exactly how you would answer this in an interview..." style="width:100%; min-height:120px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:16px; color:white; font-family:'Inter',sans-serif; font-size:14px; margin-bottom:16px; outline:none; transition:border-color 0.2s; resize:vertical;"></textarea>
         <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
           <button id="fc-submit-ai" onclick="submitToAI()" style="padding:13px 28px; background:linear-gradient(135deg, #00C2FF, #0090CC); color:#000; border:none; border-radius:12px; font-weight:800; cursor:pointer; font-size:14px; transition:transform 0.2s; display:inline-block; box-shadow: 0 4px 15px rgba(0,194,255,0.3);">Submit Answer for AI Review</button>
@@ -305,7 +305,7 @@ document.addEventListener('click', function(e) {
             <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20" style="color:var(--blue);"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
           </button>
         </div>
-        <div id="fc-ai-loading" style="display:none; color:#00C2FF; font-size:13px; font-weight:700; margin-top:16px; letter-spacing:0.5px; animation: pulse 1.5s infinite;">✨ Rigel AI is analyzing your answer...</div>
+        <div id="fc-ai-loading" style="display:none; color:#00C2FF; font-size:13px; font-weight:700; margin-top:16px; letter-spacing:0.5px; animation: pulse 1.5s infinite;">✨ Risel AI is analyzing your answer...</div>
         <div id="fc-ai-feedback" class="ai-feedback-box" style="display:none; background:rgba(0,194,255,0.05); border:1px solid rgba(0,194,255,0.2); border-radius:16px; padding:28px; margin:24px 0; color:white; line-height:1.8; font-size:14px; text-align:left; backdrop-filter:blur(8px); box-shadow: inset 0 0 20px rgba(0,194,255,0.05);"></div>
       </div>
       
@@ -361,8 +361,8 @@ document.addEventListener('click', function(e) {
   <div class="footer-top">
     <div class="footer-col">
       <a href="index.html" class="nav-logo">
-        <img src="images/rigel_logo.png" alt="Rigel" style="width:36px;height:36px;border-radius:9px;object-fit:contain;background:#000;"/>
-        <div class="logo-text" style="color:#00C2FF !important; background:transparent !important; font-weight:800; font-size:22px;">Rigel</div>
+        <img src="images/risel_logo.png" alt="Risel" style="width:36px;height:36px;border-radius:9px;object-fit:contain;background:#000;"/>
+        <div class="logo-text" style="color:#00C2FF !important; background:transparent !important; font-weight:800; font-size:22px;">Risel</div>
       </a>
       <p>Outgrow the Ordinary. A fully responsive career guidance & motivation platform built for job seekers and career switchers.</p>
       <div class="footer-socials">
@@ -395,7 +395,7 @@ document.addEventListener('click', function(e) {
     </div>
   </div>
   <div class="footer-bottom">
-    <p>© 2026 Rigel — Outgrow the Ordinary | Built by Bhaskar </p>
+    <p>© 2026 Risel — Outgrow the Ordinary | Built by Bhaskar </p>
   </div>
 </footer>
 
@@ -518,7 +518,7 @@ document.addEventListener('click', function(e) {
     document.getElementById('fc-submit-ai').style.display = 'none';
     document.getElementById('fc-ai-loading').style.display = 'block';
 
-    const prompt = `You are Rigel, an expert AI Career Coach for the Indian job market.
+    const prompt = `You are Risel, an expert AI Career Coach for the Indian job market.
     The user is practicing for an interview.
     Question: "${currentQ.q}"
     User's Answer: "${userAnswer}"
@@ -537,7 +537,7 @@ document.addEventListener('click', function(e) {
       let feedback = "";
 
       if (USE_PROXY) {
-        console.log("Using Rigel Secure Proxy...");
+        console.log("Using Risel Secure Proxy...");
         const response = await fetch(PROXY_URL, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -577,14 +577,14 @@ document.addEventListener('click', function(e) {
       document.getElementById('fc-reveal-btn').style.display = 'none';
       document.getElementById('fc-interactive-area').style.display = 'none';
       
-      // Trigger global Rigel Confetti/Dopamine if it's a good effort
+      // Trigger global Risel Confetti/Dopamine if it's a good effort
       if(window.triggerConfetti) window.triggerConfetti();
 
     } catch (err) {
       console.error("AI Error:", err);
       document.getElementById('fc-ai-loading').style.display = 'none';
       document.getElementById('fc-submit-ai').style.display = 'inline-block';
-      alert("Rigel AI Error: " + err.message + "\n\nTip: On local files, set USE_PROXY: false in config.js and add your key. In production, ensure GEMINI_API_KEY is set in Netlify environment variables.");
+      alert("Risel AI Error: " + err.message + "\n\nTip: On local files, set USE_PROXY: false in config.js and add your key. In production, ensure GEMINI_API_KEY is set in Netlify environment variables.");
     }
   }
 
@@ -616,6 +616,6 @@ document.addEventListener('click', function(e) {
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-<script src="rigel_widget.js"></script>
+<script src="risel_widget.js"></script>
 </body>
 </html>

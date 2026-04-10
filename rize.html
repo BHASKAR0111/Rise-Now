@@ -8,6 +8,9 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
   <title>✦ Risel AI — Career Coach</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+  <meta name="theme-color" content="#00C2FF">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap&v=1.0.0"
     rel="stylesheet" />
   <style>
@@ -915,25 +918,48 @@
 
     /* RESPONSIVE OPTIMIZATION */
     @media (max-width: 900px) {
-      .nav-links { display: none !important; visibility: hidden !important; width: 0 !important; overflow: hidden !important; }
-      .nav-auth-root { display: flex !important; visibility: visible !important; opacity: 1 !important; }
-      nav { padding: 0 16px !important; justify-content: space-between !important; height: 62px; }
-      .page { grid-template-columns: 1fr; padding-top: 62px; }
+      .nav-links { display: none !important; }
+      nav { padding: 0 16px !important; height: 62px; }
+      .page { grid-template-columns: 1fr; padding-top: 62px; padding-bottom: 100px; }
       .left-panel { padding: 32px 20px; text-align: center; }
-      .hero-title { font-size: 34px !important; line-height: 1.1; letter-spacing: -1px; margin-bottom: 20px; }
+      .hero-title { font-size: 38px !important; line-height: 1.1; letter-spacing: -1.5px; margin-bottom: 20px; }
       .hero-badge { margin: 0 auto 24px; }
       .left-panel p { font-size: 15px; margin: 0 auto 32px; line-height: 1.5; }
       .hero-btns { flex-direction: column; gap: 12px; }
-      .hero-btn { width: 100% !important; justify-content: center; padding: 18px !important; }
       .right-panel { 
         position: relative; 
-        height: 600px; 
+        height: 500px; 
         border-left: none; 
         border-top: 1px solid var(--border); 
         margin-top: 40px;
+        background: var(--card);
+        border-radius: 20px;
+        overflow: hidden;
       }
-      .chat-box { border-radius: 0; }
       .caps-grid { grid-template-columns: 1fr; }
+    }
+
+    .mobile-drawer {
+      display: none;
+      position: fixed;
+      top: 62px; left: 0; right: 0;
+      background: rgba(4, 5, 15, 0.98);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 20px;
+      flex-direction: column;
+      gap: 8px;
+      z-index: 99;
+    }
+    .mobile-drawer.show { display: flex; }
+    .drawer-link {
+      color: white;
+      padding: 14px;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.03);
     }
 
     .agent-avatar img,
@@ -1047,38 +1073,49 @@
           </div>
         </div>
       </div>
-      <!-- Hamburger btn - shown via JS on mobile -->
+      <!-- Hamburger btn -->
       <button id="hamburgerBtn" onclick="toggleMobileMenu()" style="
-        display:none;
         background:transparent;
         border:1px solid rgba(255,255,255,0.2);
-        border-radius:8px;
-        padding:7px 11px;
+        border-radius:10px;
+        padding:8px 10px;
         cursor:pointer;
         color:white;
-        font-size:18px;
-        line-height:1;
-      ">☰</button>
+      ">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      </button>
     </div>
   </nav>
 
   <!-- MOBILE MENU DRAWER -->
-  <div id="mobileMenuDrawer" style="
-    display:none;
-    position:fixed;
-    top:68px;left:0;right:0;
-    background:#0a0f1a;
-    border-bottom:1px solid rgba(255,255,255,0.1);
-    z-index:99;
-    padding:12px 16px;
-    flex-direction:column;
-    gap:4px;
-  ">
-    <a href="careers.html" style="color:white;padding:12px;display:block;font-size:15px;text-decoration:none;border-radius:8px;">📋 Careers</a>
-    <a href="resources.html" style="color:white;padding:12px;display:block;font-size:15px;text-decoration:none;border-radius:8px;">📚 Resources</a>
-    <a href="jobs.html" style="color:white;padding:12px;display:block;font-size:15px;text-decoration:none;border-radius:8px;">💼 Job Board</a>
-    <a href="interview.html" style="color:white;padding:12px;display:block;font-size:15px;text-decoration:none;border-radius:8px;">🎯 Interview Prep</a>
-    <a href="rize.html" style="color:var(--blue);padding:12px;display:block;font-size:15px;font-weight:700;text-decoration:none;border-radius:8px;">✦ Risel AI</a>
+  <div class="mobile-drawer" id="mobileDrawer">
+    <a href="careers.html" class="drawer-link">📋 Careers</a>
+    <a href="resources.html" class="drawer-link">📚 Resources</a>
+    <a href="jobs.html" class="drawer-link">💼 Job Board</a>
+    <a href="interview.html" class="drawer-link">🎯 Interview Prep</a>
+    <a href="rize.html" class="drawer-link" style="color:var(--blue)">✦ Risel AI</a>
+  </div>
+
+  <div class="mobile-bottom-nav">
+    <a href="index.html" class="m-nav-item">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+      <span>Home</span>
+    </a>
+    <a href="jobs.html" class="m-nav-item">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+      <span>Jobs</span>
+    </a>
+    <a href="rize.html" class="m-nav-item m-nav-center active">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="white" stroke="none"><path d="M12 2L14.4 8.4L21 9.6L16.2 14.2L17.4 21L12 17.8L6.6 21L7.8 14.2L3 9.6L9.6 8.4L12 2Z"></path></svg>
+    </a>
+    <a href="roadmap.html" class="m-nav-item">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+      <span>Roadmap</span>
+    </a>
+    <a href="dashboard.html" class="m-nav-item">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+      <span>Profile</span>
+    </a>
   </div>
 
   <style>
@@ -1131,31 +1168,9 @@
   <script>
     // HAMBURGER MENU LOGIC
     function toggleMobileMenu() {
-      const drawer = document.getElementById('mobileMenuDrawer');
-      if (!drawer) return;
-      const isOpen = drawer.style.display === 'flex';
-      drawer.style.display = isOpen ? 'none' : 'flex';
+      const drawer = document.getElementById('mobileDrawer');
+      if (drawer) drawer.classList.toggle('show');
     }
-
-    function applyMobileNav() {
-      const hamburger = document.getElementById('hamburgerBtn');
-      const desktopLinks = document.getElementById('desktopNavLinks');
-      if (!hamburger || !desktopLinks) return;
-      if (window.innerWidth <= 768) {
-        hamburger.style.display = 'block';
-        desktopLinks.style.display = 'none';
-      } else {
-        hamburger.style.display = 'none';
-        desktopLinks.style.display = 'flex';
-        const drawer = document.getElementById('mobileMenuDrawer');
-        if (drawer) drawer.style.display = 'none';
-      }
-    }
-
-    // Run on load and resize
-    window.addEventListener('resize', applyMobileNav);
-    window.addEventListener('DOMContentLoaded', applyMobileNav);
-    applyMobileNav(); // run immediately
   </script>
 
   <!-- MAIN PAGE -->

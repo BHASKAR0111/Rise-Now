@@ -36,26 +36,48 @@ FIRST MESSAGE: One short line greeting + one simple question. Nothing more.
 
 Always be honest. Never give vague advice.`;
 
-    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${API_KEY}`,
-        "Content-Type": "application/json",
-        "HTTP-Referer": "https://risel-ai.vercel.app",
-        "X-Title": "Risel AI"
-      },
-      body: JSON.stringify({
-        model: "google/gemini-flash-1.5",
-        messages: [
-          { role: "system", content: systemPrompt },
-          { role: "user", content: prompt }
-        ]
-      })
-    });
+    const modelsToTry = [
+      "google/gemini-flash-1.5",
+      "meta-llama/llama-3.1-8b-instruct",
+      "mistralai/mistral-7b-instruct"
+    ];
 
-    const data = await response.json();
-    const reply = data.choices?.[0]?.message?.content || "No response received.";
-    return res.status(200).json({ reply });
+    let lastError = "";
+
+    for (const model of modelsToTry) {
+      try {
+        const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${API_KEY}`,
+            "Content-Type": "application/json",
+            "HTTP-Referer": "https://risel-ai.vercel.app",
+            "X-Title": "Risel AI"
+          },
+          body: JSON.stringify({
+            model: model,
+            messages: [
+              { role: "system", content: systemPrompt },
+              { role: "user", content: prompt }
+            ]
+          })
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.choices?.[0]?.message?.content) {
+          return res.status(200).json({ reply: data.choices[0].message.content });
+        } else {
+          lastError = data.error?.message || "Unknown error";
+          continue;
+        }
+      } catch (err) {
+        lastError = err.message;
+        continue;
+      }
+    }
+
+    return res.status(200).json({ reply: "⚠️ AI is busy. Please try again in a moment." });
 
   } catch (error) {
     return res.status(200).json({ reply: "CRASH: " + error.message });

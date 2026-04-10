@@ -166,7 +166,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(4,5,15,0.92)
   nav{padding:0 20px;}
   .chat-tags{display:none;}
 }
-</style>
+.agent-avatar img,.msg-avatar img{width:100%;height:100%;border-radius:50%;object-fit:cover;}.suggestion-wrap{display:flex;gap:10px;margin-top:15px;flex-wrap:wrap;}.suggestion-btn{background:rgba(0,184,212,0.1);border:1px solid rgba(0,184,212,0.3);color:#00e5ff;padding:8px 16px;border-radius:20px;font-size:13px;cursor:pointer;transition:0.3s;font-family:inherit;}.suggestion-btn:hover{background:rgba(0,184,212,0.2);transform:translateY(-2px);}</style>
+
   <link rel="stylesheet" href="footer.css"/>
   <link rel="icon" type="image/png" href="images/risel_logo.png">
 </head>
@@ -287,7 +288,7 @@ document.addEventListener('click', function(e) {
     <div class="chat-header">
       <div class="chat-agent">
         <div class="agent-avatar">
-          R
+          <img src="risel_profile_face_1775824071866.png" alt="Risel">
           <div class="agent-dot"></div>
         </div>
         <div>
@@ -295,20 +296,21 @@ document.addEventListener('click', function(e) {
           <div class="agent-sub">AI Career Coach</div>
         </div>
       </div>
-      <div class="chat-tags">
-        <span class="chat-tag">Roadmaps</span>
-        <span class="chat-tag">Interviews</span>
-        <span class="chat-tag">Jobs</span>
-      </div>
     </div>
 
     <div class="chat-messages" id="chatMessages">
       <div class="msg">
-        <div class="msg-avatar">R</div>
+        <div class="msg-avatar">
+          <img src="risel_profile_face_1775824071866.png" alt="R">
+        </div>
         <div class="msg-bubble bot">
-          Hey! I'm <strong>Risel</strong> — your AI career coach on Risel. <br><br>
-          Whether you just finished college, have a gap on your resume, want to switch careers, or feel totally lost — I've got you.<br><br>
+          Hey! I'm <strong>Risel</strong> — your AI career coach. <br><br>
           Tell me <strong>where you are right now</strong> and <strong>what you're aiming for.</strong> Let's figure it out together.
+          
+          <div class="suggestion-wrap">
+            <button class="suggestion-btn" onclick="useSuggestion('I want to start an Interview Prep')">Start Interview Prep</button>
+            <button class="suggestion-btn" onclick="useSuggestion('I need a Career Roadmap')">Get a Roadmap</button>
+          </div>
         </div>
       </div>
     </div>
@@ -343,6 +345,11 @@ document.addEventListener('click', function(e) {
 <script src="config.js"></script>
 
 <script>
+  function useSuggestion(text) {
+    document.getElementById('chatInput').value = text;
+    sendMessage();
+  }
+
   const chatMessages = document.getElementById('chatMessages');
   const chatInput = document.getElementById('chatInput');
   const sendBtn = document.getElementById('sendBtn');
@@ -405,6 +412,11 @@ document.addEventListener('click', function(e) {
     const GEMINI_MODEL = config.GEMINI_MODEL || "gemini-1.5-flash";
 
     const prompt = text;
+
+    function useSuggestion(text) {
+      document.getElementById('chatInput').value = text;
+      sendMessage();
+    }
 
     try {
       let reply = "";

@@ -6,7 +6,7 @@ exports.handler = async (event) => {
   try {
     const { prompt, model } = JSON.parse(event.body);
     const API_KEY = process.env.GEMINI_API_KEY;
-    const GEMINI_MODEL = model || "gemini-1.5-flash";
+    const GEMINI_MODEL = "gemini-1.5-flash";
 
     if (!API_KEY) {
       return { 
@@ -15,15 +15,13 @@ exports.handler = async (event) => {
       };
     }
 
-    // Try v1beta as it's most common for Flash
     const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${API_KEY}`;
     
     const response = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: { temperature: 0.7, maxOutputTokens: 1000 }
+        contents: [{ parts: [{ text: prompt }] }]
       })
     });
 

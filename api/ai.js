@@ -11,10 +11,13 @@ export default async function handler(req, res) {
       return res.status(200).json({ reply: "ERROR: API KEY MISSING." });
     }
 
+    // ⭐ The "Final 5" - Every stable free model we can try!
     const modelsToTry = [
+      "meta-llama/llama-3-8b-instruct:free",
       "google/gemini-flash-1.5:free",
-      "google/gemini-2.0-flash-exp:free",
-      "mistralai/mistral-7b-instruct:free"
+      "mistralai/mistral-7b-instruct:free",
+      "qwen/qwen-2.5-72b-instruct:free",
+      "google/gemini-2.0-flash-exp:free"
     ];
 
     let lastError = "";
@@ -38,9 +41,9 @@ export default async function handler(req, res) {
         if (response.ok && data.choices?.[0]?.message?.content) {
           return res.status(200).json({ reply: data.choices[0].message.content, model_used: model });
         } else {
-          lastError = data.error?.message || "Unknown error";
-          console.log(`Model ${model} failed: ${lastError}`);
-          continue; // Try next model
+          lastError = `${model}: ${data.error?.message || "Unknown"}`;
+          console.log(`Failed: ${lastError}`);
+          continue;
         }
       } catch (err) {
         lastError = err.message;
@@ -49,7 +52,7 @@ export default async function handler(req, res) {
     }
 
     return res.status(200).json({ 
-      reply: `⚠️ ALL MODELS FAILED. Last Error: ${lastError}. Please check your OpenRouter dashboard credits/status.` 
+      reply: `⚠️ ALL ENDPOINTS FAILED. This usually means your OpenRouter account needs EMAIL VERIFICATION. Please check your email. Last error: ${lastError}` 
     });
 
   } catch (error) {

@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="manifest" href="manifest.json">
   <title>Career Assessment | Risel</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
@@ -105,6 +106,7 @@
     .gate-input:focus { outline:none; border-color:var(--blue); }
   </style>
   <link rel="icon" type="image/png" href="images/risel_logo.png">
+  <link rel="stylesheet" href="style.css?v=1.1">
 </head>
 <body>
 
@@ -253,5 +255,42 @@
 </script>
 
 <script src="risel_widget.js"></script>
+
+<div class="mobile-drawer" id="mobileDrawer">
+  <a href="careers.html" class="drawer-link">📋 Careers</a>
+  <a href="resources.html" class="drawer-link">📚 Resources</a>
+  <a href="jobs.html" class="drawer-link">💼 Job Board</a>
+  <a href="interview.html" class="drawer-link">🎯 Interview Prep</a>
+  <a href="rize.html" class="drawer-link" style="color:var(--blue)">✦ Risel AI</a>
+</div>
+
+<div class="mobile-bottom-nav">
+  <a href="index.html" class="m-nav-item">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+    <span>Home</span>
+  </a>
+  <a href="jobs.html" class="m-nav-item">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+    <span>Jobs</span>
+  </a>
+  <a href="rize.html" class="m-nav-item m-nav-center">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="white" stroke="none"><path d="M12 2L14.4 8.4L21 9.6L16.2 14.2L17.4 21L12 17.8L6.6 21L7.8 14.2L3 9.6L9.6 8.4L12 2Z"></path></svg>
+  </a>
+  <a href="roadmap.html" class="m-nav-item">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+    <span>Roadmap</span>
+  </a>
+  <a href="dashboard.html" class="m-nav-item">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+    <span>Profile</span>
+  </a>
+</div>
+
+<script>
+function toggleMobileMenu() {
+  const drawer = document.getElementById('mobileDrawer');
+  if(drawer) drawer.classList.toggle('show');
+}
+</script>
 </body>
 </html>

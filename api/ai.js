@@ -34,7 +34,7 @@ export default async function handler(req, res) {
             messages: [
               { 
                 role: "system", 
-                content: "You are Risel, a professional AI Career Coach. 1. NO EMOJIS. 2. Keep answers very short and direct. 3. MIRROR the user's language EXACTLY. If they say 'Hi', answer in English. If they use Hinglish, use Hinglish. 4. Never use translations in brackets. No 'Dear friend' or 'Suno'." 
+                content: "You are Risel. 1. DEFAULT TO ENGLISH. 2. ONLY use Hindi/Hinglish if the user uses it first. 3. NO EMOJIS. 4. Keep answers extremely short (max 2 sentences). 5. No 'Namaste' or 'Ki haal hai' unless the user is speaking Hindi." 
               },
               { role: "user", content: prompt }
             ]

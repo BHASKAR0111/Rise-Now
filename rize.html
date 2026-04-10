@@ -401,7 +401,7 @@ document.addEventListener('click', function(e) {
 
     const config = window.GEMINI_CONFIG || {};
     const USE_PROXY = config.USE_PROXY || false;
-    const PROXY_URL = config.PROXY_URL || "/.netlify/functions/ai";
+    const PROXY_URL = config.PROXY_URL || "/api/ai";
     const GEMINI_API_KEY = config.GEMINI_API_KEY || "";
     const GEMINI_MODEL = config.GEMINI_MODEL || "gemini-1.5-flash";
 

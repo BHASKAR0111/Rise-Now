@@ -2,7 +2,7 @@
 window.GEMINI_CONFIG = {
   // Use Netlify Proxy for production security
   USE_PROXY: true, 
-  PROXY_URL: "/.netlify/functions/ai",
+  PROXY_URL: "/api/ai",
   
   // Local/Dev fallback (Manual Key - DO NOT LEAK)
   GEMINI_API_KEY: "", 

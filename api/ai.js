@@ -11,12 +11,12 @@ export default async function handler(req, res) {
       return res.status(200).json({ reply: "ERROR: API KEY MISSING." });
     }
 
-    // ⭐ Standard models with proper headers
+    // ⭐ PUTTING GEMINI BACK AT THE TOP - It's much smarter for Hinglish
     const modelsToTry = [
       "google/gemini-flash-1.5",
-      "meta-llama/llama-3-8b-instruct",
-      "mistralai/mistral-7b-instruct",
-      "google/gemini-2.0-flash-exp"
+      "google/gemini-2.0-flash-exp",
+      "meta-llama/llama-3.1-8b-instruct",
+      "mistralai/mistral-7b-instruct"
     ];
 
     let lastError = "";
@@ -29,20 +29,23 @@ export default async function handler(req, res) {
             "Authorization": `Bearer ${API_KEY}`,
             "Content-Type": "application/json",
             "HTTP-Referer": "https://risel-ai.vercel.app",
-            "X-Title": "Risel AI Portal"
+            "X-Title": "Risel AI"
           },
           body: JSON.stringify({
             model: model,
-            messages: [{ role: "user", content: prompt }]
+            messages: [
+              { role: "system", content: "You are Risel, a highly professional AI Career Coach for India. Speak in a mix of Hindi and English (Hinglish) that sounds natural and helpful. Use clean HTML for formatting. Avoid slang like 'bhai' unless the user is very casual." },
+              { role: "user", content: prompt }
+            ]
           })
         });
 
         const data = await response.json();
 
         if (response.ok && data.choices?.[0]?.message?.content) {
-          return res.status(200).json({ reply: data.choices[0].message.content, model_used: model });
+          return res.status(200).json({ reply: data.choices[0].message.content });
         } else {
-          lastError = `${model}: ${data.error?.message || "Unknown Error"}`;
+          lastError = data.error?.message || "Unknown Error";
           continue;
         }
       } catch (err) {
@@ -52,7 +55,7 @@ export default async function handler(req, res) {
     }
 
     return res.status(200).json({ 
-      reply: `⚠️ ALL ENDPOINTS FAILED. Please ensure your OpenRouter email is verified. Error: ${lastError}` 
+      reply: `⚠️ ALL ENDPOINTS FAILED. Please wait 1 minute. Error: ${lastError}` 
     });
 
   } catch (error) {

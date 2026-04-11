@@ -6,14 +6,12 @@
 
 // --- CONFIG ---
 const firebaseConfig = {
-  apiKey: "AIzaSyB2__vKiROvrPOyomY8X-pDBY8VlArDbdY",
-  authDomain: "risenow-31893.firebaseapp.com",
-  databaseURL: "https://risenow-31893-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "risenow-31893",
-  storageBucket: "risenow-31893.firebasestorage.app",
-  messagingSenderId: "230298271225",
-  appId: "1:230298271225:web:c24d7100fc8b89a268d128",
-  measurementId: "G-RC17E84XEV"
+  apiKey: "AIzaSyDEYfHY-Cgw0oqBD7dA3h4TSAinZEymwKQ",
+  authDomain: "risel-ai-10bc7.firebaseapp.com",
+  projectId: "risel-ai-10bc7",
+  storageBucket: "risel-ai-10bc7.appspot.com",
+  messagingSenderId: "1016839352467",
+  appId: "1:1016839352467:web:5316db0bc385474328d228"
 };
 
 // --- INITIALIZE ---

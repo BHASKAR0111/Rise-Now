@@ -1389,7 +1389,20 @@
           const response = await fetch(PROXY_URL, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ prompt: text, history: chatHistory, model: GEMINI_MODEL })
+            body: JSON.stringify({ 
+              prompt: text, 
+              system_instruction: `You are Risel, a warm and motivating AI career coach. You help job seekers — especially those returning after a gap or starting fresh — rebuild confidence and land their next opportunity.
+              When a user greets you casually:
+              - Respond warmly and naturally. Introduce yourself briefly if it's the first message.
+              - Ask one simple question to understand their job search.
+              - Keep it short, conversational, and human. No bullet points or templates.
+              When a user shares their situation:
+              - Listen actively, identify strengths, and guide them step-by-step.
+              - NEVER use placeholders like [Your Field]. Ask the user for details if missing.
+              Tone: Encouraging, honest, conversational senior friend (HR/tech background).`,
+              history: chatHistory, 
+              model: GEMINI_MODEL 
+            })
           });
           const data = await response.json();
           if (!response.ok) throw new Error(data.error || "AI Error");
@@ -1397,12 +1410,31 @@
         } else {
           if (!GEMINI_API_KEY) throw new Error("API Key missing in config.js");
           const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`;
+          
+          // Construct chat payload with history
+          const historyParts = chatHistory.map(m => ({
+            role: m.role === 'user' ? 'user' : 'model',
+            parts: [{ text: m.text }]
+          }));
+
           const response = await fetch(url, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-              contents: [{ parts: [{ text: text }] }],
-              generationConfig: { temperature: 0.7, maxOutputTokens: 1000 }
+              contents: [
+                {
+                  role: "user",
+                  parts: [{ text: `System Instruction: You are Risel, a warm and motivating AI career coach. You help job seekers rebuild confidence. 
+                  GREETINGS: Respond warmly, introduce yourself, ask one simple career question. Short & human. No templates.
+                  SITUATIONS: Listen, reflect, guide step-by-step. No generic dumps. 
+                  TONE: Senior friend in HR/Tech. 
+                  RULES: Never use placeholders like [Your Field]. Ask if unknown.
+                  History context: ${JSON.stringify(chatHistory.slice(-4))}` }]
+                },
+                ...historyParts,
+                { role: "user", parts: [{ text: text }] }
+              ],
+              generationConfig: { temperature: 0.8, maxOutputTokens: 600 }
             })
           });
           const data = await response.json();

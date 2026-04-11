@@ -523,20 +523,22 @@ document.addEventListener('click', function(e) {
     document.getElementById('fc-submit-ai').style.display = 'none';
     document.getElementById('fc-ai-loading').style.display = 'block';
 
-    const prompt = `You are Risel, an expert AI Career Coach for the Indian job market.
-    The user is practicing for an interview.
-    Question: "${currentQ.q}"
-    User's Answer: "${userAnswer}"
+    const prompt = `You are Risel, a warm and motivating AI career coach. You are conducting a mock interview.
+    Current Question: "${currentQ.q}"
+    User's Input: "${userAnswer}"
 
-    Analyze the answer. Provide brief, supportive, and direct feedback. 
-    Focus on helping them sound professional yet authentic. 
-    Use a mix of Hindi and English (Hinglish) where it feels natural and encouraging (for the feedback part), but keep the professional rewrite in clear English.
+    1. If the user's input is just a greeting (like "hi", "how are you"):
+       - Respond warmly, introducing yourself as their coach for this session.
+       - Ask if they're ready to answer the question: "${currentQ.q}".
+       - Short, human response only. No feedback yet.
+
+    2. If the user is answering:
+       - Give feedback as a senior friend in HR.
+       - Highlight strengths and suggest ONE specific improvement.
+       - Provide a professional rewrite in plain English (NO placeholders like [Your Field]).
     
-    1. What they did well.
-    2. What they missed or how it can be improved.
-    3. Provide an example of a stronger, professional rewrite for this answer.
-    
-    Use HTML formatting (like <strong> for bold, <br/> for newlines, and bullet points) to format your response so it looks nice on a dark theme website. Keep it encouraging!`;
+    TONE: Senior friend, encouraging, honest. No robotic templates.
+    FORMAT: HTML (<strong>, <br/>). Short responses only.`;
 
     try {
       let feedback = "";

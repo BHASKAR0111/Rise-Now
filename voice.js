@@ -63,8 +63,18 @@
     const VOICE_ID = config.ELEVENLABS_VOICE_ID || "21m00Tcm4lP9RIvstS0f";
 
     // Clean text: strip HTML and extra spaces
-    const plainText = text.replace(/<[^>]*>?/gm, '').trim();
+    let plainText = text.replace(/<[^>]*>?/gm, '').trim();
     if (!plainText) return;
+
+    // --- PREVENT 3-MINUTE LONG MESSAGES ---
+    // Limit to first 3 sentences or ~400 chars for voice only
+    const sentences = plainText.match(/[^.!?]+[.!?]+/g) || [plainText];
+    if (sentences.length > 3) {
+      plainText = sentences.slice(0, 3).join(' ') + " (Read more on your screen).";
+    }
+    if (plainText.length > 450) {
+      plainText = plainText.substring(0, 450) + "...";
+    }
 
     // TRY ELEVENLABS (High-Fidelity AI)
     if (EL_KEY && EL_KEY.length > 10) {

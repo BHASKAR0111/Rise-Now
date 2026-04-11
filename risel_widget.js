@@ -6,13 +6,14 @@
 
 // --- CONFIG ---
 const firebaseConfig = {
-  apiKey: "AIzaSyDEYfHY-Cgw0oqBD7dA3h4TSAinZEymwKQ",
-  authDomain: "risel-ai-10bc7.firebaseapp.com",
-  projectId: "risel-ai-10bc7",
-  storageBucket: "risel-ai-10bc7.firebasestorage.app",
-  messagingSenderId: "471691588472",
-  appId: "1:471691588472:web:4658afc09838568058ce8d",
-  measurementId: "G-PTHX2ENGPK"
+  apiKey: "AIzaSyB2__vKiROvrPOyomY8X-pDBY8VlArDbdY",
+  authDomain: "risenow-31893.firebaseapp.com",
+  databaseURL: "https://risenow-31893-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "risenow-31893",
+  storageBucket: "risenow-31893.firebasestorage.app",
+  messagingSenderId: "230298271225",
+  appId: "1:230298271225:web:c24d7100fc8b89a268d128",
+  measurementId: "G-RC17E84XEV"
 };
 
 // --- INITIALIZE ---
@@ -86,6 +87,7 @@ function friendlyError(code) {
         case 'auth/weak-password': return 'Password is too weak (min 6 chars).';
         case 'auth/admin-restricted-operation': return 'Guest login is disabled. Please enable "Anonymous Authentication" in Firebase Console.';
         case 'auth/popup-blocked': return 'Sign-in popup was blocked by your browser.';
+        case 'auth/unauthorized-domain': return `Domain "${window.location.hostname}" is not authorized. Add it to Firebase Console > Authentication > Settings > Authorized domains.`;
         default: return `Error: ${code}`;
     }
 }
